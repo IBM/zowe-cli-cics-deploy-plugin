@@ -63,6 +63,14 @@ describe("cics-deploy generate bundle", () => {
         expect(fse.existsSync(path.join(NO_PACKAGE_JSON_APP, "nodejsapps"))).toBeFalsy();
     });
 
+    // Issue #5
+    it.skip("should error nicely if package.json is malformed", async () => {
+        const appPath = path.join(TEST_APPS_DIR, "bad-package-json");
+        const response = await runCliScript(__dirname + "/__scripts__/generate_bundle.sh", TEST_ENVIRONMENT, [appPath]);
+        expect(fse.existsSync(path.join(appPath, "nodejsapps"))).toBeFalsy();
+        expect(response.status).toBeGreaterThan(0);
+    });
+
     describe("paramters", async () => {
         it("should customise bundle ID according to command line args", async () => {
             await testBundleGenerateWorks(["--bundleid", "myNodeBundle"], "myNodeBundle");
@@ -92,6 +100,7 @@ describe("cics-deploy generate bundle", () => {
         });
     });
 
+    // Issue #5
     describe.skip("permissions tests", () => {
         it("should error nicely if it can't read the working directory", async () => {
             fse.chmodSync(SIMPLE_TEST_APP, "300");
