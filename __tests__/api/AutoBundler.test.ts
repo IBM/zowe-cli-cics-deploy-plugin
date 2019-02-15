@@ -82,7 +82,7 @@ describe("AutoBundler01", () => {
 
         let parms: IHandlerParameters;
         parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
-        parms.arguments.version = "3.4.5";
+        parms.arguments.bundleversion = "3.4.5";
 
         // Create a Bundle
         const ab = new AutoBundler("__tests__/__resources__/ExampleBundle03", parms);

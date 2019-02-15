@@ -162,8 +162,8 @@ export class AutoBundler {
     if (args.bundleid !== undefined) {
       this.validateBundleId(args.bundleid);
     }
-    if (args.version !== undefined) {
-      this.validateBundleVer(args.version);
+    if (args.bundleversion !== undefined) {
+      this.validateBundleVer(args.bundleversion);
     }
     if (args.nodejsapp !== undefined) {
       this.validateNodejsapp(args.nodejsapp);
