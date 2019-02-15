@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`bundle Handler should process the current directory 1`] = `"NODEJSAPP \\"zowe-cli-cics-deploy-plugin\\" defined for startscript \\"lib/index.js\\""`;
+
+exports[`bundle Handler should process the current directory 2`] = `"CICS Bundle \\"zowe-cli-cics-deploy-plugin\\" generated"`;

@@ -1,0 +1,23 @@
+{
+  "name": "cics_nodejs_invoke",
+  "version": "0.1.0",
+  "description": "Blah",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cicsdev/cics-nodejs-zosconnect.git"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "angular": "latest",
+    "body-parser": "latest",
+    "bootstrap": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "ibm-cics-api": "file:///itbld/cics.ts.dev/Integrat/dist/lib/nodejs/ibm-cics-api",
+    "jquery": "latest"
+  }
+}

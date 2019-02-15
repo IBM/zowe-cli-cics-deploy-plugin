@@ -1,0 +1,11 @@
+{
+    "extends": "../tslint.json",
+    "rules": {
+      "max-line-length": false,
+      "no-magic-numbers": false,
+      "no-implicit-dependencies": [true,"dev"]
+    },
+    "exclude": "__resources__/,__resultts__/",
+    "type-check": true
+  }
+
