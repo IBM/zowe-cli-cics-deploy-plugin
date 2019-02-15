@@ -5,19 +5,19 @@
 *
 * SPDX-License-Identifier: EPL-2.0
 *
-* Copyright IBM, 2019
+* Copyright IBM Corp, 2019
 *
 */
 
 import { ICommandOptionDefinition } from "@brightside/imperative";
 
 /**
- * Imperative option for the "version" parameter
+ * Imperative option for the "bundleversion" parameter
  *
  */
-export const VersionOption: ICommandOptionDefinition = {
-    name: "version",
-    aliases: ["v", "ver"],
+export const BundleversionOption: ICommandOptionDefinition = {
+    name: "bundleversion",
+    aliases: ["bv", "bundlever"],
     type: "string",
     description: "The major.minor.micro version number for the generated CICS Bundle. If no value is " +
                  "specified then a default value of 1.0.0 is used."

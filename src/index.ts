@@ -5,7 +5,7 @@
 *
 * SPDX-License-Identifier: EPL-2.0
 *
-* Copyright IBM, 2019
+* Copyright IBM Corp, 2019
 *
 */
 export * from "./api/AutoBundler";

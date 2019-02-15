@@ -11,10 +11,7 @@
     "lib"
   ],
   "bin": {
-    "zowe-cli-sample": "./lib/main.js"
-  },
-  "publishConfig": {
-    "registry": "http://imperative-npm-registry.ca.com"
+    "zowe-cli-cics-deploy": "./lib/main.js"
   },
   "scripts": {
     "build": "tsc --pretty && npm run checkTestsCompile",
@@ -110,7 +107,7 @@
     "outputPath": "__tests__/__results__/results.html",
     "includeFailureMsg": true
   },
-  "author": "IBM",
+  "author": "IBM Corp",
   "contributors": ["Contributors to the Zowe Project"],
   "license": "EPL-2.0"
 }

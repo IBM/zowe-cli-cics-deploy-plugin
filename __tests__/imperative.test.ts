@@ -6,7 +6,7 @@
 * SPDX-License-Identifier: EPL-2.0
 *
 * Copyright Contributors to the Zowe Project.
-* Copyright IBM, 2019
+* Copyright IBM Corp, 2019
 */
 
 describe("imperative config", () => {

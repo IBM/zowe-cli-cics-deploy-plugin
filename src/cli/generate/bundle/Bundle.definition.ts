@@ -5,13 +5,13 @@
 *
 * SPDX-License-Identifier: EPL-2.0
 *
-* Copyright IBM, 2019
+* Copyright IBM Corp, 2019
 *
 */
 
 import { ICommandDefinition } from "@brightside/imperative";
 import { BundleidOption } from "./options/Bundleid.option";
-import { VersionOption } from "./options/Version.option";
+import { BundleversionOption } from "./options/Bundleversion.option";
 import { NodejsappOption } from "./options/Nodejsapp.option";
 import { StartscriptOption } from "./options/Startscript.option";
 import { PortOption } from "./options/Port.option";
@@ -29,5 +29,5 @@ export const BundleDefinition: ICommandDefinition = {
                  "input options and the contents of package.json.",
     type: "command",
     handler: __dirname + "/Bundle.handler",
-    options: [ BundleidOption, VersionOption, NodejsappOption, StartscriptOption, PortOption ]
+    options: [ BundleidOption, BundleversionOption, NodejsappOption, StartscriptOption, PortOption ]
 };
