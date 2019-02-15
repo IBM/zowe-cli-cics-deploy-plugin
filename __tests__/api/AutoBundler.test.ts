@@ -171,4 +171,19 @@ describe("AutoBundler01", () => {
         // Check the output as JSON
         expect(JSON.stringify(ab.getBundle().getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":1,\"bundleRelease\":0}}");
     });
+    it("should cope with an empty directory and generate a NODEJSAPP", () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        parms.arguments.port = 500;
+        parms.arguments.nodejsapp = "wibble";
+        parms.arguments.startscript = "__tests__/__resources__/EmptyBundle02/META-INF";
+
+        // Create a Bundle
+        const ab = new AutoBundler("__tests__/__resources__/EmptyBundle02", parms);
+
+        // Check the output as JSON
+// tslint:disable-next-line: max-line-length
+        expect(JSON.stringify(ab.getBundle().getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":1,\"bundleRelease\":0,\"define\":[{\"name\":\"wibble\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/wibble.nodejsapp\"}]}}");
+    });
 });
