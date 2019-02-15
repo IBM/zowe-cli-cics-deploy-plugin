@@ -1,0 +1,8 @@
+<manifest xmlns="http://www.ibm.com/xmlns/prod/cics/bundle" bundleVersion="1" bundleRelease="2" 
+    id="ThisIsAnId" 
+    bundleMajorVer="10" bundleMinorVer="11" bundleMicroVer="12">
+
+    <define name="name1" type="type1" path="path1"/>
+    <define name="name2" type="type2" path="path2"></define>
+    <define name="name3" type="http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP" path="nodejsapps/Test.nodejsapp"></define>
+</manifest>
