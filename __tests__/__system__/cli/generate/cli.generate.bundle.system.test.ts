@@ -66,9 +66,18 @@ describe("cics-deploy generate bundle", () => {
     // Issue #5
     it.skip("should error nicely if package.json is malformed", async () => {
         const appPath = path.join(TEST_APPS_DIR, "bad-package-json");
-        const response = await runCliScript(__dirname + "/__scripts__/generate_bundle.sh", TEST_ENVIRONMENT, [appPath]);
-        expect(fse.existsSync(path.join(appPath, "nodejsapps"))).toBeFalsy();
-        expect(response.status).toBeGreaterThan(0);
+        await expectError(appPath);
+    });
+
+    it.skip("should error nicely if package.json is empty", async () => {
+        const appPath = path.join(TEST_APPS_DIR, "empty-package-json");
+        await expectError(appPath);
+
+    });
+
+    it.skip("should error nicely if package.json doesn't have start script or main", async () => {
+        const appPath = path.join(TEST_APPS_DIR, "minimal-package-json");
+        await expectError(appPath);
     });
 
     describe("paramters", async () => {
@@ -120,6 +129,12 @@ describe("cics-deploy generate bundle", () => {
         });
     });
 });
+
+async function expectError(appPath: string) {
+    const response = await runCliScript(__dirname + "/__scripts__/generate_bundle.sh", TEST_ENVIRONMENT, [appPath]);
+    expect(fse.existsSync(path.join(appPath, "nodejsapps"))).toBeFalsy();
+    expect(response.status).toBeGreaterThan(0);
+}
 
 async function testBundleGenerateWorks(args: string[], nodejsappName = "cics-nodejs-invoke", appPath = SIMPLE_TEST_APP) {
     const response = await runCliScript(__dirname + "/__scripts__/generate_bundle.sh", TEST_ENVIRONMENT, [appPath].concat(args));
