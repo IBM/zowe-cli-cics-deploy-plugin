@@ -23,11 +23,26 @@ import { PortOption } from "./options/Port.option";
 export const BundleDefinition: ICommandDefinition = {
     name: "bundle",
     aliases: ["b", "bun", "bund"],
-    summary: "Generates a Bundle",
-    description: "CICS Bundle meta-data is generated within the working directory. " +
+    summary: "Generate a CICS bundle",
+    description: "Generate a CICS bundle in the working directory. " +
                  "The associated data is constructed from a combination of the " +
-                 "input options and the contents of package.json.",
+                 "command-line options and the contents of package.json. If package.json exists, " +
+                 "no options are required, but if it does not exist both --startscript and --nodejsapp are required.",
     type: "command",
     handler: __dirname + "/Bundle.handler",
-    options: [ BundleidOption, BundleversionOption, NodejsappOption, StartscriptOption, PortOption ]
+    options: [ BundleidOption, BundleversionOption, NodejsappOption, StartscriptOption, PortOption ],
+    examples: [
+        {
+            description: "Generate a CICS bundle in the working directory, taking information from package.json",
+            options: ``
+        },
+        {
+            description: "Generate a CICS bundle in the working directory, based on package.json but using a bundle ID of \"mybundle\"",
+            options: `--bundleid mybundle`
+        },
+        {
+            description: "Generate a CICS bundle in the working directory in which there is no package.json",
+            options: `--bundleid mybundle --nodejsapp myapp --startscript server.js`
+        }
+    ]
 };

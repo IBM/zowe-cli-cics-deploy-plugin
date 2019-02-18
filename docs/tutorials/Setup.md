@@ -1,5 +1,5 @@
 # Setting up your development environment
-Before you follow the development tutorials for installing, extending, and creating a Zowe CLI plug-in, follow these steps to set up your environment.
+Before you can develop for the cics-deploy plugin, follow these steps to set up your environment.
 
 ## Prequisites
 [Install Zowe CLI](https://zowe.github.io/docs-site/user-guide/cli-installcli.html#methods-to-install-zowe-cli).
