@@ -81,6 +81,22 @@ export class AutoBundler {
     if (this.fs.existsSync(this.packageJsonFile)) {
       this.processPackageJson(params);
     }
+    else {
+      // If we get here then we've not found a package.json file. it remains possible
+      // that sufficient command line parameters have been set to allow a NODEJSAPP
+      // to be created. If so, process them.
+      if (this.startscriptOverride !== undefined ||
+          this.nodejsappOverride   !== undefined ||
+          this.portOverride        !== undefined ) {
+        this.bundle.addNodejsappDefinition(this.nodejsappOverride, this.startscriptOverride, this.portOverride);
+        try {
+          params.response.console.log('NODEJSAPP "' + this.nodejsappOverride + '" defined for startscript "' + this.startscriptOverride + '"');
+        }
+        catch (error) {
+          // logging errors can be thrown in some of the mocked tests... just ignore it.
+        }
+      }
+    }
   }
 
   private processPackageJson(params: IHandlerParameters) {
@@ -146,8 +162,8 @@ export class AutoBundler {
     if (args.bundleid !== undefined) {
       this.validateBundleId(args.bundleid);
     }
-    if (args.version !== undefined) {
-      this.validateBundleVer(args.version);
+    if (args.bundleversion !== undefined) {
+      this.validateBundleVer(args.bundleversion);
     }
     if (args.nodejsapp !== undefined) {
       this.validateNodejsapp(args.nodejsapp);
