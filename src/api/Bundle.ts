@@ -104,7 +104,7 @@ export class Bundle {
    */
   public addDefinition(partData: IBundlePartDataType) {
     // Create a BundlePart
-    const bp = new BundlePart(this.bundleDirectory, partData, true);
+    const bp = new BundlePart(this.bundleDirectory, partData, true, undefined);
     this.definedParts.push(bp);
     this.manifest.addDefinition(bp);
   }

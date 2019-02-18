@@ -48,6 +48,7 @@ export class AutoBundler {
    * @memberof AutoBundler
    */
   constructor(directory: string, params: IHandlerParameters) {
+
     this.bundleDirectory = this.path.normalize(directory);
     this.packageJsonFile = directory + "/package.json";
     this.bundle = new Bundle(this.bundleDirectory);
@@ -77,6 +78,7 @@ export class AutoBundler {
   }
 
   private autoDetectWorkdirContent(params: IHandlerParameters) {
+
     // Look for a package.json file; if found, process the contents for a NODEJSAPP
     if (this.fs.existsSync(this.packageJsonFile)) {
       this.processPackageJson(params);
@@ -100,14 +102,25 @@ export class AutoBundler {
   }
 
   private processPackageJson(params: IHandlerParameters) {
+
     // read the package.json file
-    const pj = JSON.parse(this.fs.readFileSync(this.packageJsonFile, "utf8"));
+    let pj;
+    try {
+      pj = JSON.parse(this.fs.readFileSync(this.packageJsonFile, "utf8"));
+    }
+    catch (exception)
+    {
+      throw new Error("Parsing error occurred reading package.json: " + exception.message);
+    }
 
     // Find the name from package.json
     const name = pj.name;
 
     // Set the name of the Bundle based on what was found
     if (this.bundleidOverride === undefined) {
+      if (name === undefined) {
+        throw new Error("No bundleid value set");
+      }
       this.bundle.setId(name);
     }
 
@@ -141,7 +154,10 @@ export class AutoBundler {
       // If there's no start script, try the main script instead
       else {
         ss = pj.main;
-        fullSS = this.bundleDirectory + "/" + pj.main;
+
+        if (ss !== undefined) {
+         fullSS = this.bundleDirectory + "/" + pj.main;
+        }
       }
     }
 

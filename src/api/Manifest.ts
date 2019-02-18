@@ -229,9 +229,15 @@ export class Manifest {
     // read the manifest from the file system
     const xmltext = this.fs.readFileSync(this.manifestFile, "utf8");
 
-    // It worked, so convert the contents into a JSON Object
-    const parser = require("xml2json");
-    this.manifestAsJson = JSON.parse( parser.toJson( xmltext, { reversible: true } ) );
+    try {
+      // Reading the file worked, so convert the contents into a JSON Object
+      const parser = require("xml2json");
+      this.manifestAsJson = JSON.parse( parser.toJson( xmltext, { reversible: true } ) );
+    }
+    catch (exception)
+    {
+      throw new Error("Parsing error occurred reading a CICS manifest file: " + exception.message);
+    }
 
     // Note, the XML parser has no support for namespaces.
     // If the manifest is namespace prefixed then it wont be found. Yuck.
