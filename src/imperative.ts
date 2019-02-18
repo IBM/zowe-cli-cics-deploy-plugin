@@ -15,9 +15,9 @@ import {IImperativeConfig} from "@brightside/imperative";
 const config: IImperativeConfig = {
     commandModuleGlobs: ["**/cli/*/*.definition!(.d).*s"],
     pluginHealthCheck: __dirname + "/healthCheck.handler",
-    pluginSummary: "Generate and deploy IBM CICS Bundle resources",
+    pluginSummary: "Generate and deploy IBM CICS bundle resources",
     pluginAliases: ["cdep"],
-    rootCommandDescription: "CICS Bundle deployment plugin.",
+    rootCommandDescription: "CICS bundle deployment plugin.",
     productDisplayName: "Zowe cics-deploy plug-in",
     name: "cics-deploy"
 };

@@ -20,7 +20,7 @@ export const StartscriptOption: ICommandOptionDefinition = {
     aliases: ["s", "ss"],
     type: "string",
     description: "Up to 255 character path to the Node.js start script that should run when " +
-                 "the associated Bundle is Enabled in CICS. If a value is not " +
+                 "the associated bundle is enabled in CICS. If a value is not " +
                  "specified then a default value is created from either the 'scripts.start' property " +
                  "of the package.json file in the current working directory, or from the 'main' property."
 };
