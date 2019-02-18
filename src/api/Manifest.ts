@@ -122,7 +122,7 @@ export class Manifest {
    */
   public getXML(): string {
     const parser = require("xml2json");
-    return parser.toXml(JSON.stringify(this.manifestAsJson));
+    return parser.toXml(JSON.stringify(this.manifestAsJson)) + "\n";
   }
 
   /**

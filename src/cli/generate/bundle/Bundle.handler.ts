@@ -20,6 +20,8 @@ import { AutoBundler } from "../../../api/AutoBundler";
  */
 export default class BundleHandler implements ICommandHandler {
 
+    private static ERROR_RESP_CODE = 8;
+
     /**
      * Process the generate bundle command.
      * @param {IHandlerParameters} params
@@ -42,7 +44,7 @@ export default class BundleHandler implements ICommandHandler {
             params.response.console.log('CICS Bundle "' + autobundler.getBundle().getId() + '" generated');
           }
         } catch (except) {
-            params.response.console.log("A failure occurred during CICS Bundle generation.\n" +
+            params.response.console.error("A failure occurred during CICS Bundle generation.\n" +
                 "Reason = " + except.message
             );
         }
