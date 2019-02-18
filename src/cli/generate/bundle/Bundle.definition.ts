@@ -41,7 +41,7 @@ export const BundleDefinition: ICommandDefinition = {
             options: `--bundleid mybundle`
         },
         {
-            description: "Generate a CICS bundle in the working directory, where the is no package.json",
+            description: "Generate a CICS bundle in the working directory in which there is no package.json",
             options: `--bundleid mybundle --nodejsapp myapp --startscript server.js`
         }
     ]
