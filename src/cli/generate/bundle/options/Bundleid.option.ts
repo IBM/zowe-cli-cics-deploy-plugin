@@ -21,6 +21,8 @@ export const BundleidOption: ICommandOptionDefinition = {
     type: "string",
     description: "The ID for the generated CICS bundle, up to 64 characters. If no value is " +
                  "specified then a default value is created from the 'name' property " +
-                 "in the package.json file in the current working directory."
+                 "in the package.json file in the current working directory." +
+                 "If the value is too long it will be truncated. If it contains characters " +
+                 "not supported by CICS, each one will be replaced by an X."
 };
 
