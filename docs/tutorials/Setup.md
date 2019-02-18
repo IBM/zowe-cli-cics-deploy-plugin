@@ -32,4 +32,4 @@ cics-deploy
 2. `npm run test`
 
 ## Next steps
-After you complete your setup, follow the [Installing the cics-deploy plug-in to Zowe CLI](./generate-bundle/GenerateBundlePlugin.md) tutorial to install this cics-deploy plug-in to Zowe CLI.
+After you complete your setup, follow the [Installing the cics-deploy plug-in to Zowe CLI](./generate-bundle/GenerateBundePlugin.md) tutorial to install this cics-deploy plug-in to Zowe CLI.
