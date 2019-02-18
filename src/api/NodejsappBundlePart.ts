@@ -71,17 +71,22 @@ export class NodejsappBundlePart extends BundlePart {
                        type: "http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP",
                        path: "" };
 
+
+    // Check that a name is set
+    if (name === undefined) {
+      throw new Error("NODEJSAPP name is not set.");
+    }
+
+    // Validate the name
+    partData.name = BundlePart.mangleName(name, NodejsappBundlePart.MAX_NODEJSAPP_LEN);
+
+    // Check that a startscript is set
     if (startscript === undefined) {
       throw new Error('No startscript value set for NODEJSAPP "' + name + '"');
     }
 
-    partData.name = name;
-    partData.path = "nodejsapps/" + name + ".nodejsapp";
+    partData.path = "nodejsapps/" + partData.name + ".nodejsapp";
     super(directory, partData, false, "NODEJSAPP");
-
-    // Now validate the name
-    this.mangleName(NodejsappBundlePart.MAX_NODEJSAPP_LEN);
-    partData.name = this.getPartData().name;
 
     // Now validate the port
     this.validatePort(port);
