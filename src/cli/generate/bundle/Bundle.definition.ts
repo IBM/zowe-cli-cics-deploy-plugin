@@ -23,8 +23,8 @@ import { PortOption } from "./options/Port.option";
 export const BundleDefinition: ICommandDefinition = {
     name: "bundle",
     aliases: ["b", "bun", "bund"],
-    summary: "Generates a bundle",
-    description: "Generate CICS bundle within the working directory. " +
+    summary: "Generate a CICS bundle",
+    description: "Generate a CICS bundle in the working directory. " +
                  "The associated data is constructed from a combination of the " +
                  "command-line options and the contents of package.json. If package.json exists, " +
                  "no options are required, but if it does not exist both --startscript and --nodejsapp are required.",
