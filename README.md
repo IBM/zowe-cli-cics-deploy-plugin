@@ -5,5 +5,5 @@ This project aims to create a plugin for Zowe CLI https://github.com/zowe/zowe-c
 It's currently a work in progress at a fairly early stage. If you'd like to try it out, at the moment you'll need to build the plugin from source as described [here](docs/tutorials/Setup.md). 
 
 ## Contributing
-Contributions are welcom, see our [contribution guidelines](CONTRIBUTING.md).  
+Contributions are welcome, see our [contribution guidelines](CONTRIBUTING.md).  
 ## 
