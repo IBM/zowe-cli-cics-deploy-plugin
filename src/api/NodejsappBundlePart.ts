@@ -71,9 +71,13 @@ export class NodejsappBundlePart extends BundlePart {
                        type: "http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP",
                        path: "" };
 
+    if (startscript === undefined) {
+      throw new Error('No startscript value set for NODEJSAPP "' + name + '"');
+    }
+
     partData.name = name;
     partData.path = "nodejsapps/" + name + ".nodejsapp";
-    super(directory, partData, false);
+    super(directory, partData, false, "NODEJSAPP");
 
     // Now validate the name
     this.mangleName(NodejsappBundlePart.MAX_NODEJSAPP_LEN);

@@ -140,7 +140,7 @@ describe("AutoBundler01", () => {
         }
 
         // Check the output as JSON
-        expect(err.message).toContain("BundlePart \"testBundleName\" references a file outside of the Bundle directory:");
+        expect(err.message).toContain("NODEJSAPP \"testBundleName\" references a file outside of the Bundle directory:");
     });
     it("should set a port number", () => {
 
@@ -174,7 +174,7 @@ describe("AutoBundler01", () => {
     it("should cope with an empty directory and generate a NODEJSAPP", () => {
 
         let parms: IHandlerParameters;
-        parms = DEFAULT_PARAMTERS;
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
         parms.arguments.port = 500;
         parms.arguments.nodejsapp = "wibble";
         parms.arguments.startscript = "__tests__/__resources__/EmptyBundle02/META-INF";
@@ -185,5 +185,56 @@ describe("AutoBundler01", () => {
         // Check the output as JSON
 // tslint:disable-next-line: max-line-length
         expect(JSON.stringify(ab.getBundle().getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":1,\"bundleRelease\":0,\"define\":[{\"name\":\"wibble\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/wibble.nodejsapp\"}]}}");
+    });
+    it("should detect a bad package.json", () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+
+        // Create a Bundle
+        let err: Error;
+        try {
+          const ab = new AutoBundler("__tests__/__resources__/BadPackageJson", parms);
+        }
+        catch (error) {
+          err = error;
+        }
+
+        // Check the output as JSON
+        expect(err.message).toContain("Parsing error occurred reading package.json:");
+    });
+    it("should tolerate an empty package.json", () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+
+        // Create a Bundle
+        let err: Error;
+        try {
+          const ab = new AutoBundler("__tests__/__resources__/EmptyPackageJson", parms);
+        }
+        catch (error) {
+          err = error;
+        }
+
+        // Check the output as JSON
+        expect(err.message).toMatch("No bundleid value set");
+    });
+    it("should tolerate an almost empty package.json", () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+
+        // Create a Bundle
+        let err: Error;
+        try {
+          const ab = new AutoBundler("__tests__/__resources__/AlmostEmptyPackageJson", parms);
+        }
+        catch (error) {
+          err = error;
+        }
+
+        // Check the output as JSON
+        expect(err.message).toMatch("No startscript value set for NODEJSAPP \"almostEmpty\"");
     });
 });
