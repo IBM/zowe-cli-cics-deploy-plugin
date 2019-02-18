@@ -50,6 +50,19 @@ describe("NodejsappBundlePart01", () => {
         expect(njs.getProfile()).toContain("INCLUDE=&CONFIGROOT;/nodejsapps/12345678901234567890123456789012.included.profile");
         expect(njs.getProfile()).toContain("PORT=1000");
     });
+    it("Create a NodejsappBundlePart with missing name parameter", () => {
+
+        let err: Error;
+        try {
+          const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", undefined, "", 1000);
+        }
+        catch (error) {
+          err = error;
+        }
+
+        // Check the output as JSON
+        expect(err.message).toMatch("NODEJSAPP name is not set.");
+    });
     it("Create a NodejsappBundlePart with missing startscript", () => {
 
         let err: Error;
@@ -61,7 +74,20 @@ describe("NodejsappBundlePart01", () => {
         }
 
         // Check the output as JSON
-        expect(err.message).toContain("BundlePart \"test\" references a file that does not exist");
+        expect(err.message).toContain("NODEJSAPP \"test\" references a file that does not exist");
+    });
+    it("Create a NodejsappBundlePart with missing startscript parameter", () => {
+
+        let err: Error;
+        try {
+          const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "test", undefined, 1000);
+        }
+        catch (error) {
+          err = error;
+        }
+
+        // Check the output as JSON
+        expect(err.message).toContain("No startscript value set for NODEJSAPP \"test\"");
     });
     it("Create a NodejsappBundlePart with negative port number", () => {
 
@@ -113,6 +139,6 @@ describe("NodejsappBundlePart01", () => {
         }
 
         // Check the output as JSON
-        expect(err.message).toContain("BundlePart name is not set.");
+        expect(err.message).toContain("NODEJSAPP name is not set.");
     });
 });

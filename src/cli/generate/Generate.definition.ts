@@ -18,8 +18,9 @@ import { BundleDefinition } from "./bundle/Bundle.definition";
 const GenerateDefinition: ICommandDefinition = {
     name: "generate",
     aliases: ["g", "gen"],
-    summary: "Transform the working directory into a CICS Bundle",
-    description: "Generate a CICS Bundle and associated meta-data files in the current working directory.",
+    summary: "Transform the working directory into a CICS bundle",
+    description: "Generate a CICS bundle and associated metadata files in the current working directory. " +
+                 "This allows the application in the current working directory to be deployed to CICS.",
     type: "group",
     children: [BundleDefinition]
 };

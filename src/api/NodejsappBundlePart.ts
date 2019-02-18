@@ -71,9 +71,13 @@ export class NodejsappBundlePart extends BundlePart {
                        type: "http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP",
                        path: "" };
 
+    if (startscript === undefined) {
+      throw new Error('No startscript value set for NODEJSAPP "' + name + '"');
+    }
+
     partData.name = name;
     partData.path = "nodejsapps/" + name + ".nodejsapp";
-    super(directory, partData, false);
+    super(directory, partData, false, "NODEJSAPP");
 
     // Now validate the name
     this.mangleName(NodejsappBundlePart.MAX_NODEJSAPP_LEN);
@@ -114,7 +118,7 @@ export class NodejsappBundlePart extends BundlePart {
    */
   public getPartXML(): string {
     const parser = require("xml2json");
-    return parser.toXml(JSON.stringify(this.partXML));
+    return parser.toXml(JSON.stringify(this.partXML)) + "\n";
   }
 
   /**
@@ -185,7 +189,7 @@ export class NodejsappBundlePart extends BundlePart {
        "# Set the PORT envionment variable, application code should reference this" + os.EOL +
        "# value in preference to a hard-coded port number, the value references an" + os.EOL +
        "# environment variable that will be configured within the provisioned configuration file." + os.EOL +
-       "PORT=" + portStr;
+       "PORT=" + portStr + os.EOL;
   }
 
   // if the port is set, it must be a valid number

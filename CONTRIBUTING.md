@@ -2,6 +2,13 @@
 # Contribution Guidelines
 The contribution guidelines in this document pertain to contributing to this zowe-cli-cics-deploy-plugin repository.
 
+This project welcomes all contributions. 
+- If you find a bug or would like to suggest an improvement, please raise an issue.
+- If you would like to contribute a bug fix or small enhancement, please fork the repo and make a pull request.
+- If you would like to contribute a new feature, please raise an issue describing your proposal so we can discuss it first.
+
+## Developing Zowe CLI plugins
+
 For guidelines on developing Zowe CLI plug-ins see the [Zowe CLI GitHub repository](https://github.com/zowe/zowe-cli). The following information is critical to working with the code, running/writing/maintaining automated tests, developing consistent syntax and ensuring that the plug-in integrates with Zowe CLI properly:
 
 | For more information about ... | See: |

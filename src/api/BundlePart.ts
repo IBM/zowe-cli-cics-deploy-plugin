@@ -37,6 +37,7 @@ export class BundlePart {
   protected bundleDirectory: string;
   private path = require("path");
   private partData: IBundlePartDataType;
+  private simpleType = "BundlePart";
 
   /**
    * Constructor for creating a BundlePart.
@@ -47,7 +48,10 @@ export class BundlePart {
    * @throws ImperativeError
    * @memberof BundlePart
    */
-  constructor(directory: string, partDataLocal: IBundlePartDataType, validatePath: boolean) {
+  constructor(directory: string, partDataLocal: IBundlePartDataType, validatePath: boolean, abbrevType: string) {
+    if (abbrevType !== undefined) {
+      this.simpleType = abbrevType;
+    }
     this.partData = partDataLocal;
     this.bundleDirectory = this.path.normalize(directory);
     this.validateName();
@@ -110,6 +114,7 @@ export class BundlePart {
    * @memberof BundlePart
    */
   protected normalizeAndValidateFileReference(filename: string): string {
+
     // normalise it (to get rid of dots)
     let file = this.path.normalize(filename);
 
@@ -118,13 +123,13 @@ export class BundlePart {
 
     // the target file is not within the current directory tree throw an error
     if (file.indexOf("..") === 0) {
-      throw new Error('BundlePart "' + this.partData.name + '" references a file outside of the Bundle directory: "' + file + '".');
+      throw new Error(this.simpleType + ' "' + this.partData.name + '" references a file outside of the Bundle directory: "' + file + '".');
     }
 
     // Check that the target file exists
     const fullLocation = this.bundleDirectory + "/" + file;
     if (!this.fs.existsSync(fullLocation)) {
-      throw new Error('BundlePart "' + this.partData.name + '" references a file that does not exist: "' + fullLocation + '".');
+      throw new Error(this.simpleType + ' "' + this.partData.name + '" references a file that does not exist: "' + fullLocation + '".');
     }
 
     // change any Windows style file delimiters to Unix style
@@ -135,19 +140,19 @@ export class BundlePart {
 
   private validateName() {
     if (this.partData.name === undefined) {
-      throw new Error("BundlePart name is not set.");
+      throw new Error(this.simpleType + " name is not set.");
     }
   }
 
   private validateType() {
     if (this.partData.type === undefined) {
-      throw new Error('BundlePart type is not set for part "' + this.partData.name + '"');
+      throw new Error(this.simpleType + ' type is not set for part "' + this.partData.name + '"');
     }
   }
 
   private validatePath() {
     if (this.partData.path === undefined) {
-      throw new Error('BundlePart path is not set for part "' + this.partData.name + '"');
+      throw new Error(this.simpleType + ' path is not set for part "' + this.partData.name + '"');
     }
     this.partData.path = this.normalizeAndValidateFileReference(this.partData.path);
   }
