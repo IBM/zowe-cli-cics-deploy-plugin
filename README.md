@@ -1,5 +1,9 @@
 # zowe-cli-cics-deploy-plugin
-This repository contains the cics-deploy plug-in for Zowe. Use this project for creating CICS Bundle resources from a Node.js project directory. 
+This project aims to create a plugin for Zowe CLI https://github.com/zowe/zowe-cli.  The plugin will provide the capability to deploy applications developed on a workstation to IBM CICS, as CICS bundles. Initially it will support deploying Node.js applications.  It aims to provide an experience similar to deploying to a cloud platform when deploying to CICS.  It will also provide low-level commands for performing individual pieces of the deployment process that could be used as part of a CI/CD pipeline.
 
-## Generation of CICS Bundles
-A CICS Bundle resource defines one or more resources that can be installed into a CICS region. This project is derived from the Zowe CLI Sample Plug-in project, it adds the ability to generate Bundle meta-data in the working directory.
+## Status
+It's currently a work in progress at a fairly early stage. If you'd like to try it out, at the moment you'll need to build the plugin from source as described [here](docs/tutorials/Setup.md). 
+
+## Contributing
+Contributions are welcom, see our [contribution guidelines](CONTRIBUTING.md).  
+## 
