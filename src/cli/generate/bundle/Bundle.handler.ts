@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandHandler, IHandlerParameters } from "@brightside/imperative";
+import { ICommandHandler, IHandlerParameters, ImperativeError } from "@brightside/imperative";
 import { AutoBundler } from "../../../api/AutoBundler";
 
 /**
@@ -44,9 +44,10 @@ export default class BundleHandler implements ICommandHandler {
             params.response.console.log('CICS Bundle "' + autobundler.getBundle().getId() + '" generated');
           }
         } catch (except) {
-            params.response.console.error("A failure occurred during CICS Bundle generation.\n" +
-                "Reason = " + except.message
-            );
+            const message = "A failure occurred during CICS Bundle generation.\n" +
+                "Reason = " + except.message;
+
+            throw new ImperativeError({msg: message, causeErrors: except});
         }
     }
 }
