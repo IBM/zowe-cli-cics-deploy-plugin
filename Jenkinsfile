@@ -24,7 +24,6 @@ def RELEASE_BRANCHES = ["master"]
 def PIPELINE_CONTROL = [
     build: true,
     unit_test: true,
-    integration_test: false,
     system_test: true,
     deploy: false,
     smoke_test: false,
