@@ -163,21 +163,21 @@ export class Manifest {
       this.manifestAsJson.manifest.bundleMajorVer = majorVersion;
     }
     else {
-      this.manifestAsJson.manifest.bundleMajorVer = 1;
+      throw new Error("Invalid Bundle version specified.");
     }
 
     if (Number.isInteger(minorVersion) && minorVersion >= 0) {
       this.manifestAsJson.manifest.bundleMinorVer = minorVersion;
     }
     else {
-      this.manifestAsJson.manifest.bundleMinorVer = 0;
+      throw new Error("Invalid Bundle version specified.");
     }
 
     if (Number.isInteger(microVersion) && microVersion >= 0) {
       this.manifestAsJson.manifest.bundleMicroVer = microVersion;
     }
     else {
-      this.manifestAsJson.manifest.bundleMicroVer = 0;
+      throw new Error("Invalid Bundle version specified.");
     }
   }
 
