@@ -43,7 +43,7 @@ def BUILD_RESULT = [
 /**
  * Test npm registry using for smoke test
  */
-def TEST_NPM_REGISTRY = "http://imperative-npm-registry.ca.com"
+def TEST_NPM_REGISTRY = "...."
 
 /**
  * The root results folder for items configurable by environmental variables
@@ -56,12 +56,6 @@ def TEST_RESULTS_FOLDER = "__tests__/__results__"
 def UNIT_RESULTS = "${TEST_RESULTS_FOLDER}/unit"
 
 /**
- * The location of the integration test results
- */
-def INTEGRATION_RESULTS = "${TEST_RESULTS_FOLDER}/integration"
-
-
-/**
  * The location of the system test results
  */
  def SYSTEM_RESULTS = "${TEST_RESULTS_FOLDER}/system"
@@ -71,25 +65,11 @@ def INTEGRATION_RESULTS = "${TEST_RESULTS_FOLDER}/integration"
  */
 def MASTER_BRANCH = "master"
 
-/**
- * List of people who will get all emails for master builds
- */
-def MASTER_RECIPIENTS_LIST = "cc:SomeBody@ca.com"
 
 /**
  * A command to be run that gets the current revision pulled down
  */
 def GIT_REVISION_LOOKUP = 'git log -n 1 --pretty=format:%h'
-
-/**
- * The credentials id field for the artifactory username and password
- */
-def ARTIFACTORY_CREDENTIALS_ID = 'GizaArtifactory'
-
-/**
- * The email address for the artifactory
- */
-def ARTIFACTORY_EMAIL = 'giza.jenkins@gmail.com'
 
 /**
  * This is the product name used by the build machine to store information about
@@ -392,124 +372,28 @@ pipeline {
                     // Capture test report
                     junit JEST_JUNIT_OUTPUT
 
-                    // cobertura autoUpdateHealth: false,
-                    //         autoUpdateStability: false,
-                    //         coberturaReportFile: "${UNIT_RESULTS}/coverage/cobertura-coverage.xml",
-                    //         failUnhealthy: false,
-                    //         failUnstable: false,
-                    //         onlyStable: false,
-                    //         zoomCoverageChart: false,
-                    //         maxNumberOfBuilds: 20,
-                    //         // classCoverageTargets: '85, 80, 75',
-                    //         // conditionalCoverageTargets: '70, 65, 60',
-                    //         // lineCoverageTargets: '80, 70, 50',
-                    //         // methodCoverageTargets: '80, 70, 50',
-                    //         sourceEncoding: 'ASCII'
+                    cobertura autoUpdateHealth: false,
+                            autoUpdateStability: false,
+                            coberturaReportFile: "${UNIT_RESULTS}/coverage/cobertura-coverage.xml",
+                            failUnhealthy: false,
+                            failUnstable: false,
+                            onlyStable: false,
+                            zoomCoverageChart: false,
+                            maxNumberOfBuilds: 20,
+                            // classCoverageTargets: '85, 80, 75',
+                            // conditionalCoverageTargets: '70, 65, 60',
+                            // lineCoverageTargets: '80, 70, 50',
+                            // methodCoverageTargets: '80, 70, 50',
+                            sourceEncoding: 'ASCII'
 
-                    // publishHTML(target: [
-                    //         allowMissing         : false,
-                    //         alwaysLinkToLastBuild: true,
-                    //         keepAll              : true,
-                    //         reportDir            : "${UNIT_RESULTS}/coverage/lcov-report",
-                    //         reportFiles          : 'index.html',
-                    //         reportName           :  "${PRODUCT_NAME} - Unit Test Coverage Report"
-                    // ])
-                }
-            }
-        }
-
-        /************************************************************************
-         * STAGE
-         * -----
-         * Test: Integration
-         *
-         * TIMEOUT
-         * -------
-         * 30 Minutes
-         *
-         * EXECUTION CONDITIONS
-         * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
-         * - PIPELINE_CONTROL.integration_test is true
-         *
-         * ENVIRONMENT VARIABLES
-         * ---------------------
-         * JEST_JUNIT_OUTPUT:
-         * Configures the jest junit reporter's output location.
-         *
-         * JEST_SUITE_NAME:
-         * Configures the test suite name.
-         *
-         * JEST_JUNIT_ANCESTOR_SEPARATOR
-         * Configures the separator used for nested describe blocks.
-         *
-         * JEST_JUNIT_CLASSNAME:
-         * Configures how test class names are output.
-         *
-         * JEST_JUNIT_TITLE:
-         * Configures the title of the tests.
-         *
-         * JEST_HTML_REPORTER_OUTPUT_PATH:
-         * Configures the jest html reporter's output location.
-         *
-         * JEST_HTML_REPORTER_PAGE_TITLE:
-         * Configures the jset html reporter's page title.
-         *
-         * TEST_SCRIPT:
-         * A variable that contains the shell script that runs the integration
-         * tests. So we don't have to type out a lot of text.
-         *
-         * DESCRIPTION
-         * -----------
-         * Executes the `npm run test:integration` command to perform
-         * integration tests and captures the resulting html and junit outputs.
-         *
-         * OUTPUTS
-         * -------
-         * Jenkins: Integration Test Report (through junit plugin)
-         * HTML: Integration Test Report
-         ************************************************************************/
-        stage('Test: Integration') {
-            when {
-                allOf {
-                    expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
-                    expression {
-                        return PIPELINE_CONTROL.integration_test
-                    }
-                }   
-            }
-            environment {
-                JEST_JUNIT_OUTPUT = "${INTEGRATION_RESULTS}/junit.xml"
-                JEST_SUITE_NAME = "Integration Tests"
-                JEST_JUNIT_ANCESTOR_SEPARATOR = " > "
-                JEST_JUNIT_CLASSNAME="Integration.{classname}"
-                JEST_JUNIT_TITLE="{title}"
-                JEST_HTML_REPORTER_OUTPUT_PATH = "${INTEGRATION_RESULTS}/index.html"
-                JEST_HTML_REPORTER_PAGE_TITLE = "${BRANCH_NAME} - Integration Test"
-                TEST_SCRIPT = "./jenkins/integration_tests.sh"
-            }
-            steps {
-                timeout(time: 30, unit: 'MINUTES') {
-                    echo 'Integration Test'
-
-                    echo 'Perform integration test here'
-                    echo 'Record test reports artifacts'
-
-                    // sh "chmod +x $TEST_SCRIPT && dbus-launch $TEST_SCRIPT"
-
-                    // junit JEST_JUNIT_OUTPUT
-
-                    // // Publish HTML report
-                    // publishHTML(target: [
-                    //         allowMissing         : false,
-                    //         alwaysLinkToLastBuild: true,
-                    //         keepAll              : true,
-                    //         reportDir            : INTEGRATION_RESULTS,
-                    //         reportFiles          : 'index.html',
-                    //         reportName           : 'Imperative - Integration Test Report'
-                    // ])
+                    publishHTML(target: [
+                            allowMissing         : false,
+                            alwaysLinkToLastBuild: true,
+                            keepAll              : true,
+                            reportDir            : "${UNIT_RESULTS}/coverage/lcov-report",
+                            reportFiles          : 'index.html',
+                            reportName           :  "${PRODUCT_NAME} - Unit Test Coverage Report"
+                    ])
                 }
             }
         }
@@ -752,159 +636,5 @@ pipeline {
         //         }
         //     }
         // }
-        /************************************************************************
-         * STAGE
-         * -----
-         * Create Bundle
-         *
-         * TIMEOUT
-         * -------
-         * 5 Minutes
-         *
-         * EXECUTION CONDITIONS
-         * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
-         * - PIPELINE_CONTROL.create_bundle is true
-         * - The current branch part of RELEASE_BRANCHES
-         * - The build is still successful and not unstable
-         *
-         * DESCRIPTION
-         * -----------
-         * Creates a self-contained tgz archive so that the package can be
-         * installed offline. It does this by calling a node script in
-         * ./jenkins/configure-to-bundle.js which creates the needed
-         * bundledDependencies property within the package.json of the project.
-         *
-         * After the package.json is updated, we run the `npm pack` command and
-         * archive it under the name generated by the JS file.
-         *
-         * OUTPUTS
-         * -------
-         * ${package_name}-${package_version}-bundled.tgz:
-         *
-         * A self-contained npm package install file.
-         ************************************************************************/
-        // stage('Create Bundle') {
-        //     when {
-        //         allOf {
-        //             expression {
-        //                 return PIPELINE_CONTROL.ci_skip == false
-        //             }
-        //             expression {
-        //                 return PIPELINE_CONTROL.create_bundle
-        //             }
-        //             expression {
-        //                 return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
-        //             }
-        //             expression {
-        //                 return RELEASE_BRANCHES.contains(BRANCH_NAME)
-        //             }
-        //         }
-        //     }
-        //     steps {
-        //         timeout(time: 5, unit: 'MINUTES') {
-        //             echo 'Archiving bundled binary file'
-        //             echo 'Perform package bundle task'
-        //         }
-        //     }
-        // }
     }
-    // post {
-    //     /************************************************************************
-    //      * POST BUILD ACTION
-    //      *
-    //      * Sends out emails and logs out of the registry
-    //      *
-    //      * Emails are only sent out when PIPELINE_CONTROL.ci_skip is false.
-    //      *
-    //      * Sends out emails when any of the following are true:
-    //      *
-    //      * - It is the first build for a new branch
-    //      * - The build is successful but the previous build was not
-    //      * - The build failed or is unstable
-    //      * - The build is on the MASTER_BRANCH
-    //      *
-    //      * In the case that an email was sent out, it will send it to individuals
-    //      * who were involved with the build and if broken those involved in
-    //      * breaking the build. If this build is for the MASTER_BRANCH, then an
-    //      * additional set of individuals will also get an email that the build
-    //      * occurred.
-    //      ************************************************************************/
-    //     always {
-    //         script {
-    //             def buildStatus = currentBuild.currentResult
-
-    //             if (PIPELINE_CONTROL.ci_skip == false) {
-    //                 try {
-    //                     def previousBuild = currentBuild.getPreviousBuild()
-    //                     def recipients = ""
-
-    //                     def subject = "${currentBuild.currentResult}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
-    //                     def consoleOutput = """
-    //                     <p>Branch: <b>${BRANCH_NAME}</b></p>
-    //                     <p>Check console output at "<a href="${RUN_DISPLAY_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>
-    //                     """
-
-    //                     def details = ""
-
-    //                     if (previousBuild == null) {
-    //                         details = "<p>Initial build for new branch.</p>"
-    //                     } else if (currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success) && previousBuild.resultIsWorseOrEqualTo(BUILD_RESULT.unstable)) {
-    //                         details = "<p>Build returned to normal.</p>"
-    //                     }
-
-    //                     // Issue #53 - Previously if the first build for a branch failed, logs would not be captured.
-    //                     //             Now they do!
-    //                     if (currentBuild.resultIsWorseOrEqualTo(BUILD_RESULT.unstable)) {
-    //                         // Archives any test artifacts for logging and debugging purposes
-    //                         archiveArtifacts allowEmptyArchive: true, artifacts: '__tests__/__results__/**/*.log'
-    //                         details = "${details}<p>Build Failure.</p>"
-    //                     }
-
-    //                     if (BRANCH_NAME == MASTER_BRANCH) {
-    //                         recipients = MASTER_RECIPIENTS_LIST
-
-    //                         details = "${details}<p>A build of master has finished.</p>"
-
-    //                         if (GIT_SOURCE_UPDATED == "true") {
-    //                             details = "${details}<p>The pipeline was able to automatically bump the pre-release version in git</p>"
-    //                         } else {
-    //                             // Most likely another PR was merged to master before we could do the commit thus we can't
-    //                             // have the pipeline automatically do it
-    //                             details = """${details}<p>The pipeline was unable to automatically bump the pre-release version in git.
-    //                             <b>THIS IS LIKELY NOT AN ISSUE WITH THE BUILD</b> as all the tests have to pass to get to this point.<br/><br/>
-
-    //                             <b>Possible causes of this error:</b>
-    //                             <ul>
-    //                                 <li>A commit was made to <b>${MASTER_BRANCH}</b> during the current run.</li>
-    //                                 <li>The user account tied to the build is no longer valid.</li>
-    //                                 <li>The remote server is experiencing issues.</li>
-    //                             </ul>
-
-    //                             <i>THIS BUILD WILL BE MARKED AS A FAILURE AS WE CANNOT GUARENTEE THAT THE PROBLEM DOES NOT LIE IN THE
-    //                             BUILD AND CORRECTIVE ACTION MAY NEED TO TAKE PLACE.</i>
-    //                             </p>"""
-    //                         }
-    //                     }
-
-    //                     if (details != "") {
-    //                         echo "Sending out email with details"
-    //                         emailext(
-    //                                 subject: subject,
-    //                                 to: recipients,
-    //                                 body: "${details} ${consoleOutput}",
-    //                                 recipientProviders: [[$class: 'DevelopersRecipientProvider'],
-    //                                                      [$class: 'UpstreamComitterRecipientProvider'],
-    //                                                      [$class: 'CulpritsRecipientProvider'],
-    //                                                      [$class: 'RequesterRecipientProvider']]
-    //                         )
-    //                     }
-    //                 } catch (e) {
-    //                     echo "Experienced an error sending an email for a ${buildStatus} build"
-    //                     currentBuild.result = buildStatus
-    //                 }
-    //            }
-    //        }
-    //    }
-    //}
 }
