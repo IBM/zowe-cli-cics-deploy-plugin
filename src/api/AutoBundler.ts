@@ -12,7 +12,7 @@
 "use strict";
 
 import { Bundle } from "./Bundle";
-import { Imperative, IHandlerParameters } from "@brightside/imperative";
+import { Logger, IHandlerParameters } from "@brightside/imperative";
 
 
 /**
@@ -96,7 +96,7 @@ export class AutoBundler {
           params.response.console.log(msg);
 
           // Also log the message for posterity
-          const logger = Imperative.api.imperativeLogger;
+          const logger = Logger.getAppLogger();
           logger.debug(msg);
         }
         catch (error) {
@@ -176,7 +176,7 @@ export class AutoBundler {
       params.response.console.log(msg);
 
       // Also log the message for posterity
-      const logger = Imperative.api.imperativeLogger;
+      const logger = Logger.getAppLogger();
       logger.debug(msg);
     }
     catch (error) {

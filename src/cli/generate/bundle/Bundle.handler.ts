@@ -9,7 +9,7 @@
 *
 */
 
-import { Imperative, ICommandHandler, IHandlerParameters, ICommandArguments } from "@brightside/imperative";
+import { Logger, ICommandHandler, IHandlerParameters, ICommandArguments } from "@brightside/imperative";
 import { AutoBundler } from "../../../api/AutoBundler";
 
 /**
@@ -31,15 +31,8 @@ export default class BundleHandler implements ICommandHandler {
     public async process(params: IHandlerParameters): Promise<void> {
 
         // log the arguments on entry
-        try {
-          // Address the imperative logger
-          const logger = Imperative.api.imperativeLogger;
-          logger.debug("Arguments received by cics-deploy: " + JSON.stringify(params.arguments));
-        }
-        catch (error) {
-          // logging will fail during unit testing as the Imperative framework wont
-          // have been initialised.
-        }
+        const logger = Logger.getAppLogger();
+        logger.debug("Arguments received by cics-deploy: " + JSON.stringify(params.arguments));
 
         // Call the auto-bundler to process the contents of the current working directory.
         try {
@@ -61,14 +54,7 @@ export default class BundleHandler implements ICommandHandler {
           params.response.console.log(msg);
 
           // Log the error message to the Imperative log
-          try {
-            const logger = Imperative.api.imperativeLogger;
-            logger.debug(msg);
-          }
-          catch (error) {
-            // logging will fail during unit testing as the Imperative framework wont
-            // have been initialised.
-          }
+          logger.debug(msg);
         } catch (except) {
 
           // Construct an error message for the exception
@@ -78,14 +64,7 @@ export default class BundleHandler implements ICommandHandler {
           params.response.console.error(msg);
 
           // Log the error message to the Imperative log
-          try {
-            const logger = Imperative.api.imperativeLogger;
-            logger.error(msg);
-          }
-          catch (error) {
-            // logging will fail during unit testing as the Imperative framework wont
-            // have been initialised.
-          }
+          logger.error(msg);
         }
     }
 }
