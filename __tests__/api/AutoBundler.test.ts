@@ -12,7 +12,7 @@
 import { AutoBundler } from "../../src/api/AutoBundler";
 import { IHandlerParameters } from "@brightside/imperative";
 import * as BundleDefinition from "../../src/cli/generate/bundle/Bundle.definition";
-import * as BundleHandler from "../../src/cli/generate/bundle/Bundle.handler";
+import * as fse from "fs-extra";
 
 
 const DEFAULT_PARAMTERS: IHandlerParameters = {
@@ -53,6 +53,12 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
 };
 
 describe("AutoBundler01", () => {
+
+    beforeAll(() => {
+        // Git does not commit empty dirs, so make they exist
+        fse.ensureDir("__tests__/__resources__/EmptyBundle01");
+    });
+
     it("should read an existing bundle", () => {
 
         let parms: IHandlerParameters;
@@ -177,7 +183,7 @@ describe("AutoBundler01", () => {
         parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
         parms.arguments.port = 500;
         parms.arguments.nodejsapp = "wibble";
-        parms.arguments.startscript = "__tests__/__resources__/EmptyBundle02/META-INF";
+        parms.arguments.startscript = "__tests__/__resources__/EmptyBundle02/script.js";
 
         // Create a Bundle
         const ab = new AutoBundler("__tests__/__resources__/EmptyBundle02", parms);

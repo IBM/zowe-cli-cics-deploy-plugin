@@ -9,7 +9,7 @@
 *
 */
 
-import { Logger, ICommandHandler, IHandlerParameters, ICommandArguments } from "@brightside/imperative";
+import { Logger, ICommandHandler, IHandlerParameters, ICommandArguments, ImperativeError } from "@brightside/imperative";
 import { AutoBundler } from "../../../api/AutoBundler";
 
 /**
@@ -56,15 +56,14 @@ export default class BundleHandler implements ICommandHandler {
           // Log the error message to the Imperative log
           logger.debug(msg);
         } catch (except) {
-
           // Construct an error message for the exception
           const msg = "A failure occurred during CICS Bundle generation.\n Reason = " + except.message;
 
-          // Log the error message to the console for the user
-          params.response.console.error(msg);
 
           // Log the error message to the Imperative log
           logger.error(msg);
+
+          throw new ImperativeError({msg, causeErrors: except});
         }
     }
 }

@@ -11,7 +11,7 @@
 */
 
 import {CheckStatus, ZosmfSession} from "@brightside/core";
-import {IHandlerParameters, Imperative} from "@brightside/imperative";
+import {IHandlerParameters, Imperative, ImperativeError} from "@brightside/imperative";
 import * as BundleDefinition from "../../../../src/cli/generate/bundle/Bundle.definition";
 import * as BundleHandler from "../../../../src/cli/generate/bundle/Bundle.handler";
 import * as fs from "fs";
@@ -115,14 +115,14 @@ describe("bundle Handler", () => {
         process.chdir(currentDir);
         expect(error).toBeUndefined();
     });
-    it("should tolerate exceptions being thrown", async () => {
+    it("should wrap exceptions in ImperativeError", async () => {
         DEFAULT_PARAMTERS.arguments.nosave = "true";
         DEFAULT_PARAMTERS.arguments.startscript = "wibble";
 
         const currentDir = process.cwd();
         process.chdir("__tests__/__resources__/ExampleBundle04");
 
-        let error;
+        let error: Error;
         try {
           const handler = new BundleHandler.default();
           // The handler should succeed
@@ -130,9 +130,9 @@ describe("bundle Handler", () => {
           await handler.process(params);
         } catch (e) {
             error = e;
-            Imperative.console.error(`Error experienced: ${e.message}`);
         }
         process.chdir(currentDir);
-        expect(error).toBeUndefined();
+        expect(error).toBeDefined();
+        expect(error).toBeInstanceOf(ImperativeError);
     });
 });
