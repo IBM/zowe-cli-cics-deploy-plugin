@@ -92,7 +92,12 @@ export class AutoBundler {
           this.portOverride        !== undefined ) {
         this.bundle.addNodejsappDefinition(this.nodejsappOverride, this.startscriptOverride, this.portOverride);
         try {
-          params.response.console.log('NODEJSAPP "' + this.nodejsappOverride + '" defined for startscript "' + this.startscriptOverride + '"');
+          const msg = 'NODEJSAPP "' + this.nodejsappOverride + '" defined for startscript "' + this.startscriptOverride + '"';
+          params.response.console.log(msg);
+
+          // Also log the message for posterity
+          const logger = Imperative.api.imperativeLogger;
+          logger.debug(msg);
         }
         catch (error) {
           // logging errors can be thrown in some of the mocked tests... just ignore it.
