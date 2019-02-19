@@ -2,11 +2,11 @@
 
 The cics-deploy plugin for Zowe CLI is used to generate IBM CICS Bundles from Node.js applications. These Bundles can then be deployed to a CICS region as BUNDLE resources.
 
-CICS TS V5.5 supports the Node.js programming language, Node.js applications can be deployed to CICS as Bundle resources which will run within the CICS address space. For further information on Node.js in CICS see [CICS and Node.js](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.5.0/fundamentals/node/nodeintro.html). The cics-deploy plugin to Zowe CLI enables a Node.js application developer to construct the metadata files that form a Bundle using a command line on their workstation; the Bundle metadata might then be stored under Source Control along with the rest of the application, the entire Bundle might be deployed to CICS, or both.
+CICS TS V5.5 supports the Node.js programming language, Node.js applications can be deployed to CICS as Bundle resources which will run within the CICS address space. For further information on Node.js in CICS see [CICS and Node.js](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.5.0/fundamentals/node/nodeintro.html). The cics-deploy plugin to Zowe CLI enables a Node.js application developer to construct the metadata files that form a Bundle using a command line on their workstation; the generated Bundle metadata might then be stored under Source Control along with the rest of the application, the entire Bundle might be deployed to CICS, or both.
 
 ## Dependencies
 
-In order to use the cics-deploy plugin you must first have installed Zowe CLI; for further information on Zowe CLI see [Install Zowe CLI](https://zowe.github.io/docs-site/latest/user-guide/cli-installcli.html). The cics-deploy plugin does not require the Zowe runtime to be installed on z/OS. CICS TS V5.5 is not required in order to generate CICS Bundles, but Node.js Bundles will not deploy to earlier versions of CICS.
+In order to use the cics-deploy plugin you must first have installed Zowe CLI; for further information on Zowe CLI see [Install Zowe CLI](https://zowe.github.io/docs-site/latest/user-guide/cli-installcli.html). The cics-deploy plugin does not require the Zowe runtime to be installed or configured on z/OS. CICS TS V5.5 is not required in order to generate CICS Bundles, but Node.js Bundles will not deploy to earlier versions of CICS.
 
 ## Installation
 
@@ -16,7 +16,7 @@ To install the cics-deploy plugin to Zowe CLI do the following: TO BE DETERMINED
 
 The typical usage pattern for cics-deploy is to start with an existing Node.js application in the working directory and to construct the CICS Bundle from it. This directory will typically include an NPM [package.json](https://docs.npmjs.com/files/package.json) file, though it is not required to do so.
 
-1. Change directory to the root of the Node.js application
+1. Change directory to the root of the Node.js application.
 
 2. Issue the `zowe cics-deploy generate bundle` command.
 
