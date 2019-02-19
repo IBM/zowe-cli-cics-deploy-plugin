@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandHandler, IHandlerParameters } from "@brightside/imperative";
+import { Imperative, ICommandHandler, IHandlerParameters, ICommandArguments } from "@brightside/imperative";
 import { AutoBundler } from "../../../api/AutoBundler";
 
 /**
@@ -30,6 +30,16 @@ export default class BundleHandler implements ICommandHandler {
      */
     public async process(params: IHandlerParameters): Promise<void> {
 
+        // log the arguments on entry
+        try {
+          // Address the imperative logger
+          const logger = Imperative.api.imperativeLogger;
+          logger.debug("Arguments received by cics-deploy: " + JSON.stringify(params.arguments));
+        }
+        catch (error) {
+          // logging will fail during unit testing as the Imperative framework wont
+          // have been initialised.
+        }
 
         // Call the auto-bundler to process the contents of the current working directory.
         try {
@@ -37,16 +47,45 @@ export default class BundleHandler implements ICommandHandler {
           if (params.arguments.nosave !== "true") {
             autobundler.save();
           }
+
+          // Create a response message
+          let msg;
           if (autobundler.getBundle().getId() === undefined) {
-            params.response.console.log("Anonymous CICS Bundle generated");
+            msg = "Anonymous CICS Bundle generated";
           }
           else {
-            params.response.console.log('CICS Bundle "' + autobundler.getBundle().getId() + '" generated');
+            msg = 'CICS Bundle "' + autobundler.getBundle().getId() + '" generated';
+          }
+
+          // Issue the message to the console for the user
+          params.response.console.log(msg);
+
+          // Log the error message to the Imperative log
+          try {
+            const logger = Imperative.api.imperativeLogger;
+            logger.debug(msg);
+          }
+          catch (error) {
+            // logging will fail during unit testing as the Imperative framework wont
+            // have been initialised.
           }
         } catch (except) {
-            params.response.console.error("A failure occurred during CICS Bundle generation.\n" +
-                "Reason = " + except.message
-            );
+
+          // Construct an error message for the exception
+          const msg = "A failure occurred during CICS Bundle generation.\n Reason = " + except.message;
+
+          // Log the error message to the console for the user
+          params.response.console.error(msg);
+
+          // Log the error message to the Imperative log
+          try {
+            const logger = Imperative.api.imperativeLogger;
+            logger.error(msg);
+          }
+          catch (error) {
+            // logging will fail during unit testing as the Imperative framework wont
+            // have been initialised.
+          }
         }
     }
 }

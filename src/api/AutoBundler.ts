@@ -12,7 +12,7 @@
 "use strict";
 
 import { Bundle } from "./Bundle";
-import { IHandlerParameters } from "@brightside/imperative";
+import { Imperative, IHandlerParameters } from "@brightside/imperative";
 
 
 /**
@@ -164,7 +164,15 @@ export class AutoBundler {
     // Add the NODEJSAPP to the Bundle
     this.bundle.addNodejsappDefinition(njappname, fullSS, this.portOverride);
     try {
-      params.response.console.log('NODEJSAPP "' + njappname + '" defined for startscript "' + ss + '"');
+      // Construct an info message to report that the NODEJSAPP has been created
+      const msg = 'NODEJSAPP "' + njappname + '" defined for startscript "' + ss + '"';
+
+      // log the message to the console for the uesr
+      params.response.console.log(msg);
+
+      // Also log the message for posterity
+      const logger = Imperative.api.imperativeLogger;
+      logger.debug(msg);
     }
     catch (error) {
       // logging errors can be thrown in some of the mocked tests... just ignore it.
