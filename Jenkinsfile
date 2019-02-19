@@ -24,11 +24,11 @@ def RELEASE_BRANCHES = ["master"]
 def PIPELINE_CONTROL = [
     build: true,
     unit_test: true,
-    integration_test: true,
+    integration_test: false,
     system_test: true,
-    deploy: true,
-    smoke_test: true,
-    create_bundle: true,
+    deploy: false,
+    smoke_test: false,
+    create_bundle: false,
     ci_skip: false ]
 
 /**
@@ -95,7 +95,7 @@ def ARTIFACTORY_EMAIL = 'giza.jenkins@gmail.com'
  * This is the product name used by the build machine to store information about
  * the builds
  */
-def PRODUCT_NAME = "zowe-cli-sample-plugin"
+def PRODUCT_NAME = "zowe-cli-cics-deploy-plugin"
 
 /**
  * This is where the Zowe project needs to be installed
@@ -122,13 +122,18 @@ if (RELEASE_BRANCHES.contains(BRANCH_NAME)) {
 properties(opts)
 
 pipeline {
-    agent {
-        label 'ca-jenkins-agent'
-    }
+
+    agent any
 
     environment {
         // Environment variable for flow control. Indicates if the git source was updated by the pipeline.
         GIT_SOURCE_UPDATED = "false"
+
+        // Tell npm to install global packages within the workspace dir, and add it 
+        // to PATH. This allows us to do a global install for Zowe without affect
+        // other Jenkins jobs or needing root access.
+        NPM_CONFIG_PREFIX = "${WORKSPACE}/npm-global"
+        PATH = "${NPM_CONFIG_PREFIX}/bin:${PATH}"
     }
 
     stages {
@@ -215,7 +220,7 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES') {
                     echo "Install Zowe CLI globaly"
                     sh("npm set @brightside:registry https://api.bintray.com/npm/ca/brightside/")
-                    sh("npm install -g @brightside/core@latest")
+                    sh("npm install -g @brightside/core@next")
                     sh("zowe --version")
                 }
             }
@@ -258,12 +263,7 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES') {
                     echo 'Installing Dependencies'
 
-                    withCredentials([usernamePassword(credentialsId: ARTIFACTORY_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh "expect -f ./jenkins/npm_login.expect $USERNAME $PASSWORD \"$ARTIFACTORY_EMAIL\""
-                    }
-
                     sh 'npm install'
-                    sh 'npm logout'
                 }
             }
         }
@@ -304,6 +304,7 @@ pipeline {
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
                     echo 'Build'
+                    sh 'node --version'
                     sh "echo '${ZOWE_CLI_INSTALL_DIR}' | npm run build"
 
                     sh 'tar -czvf BuildArchive.tar.gz ./lib/'
@@ -391,38 +392,28 @@ pipeline {
                     // Capture test report
                     junit JEST_JUNIT_OUTPUT
 
-                    cobertura autoUpdateHealth: false,
-                            autoUpdateStability: false,
-                            coberturaReportFile: "${UNIT_RESULTS}/coverage/cobertura-coverage.xml",
-                            failUnhealthy: false,
-                            failUnstable: false,
-                            onlyStable: false,
-                            zoomCoverageChart: false,
-                            maxNumberOfBuilds: 20,
-                            // classCoverageTargets: '85, 80, 75',
-                            // conditionalCoverageTargets: '70, 65, 60',
-                            // lineCoverageTargets: '80, 70, 50',
-                            // methodCoverageTargets: '80, 70, 50',
-                            sourceEncoding: 'ASCII'
+                    // cobertura autoUpdateHealth: false,
+                    //         autoUpdateStability: false,
+                    //         coberturaReportFile: "${UNIT_RESULTS}/coverage/cobertura-coverage.xml",
+                    //         failUnhealthy: false,
+                    //         failUnstable: false,
+                    //         onlyStable: false,
+                    //         zoomCoverageChart: false,
+                    //         maxNumberOfBuilds: 20,
+                    //         // classCoverageTargets: '85, 80, 75',
+                    //         // conditionalCoverageTargets: '70, 65, 60',
+                    //         // lineCoverageTargets: '80, 70, 50',
+                    //         // methodCoverageTargets: '80, 70, 50',
+                    //         sourceEncoding: 'ASCII'
 
-                    // Publish HTML report
-                    publishHTML(target: [
-                            allowMissing         : false,
-                            alwaysLinkToLastBuild: true,
-                            keepAll              : true,
-                            reportDir            : JEST_STARE_RESULT_DIR,
-                            reportFiles          : JEST_STARE_RESULT_HTML,
-                            reportName           : "${PRODUCT_NAME} - Unit Test Report"
-                    ])
-
-                    publishHTML(target: [
-                            allowMissing         : false,
-                            alwaysLinkToLastBuild: true,
-                            keepAll              : true,
-                            reportDir            : "${UNIT_RESULTS}/coverage/lcov-report",
-                            reportFiles          : 'index.html',
-                            reportName           :  "${PRODUCT_NAME} - Unit Test Coverage Report"
-                    ])
+                    // publishHTML(target: [
+                    //         allowMissing         : false,
+                    //         alwaysLinkToLastBuild: true,
+                    //         keepAll              : true,
+                    //         reportDir            : "${UNIT_RESULTS}/coverage/lcov-report",
+                    //         reportFiles          : 'index.html',
+                    //         reportName           :  "${PRODUCT_NAME} - Unit Test Coverage Report"
+                    // ])
                 }
             }
         }
@@ -526,7 +517,7 @@ pipeline {
         /************************************************************************
          * STAGE
          * -----
-         * Test: Sysem
+         * Test: System
          *
          * TIMEOUT
          * -------
@@ -597,14 +588,13 @@ pipeline {
                 JEST_STARE_RESULT_HTML = "index.html"
                 TEST_SCRIPT = "./jenkins/system_tests.sh"
                 TEST_PROPERTIES_FILE = "./__tests__/__resources__/properties/custom_properties.yaml"
-                SYSTEM_TEST_PROPERTIES = "cmci:\n      user: lyzla01\n      password: mini\n      host: ZM13\n      port: 1490\n      csdGroup: DARKSIDE\n      regionName: CICSCMCI\n"
             }
             steps {
                 timeout(time: 30, unit: 'MINUTES') {
-                    echo 'System Test'
+                    sh 'npm run test:system'
 
-                    echo 'Perform integration test here'
-                    echo 'Record test reports artifacts'
+                    // Capture test report
+                    junit JEST_JUNIT_OUTPUT
                 }
             }
         }
@@ -648,28 +638,28 @@ pipeline {
          *         Commit Message:
          *         Bumped pre-release version <VERSION_HERE> [ci skip]
          ************************************************************************/
-        stage('Bump Version') {
-            when {
-                allOf {
-                    expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
-                    expression {
-                        return PIPELINE_CONTROL.deploy
-                    }
-                    expression {
-                        return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
-                    }
-                }
-            }
-            steps {
-                timeout(time: 5, unit: 'MINUTES') {
-                    echo "Bumping Version"
+        // stage('Bump Version') {
+        //     when {
+        //         allOf {
+        //             expression {
+        //                 return PIPELINE_CONTROL.ci_skip == false
+        //             }
+        //             expression {
+        //                 return PIPELINE_CONTROL.deploy
+        //             }
+        //             expression {
+        //                 return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
+        //             }
+        //         }
+        //     }
+        //     steps {
+        //         timeout(time: 5, unit: 'MINUTES') {
+        //             echo "Bumping Version"
 
-                    echo 'Perform version bump for the branch'
-                }
-            }
-        }
+        //             echo 'Perform version bump for the branch'
+        //         }
+        //     }
+        // }
         /************************************************************************
          * STAGE
          * -----
@@ -694,28 +684,28 @@ pipeline {
          * -------
          * npm: A package to an npm registry
          ************************************************************************/
-        stage('Deploy') {
-            when {
-                allOf {
-                    expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
-                    expression {
-                        return PIPELINE_CONTROL.deploy
-                    }
-                    expression {
-                        return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
-                    }
-                }
-            }
-            steps {
-                timeout(time: 5, unit: 'MINUTES') {
-                    echo 'Deploy Binary'
+        // stage('Deploy') {
+        //     when {
+        //         allOf {
+        //             expression {
+        //                 return PIPELINE_CONTROL.ci_skip == false
+        //             }
+        //             expression {
+        //                 return PIPELINE_CONTROL.deploy
+        //             }
+        //             expression {
+        //                 return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
+        //             }
+        //         }
+        //     }
+        //     steps {
+        //         timeout(time: 5, unit: 'MINUTES') {
+        //             echo 'Deploy Binary'
 
-                    echo 'Perform binary deployment'
-                }
-            }
-        }
+        //             echo 'Perform binary deployment'
+        //         }
+        //     }
+        // }
         /************************************************************************
          * STAGE
          * -----
@@ -736,29 +726,29 @@ pipeline {
          * Install the new pulished plugin and run some simple command to validate 
          *
          ************************************************************************/
-        stage('Smoke Test') {
-            when {
-                allOf {
-                    expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
-                    expression {
-                        return PIPELINE_CONTROL.smoke_test
-                    }
-                    expression {
-                        return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
-                    }
-                }
-            }
-            steps {
-                timeout(time: 5, unit: 'MINUTES') {
-                    echo "Smoke Test"
+        // stage('Smoke Test') {
+        //     when {
+        //         allOf {
+        //             expression {
+        //                 return PIPELINE_CONTROL.ci_skip == false
+        //             }
+        //             expression {
+        //                 return PIPELINE_CONTROL.smoke_test
+        //             }
+        //             expression {
+        //                 return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
+        //             }
+        //         }
+        //     }
+        //     steps {
+        //         timeout(time: 5, unit: 'MINUTES') {
+        //             echo "Smoke Test"
 
-                    echo 'Perform smoke test here'
-                    echo 'Record test reports artifacts'
-                }
-            }
-        }
+        //             echo 'Perform smoke test here'
+        //             echo 'Record test reports artifacts'
+        //         }
+        //     }
+        // }
         /************************************************************************
          * STAGE
          * -----
@@ -791,128 +781,127 @@ pipeline {
          *
          * A self-contained npm package install file.
          ************************************************************************/
-        stage('Create Bundle') {
-            when {
-                allOf {
-                    expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
-                    expression {
-                        return PIPELINE_CONTROL.create_bundle
-                    }
-                    expression {
-                        return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
-                    }
-                    expression {
-                        return RELEASE_BRANCHES.contains(BRANCH_NAME)
-                    }
-                }
-            }
-            steps {
-                timeout(time: 5, unit: 'MINUTES') {
-                    echo 'Archiving bundled binary file'
-
-                    echo 'Perform package bundle task'
-                }
-            }
-        }
+        // stage('Create Bundle') {
+        //     when {
+        //         allOf {
+        //             expression {
+        //                 return PIPELINE_CONTROL.ci_skip == false
+        //             }
+        //             expression {
+        //                 return PIPELINE_CONTROL.create_bundle
+        //             }
+        //             expression {
+        //                 return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
+        //             }
+        //             expression {
+        //                 return RELEASE_BRANCHES.contains(BRANCH_NAME)
+        //             }
+        //         }
+        //     }
+        //     steps {
+        //         timeout(time: 5, unit: 'MINUTES') {
+        //             echo 'Archiving bundled binary file'
+        //             echo 'Perform package bundle task'
+        //         }
+        //     }
+        // }
     }
-    post {
-        /************************************************************************
-         * POST BUILD ACTION
-         *
-         * Sends out emails and logs out of the registry
-         *
-         * Emails are only sent out when PIPELINE_CONTROL.ci_skip is false.
-         *
-         * Sends out emails when any of the following are true:
-         *
-         * - It is the first build for a new branch
-         * - The build is successful but the previous build was not
-         * - The build failed or is unstable
-         * - The build is on the MASTER_BRANCH
-         *
-         * In the case that an email was sent out, it will send it to individuals
-         * who were involved with the build and if broken those involved in
-         * breaking the build. If this build is for the MASTER_BRANCH, then an
-         * additional set of individuals will also get an email that the build
-         * occurred.
-         ************************************************************************/
-        always {
-            script {
-                def buildStatus = currentBuild.currentResult
+    // post {
+    //     /************************************************************************
+    //      * POST BUILD ACTION
+    //      *
+    //      * Sends out emails and logs out of the registry
+    //      *
+    //      * Emails are only sent out when PIPELINE_CONTROL.ci_skip is false.
+    //      *
+    //      * Sends out emails when any of the following are true:
+    //      *
+    //      * - It is the first build for a new branch
+    //      * - The build is successful but the previous build was not
+    //      * - The build failed or is unstable
+    //      * - The build is on the MASTER_BRANCH
+    //      *
+    //      * In the case that an email was sent out, it will send it to individuals
+    //      * who were involved with the build and if broken those involved in
+    //      * breaking the build. If this build is for the MASTER_BRANCH, then an
+    //      * additional set of individuals will also get an email that the build
+    //      * occurred.
+    //      ************************************************************************/
+    //     always {
+    //         script {
+    //             def buildStatus = currentBuild.currentResult
 
-                if (PIPELINE_CONTROL.ci_skip == false) {
-                    try {
-                        def previousBuild = currentBuild.getPreviousBuild()
-                        def recipients = ""
+    //             if (PIPELINE_CONTROL.ci_skip == false) {
+    //                 try {
+    //                     def previousBuild = currentBuild.getPreviousBuild()
+    //                     def recipients = ""
 
-                        def subject = "${currentBuild.currentResult}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
-                        def consoleOutput = """
-                        <p>Branch: <b>${BRANCH_NAME}</b></p>
-                        <p>Check console output at "<a href="${RUN_DISPLAY_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>
-                        """
+    //                     def subject = "${currentBuild.currentResult}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+    //                     def consoleOutput = """
+    //                     <p>Branch: <b>${BRANCH_NAME}</b></p>
+    //                     <p>Check console output at "<a href="${RUN_DISPLAY_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>
+    //                     """
 
-                        def details = ""
+    //                     def details = ""
 
-                        if (previousBuild == null) {
-                            details = "<p>Initial build for new branch.</p>"
-                        } else if (currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success) && previousBuild.resultIsWorseOrEqualTo(BUILD_RESULT.unstable)) {
-                            details = "<p>Build returned to normal.</p>"
-                        }
+    //                     if (previousBuild == null) {
+    //                         details = "<p>Initial build for new branch.</p>"
+    //                     } else if (currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success) && previousBuild.resultIsWorseOrEqualTo(BUILD_RESULT.unstable)) {
+    //                         details = "<p>Build returned to normal.</p>"
+    //                     }
 
-                        // Issue #53 - Previously if the first build for a branch failed, logs would not be captured.
-                        //             Now they do!
-                        if (currentBuild.resultIsWorseOrEqualTo(BUILD_RESULT.unstable)) {
-                            // Archives any test artifacts for logging and debugging purposes
-                            archiveArtifacts allowEmptyArchive: true, artifacts: '__tests__/__results__/**/*.log'
-                            details = "${details}<p>Build Failure.</p>"
-                        }
+    //                     // Issue #53 - Previously if the first build for a branch failed, logs would not be captured.
+    //                     //             Now they do!
+    //                     if (currentBuild.resultIsWorseOrEqualTo(BUILD_RESULT.unstable)) {
+    //                         // Archives any test artifacts for logging and debugging purposes
+    //                         archiveArtifacts allowEmptyArchive: true, artifacts: '__tests__/__results__/**/*.log'
+    //                         details = "${details}<p>Build Failure.</p>"
+    //                     }
 
-                        if (BRANCH_NAME == MASTER_BRANCH) {
-                            recipients = MASTER_RECIPIENTS_LIST
+    //                     if (BRANCH_NAME == MASTER_BRANCH) {
+    //                         recipients = MASTER_RECIPIENTS_LIST
 
-                            details = "${details}<p>A build of master has finished.</p>"
+    //                         details = "${details}<p>A build of master has finished.</p>"
 
-                            if (GIT_SOURCE_UPDATED == "true") {
-                                details = "${details}<p>The pipeline was able to automatically bump the pre-release version in git</p>"
-                            } else {
-                                // Most likely another PR was merged to master before we could do the commit thus we can't
-                                // have the pipeline automatically do it
-                                details = """${details}<p>The pipeline was unable to automatically bump the pre-release version in git.
-                                <b>THIS IS LIKELY NOT AN ISSUE WITH THE BUILD</b> as all the tests have to pass to get to this point.<br/><br/>
+    //                         if (GIT_SOURCE_UPDATED == "true") {
+    //                             details = "${details}<p>The pipeline was able to automatically bump the pre-release version in git</p>"
+    //                         } else {
+    //                             // Most likely another PR was merged to master before we could do the commit thus we can't
+    //                             // have the pipeline automatically do it
+    //                             details = """${details}<p>The pipeline was unable to automatically bump the pre-release version in git.
+    //                             <b>THIS IS LIKELY NOT AN ISSUE WITH THE BUILD</b> as all the tests have to pass to get to this point.<br/><br/>
 
-                                <b>Possible causes of this error:</b>
-                                <ul>
-                                    <li>A commit was made to <b>${MASTER_BRANCH}</b> during the current run.</li>
-                                    <li>The user account tied to the build is no longer valid.</li>
-                                    <li>The remote server is experiencing issues.</li>
-                                </ul>
+    //                             <b>Possible causes of this error:</b>
+    //                             <ul>
+    //                                 <li>A commit was made to <b>${MASTER_BRANCH}</b> during the current run.</li>
+    //                                 <li>The user account tied to the build is no longer valid.</li>
+    //                                 <li>The remote server is experiencing issues.</li>
+    //                             </ul>
 
-                                <i>THIS BUILD WILL BE MARKED AS A FAILURE AS WE CANNOT GUARENTEE THAT THE PROBLEM DOES NOT LIE IN THE
-                                BUILD AND CORRECTIVE ACTION MAY NEED TO TAKE PLACE.</i>
-                                </p>"""
-                            }
-                        }
+    //                             <i>THIS BUILD WILL BE MARKED AS A FAILURE AS WE CANNOT GUARENTEE THAT THE PROBLEM DOES NOT LIE IN THE
+    //                             BUILD AND CORRECTIVE ACTION MAY NEED TO TAKE PLACE.</i>
+    //                             </p>"""
+    //                         }
+    //                     }
 
-                        if (details != "") {
-                            echo "Sending out email with details"
-                            emailext(
-                                    subject: subject,
-                                    to: recipients,
-                                    body: "${details} ${consoleOutput}",
-                                    recipientProviders: [[$class: 'DevelopersRecipientProvider'],
-                                                         [$class: 'UpstreamComitterRecipientProvider'],
-                                                         [$class: 'CulpritsRecipientProvider'],
-                                                         [$class: 'RequesterRecipientProvider']]
-                            )
-                        }
-                    } catch (e) {
-                        echo "Experienced an error sending an email for a ${buildStatus} build"
-                        currentBuild.result = buildStatus
-                    }
-                }
-            }
-        }
-    }
+    //                     if (details != "") {
+    //                         echo "Sending out email with details"
+    //                         emailext(
+    //                                 subject: subject,
+    //                                 to: recipients,
+    //                                 body: "${details} ${consoleOutput}",
+    //                                 recipientProviders: [[$class: 'DevelopersRecipientProvider'],
+    //                                                      [$class: 'UpstreamComitterRecipientProvider'],
+    //                                                      [$class: 'CulpritsRecipientProvider'],
+    //                                                      [$class: 'RequesterRecipientProvider']]
+    //                         )
+    //                     }
+    //                 } catch (e) {
+    //                     echo "Experienced an error sending an email for a ${buildStatus} build"
+    //                     currentBuild.result = buildStatus
+    //                 }
+    //            }
+    //        }
+    //    }
+    //}
 }
