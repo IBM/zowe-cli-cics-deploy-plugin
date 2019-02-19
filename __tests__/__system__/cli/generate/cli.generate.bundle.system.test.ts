@@ -90,13 +90,11 @@ describe("cics-deploy generate bundle", () => {
             await testBundleGenerateWorks(["--bundleid", "mybundle", "--nodejsapp", "myapp", "--startscript", "server.js"], "myapp", NO_PACKAGE_JSON_APP);
         });
 
-        // Issue #12
-        it.skip("should return an error if invalid bundle version is supplied", async () => {
+        it("should return an error if invalid bundle version is supplied", async () => {
             await expectError(SIMPLE_TEST_APP, ["--bundleversion", "foo.bar.baz"]);
         });
 
-        // Issue #13
-        it.skip("should mangle NODEJSAPP name supplied on command line", async () => {
+        it("should mangle NODEJSAPP name supplied on command line", async () => {
             await testBundleGenerateWorks(["--nodejsapp", "foo%€@"], "fooXXX");
         });
 
@@ -133,7 +131,7 @@ async function expectError(appPath: string, options: string[] = []) {
     expect(fse.existsSync(path.join(appPath, "nodejsapps"))).toBeFalsy();
     expect(response.stdout.toString()).toBe("");
     expect(response.stderr.toString()).not.toBe("");
-    expect(response.stderr.toString()).toBe("foo");
+    // expect(response.stderr.toString()).toBe("foo");
     // TODO - reinstate this when Issue #5 is fixed
     // expect(response.status).toBeGreaterThan(0);
 }
