@@ -392,28 +392,28 @@ pipeline {
                     // Capture test report
                     junit JEST_JUNIT_OUTPUT
 
-                    // cobertura autoUpdateHealth: false,
-                    //         autoUpdateStability: false,
-                    //         coberturaReportFile: "${UNIT_RESULTS}/coverage/cobertura-coverage.xml",
-                    //         failUnhealthy: false,
-                    //         failUnstable: false,
-                    //         onlyStable: false,
-                    //         zoomCoverageChart: false,
-                    //         maxNumberOfBuilds: 20,
-                    //         // classCoverageTargets: '85, 80, 75',
-                    //         // conditionalCoverageTargets: '70, 65, 60',
-                    //         // lineCoverageTargets: '80, 70, 50',
-                    //         // methodCoverageTargets: '80, 70, 50',
-                    //         sourceEncoding: 'ASCII'
+                    cobertura autoUpdateHealth: false,
+                            autoUpdateStability: false,
+                            coberturaReportFile: "${UNIT_RESULTS}/coverage/cobertura-coverage.xml",
+                            failUnhealthy: false,
+                            failUnstable: false,
+                            onlyStable: false,
+                            zoomCoverageChart: false,
+                            maxNumberOfBuilds: 20,
+                            // classCoverageTargets: '85, 80, 75',
+                            // conditionalCoverageTargets: '70, 65, 60',
+                            // lineCoverageTargets: '80, 70, 50',
+                            // methodCoverageTargets: '80, 70, 50',
+                            sourceEncoding: 'ASCII'
 
-                    // publishHTML(target: [
-                    //         allowMissing         : false,
-                    //         alwaysLinkToLastBuild: true,
-                    //         keepAll              : true,
-                    //         reportDir            : "${UNIT_RESULTS}/coverage/lcov-report",
-                    //         reportFiles          : 'index.html',
-                    //         reportName           :  "${PRODUCT_NAME} - Unit Test Coverage Report"
-                    // ])
+                    publishHTML(target: [
+                            allowMissing         : false,
+                            alwaysLinkToLastBuild: true,
+                            keepAll              : true,
+                            reportDir            : "${UNIT_RESULTS}/coverage/lcov-report",
+                            reportFiles          : 'index.html',
+                            reportName           :  "${PRODUCT_NAME} - Unit Test Coverage Report"
+                    ])
                 }
             }
         }
