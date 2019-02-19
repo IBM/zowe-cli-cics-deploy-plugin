@@ -591,7 +591,7 @@ pipeline {
             }
             steps {
                 timeout(time: 30, unit: 'MINUTES') {
-                    touch "${TEST_PROPERTIES_FILE}"
+                    sh "touch $TEST_PROPERTIES_FILE"
                 
                     sh 'npm run test:system'
 
