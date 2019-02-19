@@ -64,7 +64,7 @@ describe("cics-deploy generate bundle", () => {
     });
 
     describe("paramters", async () => {
-        // Issue #15
+        // Issue 15
         it.skip("should customise bundle ID according to command line args", async () => {
             await testBundleGenerateWorks(["--bundleid", "myNodeBundle"]);
         });
@@ -100,7 +100,7 @@ describe("cics-deploy generate bundle", () => {
 
         // Issue #15
         it.skip("should mangle bundle ID supplied on command line", async () => {
-            await testBundleGenerateWorks(["--bundleid", "foo%€@"]);
+            await testBundleGenerateWorks(["--bundleid", "foo%€@"], "fooXXX");
         });
     });
 
@@ -132,8 +132,7 @@ async function expectError(appPath: string, options: string[] = []) {
     expect(response.stdout.toString()).toBe("");
     expect(response.stderr.toString()).not.toBe("");
     // expect(response.stderr.toString()).toBe("foo");
-    // TODO - reinstate this when Issue #5 is fixed
-    // expect(response.status).toBeGreaterThan(0);
+    expect(response.status).toBeGreaterThan(0);
 }
 
 async function testBundleGenerateWorks(args: string[], nodejsappName = "cics-nodejs-invoke", appPath = SIMPLE_TEST_APP) {
