@@ -591,6 +591,7 @@ pipeline {
             }
             steps {
                 timeout(time: 30, unit: 'MINUTES') {
+                    sh "mkdir ./__tests__/__resources__/properties"
                     sh "touch $TEST_PROPERTIES_FILE"
                 
                     sh 'npm run test:system'
