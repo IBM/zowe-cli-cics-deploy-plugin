@@ -95,22 +95,34 @@ describe("Manifest01", () => {
         // Create a Manifest
         const man = new Manifest("__tests__/__resources__/EmptyBundle01");
 
-        // Set a bundleId
-        man.setBundleVersion(-1, 2.4, 3.0);
+        let err: Error;
+        try {
+          // Set a bundleId
+          man.setBundleVersion(-1, 2.4, 3.0);
+        }
+        catch (error) {
+          err = error;
+        }
 
         // Check the output as JSON
-        expect(JSON.stringify(man.getJson())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":1,\"bundleRelease\":0,\"bundleMajorVer\":1,\"bundleMinorVer\":0,\"bundleMicroVer\":3}}");
+        expect(err.message).toContain("Invalid Bundle version specified.");
     });
     it("set a null version number", () => {
 
         // Create a Manifest
         const man = new Manifest("__tests__/__resources__/EmptyBundle01");
 
-        // Set a bundleId
-        man.setBundleVersion(undefined, undefined, undefined);
+        let err: Error;
+        try {
+          // Set a bundleId
+          man.setBundleVersion(undefined, undefined, undefined);
+        }
+        catch (error) {
+          err = error;
+        }
 
         // Check the output as JSON
-        expect(JSON.stringify(man.getJson())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":1,\"bundleRelease\":0,\"bundleMajorVer\":1,\"bundleMinorVer\":0,\"bundleMicroVer\":0}}");
+        expect(err.message).toContain("Invalid Bundle version specified.");
     });
     it("Parse a garbage manifest", () => {
 

@@ -33,6 +33,24 @@ export interface IBundlePartDataType {
  */
 export class BundlePart {
 
+  /**
+   * Function for mangaling a name into something valid for CICS
+   *
+   * @throws ImperativeError
+   * @memberof BundlePart
+   */
+  protected static mangleName(text: string, maxLength: number): string {
+
+    // replace underscore with hyphen
+    let mangledTest = text.replace(/_/g, "-");
+
+    // Convert all unsupported characters to X
+    mangledTest = mangledTest.replace(/[^0-9,^A-Z,^a-z\-]/g, "X");
+
+    // Now truncate the string
+    return mangledTest.substring(0, maxLength);
+  }
+
   protected fs = require("fs");
   protected bundleDirectory: string;
   private path = require("path");
@@ -80,28 +98,6 @@ export class BundlePart {
    */
   public save() {
     // no-op, the files must already exist
-  }
-
-  /**
-   * Function for mangaling a name into something valid for CICS
-   *
-   * @throws ImperativeError
-   * @memberof BundlePart
-   */
-  protected mangleName(maxLength: number) {
-
-    const text = this.partData.name;
-
-    // replace underscore with hyphen
-    const text2 = text.replace(/_/g, "-");
-
-    // Convert all unsupported characters to X
-    const text3 = text2.replace(/[^0-9,^A-Z,^a-z\-]/g, "X");
-
-    // Now truncate the string
-    const text4 = text3.substring(0, maxLength);
-
-    this.partData.name = text4;
   }
 
   /**
