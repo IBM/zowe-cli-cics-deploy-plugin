@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandHandler, IHandlerParameters } from "@brightside/imperative";
+import { Logger, ICommandHandler, IHandlerParameters, ICommandArguments, ImperativeError } from "@brightside/imperative";
 import { AutoBundler } from "../../../api/AutoBundler";
 
 /**
@@ -30,6 +30,9 @@ export default class BundleHandler implements ICommandHandler {
      */
     public async process(params: IHandlerParameters): Promise<void> {
 
+        // log the arguments on entry
+        const logger = Logger.getAppLogger();
+        logger.debug("Arguments received by cics-deploy: " + JSON.stringify(params.arguments));
 
         // Call the auto-bundler to process the contents of the current working directory.
         try {
@@ -37,16 +40,30 @@ export default class BundleHandler implements ICommandHandler {
           if (params.arguments.nosave !== "true") {
             autobundler.save();
           }
+
+          // Create a response message
+          let msg;
           if (autobundler.getBundle().getId() === undefined) {
-            params.response.console.log("Anonymous CICS Bundle generated");
+            msg = "Anonymous CICS Bundle generated";
           }
           else {
-            params.response.console.log('CICS Bundle "' + autobundler.getBundle().getId() + '" generated');
+            msg = 'CICS Bundle "' + autobundler.getBundle().getId() + '" generated';
           }
+
+          // Issue the message to the console for the user
+          params.response.console.log(msg);
+
+          // Log the error message to the Imperative log
+          logger.debug(msg);
         } catch (except) {
-            params.response.console.error("A failure occurred during CICS Bundle generation.\n" +
-                "Reason = " + except.message
-            );
+          // Construct an error message for the exception
+          const msg = "A failure occurred during CICS Bundle generation.\n Reason = " + except.message;
+
+
+          // Log the error message to the Imperative log
+          logger.error(msg);
+
+          throw new ImperativeError({msg, causeErrors: except});
         }
     }
 }

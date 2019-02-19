@@ -42,13 +42,13 @@ export class BundlePart {
   protected static mangleName(text: string, maxLength: number): string {
 
     // replace underscore with hyphen
-    let mangledTest = text.replace(/_/g, "-");
+    let mangledText = text.replace(/_/g, "-");
 
     // Convert all unsupported characters to X
-    mangledTest = mangledTest.replace(/[^0-9,^A-Z,^a-z\-]/g, "X");
+    mangledText = mangledText.replace(/[^0-9,^A-Z,^a-z\-]/g, "X");
 
     // Now truncate the string
-    return mangledTest.substring(0, maxLength);
+    return mangledText.substring(0, maxLength);
   }
 
   protected fs = require("fs");
