@@ -581,7 +581,7 @@ pipeline {
                         // Set up authentication to Artifactory
                         sh "rm -f .npmrc"
                         sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
-                        sh 'echo registry=$TEST_NPM_REGISTRY >> .npmrc'
+                        sh "echo registry=$TEST_NPM_REGISTRY >> .npmrc"
 
                         script {
                             if (BRANCH_NAME == MASTER_BRANCH) {
