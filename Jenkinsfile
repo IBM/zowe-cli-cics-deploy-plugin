@@ -25,7 +25,7 @@ def PIPELINE_CONTROL = [
     build: true,
     unit_test: true,
     system_test: true,
-    deploy: false,
+    deploy: true,
     smoke_test: false,
     create_bundle: false,
     ci_skip: false ]
@@ -42,7 +42,7 @@ def BUILD_RESULT = [
 /**
  * Test npm registry using for smoke test
  */
-def TEST_NPM_REGISTRY = "...."
+def TEST_NPM_REGISTRY = "https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-local"
 
 /**
  * The root results folder for items configurable by environmental variables
@@ -62,7 +62,7 @@ def UNIT_RESULTS = "${TEST_RESULTS_FOLDER}/unit"
 /**
  * The name of the master branch
  */
-def MASTER_BRANCH = "master"
+def MASTER_BRANCH = "jenkins-setup"
 
 
 /**
@@ -503,49 +503,35 @@ pipeline {
          * DESCRIPTION
          * -----------
          * Bumps the pre-release version in preparation for publishing to an npm
-         * registry. It will clean out any pending changes and switch to the real
-         * branch that was published (currently the pipeline would be in a
-         * detached HEAD at the commit) before executing the npm command to bump
-         * the version.
-         *
-         * The step does checking against the commit that was checked out and
-         * the BUILD_REVISION that was retrieved earlier. If they do not match,
-         * the commit will not be pushed and the build will fail. This handles
-         * the condition where the current build made it to this step but another
-         * change had been pushed to the master branch. This means that we would
-         * have to bump the version of a future commit to the one we just built
-         * and tested, which is a big no no. A corresponding email will be sent
-         * out in this situation to explain how this condition could have occurred.
-         *
-         * OUTPUTS
-         * -------
-         * GitHub: A commit containing the bumped version in the package.json.
-         *
-         *         Commit Message:
-         *         Bumped pre-release version <VERSION_HERE> [ci skip]
+         * registry. 
          ************************************************************************/
-        // stage('Bump Version') {
-        //     when {
-        //         allOf {
-        //             expression {
-        //                 return PIPELINE_CONTROL.ci_skip == false
-        //             }
-        //             expression {
-        //                 return PIPELINE_CONTROL.deploy
-        //             }
-        //             expression {
-        //                 return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
-        //             }
-        //         }
-        //     }
-        //     steps {
-        //         timeout(time: 5, unit: 'MINUTES') {
-        //             echo "Bumping Version"
+        stage('Bump Version') {
+        when {
+                allOf {
+                    expression {
+                        return PIPELINE_CONTROL.ci_skip == false
+                    }
+                    expression {
+                        return PIPELINE_CONTROL.deploy
+                    }
+                    expression {
+                        return BRANCH_NAME == MASTER_BRANCH
+                    }
+                }
+            }
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    echo "Bumping Version"
 
-        //             echo 'Perform version bump for the branch'
-        //         }
-        //     }
-        // }
+                    // This npm command does the version bump
+                    script {
+                        def baseVersion = sh returnStdout: true, script: 'node -e "console.log(require(\'./package.json\').version.split(\'-\')[0])"'
+                        def preReleaseVersion = baseVersion.trim() + "-next." + new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("UTC"))
+                        sh "npm version ${preReleaseVersion} --no-git-tag-version"
+                    }
+                }
+            }
+        }
         /************************************************************************
          * STAGE
          * -----
@@ -570,28 +556,45 @@ pipeline {
          * -------
          * npm: A package to an npm registry
          ************************************************************************/
-        // stage('Deploy') {
-        //     when {
-        //         allOf {
-        //             expression {
-        //                 return PIPELINE_CONTROL.ci_skip == false
-        //             }
-        //             expression {
-        //                 return PIPELINE_CONTROL.deploy
-        //             }
-        //             expression {
-        //                 return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
-        //             }
-        //         }
-        //     }
-        //     steps {
-        //         timeout(time: 5, unit: 'MINUTES') {
-        //             echo 'Deploy Binary'
+        stage('Deploy') {
+            when {
+                allOf {
+                    expression {
+                        return PIPELINE_CONTROL.ci_skip == false
+                    }
+                    expression {
+                        return PIPELINE_CONTROL.deploy
+                    }
+                    expression {
+                       return BRANCH_NAME == MASTER_BRANCH
+                    }
+                }
+            }
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    echo 'Deploy Binary'
+                    withCredentials([usernamePassword(credentialsId: ARTIFACTORY_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'API_KEY')]) {
+                        
+                        // Set up authentication to Artifactory
+                        sh "rm -f .npmrc"
+                        sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc"
+                        sh 'echo registry=$TEST_NPM_REGISTRY >> .npmrc'
 
-        //             echo 'Perform binary deployment'
-        //         }
-        //     }
-        // }
+                        script {
+                            if (BRANCH_NAME == MASTER_BRANCH) {
+                                echo "publishing next to $TEST_NPM_REGISTRY"
+                                sh "npm publish --tag next"
+                            }
+                            else {
+                                echo "publishing latest to $TEST_NPM_REGISTRY"
+                                sh "npm publish --tag latest"
+                            }
+                        }
+                        sh "npm logout --registry=$TEST_NPM_REGISTRY"
+                    }
+                }
+            }
+        }
         /************************************************************************
          * STAGE
          * -----
