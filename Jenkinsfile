@@ -24,7 +24,7 @@ def RELEASE_BRANCHES = ["master"]
  */
 def PIPELINE_CONTROL = [
     build: true,
-    unit_test: true,
+    unit_test: true,    
     system_test: true,
     deploy: true,
     smoke_test: true,
@@ -581,7 +581,9 @@ pipeline {
                         sh "rm -f .npmrc"
                         sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
                         sh "echo registry=$TEST_NPM_REGISTRY >> .npmrc"
-
+                        sh "echo @brightside:registry=https://api.bintray.com/npm/ca/brightside/ >> .npmrc"
+                        sh "echo @brightside:always-auth=false >> .npmrc"
+                        
                         script {
                             if (BRANCH_NAME == MASTER_BRANCH) {
                                 echo "publishing next to $TEST_NPM_REGISTRY"
