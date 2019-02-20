@@ -64,9 +64,9 @@ describe("cics-deploy generate bundle", () => {
     });
 
     describe("paramters", async () => {
-        // Issue 15
-        it.skip("should customise bundle ID according to command line args", async () => {
-            await testBundleGenerateWorks(["--bundleid", "myNodeBundle"]);
+       
+        it("should customise bundle ID according to command line args", async () => {
+            await testBundleGenerateWorks(["--bundleid", "myNodeBundle"], "myNodeBundle");
         });
         it("should customise bundle version according to command line args", async () => {
             await testBundleGenerateWorks(["--bundleversion", "2.1.5"]);
@@ -98,8 +98,7 @@ describe("cics-deploy generate bundle", () => {
             await testBundleGenerateWorks(["--nodejsapp", "foo%€@"], "fooXXX");
         });
 
-        // Issue #15
-        it.skip("should mangle bundle ID supplied on command line", async () => {
+        it("should mangle bundle ID supplied on command line", async () => {
             await testBundleGenerateWorks(["--bundleid", "foo%€@"], "fooXXX");
         });
     });

@@ -30,9 +30,15 @@ exports[`cics-deploy generate bundle paramters should customise NODEJSAPP name a
 "
 `;
 
-exports[`cics-deploy generate bundle paramters should customise bundle ID according to command line args 1`] = `"<manifest xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle\\" bundleVersion=\\"1\\" bundleRelease=\\"0\\" id=\\"myNodeBundle\\" bundleMajorVer=\\"1\\" bundleMinorVer=\\"0\\" bundleMicroVer=\\"0\\"><define name=\\"myNodeBundle\\" type=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" path=\\"nodejsapps/myNodeBundle.nodejsapp\\"></define></manifest>"`;
+exports[`cics-deploy generate bundle paramters should customise bundle ID according to command line args 1`] = `
+"<manifest xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle\\" bundleVersion=\\"1\\" bundleRelease=\\"0\\" id=\\"myNodeBundle\\" bundleMajorVer=\\"1\\" bundleMinorVer=\\"0\\" bundleMicroVer=\\"0\\"><define name=\\"myNodeBundle\\" type=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" path=\\"nodejsapps/myNodeBundle.nodejsapp\\"></define></manifest>
+"
+`;
 
-exports[`cics-deploy generate bundle paramters should customise bundle ID according to command line args 2`] = `"<nodejsapp xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" name=\\"myNodeBundle\\" startscript=\\"server.js\\" profile=\\"nodejsapps/myNodeBundle.profile\\" lerunopts=\\"DFHSJNRO\\"></nodejsapp>"`;
+exports[`cics-deploy generate bundle paramters should customise bundle ID according to command line args 2`] = `
+"<nodejsapp xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" name=\\"myNodeBundle\\" startscript=\\"server.js\\" profile=\\"nodejsapps/myNodeBundle.profile\\" lerunopts=\\"DFHSJNRO\\"></nodejsapp>
+"
+`;
 
 exports[`cics-deploy generate bundle paramters should customise bundle version according to command line args 1`] = `
 "<manifest xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle\\" bundleVersion=\\"1\\" bundleRelease=\\"0\\" bundleMajorVer=\\"2\\" bundleMinorVer=\\"1\\" bundleMicroVer=\\"5\\" id=\\"cics-nodejs-invoke\\"><define name=\\"cics-nodejs-invoke\\" type=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" path=\\"nodejsapps/cics-nodejs-invoke.nodejsapp\\"></define></manifest>
@@ -100,6 +106,11 @@ exports[`cics-deploy generate bundle paramters should mangle NODEJSAPP name supp
 
 exports[`cics-deploy generate bundle paramters should mangle bundle ID supplied on command line 1`] = `
 "<manifest xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle\\" bundleVersion=\\"1\\" bundleRelease=\\"0\\" id=\\"fooXXX\\" bundleMajorVer=\\"1\\" bundleMinorVer=\\"0\\" bundleMicroVer=\\"0\\"><define name=\\"fooXXX\\" type=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" path=\\"nodejsapps/fooXXX.nodejsapp\\"></define></manifest>
+"
+`;
+
+exports[`cics-deploy generate bundle paramters should mangle bundle ID supplied on command line 2`] = `
+"<nodejsapp xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" name=\\"fooXXX\\" startscript=\\"server.js\\" profile=\\"nodejsapps/fooXXX.profile\\" lerunopts=\\"DFHSJNRO\\"></nodejsapp>
 "
 `;
 
