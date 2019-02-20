@@ -656,10 +656,10 @@ pipeline {
             }
         }
     }
-    post {
-        always{
-            sh "npm logout --registry=$TEST_NPM_REGISTRY"
-            sh "rm -f .npmrc"
-        }
-    }
+    // post {
+    //     always{
+    //         sh "npm logout --registry=$TEST_NPM_REGISTRY"
+    //         sh "rm -f .npmrc"
+    //     }
+    // }
 }
