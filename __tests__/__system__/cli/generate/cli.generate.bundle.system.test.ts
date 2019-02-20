@@ -64,7 +64,6 @@ describe("cics-deploy generate bundle", () => {
     });
 
     describe("paramters", async () => {
-       
         it("should customise bundle ID according to command line args", async () => {
             await testBundleGenerateWorks(["--bundleid", "myNodeBundle"], "myNodeBundle");
         });
