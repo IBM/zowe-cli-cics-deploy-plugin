@@ -648,8 +648,8 @@ pipeline {
                         sh "echo @brightside:registry=https://api.bintray.com/npm/ca/brightside/ >> .npmrc"
                         sh "echo @brightside:always-auth=false >> .npmrc"
                         sh "npm whoami"
-                        sh "cp -R /home/pipeline/.npm/_logs ."
-                        sh "zowe plugins install zowe-cli-cics-deploy-plugin"
+                       
+                        sh "zowe plugins install zowe-cli-cics-deploy-plugin || cp -R /home/pipeline/.npm/_logs ."
                         sh "zowe cics-deploy"
                     }
                 }
