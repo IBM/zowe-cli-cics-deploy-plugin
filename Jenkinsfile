@@ -583,7 +583,7 @@ pipeline {
                         sh "echo registry=$TEST_NPM_REGISTRY >> .npmrc"
                         sh "echo @brightside:registry=https://api.bintray.com/npm/ca/brightside/ >> .npmrc"
                         sh "echo @brightside:always-auth=false >> .npmrc"
-                        
+
                         script {
                             if (BRANCH_NAME == MASTER_BRANCH) {
                                 echo "publishing next to $TEST_NPM_REGISTRY"
@@ -637,9 +637,20 @@ pipeline {
             }
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
+                    
                     echo "Smoke Test"
-                    sh "zowe plugins install zowe-cli-cics-deploy-plugin"
-                    sh "zowe cics-deploy"
+                    withCredentials([usernamePassword(credentialsId: ARTIFACTORY_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'API_KEY')]) {
+
+                        // Set up authentication to Artifactory
+                        sh "rm -f .npmrc"
+                        sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
+                        sh "echo registry=$TEST_NPM_REGISTRY >> .npmrc"
+                        sh "echo @brightside:registry=https://api.bintray.com/npm/ca/brightside/ >> .npmrc"
+                        sh "echo @brightside:always-auth=false >> .npmrc"
+                    
+                        sh "zowe plugins install zowe-cli-cics-deploy-plugin"
+                        sh "zowe cics-deploy"
+                    }
                 }
             }
         }
