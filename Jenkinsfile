@@ -27,8 +27,7 @@ def PIPELINE_CONTROL = [
     unit_test: true,
     system_test: true,
     deploy: true,
-    smoke_test: false,
-    create_bundle: false,
+    smoke_test: true,
     ci_skip: false ]
 
 /**
@@ -577,7 +576,7 @@ pipeline {
                 timeout(time: 5, unit: 'MINUTES') {
                     echo 'Deploy Binary'
                     withCredentials([usernamePassword(credentialsId: ARTIFACTORY_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'API_KEY')]) {
-                        
+
                         // Set up authentication to Artifactory
                         sh "rm -f .npmrc"
                         sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
@@ -593,7 +592,6 @@ pipeline {
                                 sh "npm publish --tag latest"
                             }
                         }
-                        sh "npm logout --registry=$TEST_NPM_REGISTRY"
                     }
                 }
             }
@@ -618,28 +616,36 @@ pipeline {
          * Install the new pulished plugin and run some simple command to validate 
          *
          ************************************************************************/
-        // stage('Smoke Test') {
-        //     when {
-        //         allOf {
-        //             expression {
-        //                 return PIPELINE_CONTROL.ci_skip == false
-        //             }
-        //             expression {
-        //                 return PIPELINE_CONTROL.smoke_test
-        //             }
-        //             expression {
-        //                 return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
-        //             }
-        //         }
-        //     }
-        //     steps {
-        //         timeout(time: 5, unit: 'MINUTES') {
-        //             echo "Smoke Test"
-
-        //             echo 'Perform smoke test here'
-        //             echo 'Record test reports artifacts'
-        //         }
-        //     }
-        // }
+        stage('Smoke Test') {
+            when {
+                allOf {
+                    expression {
+                        return PIPELINE_CONTROL.ci_skip == false
+                    }
+                    expression {
+                        return PIPELINE_CONTROL.smoke_test
+                    }
+                    expression {
+                        return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
+                    }
+                    expression {
+                       return BRANCH_NAME == MASTER_BRANCH
+                    }
+                }
+            }
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    echo "Smoke Test"
+                    sh "zowe plugins install zowe-cli-cics-deploy-plugin"
+                    sh "zowe cics-deploy"
+                }
+            }
+        }
+    }
+    post {
+        always{
+            sh "npm logout --registry=$TEST_NPM_REGISTRY"
+            sh "rm -f .npmrc"
+        }
     }
 }
