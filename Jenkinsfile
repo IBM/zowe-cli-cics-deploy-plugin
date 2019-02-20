@@ -42,7 +42,7 @@ def BUILD_RESULT = [
 /**
  * Test npm registry using for smoke test
  */
-def TEST_NPM_REGISTRY = "https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-local"
+def TEST_NPM_REGISTRY = "https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-virtual"
 
 /**
  * The root results folder for items configurable by environmental variables
