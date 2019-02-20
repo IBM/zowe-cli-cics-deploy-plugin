@@ -6,6 +6,7 @@
 * SPDX-License-Identifier: EPL-2.0                                                *
 *                                                                                 *
 * Copyright Contributors to the Zowe Project.                                     *
+* Copyright IBM Corp, 2019.
 *                                                                                 *
 */
 
@@ -80,6 +81,8 @@ def PRODUCT_NAME = "zowe-cli-cics-deploy-plugin"
  * This is where the Zowe project needs to be installed
  */
 def ZOWE_CLI_INSTALL_DIR = "/.npm-global/lib/node_modules/@brightside/core"
+
+def ARTIFACTORY_CREDENTIALS_ID = "c8e3aa62-5eef-4e6b-8a3f-aa1006a7ef01"
 
 // Setup conditional build options. Would have done this in the options of the declarative pipeline, but it is pretty
 // much impossible to have conditional options based on the branch :/
@@ -577,7 +580,7 @@ pipeline {
                         
                         // Set up authentication to Artifactory
                         sh "rm -f .npmrc"
-                        sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc"
+                        sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
                         sh 'echo registry=$TEST_NPM_REGISTRY >> .npmrc'
 
                         script {
