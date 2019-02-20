@@ -643,11 +643,12 @@ pipeline {
 
                         // Set up authentication to Artifactory
                         sh "rm -f .npmrc"
-                        sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
                         sh "echo registry=$TEST_NPM_REGISTRY >> .npmrc"
                         sh "echo @brightside:registry=https://api.bintray.com/npm/ca/brightside/ >> .npmrc"
                         sh "echo @brightside:always-auth=false >> .npmrc"
+                        sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
                         sh "npm whoami"
+                        sh "npm config get always-auth"
                        
                         sh "zowe plugins install zowe-cli-cics-deploy-plugin || cp -R /home/pipeline/.npm/_logs ."
                         sh "zowe cics-deploy"
@@ -656,10 +657,10 @@ pipeline {
             }
         }
     }
-    // post {
-    //     always{
-    //         sh "npm logout --registry=$TEST_NPM_REGISTRY"
-    //         sh "rm -f .npmrc"
-    //     }
-    // }
+    post {
+        always{
+            sh "npm logout --registry=$TEST_NPM_REGISTRY"
+            sh "rm -f .npmrc"
+        }
+    }
 }
