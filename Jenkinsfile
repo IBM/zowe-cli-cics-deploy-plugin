@@ -648,7 +648,7 @@ pipeline {
                         sh "echo @brightside:always-auth=false >> .npmrc"
                         sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
                         sh "npm whoami"
-                        sh "npm config get always-auth"
+                        sh "npm config list"
                        
                         sh "zowe plugins install zowe-cli-cics-deploy-plugin || cp -R /home/pipeline/.npm/_logs ."
                         sh "zowe cics-deploy"
