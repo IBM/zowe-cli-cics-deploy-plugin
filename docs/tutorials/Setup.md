@@ -2,7 +2,7 @@
 Before you can develop for the cics-deploy plugin, follow these steps to set up your environment.
 
 ## Prequisites
-[Install Zowe CLI](https://zowe.github.io/docs-site/user-guide/cli-installcli.html#methods-to-install-zowe-cli).
+[Install Zowe CLI](https://zowe.github.io/docs-site/latest/user-guide/cli-installcli.html).
 
 ## Initial setup 
 To create your development space, you will clone and build [zowe-cli-cics-deploy-plugin]() from source.
