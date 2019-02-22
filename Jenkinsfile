@@ -27,7 +27,6 @@ def PIPELINE_CONTROL = [
     unit_test: true,    
     system_test: true,
     deploy: true,
-    smoke_test: true,
     ci_skip: false ]
 
 /**
@@ -594,64 +593,6 @@ pipeline {
                                 sh "npm publish --tag latest"
                             }
                         }
-                    }
-                }
-            }
-        }
-        /************************************************************************
-         * STAGE
-         * -----
-         * Smoke Test
-         *
-         * TIMEOUT
-         * -------
-         * 5 Minutes
-         *
-         * EXECUTION CONDITIONS
-         * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
-         * - PIPELINE_CONTROL.smoke_test is true
-         * - The build is still successful and not unstable
-         *
-         * DESCRIPTION
-         * -----------
-         * Install the new pulished plugin and run some simple command to validate 
-         *
-         ************************************************************************/
-        stage('Smoke Test') {
-            when {
-                allOf {
-                    expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
-                    expression {
-                        return PIPELINE_CONTROL.smoke_test
-                    }
-                    expression {
-                        return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
-                    }
-                    expression {
-                       return BRANCH_NAME == MASTER_BRANCH
-                    }
-                }
-            }
-            steps {
-                timeout(time: 5, unit: 'MINUTES') {
-                    
-                    echo "Smoke Test"
-                    withCredentials([usernamePassword(credentialsId: ARTIFACTORY_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'API_KEY')]) {
-
-                        // Set up authentication to Artifactory
-                        sh "rm -f .npmrc"
-                        sh "npm config set registry $TEST_NPM_REGISTRY"
-                        sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
-                        sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-virtual/auth/brightside >> .npmrc'
-
-                        sh "npm whoami"
-                        sh "npm config list"
-                       
-                        sh "zowe plugins install zowe-cli-cics-deploy-plugin || cp -R /home/pipeline/.npm/_logs ."
-                        sh "zowe cics-deploy"
                     }
                 }
             }
