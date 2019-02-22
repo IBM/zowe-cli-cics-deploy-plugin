@@ -20,6 +20,8 @@ import {TestEnvironment} from "../../../__src__/environment/TestEnvironment";
 let TEST_ENVIRONMENT: ITestEnvironment;
 let TEST_APPS_DIR: string;
 let SIMPLE_TEST_APP: string;
+let NO_PACKAGE_JSON_APP: string;
+
 
 describe("cics-deploy generate bundle", () => {
 
@@ -32,6 +34,7 @@ describe("cics-deploy generate bundle", () => {
         });
         TEST_APPS_DIR = path.join(TEST_ENVIRONMENT.workingDir, "apps");
         SIMPLE_TEST_APP = path.join(TEST_APPS_DIR, "simple-node-app");
+        NO_PACKAGE_JSON_APP = path.join(TEST_APPS_DIR, "no-package-json");
     });
 
     afterAll(async () => {
@@ -46,40 +49,100 @@ describe("cics-deploy generate bundle", () => {
         fse.copySync(__dirname + "../../../../__resources__/apps", TEST_APPS_DIR);
     });
 
-    it("should generate bundle metadata in the working directory", async () => {
-        const response = await runCliScript(__dirname + "/__scripts__/generate_bundle.sh", TEST_ENVIRONMENT, [SIMPLE_TEST_APP]);
+    it("should generate a bundle using defaults from package.json", async () => {
+        await testBundleGenerateWorks([]);
+        expectFileToMatchSnapshot(path.join(SIMPLE_TEST_APP, "nodejsapps", "cics-nodejs-invoke.profile"));
+    });
+
+    it("should generate an empty bundle if no package.json present", async () => {
+        const response = await runCliScript(__dirname + "/__scripts__/generate_bundle.sh", TEST_ENVIRONMENT, [NO_PACKAGE_JSON_APP]);
 
         expect(response.stderr.toString()).toBe("");
         expect(response.status).toBe(0);
-        expectFileExistsContaining(path.join(SIMPLE_TEST_APP, "META-INF", "cics.xml"),
-                                         "name=\"cics-nodejs-invoke\"");
-
-        expectFileExistsContaining(path.join(SIMPLE_TEST_APP, "nodejsapps", "cics-nodejs-invoke.nodejsapp"),
-                                        "startscript=\"server.js\"");
+        expectFileToMatchSnapshot(path.join(NO_PACKAGE_JSON_APP, "META-INF", "cics.xml"));
+        expect(fse.existsSync(path.join(NO_PACKAGE_JSON_APP, "nodejsapps"))).toBeFalsy();
     });
-    describe.skip("permissions tests", () => {
-        it("should error nicely if it can't read the working directory", async () => {
-            fse.chmodSync(SIMPLE_TEST_APP, "300");
-            const response = await runCliScript(__dirname + "/__scripts__/generate_bundle.sh", TEST_ENVIRONMENT, [SIMPLE_TEST_APP]);
 
-            expect(response.status).toBeGreaterThan(0);
+    describe("paramters", async () => {
+        it("should customise bundle ID according to command line args", async () => {
+            await testBundleGenerateWorks(["--bundleid", "myNodeBundle"], "myNodeBundle");
         });
-        it("should error nicely if it can't write to the working directory", async () => {
-            fse.chmodSync(SIMPLE_TEST_APP, "500");
-            const response = await runCliScript(__dirname + "/__scripts__/generate_bundle.sh", TEST_ENVIRONMENT, [SIMPLE_TEST_APP]);
-
-            expect(response.status).toBeGreaterThan(0);
+        it("should customise bundle version according to command line args", async () => {
+            await testBundleGenerateWorks(["--bundleversion", "2.1.5"]);
+        });
+        it("should customise NODEJSAPP name according to command line args", async () => {
+            await testBundleGenerateWorks(["--nodejsapp", "myapp"], "myapp");
+        });
+        it("should customise NODEJSAPP name and bundle ID independently", async () => {
+            await testBundleGenerateWorks(["--bundleid", "mybundle", "--nodejsapp", "myapp"], "myapp");
+        });
+        it("should customise startscript according to args", async () => {
+            await testBundleGenerateWorks(["--startscript", "other.js"], "cics-nodejs-invoke");
         });
 
-        afterEach(() => {
-            fse.chmodSync(SIMPLE_TEST_APP, "700");
+        it("should customise port in generated profile accord to args", async () => {
+            await testBundleGenerateWorks(["--port", "12345"]);
+            expectFileToMatchSnapshot(path.join(SIMPLE_TEST_APP, "nodejsapps", "cics-nodejs-invoke.profile"));
+        });
+
+        it("should generate a bundle using values supplied when there's no package.json", async () => {
+            await testBundleGenerateWorks(["--bundleid", "mybundle", "--nodejsapp", "myapp", "--startscript", "server.js"], "myapp", NO_PACKAGE_JSON_APP);
+        });
+
+        it("should return an error if invalid bundle version is supplied", async () => {
+            await expectError(SIMPLE_TEST_APP, ["--bundleversion", "foo.bar.baz"]);
+        });
+
+        it("should mangle NODEJSAPP name supplied on command line", async () => {
+            await testBundleGenerateWorks(["--nodejsapp", "foo%€@"], "fooXXX");
+        });
+
+        it("should mangle bundle ID supplied on command line", async () => {
+            await testBundleGenerateWorks(["--bundleid", "foo%€@"], "fooXXX");
+        });
+    });
+
+    describe("package.json variations", async () => {
+        it("should mangle name supplied in package.json", async () => {
+            await testBundleGenerateWorks([], "thisisareallylongnamethatwillnee", path.join(TEST_APPS_DIR, "long-name"));
+        });
+
+        it("should error nicely if package.json is malformed", async () => {
+            const appPath = path.join(TEST_APPS_DIR, "bad-package-json");
+            await expectError(appPath);
+        });
+
+        it("should error nicely if package.json is empty", async () => {
+            const appPath = path.join(TEST_APPS_DIR, "empty-package-json");
+            await expectError(appPath);
+        });
+
+        it("should error nicely if package.json doesn't have start script or main", async () => {
+            const appPath = path.join(TEST_APPS_DIR, "minimal-package-json");
+            await expectError(appPath);
         });
     });
 });
 
-function expectFileExistsContaining(filePath: string, searchString: string) {
-    expect(fse.pathExistsSync(filePath));
+async function expectError(appPath: string, options: string[] = []) {
+    const response = await runCliScript(__dirname + "/__scripts__/generate_bundle.sh", TEST_ENVIRONMENT, [appPath].concat(options));
+    expect(fse.existsSync(path.join(appPath, "nodejsapps"))).toBeFalsy();
+    expect(response.stdout.toString()).toBe("");
+    expect(response.stderr.toString()).not.toBe("");
+    // expect(response.stderr.toString()).toBe("foo");
+    expect(response.status).toBeGreaterThan(0);
+}
+
+async function testBundleGenerateWorks(args: string[], nodejsappName = "cics-nodejs-invoke", appPath = SIMPLE_TEST_APP) {
+    const response = await runCliScript(__dirname + "/__scripts__/generate_bundle.sh", TEST_ENVIRONMENT, [appPath].concat(args));
+    expect(response.stderr.toString()).toBe("");
+    expect(response.status).toBe(0);
+    expectFileToMatchSnapshot(path.join(appPath, "META-INF", "cics.xml"));
+    expectFileToMatchSnapshot(path.join(appPath, "nodejsapps", nodejsappName + ".nodejsapp"));
+}
+
+function expectFileToMatchSnapshot(filePath: string) {
     const contents = fse.readFileSync(filePath).toString();
-    expect(contents).toMatch(searchString);
+    expect(contents).toMatchSnapshot();
 }
 
