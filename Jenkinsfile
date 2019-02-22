@@ -61,7 +61,7 @@ def UNIT_RESULTS = "${TEST_RESULTS_FOLDER}/unit"
 /**
  * The name of the master branch
  */
-def MASTER_BRANCH = "jenkins-setup"
+def MASTER_BRANCH = "master"
 
 
 /**
