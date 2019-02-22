@@ -643,7 +643,7 @@ pipeline {
 
                         // Set up authentication to Artifactory
                         sh "rm -f .npmrc"
-                        sh "echo registry=$TEST_NPM_REGISTRY >> .npmrc"
+                        sh "npm config set registry $TEST_NPM_REGISTRY"
                         sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
                         sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-virtual/auth/brightside >> .npmrc'
 
