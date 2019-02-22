@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`bundle Handler should complain with no parameter 1`] = `"Deployment NO-OP"`;
+
+exports[`bundle Handler should complain with no parameters 1`] = `"Deployment NO-OP"`;
