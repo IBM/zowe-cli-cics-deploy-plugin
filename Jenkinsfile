@@ -6,6 +6,7 @@
 * SPDX-License-Identifier: EPL-2.0                                                *
 *                                                                                 *
 * Copyright Contributors to the Zowe Project.                                     *
+* Copyright IBM Corp, 2019.
 *                                                                                 *
 */
 
@@ -23,11 +24,9 @@ def RELEASE_BRANCHES = ["master"]
  */
 def PIPELINE_CONTROL = [
     build: true,
-    unit_test: true,
+    unit_test: true,    
     system_test: true,
-    deploy: false,
-    smoke_test: false,
-    create_bundle: false,
+    deploy: true,
     ci_skip: false ]
 
 /**
@@ -42,7 +41,7 @@ def BUILD_RESULT = [
 /**
  * Test npm registry using for smoke test
  */
-def TEST_NPM_REGISTRY = "...."
+def TEST_NPM_REGISTRY = "https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-virtual"
 
 /**
  * The root results folder for items configurable by environmental variables
@@ -80,6 +79,8 @@ def PRODUCT_NAME = "zowe-cli-cics-deploy-plugin"
  * This is where the Zowe project needs to be installed
  */
 def ZOWE_CLI_INSTALL_DIR = "/.npm-global/lib/node_modules/@brightside/core"
+
+def ARTIFACTORY_CREDENTIALS_ID = "c8e3aa62-5eef-4e6b-8a3f-aa1006a7ef01"
 
 // Setup conditional build options. Would have done this in the options of the declarative pipeline, but it is pretty
 // much impossible to have conditional options based on the branch :/
@@ -198,6 +199,7 @@ pipeline {
             steps('Install Zowe CLI') {
                 timeout(time: 10, unit: 'MINUTES') {
                     echo "Install Zowe CLI globaly"
+                    sh("npm set registry https://registry.npmjs.org")
                     sh("npm set @brightside:registry https://api.bintray.com/npm/ca/brightside/")
                     sh("npm install -g @brightside/core@next")
                     sh("zowe --version")
@@ -503,49 +505,35 @@ pipeline {
          * DESCRIPTION
          * -----------
          * Bumps the pre-release version in preparation for publishing to an npm
-         * registry. It will clean out any pending changes and switch to the real
-         * branch that was published (currently the pipeline would be in a
-         * detached HEAD at the commit) before executing the npm command to bump
-         * the version.
-         *
-         * The step does checking against the commit that was checked out and
-         * the BUILD_REVISION that was retrieved earlier. If they do not match,
-         * the commit will not be pushed and the build will fail. This handles
-         * the condition where the current build made it to this step but another
-         * change had been pushed to the master branch. This means that we would
-         * have to bump the version of a future commit to the one we just built
-         * and tested, which is a big no no. A corresponding email will be sent
-         * out in this situation to explain how this condition could have occurred.
-         *
-         * OUTPUTS
-         * -------
-         * GitHub: A commit containing the bumped version in the package.json.
-         *
-         *         Commit Message:
-         *         Bumped pre-release version <VERSION_HERE> [ci skip]
+         * registry. 
          ************************************************************************/
-        // stage('Bump Version') {
-        //     when {
-        //         allOf {
-        //             expression {
-        //                 return PIPELINE_CONTROL.ci_skip == false
-        //             }
-        //             expression {
-        //                 return PIPELINE_CONTROL.deploy
-        //             }
-        //             expression {
-        //                 return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
-        //             }
-        //         }
-        //     }
-        //     steps {
-        //         timeout(time: 5, unit: 'MINUTES') {
-        //             echo "Bumping Version"
+        stage('Bump Version') {
+        when {
+                allOf {
+                    expression {
+                        return PIPELINE_CONTROL.ci_skip == false
+                    }
+                    expression {
+                        return PIPELINE_CONTROL.deploy
+                    }
+                    expression {
+                        return BRANCH_NAME == MASTER_BRANCH
+                    }
+                }
+            }
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    echo "Bumping Version"
 
-        //             echo 'Perform version bump for the branch'
-        //         }
-        //     }
-        // }
+                    // This npm command does the version bump
+                    script {
+                        def baseVersion = sh returnStdout: true, script: 'node -e "console.log(require(\'./package.json\').version.split(\'-\')[0])"'
+                        def preReleaseVersion = baseVersion.trim() + "-next." + new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("UTC"))
+                        sh "npm version ${preReleaseVersion} --no-git-tag-version"
+                    }
+                }
+            }
+        }
         /************************************************************************
          * STAGE
          * -----
@@ -570,70 +558,45 @@ pipeline {
          * -------
          * npm: A package to an npm registry
          ************************************************************************/
-        // stage('Deploy') {
-        //     when {
-        //         allOf {
-        //             expression {
-        //                 return PIPELINE_CONTROL.ci_skip == false
-        //             }
-        //             expression {
-        //                 return PIPELINE_CONTROL.deploy
-        //             }
-        //             expression {
-        //                 return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
-        //             }
-        //         }
-        //     }
-        //     steps {
-        //         timeout(time: 5, unit: 'MINUTES') {
-        //             echo 'Deploy Binary'
+        stage('Deploy') {
+            when {
+                allOf {
+                    expression {
+                        return PIPELINE_CONTROL.ci_skip == false
+                    }
+                    expression {
+                        return PIPELINE_CONTROL.deploy
+                    }
+                    expression {
+                       return BRANCH_NAME == MASTER_BRANCH
+                    }
+                }
+            }
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    echo 'Deploy Binary'
+                    withCredentials([usernamePassword(credentialsId: ARTIFACTORY_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'API_KEY')]) {
 
-        //             echo 'Perform binary deployment'
-        //         }
-        //     }
-        // }
-        /************************************************************************
-         * STAGE
-         * -----
-         * Smoke Test
-         *
-         * TIMEOUT
-         * -------
-         * 5 Minutes
-         *
-         * EXECUTION CONDITIONS
-         * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
-         * - PIPELINE_CONTROL.smoke_test is true
-         * - The build is still successful and not unstable
-         *
-         * DESCRIPTION
-         * -----------
-         * Install the new pulished plugin and run some simple command to validate 
-         *
-         ************************************************************************/
-        // stage('Smoke Test') {
-        //     when {
-        //         allOf {
-        //             expression {
-        //                 return PIPELINE_CONTROL.ci_skip == false
-        //             }
-        //             expression {
-        //                 return PIPELINE_CONTROL.smoke_test
-        //             }
-        //             expression {
-        //                 return currentBuild.resultIsBetterOrEqualTo(BUILD_RESULT.success)
-        //             }
-        //         }
-        //     }
-        //     steps {
-        //         timeout(time: 5, unit: 'MINUTES') {
-        //             echo "Smoke Test"
+                        // Set up authentication to Artifactory
+                        sh "rm -f .npmrc"
+                        sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
+                        sh "echo registry=$TEST_NPM_REGISTRY >> .npmrc"
+                        sh "echo @brightside:registry=https://api.bintray.com/npm/ca/brightside/ >> .npmrc"
+                        sh "echo @brightside:always-auth=false >> .npmrc"
 
-        //             echo 'Perform smoke test here'
-        //             echo 'Record test reports artifacts'
-        //         }
-        //     }
-        // }
+                        script {
+                            if (BRANCH_NAME == MASTER_BRANCH) {
+                                echo "publishing next to $TEST_NPM_REGISTRY"
+                                sh "npm publish --tag next"
+                            }
+                            else {
+                                echo "publishing latest to $TEST_NPM_REGISTRY"
+                                sh "npm publish --tag latest"
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
