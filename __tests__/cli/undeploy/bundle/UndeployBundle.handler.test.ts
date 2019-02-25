@@ -72,4 +72,31 @@ describe("bundle Handler", () => {
         expect(error).toBeDefined();
         expect(error).toBeInstanceOf(ImperativeError);
     });
+
+    // Note we don't need to duplicate all the input validation tests from
+    // Deploy as it's shared code. Just adding the following to ensure that
+    // code coverage is sufficient.
+
+    it("should complain with too small timeout", async () => {
+
+        let parms: IHandlerParameters;
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms.arguments.name = "WIBBLE";
+        parms.arguments.cicsplex = "Wibble";
+        parms.arguments.scope = "wibblE";
+        parms.arguments.resgroup = "wiBBle";
+        parms.arguments.timeout = 0;
+
+        let err: Error;
+        try {
+          const handler = new UndeployBundleHandler.default();
+          const params = Object.assign({}, ...[parms]);
+          await handler.process(params);
+        } catch (e) {
+            err = e;
+        }
+        expect(err).toBeDefined();
+        expect(err).toBeInstanceOf(ImperativeError);
+        expect(err.message).toContain("--timeout parameter is too small");
+    });
 });

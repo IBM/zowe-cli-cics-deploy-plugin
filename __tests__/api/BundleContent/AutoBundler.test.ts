@@ -9,9 +9,9 @@
 *
 */
 
-import { AutoBundler } from "../../src/api/AutoBundler";
+import { AutoBundler } from "../../../src/api/BundleContent/AutoBundler";
 import { IHandlerParameters } from "@brightside/imperative";
-import * as GenerateBundleDefinition from "../../src/cli/generate/bundle/GenerateBundle.definition";
+import * as GenerateBundleDefinition from "../../../src/cli/generate/bundle/GenerateBundle.definition";
 import * as fse from "fs-extra";
 
 
@@ -55,7 +55,7 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
 describe("AutoBundler01", () => {
 
     beforeAll(() => {
-        // Git does not commit empty dirs, so make they exist
+        // Git does not commit empty dirs, so make sure they exist
         fse.ensureDir("__tests__/__resources__/EmptyBundle01");
     });
 

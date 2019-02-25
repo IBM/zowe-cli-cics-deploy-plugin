@@ -9,7 +9,7 @@
 *
 */
 
-import { Manifest } from "../../src/api/Manifest";
+import { Manifest } from "../../../src/api/BundleContent/Manifest";
 describe("Manifest01", () => {
     it("should read an existing manifest", () => {
 

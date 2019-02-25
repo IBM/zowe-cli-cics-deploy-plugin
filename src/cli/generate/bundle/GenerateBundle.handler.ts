@@ -10,7 +10,7 @@
 */
 
 import { Logger, ICommandHandler, IHandlerParameters, ICommandArguments, ImperativeError } from "@brightside/imperative";
-import { AutoBundler } from "../../../api/AutoBundler";
+import { AutoBundler } from "../../../api/BundleContent/AutoBundler";
 import { BundleParentHandler } from "../../shared/BundleParent.handler";
 
 /**

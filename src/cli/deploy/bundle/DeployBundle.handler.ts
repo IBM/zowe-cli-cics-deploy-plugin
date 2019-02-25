@@ -11,6 +11,7 @@
 
 import { Logger, ICommandHandler, IHandlerParameters, ICommandArguments, ImperativeError } from "@brightside/imperative";
 import { BundleParentHandler } from "../../shared/BundleParent.handler";
+import { ParmValidator } from "../../../api/BundleDeploy/ParmValidator";
 
 /**
  * Command handler for deploying a bundle
@@ -31,6 +32,7 @@ export default class DeployBundleHandler extends BundleParentHandler implements 
      * @memberof DeployBundleHandler
      */
     public performAction(params: IHandlerParameters): string {
+       ParmValidator.validateDeploy(params);
        return "Deployment NO-OP";
     }
 }

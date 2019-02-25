@@ -11,6 +11,7 @@
 
 import { Logger, ICommandHandler, IHandlerParameters, ICommandArguments, ImperativeError } from "@brightside/imperative";
 import { BundleParentHandler } from "../../shared/BundleParent.handler";
+import { ParmValidator } from "../../../api/BundleDeploy/ParmValidator";
 
 /**
  * Command handler for undeploying a bundle
@@ -31,6 +32,7 @@ export default class UndeployBundleHandler extends BundleParentHandler implement
      * @memberof UndeployBundleHandler
      */
     public performAction(params: IHandlerParameters): string {
+       ParmValidator.validateUndeploy(params);
        return "Undeployment NO-OP";
     }
 }

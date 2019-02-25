@@ -9,7 +9,7 @@
 *
 */
 
-import { NodejsappBundlePart } from "../../src/api/NodejsappBundlePart";
+import { NodejsappBundlePart } from "../../../src/api/BundleContent/NodejsappBundlePart";
 describe("NodejsappBundlePart01", () => {
     it("Create a NodejsappBundlePart", () => {
 
