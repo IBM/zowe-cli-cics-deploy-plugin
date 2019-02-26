@@ -46,7 +46,7 @@ export abstract class BundleParentHandler implements ICommandHandler {
           logger.debug(msg);
         } catch (except) {
           // Construct an error message for the exception
-          const msg = "A failure occurred during CICS Bundle " + this.actionName + ".\n Reason = " + except.message;
+          const msg = "A failure occurred during CICS bundle " + this.actionName + ".\n Reason = " + except.message;
 
           // Log the error message to the Imperative log
           logger.error(msg);
