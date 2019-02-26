@@ -33,6 +33,7 @@ export const DeployBundleDefinition: ICommandDefinition = {
     type: "command",
     handler: __dirname + "/DeployBundle.handler",
     options: [ NameOption, BundledirOption, CicsDeployProfileOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption, TimeoutOption],
+    profile: { optional: ["cics-deploy"] },
     examples: [
         {
             description: "Deploy a CICS bundle with a specific name and location to a default set of target regions",

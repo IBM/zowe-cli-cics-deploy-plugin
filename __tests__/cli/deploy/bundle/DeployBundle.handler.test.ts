@@ -225,14 +225,13 @@ describe("bundle Handler", () => {
         expect(err).toBeInstanceOf(ImperativeError);
         expect(err.message).toContain("either --cics-deploy-profile or both --cicsplex and --scope must be set");
     });
-    it("should complain if profile and cicsplex set", async () => {
+    it("should complain if profile not found", async () => {
 
         let parms: IHandlerParameters;
         parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments["cics-deploy-profile"] = "wibble";
-        parms.arguments.cicsplex = "wibble";
 
         let err: Error;
         try {
@@ -244,50 +243,7 @@ describe("bundle Handler", () => {
         }
         expect(err).toBeDefined();
         expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("either --cics-deploy-profile or both --cicsplex and --scope must be set");
-    });
-    it("should complain if profile and scope set", async () => {
-
-        let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
-        parms.arguments.name = "WIBBLE";
-        parms.arguments.bundledir = "wibble";
-        parms.arguments["cics-deploy-profile"] = "wibble";
-        parms.arguments.scope = "wibble";
-
-        let err: Error;
-        try {
-          const handler = new DeployBundleHandler.default();
-          const params = Object.assign({}, ...[parms]);
-          await handler.process(params);
-        } catch (e) {
-            err = e;
-        }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("either --cics-deploy-profile or both --cicsplex and --scope must be set");
-    });
-    it("should complain if profile, cicsplex and scope all set", async () => {
-
-        let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
-        parms.arguments.name = "WIBBLE";
-        parms.arguments.bundledir = "wibble";
-        parms.arguments["cics-deploy-profile"] = "wibble";
-        parms.arguments.cicsplex = "wibble";
-        parms.arguments.scope = "wibble";
-
-        let err: Error;
-        try {
-          const handler = new DeployBundleHandler.default();
-          const params = Object.assign({}, ...[parms]);
-          await handler.process(params);
-        } catch (e) {
-            err = e;
-        }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("either --cics-deploy-profile or both --cicsplex and --scope must be set");
+        expect(err.message).toContain("cics-deploy-profile \"wibble\" not found");
     });
     it("should complain if profile is not a string", async () => {
 

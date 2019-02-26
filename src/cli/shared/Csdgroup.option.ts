@@ -22,7 +22,6 @@ export const CsdgroupOption: ICommandOptionDefinition = {
     aliases: ["cg"],
     type: "string",
     stringLengthRange: [1, MAX_LENGTH],
-    conflictsWith: [ "cics-deploy-profile" ],
     description: "Specifies the CSD group (up to 8 characters) for the bundle resource. If a bundle is " +
                  "deployed then a definition is added to this group; if a bundle is undeployed then the " +
                  "definition is removed from this group. The CSD group is changed for each CICS system " +

@@ -32,6 +32,7 @@ export const UndeployBundleDefinition: ICommandDefinition = {
     type: "command",
     handler: __dirname + "/UndeployBundle.handler",
     options: [ NameOption, CicsDeployProfileOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption, TimeoutOption],
+    profile: { optional: ["cics-deploy"] },
     examples: [
         {
             description: "Undeploy a CICS bundle from a default set of target regions",

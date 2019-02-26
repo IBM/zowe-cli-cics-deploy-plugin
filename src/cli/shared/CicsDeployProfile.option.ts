@@ -22,6 +22,7 @@ export const CicsDeployProfileOption: ICommandOptionDefinition = {
     absenceImplications: [ "cicsplex", "scope" ],
     description: "Specifies the profile in which the default target environment is configured. If this " +
                  "parameter is not set then the --cicsplex and --scope parameters are required, as is " +
-                 "either the --csdgroup or --resgroup parameter."
+                 "either the --csdgroup or --resgroup parameter. For assistance in creating a profile use " +
+                 "\"zowe profiles create cics-deploy-profile --help\"."
 };
 

@@ -23,7 +23,6 @@ export const ScopeOption: ICommandOptionDefinition = {
     type: "string",
     stringLengthRange: [1, MAX_LENGTH],
     impliesOneOf: ["csdgroup", "resgroup"],
-    conflictsWith: [ "cics-deploy-profile" ],
     description: "Specifies the name of the CICS System, or CICS System Group " +
                  "(up to 8 characters) to target. " +
                  "Use this parameter if you have not set the --cics-deploy-profile option."

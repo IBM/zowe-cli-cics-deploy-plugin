@@ -22,7 +22,6 @@ export const CicsplexOption: ICommandOptionDefinition = {
     aliases: ["cp"],
     type: "string",
     stringLengthRange: [1, MAX_LENGTH],
-    conflictsWith: [ "cics-deploy-profile" ],
     description: "Specifies the CICSplex (up to 8 characters) to target. " +
                  "Use this parameter if you have not set the --cics-deploy-profile option."
 };

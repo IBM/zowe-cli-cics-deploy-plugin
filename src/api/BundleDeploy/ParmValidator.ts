@@ -11,7 +11,7 @@
 
 "use strict";
 
-import { IHandlerParameters } from "@brightside/imperative";
+import { IHandlerParameters, Logger } from "@brightside/imperative";
 
 
 /**
@@ -98,18 +98,29 @@ export class ParmValidator {
       return;
     }
 
-    // if present, then CICSPlex and Scope must not be set
-    if (params.arguments.cicsplex !== undefined ||
-      params.arguments.scope !== undefined) {
-      throw new Error("either --cics-deploy-profile or both --cicsplex and --scope must be set");
-    }
-
     if (typeof params.arguments["cics-deploy-profile"] !== "string") {
       throw new Error("--cics-deploy-profile parameter is not a string");
     }
 
     if (params.arguments["cics-deploy-profile"] === "") {
       throw new Error("--cics-deploy-profile parameter is empty");
+    }
+
+    // Now check that the profile can be found
+    let prof;
+    try {
+      prof = params.profiles.get("cics-deploy");
+    }
+    catch (error) {
+      // If something goes wrong then 'prof' will remain uninitialised
+      // Note: this can be a common failure for the unit tests
+    }
+
+    // const logger = Logger.getAppLogger();
+    // logger.debug("Profile: " + JSON.stringify(prof));
+
+    if (prof === undefined) {
+      throw new Error('cics-deploy-profile "' + params.arguments["cics-deploy-profile"] + '" not found.');
     }
   }
 
