@@ -27,7 +27,7 @@ export const UndeployBundleDefinition: ICommandDefinition = {
     aliases: ["b", "bun", "bund"],
     summary: "Deploy a CICS bundle",
     description: "Undeploy a CICS bundle from a CPSM managed group of CICS regions. " +
-                 "The DFHDPLOY utility is used to undeploy and remove a Bundle resource " +
+                 "The DFHDPLOY utility is used to undeploy and remove a BUNDLE resource " +
                  "from the target group of CICS regions.",
     type: "command",
     handler: __dirname + "/UndeployBundle.handler",
