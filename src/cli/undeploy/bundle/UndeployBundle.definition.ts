@@ -11,7 +11,6 @@
 
 import { ICommandDefinition } from "@brightside/imperative";
 import { NameOption } from "../../shared/Name.option";
-import { CicsDeployProfileOption } from "../../shared/CicsDeployProfile.option";
 import { CicsplexOption } from "../../shared/Cicsplex.option";
 import { ScopeOption } from "../../shared/Scope.option";
 import { CsdgroupOption } from "../../shared/Csdgroup.option";
@@ -31,7 +30,7 @@ export const UndeployBundleDefinition: ICommandDefinition = {
                  "from the target group of CICS regions.",
     type: "command",
     handler: __dirname + "/UndeployBundle.handler",
-    options: [ NameOption, CicsDeployProfileOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption, TimeoutOption],
+    options: [ NameOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption, TimeoutOption],
     profile: { optional: ["cics-deploy"] },
     examples: [
         {

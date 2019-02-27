@@ -26,7 +26,7 @@ const DeployDefinition: ICommandDefinition = {
                  \\"A BUNDLE resource is installed and ENABLED and made AVAILABLE in the \\" +
                  \\"target CICSplex and scope.\\",
     type: \\"group\\",
-    children: [DeployBundleDefinition]
+    children: [DeployBundleDefinition],
 };
 
 export = DeployDefinition;

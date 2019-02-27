@@ -23,6 +23,8 @@ export const CicsplexOption: ICommandOptionDefinition = {
     type: "string",
     stringLengthRange: [1, MAX_LENGTH],
     description: "Specifies the CICSplex (up to 8 characters) to target. " +
-                 "Use this parameter if you have not set the --cics-deploy-profile option."
+                 "Use this parameter if you have not set the --cics-deploy-profile option. " +
+                 "For help on creating a profile issue the 'zowe profiles create cics-deploy --help' " +
+                 "command."
 };
 
