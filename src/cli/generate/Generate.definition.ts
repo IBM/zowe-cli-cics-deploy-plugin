@@ -10,7 +10,7 @@
 */
 
 import { ICommandDefinition } from "@brightside/imperative";
-import { BundleDefinition } from "./bundle/Bundle.definition";
+import { GenerateBundleDefinition } from "./bundle/GenerateBundle.definition";
 /**
  * Imperative command to "generate" a Bundle, etc.
  *
@@ -22,7 +22,7 @@ const GenerateDefinition: ICommandDefinition = {
     description: "Generate a CICS bundle and associated metadata files in the current working directory. " +
                  "This allows the application in the current working directory to be deployed to CICS.",
     type: "group",
-    children: [BundleDefinition]
+    children: [GenerateBundleDefinition]
 };
 
 export = GenerateDefinition;
