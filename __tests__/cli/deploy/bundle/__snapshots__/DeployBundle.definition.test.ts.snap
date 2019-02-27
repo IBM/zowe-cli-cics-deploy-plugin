@@ -31,7 +31,7 @@ export const DeployBundleDefinition: ICommandDefinition = {
     aliases: [\\"b\\", \\"bun\\", \\"bund\\"],
     summary: \\"Deploy a CICS bundle\\",
     description: \\"Deploy a CICS bundle from zFS to a CPSM managed group of CICS regions. \\" +
-                 \\"The DFHDPLOY utility is used to install and make available a Bundle resource \\" +
+                 \\"The DFHDPLOY utility is used to install and make available a BUNDLE resource \\" +
                  \\"in the target group of CICS regions.\\",
     type: \\"command\\",
     handler: __dirname + \\"/DeployBundle.handler\\",
