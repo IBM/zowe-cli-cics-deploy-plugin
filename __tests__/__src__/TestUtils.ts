@@ -37,7 +37,7 @@ export function runCliScript(scriptPath: string, testEnvironment: ITestEnvironme
 
         fs.chmodSync(scriptPath, "755");
         // Execute the command synchronously
-        return spawnSync(scriptPath, [].concat(args), {cwd: testEnvironment.workingDir, env: childEnv, shell: true});
+        return spawnSync(scriptPath, [].concat(args), {cwd: testEnvironment.workingDir, env: childEnv, shell: true, stdio: ["pipe", "pipe", "pipe"], windowsHide: true});
     } else {
         throw new Error(`The script file  ${scriptPath} doesn't exist`);
 

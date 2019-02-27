@@ -23,7 +23,7 @@ import { PortOption } from \\"./options/Port.option\\";
  * Imperative command for the Bundle sub-option of Generate.
  *
  */
-export const BundleDefinition: ICommandDefinition = {
+export const GenerateBundleDefinition: ICommandDefinition = {
     name: \\"bundle\\",
     aliases: [\\"b\\", \\"bun\\", \\"bund\\"],
     summary: \\"Generate a CICS bundle\\",
@@ -32,7 +32,7 @@ export const BundleDefinition: ICommandDefinition = {
                  \\"command-line options and the contents of package.json. If package.json exists, \\" +
                  \\"no options are required, but if it does not exist both --startscript and --nodejsapp are required.\\",
     type: \\"command\\",
-    handler: __dirname + \\"/Bundle.handler\\",
+    handler: __dirname + \\"/GenerateBundle.handler\\",
     options: [ BundleidOption, BundleversionOption, NodejsappOption, StartscriptOption, PortOption ],
     examples: [
         {

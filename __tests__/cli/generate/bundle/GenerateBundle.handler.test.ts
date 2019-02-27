@@ -12,8 +12,8 @@
 
 import {CheckStatus, ZosmfSession} from "@brightside/core";
 import {IHandlerParameters, Imperative, ImperativeError} from "@brightside/imperative";
-import * as BundleDefinition from "../../../../src/cli/generate/bundle/Bundle.definition";
-import * as BundleHandler from "../../../../src/cli/generate/bundle/Bundle.handler";
+import * as GenerateBundleDefinition from "../../../../src/cli/generate/bundle/GenerateBundle.definition";
+import * as GenerateBundleHandler from "../../../../src/cli/generate/bundle/GenerateBundle.handler";
 import * as fs from "fs";
 
 process.env.FORCE_COLOR = "0";
@@ -51,8 +51,8 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
             endBar: jest.fn(() => undefined)
         }
     } as any,
-    definition: BundleDefinition.BundleDefinition,
-    fullDefinition: BundleDefinition.BundleDefinition,
+    definition: GenerateBundleDefinition.GenerateBundleDefinition,
+    fullDefinition: GenerateBundleDefinition.GenerateBundleDefinition,
 };
 
 describe("bundle Handler", () => {
@@ -64,7 +64,7 @@ describe("bundle Handler", () => {
 
         let error;
         try {
-          const handler = new BundleHandler.default();
+          const handler = new GenerateBundleHandler.default();
           // The handler should succeed
           const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
           await handler.process(params);
@@ -85,7 +85,7 @@ describe("bundle Handler", () => {
 
         let error;
         try {
-          const handler = new BundleHandler.default();
+          const handler = new GenerateBundleHandler.default();
           // The handler should succeed
           const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
           await handler.process(params);
@@ -104,7 +104,7 @@ describe("bundle Handler", () => {
 
         let error;
         try {
-          const handler = new BundleHandler.default();
+          const handler = new GenerateBundleHandler.default();
           // The handler should succeed
           const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
           await handler.process(params);
@@ -124,7 +124,7 @@ describe("bundle Handler", () => {
 
         let error: Error;
         try {
-          const handler = new BundleHandler.default();
+          const handler = new GenerateBundleHandler.default();
           // The handler should succeed
           const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
           await handler.process(params);

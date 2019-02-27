@@ -9,7 +9,7 @@
 *
 */
 
-import { Bundle } from "../../src/api/Bundle";
+import { Bundle } from "../../../src/api/BundleContent/Bundle";
 describe("Bundle01", () => {
     it("should read an existing bundle", () => {
 

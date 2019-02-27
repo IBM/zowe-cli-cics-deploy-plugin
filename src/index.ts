@@ -8,8 +8,8 @@
 * Copyright IBM Corp, 2019
 *
 */
-export * from "./api/AutoBundler";
-export * from "./api/Bundle";
-export * from "./api/BundlePart";
-export * from "./api/Manifest";
-export * from "./api/NodejsappBundlePart";
+export * from "./api/BundleContent/AutoBundler";
+export * from "./api/BundleContent/Bundle";
+export * from "./api/BundleContent/BundlePart";
+export * from "./api/BundleContent/Manifest";
+export * from "./api/BundleContent/NodejsappBundlePart";
