@@ -27,11 +27,11 @@ export default class UndeployBundleHandler extends BundleParentHandler implement
      * Perform the UNDEPLOY BUNDLE action.
      *
      * @param {IHandlerParameters} params
-     * @returns {string}
+     * @returns {Promise<string>}
      * @throws ImperativeError
      * @memberof UndeployBundleHandler
      */
-    public performAction(params: IHandlerParameters): string {
+    public async performAction(params: IHandlerParameters): Promise<string> {
        ParmValidator.validateUndeploy(params);
        return "Undeployment NO-OP";
     }

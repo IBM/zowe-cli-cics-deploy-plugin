@@ -27,11 +27,11 @@ export default class GenerateBundleHandler extends BundleParentHandler implement
      * Perform the GENERATE BUNDLE action.
      *
      * @param {IHandlerParameters} params
-     * @returns {string}
+     * @returns {Promise<string>}
      * @throws ImperativeError
      * @memberof DeployBundleHandler
      */
-    public performAction(params: IHandlerParameters): string {
+    public async performAction(params: IHandlerParameters): Promise<string> {
       const autobundler = new AutoBundler(process.cwd(), params);
       if (params.arguments.nosave !== "true") {
         autobundler.save();

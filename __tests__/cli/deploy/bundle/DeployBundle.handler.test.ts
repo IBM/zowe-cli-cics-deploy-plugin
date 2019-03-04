@@ -679,4 +679,26 @@ describe("bundle Handler", () => {
         expect(err).toBeInstanceOf(ImperativeError);
         expect(err.message).toContain("--timeout parameter is too small");
     });
+    it("should complain if zosmf profile not found", async () => {
+
+        let parms: IHandlerParameters;
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms.arguments.name = "WIBBLE";
+        parms.arguments.bundledir = "wibble";
+        parms.arguments.cicsplex = "Wibble";
+        parms.arguments.scope = "wibblE";
+        parms.arguments.resgroup = "wiBBle";
+
+        let err: Error;
+        try {
+          const handler = new DeployBundleHandler.default();
+          const params = Object.assign({}, ...[parms]);
+          await handler.process(params);
+        } catch (e) {
+            err = e;
+        }
+        expect(err).toBeDefined();
+        expect(err).toBeInstanceOf(ImperativeError);
+        expect(err.message).toContain("No zosmf profile found");
+    });
 });

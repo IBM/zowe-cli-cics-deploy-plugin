@@ -32,19 +32,19 @@ export const DeployBundleDefinition: ICommandDefinition = {
     type: "command",
     handler: __dirname + "/DeployBundle.handler",
     options: [ NameOption, BundledirOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption, TimeoutOption],
-    profile: { optional: ["cics-deploy"] },
+    profile: { required: ["zosmf"], optional: ["cics-deploy"] },
     examples: [
         {
             description: "Deploy a CICS bundle with a specific name and location to a default set of target regions",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cics-deploy-profile default`
+            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cics-deploy-profile default --zosmf-profile zprof`
         },
         {
             description: "Deploy a CICS bundle, but declare a timeout should the processing take too long",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cics-deploy-profile default --timeout 60`
+            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cics-deploy-profile default --timeout 60 --zosmf-profile zprof`
         },
         {
             description: "Deploy a CICS bundle to a specific target environment",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP`
+            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP --zosmf-profile zprof`
         }
     ]
 };
