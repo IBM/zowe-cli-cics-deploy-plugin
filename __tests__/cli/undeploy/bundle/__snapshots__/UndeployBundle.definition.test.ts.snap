@@ -18,6 +18,7 @@ import { CicsplexOption } from \\"../../shared/Cicsplex.option\\";
 import { ScopeOption } from \\"../../shared/Scope.option\\";
 import { CsdgroupOption } from \\"../../shared/Csdgroup.option\\";
 import { ResgroupOption } from \\"../../shared/Resgroup.option\\";
+import { CicshlqOption } from \\"../../shared/Cicshlq.option\\";
 import { TimeoutOption } from \\"../../shared/Timeout.option\\";
 
 /**
@@ -33,20 +34,20 @@ export const UndeployBundleDefinition: ICommandDefinition = {
                  \\"from the target group of CICS regions.\\",
     type: \\"command\\",
     handler: __dirname + \\"/UndeployBundle.handler\\",
-    options: [ NameOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption, TimeoutOption],
+    options: [ NameOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption, CicshlqOption, TimeoutOption],
     profile: { required: [\\"zosmf\\"], optional: [\\"cics-deploy\\"] },
     examples: [
         {
             description: \\"Undeploy a CICS bundle from a default set of target regions\\",
-            options: \`--name EXAMPLE --cics-deploy-profile default\`
+            options: \`--name EXAMPLE --cics-deploy-profile default --zosmf-profile zprof\`
         },
         {
             description: \\"Undeploy a CICS bundle, and declare a timeout should the processing take too long\\",
-            options: \`--name EXAMPLE --cics-deploy-profile default --timeout 60\`
+            options: \`--name EXAMPLE --cics-deploy-profile default --timeout 60 --zosmf-profile zprof\`
         },
         {
             description: \\"Undeploy a CICS bundle from a specific target environment\\",
-            options: \`--name EXAMPLE --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP\`
+            options: \`--name EXAMPLE --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP --cicshlq CICSTS55.CICS --zosmf-profile zprof\`
         }
     ]
 };

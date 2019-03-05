@@ -18,7 +18,7 @@ import * as fs from "fs";
 
 process.env.FORCE_COLOR = "0";
 
-const DEFAULT_PARAMTERS: IHandlerParameters = {
+const DEFAULT_PARAMETERS: IHandlerParameters = {
     arguments: {
         $0: "bright",
         _: ["zowe-cli-cics-deploy-plugin", "deploy", "bundle"],
@@ -64,7 +64,7 @@ describe("bundle Handler", () => {
         let err: Error;
         try {
           const handler = new DeployBundleHandler.default();
-          const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
+          const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
           await handler.process(params);
         } catch (e) {
             err = e;
@@ -76,7 +76,7 @@ describe("bundle Handler", () => {
     it("should complain with invalid type for name parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = 50;
 
         let err: Error;
@@ -94,7 +94,7 @@ describe("bundle Handler", () => {
     it("should complain with overlong name parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "123456789";
 
         let err: Error;
@@ -112,7 +112,7 @@ describe("bundle Handler", () => {
     it("should complain with empty name parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "";
 
         let err: Error;
@@ -130,7 +130,7 @@ describe("bundle Handler", () => {
     it("should complain with no bundledir parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
 
         let err: Error;
@@ -148,7 +148,7 @@ describe("bundle Handler", () => {
     it("should complain with invalid type for bundledir parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = 50;
 
@@ -167,7 +167,7 @@ describe("bundle Handler", () => {
     it("should complain with overlong bundledir parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "12345678901234567890123456789012345678901234567890" +
                                     "12345678901234567890123456789012345678901234567890" +
@@ -190,7 +190,7 @@ describe("bundle Handler", () => {
     it("should complain with empty bundledir parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "";
 
@@ -209,7 +209,7 @@ describe("bundle Handler", () => {
     it("should complain if profile, cicsplex and scope not set", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
 
@@ -228,7 +228,7 @@ describe("bundle Handler", () => {
     it("should complain if profile not found", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments["cics-deploy-profile"] = "wibble";
@@ -248,7 +248,7 @@ describe("bundle Handler", () => {
     it("should complain if profile is not a string", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments["cics-deploy-profile"] = 0;
@@ -268,7 +268,7 @@ describe("bundle Handler", () => {
     it("should complain if profile is empty", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments["cics-deploy-profile"] = "";
@@ -288,7 +288,7 @@ describe("bundle Handler", () => {
     it("should complain with invalid type for cicsplex parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.scope = "Wibble";
@@ -309,7 +309,7 @@ describe("bundle Handler", () => {
     it("should complain with overlong cicsplex parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.scope = "Wibble";
@@ -330,7 +330,7 @@ describe("bundle Handler", () => {
     it("should complain with empty cicsplex parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.scope = "Wibble";
@@ -351,7 +351,7 @@ describe("bundle Handler", () => {
     it("should complain with invalid type for scope parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
@@ -372,7 +372,7 @@ describe("bundle Handler", () => {
     it("should complain with overlong scope parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
@@ -393,7 +393,7 @@ describe("bundle Handler", () => {
     it("should complain with empty scope parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
@@ -414,7 +414,7 @@ describe("bundle Handler", () => {
     it("should complain with missing csdgroup/resgroup", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
@@ -435,7 +435,7 @@ describe("bundle Handler", () => {
     it("should complain with invalid type for csdgroup parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
@@ -457,7 +457,7 @@ describe("bundle Handler", () => {
     it("should complain with overlong csdgroup parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
@@ -479,7 +479,7 @@ describe("bundle Handler", () => {
     it("should complain with empty csdgroup parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
@@ -501,7 +501,7 @@ describe("bundle Handler", () => {
     it("should complain with both csdgroup and resgroup set", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
@@ -524,7 +524,7 @@ describe("bundle Handler", () => {
     it("should complain with invalid type for resgroup parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
@@ -546,7 +546,7 @@ describe("bundle Handler", () => {
     it("should complain with overlong resgroup parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
@@ -568,7 +568,7 @@ describe("bundle Handler", () => {
     it("should complain with empty resgroup parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
@@ -590,7 +590,7 @@ describe("bundle Handler", () => {
     it("should complain with non-numeric timeout", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
@@ -613,7 +613,7 @@ describe("bundle Handler", () => {
     it("should complain with non-integer timeout", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
@@ -636,7 +636,7 @@ describe("bundle Handler", () => {
     it("should complain with too large timeout", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
@@ -659,7 +659,7 @@ describe("bundle Handler", () => {
     it("should complain with too small timeout", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
@@ -679,15 +679,107 @@ describe("bundle Handler", () => {
         expect(err).toBeInstanceOf(ImperativeError);
         expect(err.message).toContain("--timeout parameter is too small");
     });
-    it("should complain if zosmf profile not found", async () => {
+    it("should complain with no cicshlq parameter", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.bundledir = "wibble";
         parms.arguments.cicsplex = "Wibble";
         parms.arguments.scope = "wibblE";
         parms.arguments.resgroup = "wiBBle";
+
+        let err: Error;
+        try {
+          const handler = new DeployBundleHandler.default();
+          const params = Object.assign({}, ...[parms]);
+          await handler.process(params);
+        } catch (e) {
+            err = e;
+        }
+        expect(err).toBeDefined();
+        expect(err).toBeInstanceOf(ImperativeError);
+        expect(err.message).toContain("--cicshlq parameter is not set");
+    });
+    it("should complain with invalid type for cicshlq parameter", async () => {
+
+        let parms: IHandlerParameters;
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
+        parms.arguments.name = "WIBBLE";
+        parms.arguments.bundledir = "wibble";
+        parms.arguments.cicsplex = "Wibble";
+        parms.arguments.scope = "wibblE";
+        parms.arguments.resgroup = "wiBBle";
+        parms.arguments.cicshlq = 7;
+
+        let err: Error;
+        try {
+          const handler = new DeployBundleHandler.default();
+          const params = Object.assign({}, ...[parms]);
+          await handler.process(params);
+        } catch (e) {
+            err = e;
+        }
+        expect(err).toBeDefined();
+        expect(err).toBeInstanceOf(ImperativeError);
+        expect(err.message).toContain("--cicshlq parameter is not a string");
+    });
+    it("should complain with overlong cicshlq parameter", async () => {
+
+        let parms: IHandlerParameters;
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
+        parms.arguments.name = "WIBBLE";
+        parms.arguments.bundledir = "wibble";
+        parms.arguments.cicsplex = "Wibble";
+        parms.arguments.scope = "wibblE";
+        parms.arguments.resgroup = "wiBBle";
+        parms.arguments.cicshlq = "123456789012345678901234567890123456";
+
+        let err: Error;
+        try {
+          const handler = new DeployBundleHandler.default();
+          const params = Object.assign({}, ...[parms]);
+          await handler.process(params);
+        } catch (e) {
+            err = e;
+        }
+        expect(err).toBeDefined();
+        expect(err).toBeInstanceOf(ImperativeError);
+        expect(err.message).toContain("--cicshlq parameter is too long");
+    });
+    it("should complain with empty cicshlq parameter", async () => {
+
+        let parms: IHandlerParameters;
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
+        parms.arguments.name = "WIBBLE";
+        parms.arguments.bundledir = "wibble";
+        parms.arguments.cicsplex = "Wibble";
+        parms.arguments.scope = "wibblE";
+        parms.arguments.resgroup = "wiBBle";
+        parms.arguments.cicshlq = "";
+
+        let err: Error;
+        try {
+          const handler = new DeployBundleHandler.default();
+          const params = Object.assign({}, ...[parms]);
+          await handler.process(params);
+        } catch (e) {
+            err = e;
+        }
+        expect(err).toBeDefined();
+        expect(err).toBeInstanceOf(ImperativeError);
+        expect(err.message).toContain("--cicshlq parameter is empty");
+    });
+    it("should complain if zosmf profile not found", async () => {
+
+        let parms: IHandlerParameters;
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
+        parms.arguments.name = "WIBBLE";
+        parms.arguments.bundledir = "wibble";
+        parms.arguments.cicsplex = "Wibble";
+        parms.arguments.scope = "wibblE";
+        parms.arguments.resgroup = "wiBBle";
+        parms.arguments.cicshlq = "WIBB.LE";
 
         let err: Error;
         try {

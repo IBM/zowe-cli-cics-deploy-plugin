@@ -33,6 +33,7 @@ export class ParmValidator {
     ParmValidator.validateCsdgroup(params);
     ParmValidator.validateResgroup(params);
     ParmValidator.validateTimeout(params);
+    ParmValidator.validateCicshlq(params);
   }
 
   public static validateUndeploy(params: IHandlerParameters) {
@@ -45,6 +46,7 @@ export class ParmValidator {
     ParmValidator.validateCsdgroup(params);
     ParmValidator.validateResgroup(params);
     ParmValidator.validateTimeout(params);
+    ParmValidator.validateCicshlq(params);
   }
 
   private static validateName(params: IHandlerParameters) {
@@ -232,6 +234,26 @@ export class ParmValidator {
 
     if (params.arguments.timeout < 1) {
       throw new Error("--timeout parameter is too small");
+    }
+  }
+
+  private static validateCicshlq(params: IHandlerParameters) {
+    // cicshlq is mandatory
+    if (params.arguments.cicshlq === undefined) {
+      throw new Error("--cicshlq parameter is not set");
+    }
+
+    if (typeof params.arguments.cicshlq !== "string") {
+      throw new Error("--cicshlq parameter is not a string");
+    }
+
+    const MAX_LEN = 35;
+    if (params.arguments.cicshlq.length > MAX_LEN) {
+      throw new Error("--cicshlq parameter is too long");
+    }
+
+    if (params.arguments.cicshlq === "") {
+      throw new Error("--cicshlq parameter is empty");
     }
   }
 }

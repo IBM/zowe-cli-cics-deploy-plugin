@@ -12,7 +12,7 @@
 "use strict";
 
 import { IHandlerParameters, Logger, ImperativeError } from "@brightside/imperative";
-import { ZosmfSession, SubmitJobs } from "@brightside/core";
+import { ZosmfSession, SubmitJobs, List } from "@brightside/core";
 import { ParmValidator } from "./ParmValidator";
 
 /**
@@ -46,6 +46,7 @@ export class BundleDeployer {
     // Validate that the parms are valid for Deploy
     ParmValidator.validateDeploy(this.params);
 
+    // Create a zosMF session
     let zosmfProfile;
     try {
       zosmfProfile = this.params.profiles.get("zosmf");
@@ -57,13 +58,40 @@ export class BundleDeployer {
     if (zosmfProfile === undefined) {
       throw new Error("No zosmf profile found");
     }
-
-    // Create a zosMF session
     const session = ZosmfSession.createBasicZosmfSession(zosmfProfile);
 
+    // Check that the CICS dataset value looks valid and can be viewed
+    // Access errors will trigger an Exception
+    const pds = this.params.arguments.cicshlq + ".SDFHLOAD";
+    let listResp;
+    try {
+      listResp = await List.allMembers(session, pds, {});
+    }
+    catch (error) {
+      throw new Error("Validation of --cicshlq dataset failed: " + error.message);
+    }
+    if (JSON.stringify(listResp).indexOf("DFHDPLOY") === -1) {
+      throw new Error("DFHDPLOY not found in SDFHLOAD within the --cicshlq dataset: " + pds);
+    }
+
     // Submit some JCL
-    await SubmitJobs.submitJclString(session, "test", { jclSource: "" });
+    // await SubmitJobs.submitJclString(session, this.getJCL(), { jclSource: "" });
 
     return "Deployment NO-OP";
+  }
+
+  // yeah, I know... this JCL runs a trace job. I'm just playing
+  public getJCL(): string {
+    return "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X\n" +
+           "//DFHDPLOY EXEC PGM=DFHTU730,REGION=3000K\n" +
+           "//** Use one of the following stream names  INTEGRAT|BSF|INCnn|INCCUR\n" +
+           "// SET STREAM=INTEGRAT\n" +
+           "//STEPLIB  DD DISP=SHR,DSN=ANTZ.CICS.TS.DEV.&STREAM..SDFHLOAD\n" +
+           "//DFHAUXT  DD DSN=P9COOPR.CICSP2.RHOB.AUXA,DISP=SHR\n" +
+           "//DFHAXPRT DD SYSOUT=A\n" +
+           "//SYSABEND DD SYSOUT=A\n" +
+           "//DFHAXPRM DD *\n" +
+           "FULL\n" +
+           "//\n";
   }
 }

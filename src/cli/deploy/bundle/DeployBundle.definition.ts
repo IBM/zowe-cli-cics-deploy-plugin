@@ -16,6 +16,7 @@ import { CicsplexOption } from "../../shared/Cicsplex.option";
 import { ScopeOption } from "../../shared/Scope.option";
 import { CsdgroupOption } from "../../shared/Csdgroup.option";
 import { ResgroupOption } from "../../shared/Resgroup.option";
+import { CicshlqOption } from "../../shared/Cicshlq.option";
 import { TimeoutOption } from "../../shared/Timeout.option";
 
 /**
@@ -31,7 +32,7 @@ export const DeployBundleDefinition: ICommandDefinition = {
                  "in the target group of CICS regions.",
     type: "command",
     handler: __dirname + "/DeployBundle.handler",
-    options: [ NameOption, BundledirOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption, TimeoutOption],
+    options: [ NameOption, BundledirOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption, CicshlqOption, TimeoutOption],
     profile: { required: ["zosmf"], optional: ["cics-deploy"] },
     examples: [
         {
@@ -44,7 +45,8 @@ export const DeployBundleDefinition: ICommandDefinition = {
         },
         {
             description: "Deploy a CICS bundle to a specific target environment",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP --zosmf-profile zprof`
+            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP ` +
+                     `--cicshlq CICSTS55.CICS --zosmf-profile zprof`
         }
     ]
 };

@@ -13,6 +13,7 @@
 import {IImperativeConfig} from "@brightside/imperative";
 
 const MAX_LENGTH = 8;
+const MAX_HLQ_LENGTH = 35;
 
 const config: IImperativeConfig = {
     commandModuleGlobs: ["**/cli/*/*.definition!(.d).*s"],
@@ -78,6 +79,18 @@ const config: IImperativeConfig = {
                 aliases: ["rg"],
                 stringLengthRange: [1, MAX_LENGTH],
                 conflictsWith: [ "csdgroup" ],
+              },
+              type: "string"
+            },
+            cicshlq: {
+              optionDefinition: {
+                description: "Specifies the High Level Qualifier (up to 35 characters) at which the CICS installation " +
+                             "datasets can be found in the target environment.",
+                type: "string",
+                name: "cicshlq",
+                aliases: ["hlq"],
+                stringLengthRange: [1, MAX_HLQ_LENGTH],
+                required: true
               },
               type: "string"
             }
