@@ -75,18 +75,16 @@ export class BundleDeployer {
     }
 
     // Submit some JCL
-    // await SubmitJobs.submitJclString(session, this.getJCL(), { jclSource: "" });
+    // await SubmitJobs.submitJclString(session, this.getJCL(pds, this.params.arguments.jobcard), { jclSource: "" });
 
     return "Deployment NO-OP";
   }
 
   // yeah, I know... this JCL runs a trace job. I'm just playing
-  public getJCL(): string {
-    return "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X\n" +
+  public getJCL(cicspds: string, jobcard: string): string {
+    return jobcard + "\n" +
            "//DFHDPLOY EXEC PGM=DFHTU730,REGION=3000K\n" +
-           "//** Use one of the following stream names  INTEGRAT|BSF|INCnn|INCCUR\n" +
-           "// SET STREAM=INTEGRAT\n" +
-           "//STEPLIB  DD DISP=SHR,DSN=ANTZ.CICS.TS.DEV.&STREAM..SDFHLOAD\n" +
+           "//STEPLIB  DD DISP=SHR,DSN=" + cicspds + "\n" +
            "//DFHAUXT  DD DSN=P9COOPR.CICSP2.RHOB.AUXA,DISP=SHR\n" +
            "//DFHAXPRT DD SYSOUT=A\n" +
            "//SYSABEND DD SYSOUT=A\n" +

@@ -680,36 +680,13 @@ describe("bundle Handler", () => {
         expect(err.message).toContain("--timeout parameter is too small");
     });
     it("should complain with no cicshlq parameter", async () => {
-
-        let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
-        parms.arguments.name = "WIBBLE";
-        parms.arguments.bundledir = "wibble";
-        parms.arguments.cicsplex = "Wibble";
-        parms.arguments.scope = "wibblE";
-        parms.arguments.resgroup = "wiBBle";
-
-        let err: Error;
-        try {
-          const handler = new DeployBundleHandler.default();
-          const params = Object.assign({}, ...[parms]);
-          await handler.process(params);
-        } catch (e) {
-            err = e;
-        }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--cicshlq parameter is not set");
+        await testHLQError(undefined, "--cicshlq parameter is not set");
     });
     it("should complain with invalid type for cicshlq parameter", async () => {
 
         let parms: IHandlerParameters;
         parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
-        parms.arguments.name = "WIBBLE";
-        parms.arguments.bundledir = "wibble";
-        parms.arguments.cicsplex = "Wibble";
-        parms.arguments.scope = "wibblE";
-        parms.arguments.resgroup = "wiBBle";
+        setCommonParmsForHLQTests(parms);
         parms.arguments.cicshlq = 7;
 
         let err: Error;
@@ -725,38 +702,20 @@ describe("bundle Handler", () => {
         expect(err.message).toContain("--cicshlq parameter is not a string");
     });
     it("should complain with overlong cicshlq parameter", async () => {
-
-        let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
-        parms.arguments.name = "WIBBLE";
-        parms.arguments.bundledir = "wibble";
-        parms.arguments.cicsplex = "Wibble";
-        parms.arguments.scope = "wibblE";
-        parms.arguments.resgroup = "wiBBle";
-        parms.arguments.cicshlq = "123456789012345678901234567890123456";
-
-        let err: Error;
-        try {
-          const handler = new DeployBundleHandler.default();
-          const params = Object.assign({}, ...[parms]);
-          await handler.process(params);
-        } catch (e) {
-            err = e;
-        }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--cicshlq parameter is too long");
+        await testHLQError("123456789012345678901234567890123456", "--cicshlq parameter is too long");
     });
     it("should complain with empty cicshlq parameter", async () => {
+        await testHLQError("", "--cicshlq parameter is empty");
+    });
+    it("should complain with no jobcard parameter", async () => {
+        await testJobcardError(undefined, "--jobcard parameter is not set");
+    });
+    it("should complain with invalid type for jobcard parameter", async () => {
 
         let parms: IHandlerParameters;
         parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
-        parms.arguments.name = "WIBBLE";
-        parms.arguments.bundledir = "wibble";
-        parms.arguments.cicsplex = "Wibble";
-        parms.arguments.scope = "wibblE";
-        parms.arguments.resgroup = "wiBBle";
-        parms.arguments.cicshlq = "";
+        setCommonParmsForJobcardTests(parms);
+        parms.arguments.jobcard = 5.1;
 
         let err: Error;
         try {
@@ -768,18 +727,29 @@ describe("bundle Handler", () => {
         }
         expect(err).toBeDefined();
         expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--cicshlq parameter is empty");
+        expect(err.message).toContain("--jobcard parameter is not a string");
+    });
+    it("should complain with empty jobcard parameter", async () => {
+        await testJobcardError("", "--jobcard parameter is empty");
+    });
+    it("should complain if jobcard doesn't start //", async () => {
+        await testJobcardError("wibble", "--jobcard parameter does not start with //");
+    });
+    it("should complain if jobname too long", async () => {
+        await testJobcardError("//123456789", "--jobcard parameter does not start with a suitable jobname: '//123456789 '");
+    });
+    it("should complain if jobname too short", async () => {
+        await testJobcardError("//", "--jobcard parameter does not start with a suitable jobname: '// '");
+    });
+    it("should complain if jobcard omits JOB ", async () => {
+        await testJobcardError("//wibble boj", "--jobcard parameter does not have JOB keyword after the jobname. Expected 'JOB' but found 'boj'");
     });
     it("should complain if zosmf profile not found", async () => {
 
         let parms: IHandlerParameters;
         parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
-        parms.arguments.name = "WIBBLE";
-        parms.arguments.bundledir = "wibble";
-        parms.arguments.cicsplex = "Wibble";
-        parms.arguments.scope = "wibblE";
-        parms.arguments.resgroup = "wiBBle";
-        parms.arguments.cicshlq = "WIBB.LE";
+        setCommonParmsForJobcardTests(parms);
+        parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT";
 
         let err: Error;
         try {
@@ -794,3 +764,55 @@ describe("bundle Handler", () => {
         expect(err.message).toContain("No zosmf profile found");
     });
 });
+
+
+function setCommonParmsForHLQTests(parms: IHandlerParameters) {
+  parms.arguments.name = "WIBBLE";
+  parms.arguments.bundledir = "wibble";
+  parms.arguments.cicsplex = "Wibble";
+  parms.arguments.scope = "wibblE";
+  parms.arguments.resgroup = "wiBBle";
+}
+
+async function testHLQError(cicshlq: string, result: string) {
+  let parms: IHandlerParameters;
+  parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
+  setCommonParmsForJobcardTests(parms);
+  parms.arguments.cicshlq = cicshlq;
+
+  let err: Error;
+  try {
+    const handler = new DeployBundleHandler.default();
+    const params = Object.assign({}, ...[parms]);
+    await handler.process(params);
+  } catch (e) {
+    err = e;
+  }
+  expect(err).toBeDefined();
+  expect(err).toBeInstanceOf(ImperativeError);
+  expect(err.message).toContain(result);
+}
+
+function setCommonParmsForJobcardTests(parms: IHandlerParameters) {
+  setCommonParmsForHLQTests(parms);
+  parms.arguments.cicshlq = "WIBB.LE";
+}
+
+async function testJobcardError(jobcard: string, result: string) {
+  let parms: IHandlerParameters;
+  parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
+  setCommonParmsForJobcardTests(parms);
+  parms.arguments.jobcard = jobcard;
+
+  let err: Error;
+  try {
+    const handler = new DeployBundleHandler.default();
+    const params = Object.assign({}, ...[parms]);
+    await handler.process(params);
+  } catch (e) {
+    err = e;
+  }
+  expect(err).toBeDefined();
+  expect(err).toBeInstanceOf(ImperativeError);
+  expect(err.message).toContain(result);
+}

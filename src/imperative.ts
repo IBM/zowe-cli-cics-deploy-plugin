@@ -84,7 +84,7 @@ const config: IImperativeConfig = {
             },
             cicshlq: {
               optionDefinition: {
-                description: "Specifies the High Level Qualifier (up to 35 characters) at which the CICS installation " +
+                description: "Specifies the High Level Qualifier (up to 35 characters) at which the CICS " +
                              "datasets can be found in the target environment.",
                 type: "string",
                 name: "cicshlq",
@@ -93,9 +93,20 @@ const config: IImperativeConfig = {
                 required: true
               },
               type: "string"
+            },
+            jobcard: {
+              optionDefinition: {
+                description: "Specifies the job card to use with any generated DFHDPLOY JCL.",
+                type: "string",
+                name: "jobcard",
+                defaultValue: "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT",
+                aliases: ["jc"],
+                required: true
+              },
+              type: "string"
             }
           },
-          required: ["cicsplex", "scope"]
+          required: ["cicsplex", "scope", "cicshlq", "jobcard"]
         }
       }
     ]

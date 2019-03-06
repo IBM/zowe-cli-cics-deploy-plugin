@@ -17,6 +17,7 @@ import { ScopeOption } from "../../shared/Scope.option";
 import { CsdgroupOption } from "../../shared/Csdgroup.option";
 import { ResgroupOption } from "../../shared/Resgroup.option";
 import { CicshlqOption } from "../../shared/Cicshlq.option";
+import { JobcardOption } from "../../shared/Jobcard.option";
 import { TimeoutOption } from "../../shared/Timeout.option";
 
 /**
@@ -32,19 +33,20 @@ export const DeployBundleDefinition: ICommandDefinition = {
                  "in the target group of CICS regions.",
     type: "command",
     handler: __dirname + "/DeployBundle.handler",
-    options: [ NameOption, BundledirOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption, CicshlqOption, TimeoutOption],
+    options: [ NameOption, BundledirOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption,
+               CicshlqOption, JobcardOption, TimeoutOption],
     profile: { required: ["zosmf"], optional: ["cics-deploy"] },
     examples: [
         {
             description: "Deploy a CICS bundle with a specific name and location to a default set of target regions",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cics-deploy-profile default --zosmf-profile zprof`
+            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cics-deploy-profile default`
         },
         {
             description: "Deploy a CICS bundle, but declare a timeout should the processing take too long",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cics-deploy-profile default --timeout 60 --zosmf-profile zprof`
+            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cics-deploy-profile default --timeout 60`
         },
         {
-            description: "Deploy a CICS bundle to a specific target environment",
+            description: "Deploy a CICS bundle to a specific target environment using a specific zosmf profile",
             options: `--name EXAMPLE --bundledir /u/example/bundleDir --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP ` +
                      `--cicshlq CICSTS55.CICS --zosmf-profile zprof`
         }

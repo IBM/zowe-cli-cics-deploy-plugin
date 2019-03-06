@@ -13,13 +13,6 @@
 
 import { IHandlerParameters, Logger } from "@brightside/imperative";
 
-
-/**
- * Class to represent a CICS Bundle manifest.
- *
- * @export
- * @class Manifest
- */
 export class ParmValidator {
 
   public static validateDeploy(params: IHandlerParameters) {
@@ -34,6 +27,7 @@ export class ParmValidator {
     ParmValidator.validateResgroup(params);
     ParmValidator.validateTimeout(params);
     ParmValidator.validateCicshlq(params);
+    ParmValidator.validateJobcard(params);
   }
 
   public static validateUndeploy(params: IHandlerParameters) {
@@ -47,6 +41,7 @@ export class ParmValidator {
     ParmValidator.validateResgroup(params);
     ParmValidator.validateTimeout(params);
     ParmValidator.validateCicshlq(params);
+    ParmValidator.validateJobcard(params);
   }
 
   private static validateName(params: IHandlerParameters) {
@@ -254,6 +249,48 @@ export class ParmValidator {
 
     if (params.arguments.cicshlq === "") {
       throw new Error("--cicshlq parameter is empty");
+    }
+  }
+
+  private static validateJobcard(params: IHandlerParameters) {
+    // jobcard is mandatory
+    if (params.arguments.jobcard === undefined) {
+      throw new Error("--jobcard parameter is not set");
+    }
+
+    if (typeof params.arguments.jobcard !== "string") {
+      throw new Error("--jobcard parameter is not a string");
+    }
+
+    if (params.arguments.jobcard === "") {
+      throw new Error("--jobcard parameter is empty");
+    }
+
+    // split the jobcard into a comma separated list
+    const jobcardParts = params.arguments.jobcard.split(",");
+    const firstPart = jobcardParts[0].trim();
+
+    // check that it starts with '//'
+    if (firstPart.indexOf("//") !== 0) {
+      throw new Error("--jobcard parameter does not start with //");
+    }
+
+    // split the first section of the jobcard into chunks
+    // e.g. //DFHDPLOY JOB EXAMPLE,
+    const firstPartParts = firstPart.split(" ");
+
+    // check the initial word is max 10 chars long, eg //DFHDPLOY
+    const jobname = firstPartParts[0].trim();
+    const MAX_JOBNAME = 10;
+    const MIN_JOBNAME = 3;
+    if (jobname.length > MAX_JOBNAME || jobname.length < MIN_JOBNAME) {
+      throw new Error("--jobcard parameter does not start with a suitable jobname: '" + jobname + " '");
+    }
+
+    // check the second word is 'JOB'
+    const jobkeyword = firstPartParts[1].trim();
+    if (jobkeyword !== "JOB") {
+      throw new Error("--jobcard parameter does not have JOB keyword after the jobname. Expected 'JOB' but found '" + jobkeyword + "'");
     }
   }
 }

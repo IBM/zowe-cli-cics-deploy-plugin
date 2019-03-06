@@ -21,9 +21,9 @@ export const CicshlqOption: ICommandOptionDefinition = {
     name: "cicshlq",
     aliases: ["hlq"],
     type: "string",
-    required: true,
+    required: false,
     stringLengthRange: [1, MAX_LENGTH],
-    description: "Specifies the High Level Qualifier (up to 35 characters) at which the CICS installation " +
+    description: "Specifies the High Level Qualifier (up to 35 characters) at which the CICS " +
                  "datasets can be found in the target environment. Use this parameter if you have not set " +
                  "the --cics-deploy-profile option."
 };
