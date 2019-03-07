@@ -45,7 +45,7 @@ export const UndeployBundleDefinition: ICommandDefinition = {
         },
         {
             description: "Undeploy a CICS bundle from a specific target environment using a specific zosmf profile",
-            options: `--name EXAMPLE --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP --cicshlq CICSTS55.CICS --zosmf-profile zprof`
+            options: `--name EXAMPLE --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP --cicshlq CICSTS55 --zosmf-profile zprof`
         }
     ]
 };
