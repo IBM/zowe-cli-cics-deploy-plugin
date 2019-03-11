@@ -104,14 +104,7 @@ export class ParmValidator {
     }
 
     // Now check that the profile can be found
-    let prof;
-    try {
-      prof = params.profiles.get("cics-deploy");
-    }
-    catch (error) {
-      // If something goes wrong then 'prof' will remain uninitialised
-      // Note: this can be a common failure for the unit tests
-    }
+    const prof = params.profiles.get("cics-deploy");
 
     // const logger = Logger.getAppLogger();
     // logger.debug("Profile: " + JSON.stringify(prof));

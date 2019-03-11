@@ -4,6 +4,8 @@ The cics-deploy plugin for Zowe CLI is used to generate IBM CICS Bundles from No
 
 CICS TS V5.5 supports the Node.js programming language, Node.js applications can be deployed to CICS as Bundle resources which will run within the CICS address space. For further information on Node.js in CICS see [CICS and Node.js](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.5.0/fundamentals/node/nodeintro.html). The cics-deploy plugin to Zowe CLI enables a Node.js application developer to construct the metadata files that form a Bundle using a command line on their workstation; the generated Bundle metadata might then be stored under Source Control along with the rest of the application, the entire Bundle might be deployed to CICS, or both.
 
+The bundle can then be uploaded to z/OS and deployed to a target CICS environment.
+
 # Table of Contents
 1. [Dependencies](#dependencies)
 2. [Installation](#installation)

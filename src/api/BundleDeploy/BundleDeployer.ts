@@ -166,14 +166,8 @@ export class BundleDeployer {
 
   private createZosMFSession(): Session {
     // Create a zosMF session
-    let zosmfProfile;
-    try {
-      zosmfProfile = this.params.profiles.get("zosmf");
-    }
-    catch (error) {
-      // Unit tests tend to cause an exception here
-      throw new Error("No zosmf profile found");
-    }
+    const zosmfProfile = this.params.profiles.get("zosmf");
+
     if (zosmfProfile === undefined) {
       throw new Error("No zosmf profile found");
     }
