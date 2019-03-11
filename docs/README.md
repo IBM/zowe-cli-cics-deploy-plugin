@@ -8,8 +8,8 @@ CICS TS V5.5 supports the Node.js programming language, Node.js applications can
 1. [Dependencies](#dependencies)
 2. [Installation](#installation)
 3. [Generating a CICS Bundle](#generation)
-        1. [Usage examples](#genuse)
-        2. [Bundle metadata](#metadata)
+3.1. [Usage examples](#genuse)
+3.2. [Bundle metadata](#metadata)
 4. [Deploying a CICS Bundle](#deploying)
 5. [Undeploying a CICS Bundle](#undeploying)
 6. [Contributing](#contributing)
@@ -108,11 +108,11 @@ The cics-deploy extensions to Zowe CLI provide a mechanism by which the CICS DFH
 4. The High Level Qualifier (HLQ) for the CICS datasets in the target environment.
 5. An up to 8 character name for the Bundle resource which is unique within the target CICS regions.
 
-If you have not already done so, start by creating a zosmf profile in Zowe CLI. This profile will identify the target z/OS environment; you will need to know the hostname and port number for the z/OSMF server in your target environment, together with your user name and password. If you only create a single such profile then it will be used as the default z/OS configuration for any further zowe interactions. For further assistance on creating a z/OSMF issue the following command:
+If you have not already done so, start by creating a zosmf profile in Zowe CLI. This profile will identify the target z/OS environment; you will need to know the hostname and port number for the z/OSMF server in your target environment, together with your user name and password. If you only create a single such profile then it will be used as the default z/OS configuration for any further zowe interactions. For further assistance on creating a z/OSMF profile issue the following command:
 
   `zowe profiles create zosmf-profile --help`
 
-Now create a cics-deploy profile. This profile will identify the target CICS environment for deployment; you will need to know the CICSplex name and Scope, together with the High Level Qualifier (HLQ) for the CICS data sets. You will also have to identify either a target CSD group (typically used for single region configurations) or a BAS resource group (used for multi-region configurations) into which the Bundle will be defined. You may optionally configure a JCL jobcard if your site requires a customised JCL configuration for DFHDPLOY. For further assistance on creating a cics-deploy issue the following command:
+Now create a cics-deploy profile. This profile will identify the target CICS environment for deployment; you will need to know the CICSplex name and Scope, together with the High Level Qualifier (HLQ) for the CICS data sets. You will also have to identify either a target CSD group (typically used for single region configurations) or a BAS resource group (used for multi-region configurations) into which the Bundle will be defined. You may optionally configure a JCL jobcard if your site requires a customised JCL configuration for DFHDPLOY. For further assistance on creating a cics-deploy profile issue the following command:
 
   `zowe profiles create cics-deploy-profile --help`
 
@@ -124,7 +124,7 @@ You can now use cics-deploy to deploy a Bundle. You will need to know the name t
 
   `zowe cics-deploy deploy bundle --name MYBUND01 --bundledir /u/example/bundles/MyBundle01 --cics-deploy-profile example`
 
-The above command will attempt to define and install a CICS Bundle named MYBUND01 from the specified location (bundledir) within the target z/OS environment, using the default z/OSMF configuration and the CICS configuration defined in the `example` cics-deploy profile. For further assistance on the `deploy bundle` issue the following command:
+The above command will attempt to define and install a CICS Bundle named MYBUND01 from the specified location (bundledir) within the target z/OS environment, using the default z/OSMF configuration and the CICS configuration defined in the `example` cics-deploy profile. For further assistance on `deploy bundle` issue the following command:
 
   `zowe cics-deploy deploy bundle --help`
 
@@ -135,7 +135,7 @@ Undeploying a Bundle removes it from a target CICS environment. The undeployment
 
   `zowe cics-deploy undeploy bundle --name MYBUND01 --cics-deploy-profile example`
 
-The above command will attempt to disable and discard a CICS Bundle named MYBUND01, using the default z/OSMF configuration and the CICS configuration defined in the `example` cics-deploy profile. For further assistance on the `undeploy bundle` issue the following command:
+The above command will attempt to disable and discard a CICS Bundle named MYBUND01, using the default z/OSMF configuration and the CICS configuration defined in the `example` cics-deploy profile. For further assistance on `undeploy bundle` issue the following command:
 
   `zowe cics-deploy undeploy bundle --help`
 
