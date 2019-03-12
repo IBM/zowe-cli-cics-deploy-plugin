@@ -65,7 +65,7 @@ exports[`cics-deploy generate bundle paramters should customise port in generate
 
 # Import the provisioned configuration file for this NODEJSAPP,
 # this file must be created before this Bundle can be installed in CICS
-INCLUDE=&CONFIGROOT;/nodejsapps/cics-nodejs-invoke.included.profile
+INCLUDE=&USSCONFIG;/nodejsapps/cics-nodejs-invoke.included.profile
 
 # Set the PORT envionment variable, application code should reference this
 # value in preference to a hard-coded port number, the value references an
@@ -129,7 +129,7 @@ exports[`cics-deploy generate bundle should generate a bundle using defaults fro
 
 # Import the provisioned configuration file for this NODEJSAPP,
 # this file must be created before this Bundle can be installed in CICS
-INCLUDE=&CONFIGROOT;/nodejsapps/cics-nodejs-invoke.included.profile
+INCLUDE=&USSCONFIG;/nodejsapps/cics-nodejs-invoke.included.profile
 
 # Set the PORT envionment variable, application code should reference this
 # value in preference to a hard-coded port number, the value references an

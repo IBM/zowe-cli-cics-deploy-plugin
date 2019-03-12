@@ -189,7 +189,7 @@ export class NodejsappBundlePart extends BundlePart {
        os.EOL +
        "# Import the provisioned configuration file for this NODEJSAPP," + os.EOL +
        "# this file must be created before this Bundle can be installed in CICS" + os.EOL +
-       "INCLUDE=&CONFIGROOT;/nodejsapps/" + this.getPartData().name + ".included.profile" + os.EOL +
+       "INCLUDE=&USSCONFIG;/nodejsapps/" + this.getPartData().name + ".included.profile" + os.EOL +
        os.EOL +
        "# Set the PORT envionment variable, application code should reference this" + os.EOL +
        "# value in preference to a hard-coded port number, the value references an" + os.EOL +
