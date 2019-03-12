@@ -288,12 +288,12 @@ describe("bundle Handler", () => {
         await testTimeoutError(0, "--timeout parameter is too small");
     });
     it("should complain with no cicshlq parameter", async () => {
-        await testHLQError(undefined, "--cicshlq parameter is not set");
+        await testCicsHLQError(undefined, "--cicshlq parameter is not set");
     });
     it("should complain with invalid type for cicshlq parameter", async () => {
 
         const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-        setCommonParmsForHLQTests(params);
+        setCommonParmsForCicsHLQTests(params);
         params.arguments.cicshlq = 7;
 
         let err: Error;
@@ -308,10 +308,36 @@ describe("bundle Handler", () => {
         expect(err.message).toContain("--cicshlq parameter is not a string");
     });
     it("should complain with overlong cicshlq parameter", async () => {
-        await testHLQError("123456789012345678901234567890123456", "--cicshlq parameter is too long");
+        await testCicsHLQError("123456789012345678901234567890123456", "--cicshlq parameter is too long");
     });
     it("should complain with empty cicshlq parameter", async () => {
-        await testHLQError("", "--cicshlq parameter is empty");
+        await testCicsHLQError("", "--cicshlq parameter is empty");
+    });
+    it("should complain with no cpsmhlq parameter", async () => {
+        await testCpsmHLQError(undefined, "--cpsmhlq parameter is not set");
+    });
+    it("should complain with invalid type for cpsmhlq parameter", async () => {
+
+        const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+        setCommonParmsForCpsmHLQTests(params);
+        params.arguments.cpsmhlq = 7;
+
+        let err: Error;
+        try {
+          const handler = new DeployBundleHandler.default();
+          await handler.process(params);
+        } catch (e) {
+            err = e;
+        }
+        expect(err).toBeDefined();
+        expect(err).toBeInstanceOf(ImperativeError);
+        expect(err.message).toContain("--cpsmhlq parameter is not a string");
+    });
+    it("should complain with overlong cpsmhlq parameter", async () => {
+        await testCpsmHLQError("123456789012345678901234567890123456", "--cpsmhlq parameter is too long");
+    });
+    it("should complain with empty cpsmhlq parameter", async () => {
+        await testCpsmHLQError("", "--cpsmhlq parameter is empty");
     });
     it("should complain with no jobcard parameter", async () => {
         await testJobcardError(undefined, "--jobcard parameter is not set");
@@ -377,6 +403,7 @@ function setCommonParmsForNameTests(parms: IHandlerParameters) {
   parms.arguments.csdgroup = undefined;
   parms.arguments.timeout = undefined;
   parms.arguments.cicshlq = undefined;
+  parms.arguments.cpsmhlq = undefined;
 }
 
 async function testNameError(name: string, result: string) {
@@ -406,6 +433,7 @@ function setCommonParmsForBundledirTests(parms: IHandlerParameters) {
   parms.arguments.csdgroup = undefined;
   parms.arguments.timeout = undefined;
   parms.arguments.cicshlq = undefined;
+  parms.arguments.cpsmhlq = undefined;
 }
 
 async function testBundledirError(bundledir: string, result: string) {
@@ -435,6 +463,7 @@ function setCommonParmsForProfileTests(parms: IHandlerParameters) {
   parms.arguments.csdgroup = undefined;
   parms.arguments.timeout = undefined;
   parms.arguments.cicshlq = undefined;
+  parms.arguments.cpsmhlq = undefined;
 }
 
 async function testProfileError(profile: string, result: string) {
@@ -464,6 +493,7 @@ function setCommonParmsForCicsplexTests(parms: IHandlerParameters) {
   parms.arguments.csdgroup = undefined;
   parms.arguments.timeout = undefined;
   parms.arguments.cicshlq = undefined;
+  parms.arguments.cpsmhlq = undefined;
 }
 
 async function testCicsplexError(cicsplex: string, result: string) {
@@ -493,6 +523,7 @@ function setCommonParmsForScopeTests(parms: IHandlerParameters) {
   parms.arguments.csdgroup = undefined;
   parms.arguments.timeout = undefined;
   parms.arguments.cicshlq = undefined;
+  parms.arguments.cpsmhlq = undefined;
 }
 
 async function testScopeError(scope: string, result: string) {
@@ -522,6 +553,7 @@ function setCommonParmsForCsdgroupTests(parms: IHandlerParameters) {
   parms.arguments.csdgroup = undefined;
   parms.arguments.timeout = undefined;
   parms.arguments.cicshlq = undefined;
+  parms.arguments.cpsmhlq = undefined;
 }
 
 async function testCsdgroupError(csdgroup: string, result: string) {
@@ -551,6 +583,7 @@ function setCommonParmsForResgroupTests(parms: IHandlerParameters) {
   parms.arguments.csdgroup = undefined;
   parms.arguments.timeout = undefined;
   parms.arguments.cicshlq = undefined;
+  parms.arguments.cpsmhlq = undefined;
 }
 
 async function testResgroupError(resgroup: string, result: string) {
@@ -580,6 +613,7 @@ function setCommonParmsForTimeoutTests(parms: IHandlerParameters) {
   parms.arguments.csdgroup = undefined;
   parms.arguments.timeout = undefined;
   parms.arguments.cicshlq = undefined;
+  parms.arguments.cpsmhlq = undefined;
 }
 
 async function testTimeoutError(timeout: number, result: string) {
@@ -599,7 +633,7 @@ async function testTimeoutError(timeout: number, result: string) {
   expect(err.message).toContain(result);
 }
 
-function setCommonParmsForHLQTests(parms: IHandlerParameters) {
+function setCommonParmsForCicsHLQTests(parms: IHandlerParameters) {
   parms.arguments.name = "WIBBLE";
   parms.arguments.bundledir = "wibble";
   parms.arguments["cics-deploy-profile"] = undefined;
@@ -609,11 +643,12 @@ function setCommonParmsForHLQTests(parms: IHandlerParameters) {
   parms.arguments.csdgroup = undefined;
   parms.arguments.timeout = undefined;
   parms.arguments.cicshlq = undefined;
+  parms.arguments.cpsmhlq = undefined;
 }
 
-async function testHLQError(cicshlq: string, result: string) {
+async function testCicsHLQError(cicshlq: string, result: string) {
   const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  setCommonParmsForHLQTests(params);
+  setCommonParmsForCicsHLQTests(params);
   params.arguments.cicshlq = cicshlq;
 
   let err: Error;
@@ -628,9 +663,39 @@ async function testHLQError(cicshlq: string, result: string) {
   expect(err.message).toContain(result);
 }
 
-function setCommonParmsForJobcardTests(parms: IHandlerParameters) {
-  setCommonParmsForHLQTests(parms);
+function setCommonParmsForCpsmHLQTests(parms: IHandlerParameters) {
+  parms.arguments.name = "WIBBLE";
+  parms.arguments.bundledir = "wibble";
+  parms.arguments["cics-deploy-profile"] = undefined;
+  parms.arguments.cicsplex = "Wibble";
+  parms.arguments.scope = "wibblE";
+  parms.arguments.resgroup = "wiBBle";
+  parms.arguments.csdgroup = undefined;
+  parms.arguments.timeout = undefined;
   parms.arguments.cicshlq = "WIBB.LE";
+  parms.arguments.cpsmhlq = undefined;
+}
+
+async function testCpsmHLQError(cpsmhlq: string, result: string) {
+  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+  setCommonParmsForCpsmHLQTests(params);
+  params.arguments.cpsmhlq = cpsmhlq;
+
+  let err: Error;
+  try {
+    const handler = new DeployBundleHandler.default();
+    await handler.process(params);
+  } catch (e) {
+    err = e;
+  }
+  expect(err).toBeDefined();
+  expect(err).toBeInstanceOf(ImperativeError);
+  expect(err.message).toContain(result);
+}
+
+function setCommonParmsForJobcardTests(parms: IHandlerParameters) {
+  setCommonParmsForCpsmHLQTests(parms);
+  parms.arguments.cpsmhlq = "WI.BBLE";
 }
 
 async function testJobcardError(jobcard: string, result: string) {

@@ -185,6 +185,7 @@ describe("BundleDeployer01", () => {
 
 function setCommonParmsForDeployTests(parms: IHandlerParameters) {
   parms.arguments.cicshlq = "12345678901234567890123456789012345";
+  parms.arguments.cpsmhlq = "abcde12345abcde12345abcde12345abcde";
   parms.arguments.cicsplex = "12345678";
   parms.arguments.scope = "12345678";
   parms.arguments.csdgroup = undefined;

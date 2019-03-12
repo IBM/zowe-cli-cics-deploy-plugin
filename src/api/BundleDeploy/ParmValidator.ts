@@ -27,6 +27,7 @@ export class ParmValidator {
     ParmValidator.validateResgroup(params);
     ParmValidator.validateTimeout(params);
     ParmValidator.validateCicshlq(params);
+    ParmValidator.validateCpsmhlq(params);
     ParmValidator.validateJobcard(params);
   }
 
@@ -41,6 +42,7 @@ export class ParmValidator {
     ParmValidator.validateResgroup(params);
     ParmValidator.validateTimeout(params);
     ParmValidator.validateCicshlq(params);
+    ParmValidator.validateCpsmhlq(params);
     ParmValidator.validateJobcard(params);
   }
 
@@ -242,6 +244,26 @@ export class ParmValidator {
 
     if (params.arguments.cicshlq === "") {
       throw new Error("--cicshlq parameter is empty");
+    }
+  }
+
+  private static validateCpsmhlq(params: IHandlerParameters) {
+    // cpsmhlq is mandatory
+    if (params.arguments.cpsmhlq === undefined) {
+      throw new Error("--cpsmhlq parameter is not set");
+    }
+
+    if (typeof params.arguments.cpsmhlq !== "string") {
+      throw new Error("--cpsmhlq parameter is not a string");
+    }
+
+    const MAX_LEN = 35;
+    if (params.arguments.cpsmhlq.length > MAX_LEN) {
+      throw new Error("--cpsmhlq parameter is too long");
+    }
+
+    if (params.arguments.cpsmhlq === "") {
+      throw new Error("--cpsmhlq parameter is empty");
     }
   }
 

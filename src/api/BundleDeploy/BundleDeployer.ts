@@ -50,7 +50,7 @@ export class BundleDeployer {
     const session = this.createZosMFSession();
 
     // Check that the CICS dataset value looks valid and can be viewed
-    this.checkHLQDatasets(session);
+    await this.checkHLQDatasets(session);
 
     // Generate some DFHDPLOY JCL
     const jcl = this.getDeployJCL();
@@ -74,7 +74,7 @@ export class BundleDeployer {
     const session = this.createZosMFSession();
 
     // Check that the CICS dataset value looks valid and can be viewed
-    this.checkHLQDatasets(session);
+    await this.checkHLQDatasets(session);
 
     // Generate some DFHDPLOY JCL
     const jcl = this.getUndeployJCL();
@@ -140,7 +140,7 @@ export class BundleDeployer {
     let jcl = this.params.arguments.jobcard + "\n" +
           "//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M\n" +
           "//STEPLIB  DD DISP=SHR,DSN=" + this.params.arguments.cicshlq + ".SDFHLOAD\n" +
-          "//         DD DISP=SHR,DSN=" + this.params.arguments.cicshlq + ".SEYUAUTH\n" +
+          "//         DD DISP=SHR,DSN=" + this.params.arguments.cpsmhlq + ".SEYUAUTH\n" +
           "//SYSTSPRT DD SYSOUT=*\n" +
           "//SYSIN    DD *\n" +
           "*\n" +
@@ -177,16 +177,29 @@ export class BundleDeployer {
   private async checkHLQDatasets(session: Session) {
     // Check that the CICS dataset value looks valid and can be viewed
     // Access errors will trigger an Exception
-    const pds = this.params.arguments.cicshlq + ".SDFHLOAD";
+    const cicspds = this.params.arguments.cicshlq + ".SDFHLOAD";
     let listResp;
     try {
-      listResp = await List.allMembers(session, pds, {});
+      listResp = await List.allMembers(session, cicspds, {});
     }
     catch (error) {
       throw new Error("Validation of --cicshlq dataset failed: " + error.message);
     }
     if (JSON.stringify(listResp).indexOf("DFHDPLOY") === -1) {
-      throw new Error("DFHDPLOY not found in SDFHLOAD within the --cicshlq dataset: " + pds);
+      throw new Error("DFHDPLOY not found in SDFHLOAD within the --cicshlq dataset: " + cicspds);
+    }
+
+    // Check that the CPSM dataset value looks valid and can be viewed
+    // Access errors will trigger an Exception
+    const cpsmpds = this.params.arguments.cpsmhlq + ".SEYUAUTH";
+    try {
+      listResp = await List.allMembers(session, cpsmpds, {});
+    }
+    catch (error) {
+      throw new Error("Validation of --cpsmhlq dataset failed: " + error.message);
+    }
+    if (JSON.stringify(listResp).indexOf("EYU9ABSI") === -1) {
+      throw new Error("EYU9ABSI not found in SEYUAUTH within the --cpsmhlq dataset: " + cpsmpds);
     }
   }
 

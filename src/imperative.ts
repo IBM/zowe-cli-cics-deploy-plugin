@@ -94,6 +94,18 @@ const config: IImperativeConfig = {
               },
               type: "string"
             },
+            cpsmhlq: {
+              optionDefinition: {
+                description: "Specifies the High Level Qualifier (up to 35 characters) at which the CPSM " +
+                             "datasets can be found in the target environment.",
+                type: "string",
+                name: "cpsmhlq",
+                aliases: ["cphlq"],
+                stringLengthRange: [1, MAX_HLQ_LENGTH],
+                required: true
+              },
+              type: "string"
+            },
             jobcard: {
               optionDefinition: {
                 description: "Specifies the job card to use with any generated DFHDPLOY JCL.",
@@ -106,7 +118,7 @@ const config: IImperativeConfig = {
               type: "string"
             }
           },
-          required: ["cicsplex", "scope", "cicshlq", "jobcard"]
+          required: ["cicsplex", "scope", "cicshlq", "cpsmhlq", "jobcard"]
         }
       }
     ]

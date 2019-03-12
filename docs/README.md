@@ -120,7 +120,7 @@ Now create a cics-deploy profile. This profile will identify the target CICS env
 
 For example, you might create the profile using the following command:
 
-  `zowe profiles create cics-deploy-profile example --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55 --resgroup BUNDGRP1`
+  `zowe profiles create cics-deploy-profile example --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --resgroup BUNDGRP1`
 
 You can now use cics-deploy to deploy a Bundle. You will need to know the name to be used for the Bundle, and the location in the Unix file system at which it can be found. For example, you might issue the following command:
 
