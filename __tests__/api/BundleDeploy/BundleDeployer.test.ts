@@ -13,6 +13,7 @@ import { BundleDeployer } from "../../../src/api/BundleDeploy/BundleDeployer";
 import { IHandlerParameters } from "@brightside/imperative";
 import * as DeployBundleDefinition from "../../../src/cli/deploy/bundle/DeployBundle.definition";
 import * as fse from "fs-extra";
+import { ZosmfSession, SubmitJobs, List } from "@brightside/core";
 
 
 const DEFAULT_PARAMTERS: IHandlerParameters = {
@@ -55,6 +56,44 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
 
 describe("BundleDeployer01", () => {
 
+    it("should complain with missing zOSMF profile for deploy", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.csdgroup = "12345678";
+
+        // Create a Bundle
+        const bd = new BundleDeployer(parms);
+
+        let err: Error;
+        try {
+          const response = await bd.deployBundle();
+        } catch (e) {
+          err = e;
+        }
+        expect(err).toBeDefined();
+        expect(err.message).toMatchSnapshot();
+    });
+    it("should complain with missing zOSMF profile for undeploy", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.csdgroup = "12345678";
+
+        // Create a Bundle
+        const bd = new BundleDeployer(parms);
+
+        let err: Error;
+        try {
+          const response = await bd.undeployBundle();
+        } catch (e) {
+          err = e;
+        }
+        expect(err).toBeDefined();
+        expect(err.message).toMatchSnapshot();
+    });
     it("should generate deploy JCL for csdgroup", () => {
 
         let parms: IHandlerParameters;

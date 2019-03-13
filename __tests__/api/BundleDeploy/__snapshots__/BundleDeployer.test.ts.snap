@@ -1,5 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`BundleDeployer01 should complain with missing zOSMF profile for deploy 1`] = `"Expect Error: Required parameter 'hostname' must be defined"`;
+
+exports[`BundleDeployer01 should complain with missing zOSMF profile for undeploy 1`] = `"Expect Error: Required parameter 'hostname' must be defined"`;
+
 exports[`BundleDeployer01 should generate deploy JCL for csdgroup 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M

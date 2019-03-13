@@ -47,7 +47,7 @@ export class BundleDeployer {
     ParmValidator.validateDeploy(this.params);
 
     // Create a zosMF session
-    const session = this.createZosMFSession();
+    const session = await this.createZosMFSession();
 
     // Check that the CICS dataset value looks valid and can be viewed
     await this.checkHLQDatasets(session);
@@ -71,7 +71,7 @@ export class BundleDeployer {
     ParmValidator.validateUndeploy(this.params);
 
     // Create a zosMF session
-    const session = this.createZosMFSession();
+    const session = await this.createZosMFSession();
 
     // Check that the CICS dataset value looks valid and can be viewed
     await this.checkHLQDatasets(session);
@@ -164,7 +164,7 @@ export class BundleDeployer {
   }
 
 
-  private createZosMFSession(): Session {
+  private async createZosMFSession(): Promise<Session> {
     // Create a zosMF session
     const zosmfProfile = this.params.profiles.get("zosmf");
 
