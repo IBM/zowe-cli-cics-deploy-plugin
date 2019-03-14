@@ -1,10 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`BundleDeployer01 should complain if DFHDPLOY ends with an error 1`] = `"DFHRL2055I"`;
+
+exports[`BundleDeployer01 should complain if DFHDPLOY ends with an error 2`] = `"DFHDPLOY stopped processing due to an error."`;
+
+exports[`BundleDeployer01 should complain if cicshlq not found 1`] = `"Validation of --cicshlq dataset failed: Cannot read property 'hostname' of undefined"`;
+
+exports[`BundleDeployer01 should complain if cicshlq not found2 1`] = `"DFHDPLOY not found in SDFHLOAD within the --cicshlq dataset: 12345678901234567890123456789012345.SDFHLOAD"`;
+
+exports[`BundleDeployer01 should complain if cpsmhlq not found 1`] = `"Validation of --cpsmhlq dataset failed: Cannot read property 'hostname' of undefined"`;
+
+exports[`BundleDeployer01 should complain if cpsmhlq not found2 1`] = `"EYU9ABSI not found in SEYUAUTH within the --cpsmhlq dataset: abcde12345abcde12345abcde12345abcde.SEYUAUTH"`;
+
+exports[`BundleDeployer01 should complain if status can't be determined 1`] = `" "`;
+
+exports[`BundleDeployer01 should complain if status can't be determined 2`] = `"DFHDPLOY command completed, but status cannot be determined."`;
+
+exports[`BundleDeployer01 should complain of SYSTSPRT not found 1`] = `"SYSTSPRT output from DFHDPLOY not found."`;
+
 exports[`BundleDeployer01 should complain with missing zOSMF profile for deploy 1`] = `"Expect Error: Required parameter 'hostname' must be defined"`;
 
 exports[`BundleDeployer01 should complain with missing zOSMF profile for undeploy 1`] = `"Expect Error: Required parameter 'hostname' must be defined"`;
 
-exports[`BundleDeployer01 should generate deploy JCL for csdgroup 1`] = `
+exports[`BundleDeployer01 should complete with warnings  1`] = `"DFHRL2043I"`;
+
+exports[`BundleDeployer01 should complete with warnings  2`] = `"DFHDPLOY completed with warnings."`;
+
+exports[`BundleDeployer01 should deploy successfully 1`] = `"DFHRL2012I"`;
+
+exports[`BundleDeployer01 should deploy successfully 2`] = `"DFHDPLOY DEPLOY command successful."`;
+
+exports[`BundleDeployer01 should generate deploy JCL for csdgroup 1`] = `"DFHRL2037I"`;
+
+exports[`BundleDeployer01 should generate deploy JCL for csdgroup 2`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -28,7 +56,9 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate deploy JCL for csdgroup with timeout 1`] = `
+exports[`BundleDeployer01 should generate deploy JCL for csdgroup with timeout 1`] = `"DFHRL2037I"`;
+
+exports[`BundleDeployer01 should generate deploy JCL for csdgroup with timeout 2`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -54,7 +84,9 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate deploy JCL for resgroup 1`] = `
+exports[`BundleDeployer01 should generate deploy JCL for resgroup 1`] = `"DFHRL2037I"`;
+
+exports[`BundleDeployer01 should generate deploy JCL for resgroup 2`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -78,7 +110,9 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate deploy JCL for resgroup with timeout 1`] = `
+exports[`BundleDeployer01 should generate deploy JCL for resgroup with timeout 1`] = `"DFHRL2037I"`;
+
+exports[`BundleDeployer01 should generate deploy JCL for resgroup with timeout 2`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -104,7 +138,9 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate undeploy JCL for csdgroup 1`] = `
+exports[`BundleDeployer01 should generate undeploy JCL for csdgroup 1`] = `"DFHRL2037I"`;
+
+exports[`BundleDeployer01 should generate undeploy JCL for csdgroup 2`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -122,7 +158,9 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate undeploy JCL for csdgroup with timeout 1`] = `
+exports[`BundleDeployer01 should generate undeploy JCL for csdgroup with timeout 1`] = `"DFHRL2037I"`;
+
+exports[`BundleDeployer01 should generate undeploy JCL for csdgroup with timeout 2`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -141,7 +179,9 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate undeploy JCL for resgroup 1`] = `
+exports[`BundleDeployer01 should generate undeploy JCL for resgroup 1`] = `"DFHRL2037I"`;
+
+exports[`BundleDeployer01 should generate undeploy JCL for resgroup 2`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -159,7 +199,9 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate undeploy JCL for resgroup with timeout 1`] = `
+exports[`BundleDeployer01 should generate undeploy JCL for resgroup with timeout 1`] = `"DFHRL2037I"`;
+
+exports[`BundleDeployer01 should generate undeploy JCL for resgroup with timeout 2`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -178,7 +220,11 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should support long bundledir 1`] = `
+exports[`BundleDeployer01 should handle failure during submitjobs processing 1`] = `"Failure occurred submitting DFHDPLOY JCL: Cannot read property 'hostname' of undefined"`;
+
+exports[`BundleDeployer01 should support long bundledir 1`] = `"DFHRL2037I"`;
+
+exports[`BundleDeployer01 should support long bundledir 2`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -201,3 +247,11 @@ DEPLOY BUNDLE(12345678)
 /*
 "
 `;
+
+exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 1`] = `"undefined"`;
+
+exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 2`] = `"DFHDPLOY did not generate any output."`;
+
+exports[`BundleDeployer01 should undeploy successfully 1`] = `"DFHRL2037I"`;
+
+exports[`BundleDeployer01 should undeploy successfully 2`] = `"DFHDPLOY UNDEPLOY command successful."`;

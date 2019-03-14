@@ -57,98 +57,141 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
 describe("BundleDeployer01", () => {
 
     it("should complain with missing zOSMF profile for deploy", async () => {
-
-        let parms: IHandlerParameters;
-        parms = DEFAULT_PARAMTERS;
-        setCommonParmsForDeployTests(parms);
-        parms.arguments.csdgroup = "12345678";
-
-        // Create a Bundle
-        const bd = new BundleDeployer(parms);
-
-        let err: Error;
-        try {
-          const response = await bd.deployBundle();
-        } catch (e) {
-          err = e;
-        }
-        expect(err).toBeDefined();
-        expect(err.message).toMatchSnapshot();
+        await runDeployTestWithError();
     });
     it("should complain with missing zOSMF profile for undeploy", async () => {
+        await runUndeployTestWithError();
+    });
+    it("should complain if cicshlq not found", async () => {
+
+        jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
+        await runDeployTestWithError();
+    });
+    it("should complain if cicshlq not found2", async () => {
+
+        jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
+        jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val1: "wibble"}));
+        await runDeployTestWithError();
+    });
+    it("should complain if cpsmhlq not found", async () => {
+
+        jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
+        jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val1: "DFHDPLOY"}));
+        await runDeployTestWithError();
+    });
+    it("should complain if cpsmhlq not found2", async () => {
+
+        jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
+        jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
+                                      .mockImplementationOnce(() => ( { val: "wibble" }));
+        await runDeployTestWithError();
+    });
+    it("should handle failure during submitjobs processing", async () => {
+
+        const spy1 = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
+        const spy2 = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
+                                                   .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
+        await runDeployTestWithError();
+    });
+    it("should complain of SYSTSPRT not found", async () => {
+
+        const spy1 = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
+        const spy2 = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
+                                                   .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
+        const spy3 = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() => [{}] );
+        await runDeployTestWithError();
+    });
+    it("should tolerate empty output from DFHDPLOY", async () => {
+
+        const spy1 = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
+        const spy2 = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
+                                                   .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
+        const spy3 = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() => [{ddName: "SYSTSPRT", stepName: "DFHDPLOY"}] );
+        await runDeployTestWithError();
+    });
+    it("should complain if status can't be determined", async () => {
+
+        const spy1 = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
+        const spy2 = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
+                                                   .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
+        const spy3 = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
+                                                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: " "}] );
+        await runDeployTestWithError();
+    });
+    it("should complain if DFHDPLOY ends with an error", async () => {
+
+        const spy1 = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
+        const spy2 = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
+                                                   .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
+        const spy3 = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
+                                                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2055I"}] );
+        await runDeployTestWithError();
+    });
+    it("should complete with warnings ", async () => {
+
+        const spy1 = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
+        const spy2 = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
+                                                   .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
+        const spy3 = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
+                                                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2043I"}] );
+
+        await runDeployTest();
+    });
+    it("should deploy successfully", async () => {
+
+        const spy1 = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
+        const spy2 = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
+                                                   .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
+        const spy3 = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
+                                                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
+
+        await runDeployTest();
+    });
+    it("should undeploy successfully", async () => {
+
+        const spy1 = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
+        const spy2 = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
+                                                   .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
+        const spy3 = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
+                                                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2037I"}] );
+
+        await runUndeployTest();
+    });
+    it("should generate deploy JCL for csdgroup", async () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.csdgroup = "12345678";
-
-        // Create a Bundle
-        const bd = new BundleDeployer(parms);
-
-        let err: Error;
-        try {
-          const response = await bd.undeployBundle();
-        } catch (e) {
-          err = e;
-        }
-        expect(err).toBeDefined();
-        expect(err.message).toMatchSnapshot();
+        await testDeployJCL(parms);
     });
-    it("should generate deploy JCL for csdgroup", () => {
-
-        let parms: IHandlerParameters;
-        parms = DEFAULT_PARAMTERS;
-        setCommonParmsForDeployTests(parms);
-        parms.arguments.csdgroup = "12345678";
-
-        // Create a Bundle
-        const bd = new BundleDeployer(parms);
-
-        // Check the output as JSON
-        expect(bd.getDeployJCL()).toMatchSnapshot();
-    });
-    it("should generate deploy JCL for csdgroup with timeout", () => {
+    it("should generate deploy JCL for csdgroup with timeout", async () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.csdgroup = "12345678";
         parms.arguments.timeout = 1500;
-
-        // Create a Bundle
-        const bd = new BundleDeployer(parms);
-
-        // Check the output as JSON
-        expect(bd.getDeployJCL()).toMatchSnapshot();
+        await testDeployJCL(parms);
     });
-    it("should generate deploy JCL for resgroup", () => {
+    it("should generate deploy JCL for resgroup", async () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
-
-        // Create a Bundle
-        const bd = new BundleDeployer(parms);
-
-        // Check the output as JSON
-        expect(bd.getDeployJCL()).toMatchSnapshot();
+        await testDeployJCL(parms);
     });
-    it("should generate deploy JCL for resgroup with timeout", () => {
+    it("should generate deploy JCL for resgroup with timeout", async () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
         parms.arguments.timeout = 1500;
-
-        // Create a Bundle
-        const bd = new BundleDeployer(parms);
-
-        // Check the output as JSON
-        expect(bd.getDeployJCL()).toMatchSnapshot();
+        await testDeployJCL(parms);
     });
-    it("should support long bundledir", () => {
+    it("should support long bundledir", async () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
@@ -159,70 +202,108 @@ describe("BundleDeployer01", () => {
                                     "12345678901234567890123456789012345678901234567890" +
                                     "12345678901234567890123456789012345678901234567890" +
                                     "1234567890123456789012345678901234567890123456789012345";
-
-        // Create a Bundle
-        const bd = new BundleDeployer(parms);
-
-        // Check the output as JSON
-        expect(bd.getDeployJCL()).toMatchSnapshot();
+        await testDeployJCL(parms);
     });
-    it("should generate undeploy JCL for csdgroup", () => {
+    it("should generate undeploy JCL for csdgroup", async () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.csdgroup = "12345678";
-
-        // Create a Bundle
-        const bd = new BundleDeployer(parms);
-
-        // Check the output as JSON
-        expect(bd.getUndeployJCL()).toMatchSnapshot();
+        await testUndeployJCL(parms);
     });
-    it("should generate undeploy JCL for csdgroup with timeout", () => {
+    it("should generate undeploy JCL for csdgroup with timeout", async () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.csdgroup = "12345678";
         parms.arguments.timeout = 1500;
-
-        // Create a Bundle
-        const bd = new BundleDeployer(parms);
-
-        // Check the output as JSON
-        expect(bd.getUndeployJCL()).toMatchSnapshot();
+        await testUndeployJCL(parms);
     });
-    it("should generate undeploy JCL for resgroup", () => {
+    it("should generate undeploy JCL for resgroup", async () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
-
-        // Create a Bundle
-        const bd = new BundleDeployer(parms);
-
-        // Check the output as JSON
-        expect(bd.getUndeployJCL()).toMatchSnapshot();
+        await testUndeployJCL(parms);
     });
-    it("should generate undeploy JCL for resgroup with timeout", () => {
+    it("should generate undeploy JCL for resgroup with timeout", async () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
         parms.arguments.timeout = 1500;
-
-        // Create a Bundle
-        const bd = new BundleDeployer(parms);
-
-        // Check the output as JSON
-        expect(bd.getUndeployJCL()).toMatchSnapshot();
+        await testUndeployJCL(parms);
     });
 });
 
+async function runDeployTestWithError() {
+  let parms: IHandlerParameters;
+  parms = DEFAULT_PARAMTERS;
+  setCommonParmsForDeployTests(parms);
+  parms.arguments.csdgroup = "12345678";
+
+  const bd = new BundleDeployer(parms);
+
+  let err: Error;
+  try {
+    const response = await bd.deployBundle();
+  } catch (e) {
+    err = e;
+  }
+  expect(err).toBeDefined();
+  expect(err.message).toMatchSnapshot();
+}
+
+async function runUndeployTestWithError() {
+  let parms: IHandlerParameters;
+  parms = DEFAULT_PARAMTERS;
+  setCommonParmsForUndeployTests(parms);
+  parms.arguments.csdgroup = "12345678";
+
+  const bd = new BundleDeployer(parms);
+
+  let err: Error;
+  try {
+    const response = await bd.undeployBundle();
+  } catch (e) {
+    err = e;
+  }
+  expect(err).toBeDefined();
+  expect(err.message).toMatchSnapshot();
+}
+
+async function runDeployTest() {
+  let parms: IHandlerParameters;
+  parms = DEFAULT_PARAMTERS;
+  setCommonParmsForDeployTests(parms);
+  parms.arguments.csdgroup = "12345678";
+
+  const bd = new BundleDeployer(parms);
+  const response = await bd.deployBundle();
+  expect(response).toMatchSnapshot();
+}
+
+async function runUndeployTest() {
+  let parms: IHandlerParameters;
+  parms = DEFAULT_PARAMTERS;
+  setCommonParmsForUndeployTests(parms);
+  parms.arguments.csdgroup = "12345678";
+
+  const bd = new BundleDeployer(parms);
+  const response = await bd.undeployBundle();
+  expect(response).toMatchSnapshot();
+}
+
 function setCommonParmsForDeployTests(parms: IHandlerParameters) {
+  setCommonParmsForUndeployTests(parms);
+  parms.arguments.bundledir = "1234567890";
+}
+
+function setCommonParmsForUndeployTests(parms: IHandlerParameters) {
   parms.arguments.cicshlq = "12345678901234567890123456789012345";
   parms.arguments.cpsmhlq = "abcde12345abcde12345abcde12345abcde";
   parms.arguments.cicsplex = "12345678";
@@ -231,6 +312,32 @@ function setCommonParmsForDeployTests(parms: IHandlerParameters) {
   parms.arguments.resgroup = undefined;
   parms.arguments.timeout = undefined;
   parms.arguments.name = "12345678";
-  parms.arguments.bundledir = "1234567890";
 }
 
+async function testDeployJCL(parms: IHandlerParameters) {
+  const spy1 = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
+  const spy2 = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
+                                             .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
+  const spy3 = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
+                                              [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2037I"}] );
+
+  const bd = new BundleDeployer(parms);
+  const response = await bd.deployBundle();
+
+  // Check the generated JCL
+  expect(spy3.mock.calls[spy3.mock.calls.length - 1][1]).toMatchSnapshot();
+}
+
+async function testUndeployJCL(parms: IHandlerParameters) {
+  const spy1 = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
+  const spy2 = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
+                                             .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
+  const spy3 = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
+                                              [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2037I"}] );
+
+  const bd = new BundleDeployer(parms);
+  const response = await bd.undeployBundle();
+
+  // Check the generated JCL
+  expect(spy3.mock.calls[spy3.mock.calls.length - 1][1]).toMatchSnapshot();
+}

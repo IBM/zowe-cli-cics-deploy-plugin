@@ -89,7 +89,7 @@ export class BundleDeployer {
    * @throws ImperativeError
    * @memberof BundleDeployer
    */
-  public getDeployJCL(): string {
+  private getDeployJCL(): string {
     // Deploy actions begin by first undeploying any former version of the
     // Bundle that may still be installed, so generate an undeploy statement
     // first.
@@ -125,7 +125,7 @@ export class BundleDeployer {
    * @throws ImperativeError
    * @memberof BundleDeployer
    */
-  public getUndeployJCL(): string {
+  private getUndeployJCL(): string {
     // Get the basicundeploy JCL
     let jcl = this.generateUndeployJCLWithoutTerminator();
 
@@ -205,8 +205,13 @@ export class BundleDeployer {
 
   private async submitJCL(jcl: string, session: Session): Promise<string> {
     let spoolOutput: any;
-    spoolOutput = await SubmitJobs.submitJclString(session, jcl,
+    try {
+      spoolOutput = await SubmitJobs.submitJclString(session, jcl,
                            { jclSource: "", viewAllSpoolContent: true });
+    }
+    catch (error) {
+      throw new Error("Failure occurred submitting DFHDPLOY JCL: " + error.message);
+    }
 
     // Find the output
     for (const file of spoolOutput) {
@@ -217,6 +222,10 @@ export class BundleDeployer {
         const logger = Logger.getAppLogger();
         this.params.response.console.log(file.data);
         logger.debug(file.data);
+
+        if (file.data === undefined || file.data.length === 0) {
+          throw new Error("DFHDPLOY did not generate any output.");
+        }
 
         // Did DFHDPLOY fail?
         if (file.data.indexOf("DFHRL2055I") > -1) {
@@ -232,7 +241,7 @@ export class BundleDeployer {
           return "DFHDPLOY UNDEPLOY command successful.";
         }
 
-        return "DFHDPLOY command completed, but status cannot be determined.";
+        throw new Error("DFHDPLOY command completed, but status cannot be determined.");
       }
     }
 
