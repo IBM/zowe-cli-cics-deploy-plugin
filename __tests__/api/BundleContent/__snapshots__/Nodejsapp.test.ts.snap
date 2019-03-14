@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart 1`] = `"{\\"nodejsapp\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"name\\":\\"NodeName\\",\\"startscript\\":\\"Artefact1\\",\\"profile\\":\\"nodejsapps/NodeName.profile\\",\\"lerunopts\\":\\"DFHSJNRO\\"}}"`;
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart 2`] = `
+"<nodejsapp xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" name=\\"NodeName\\" startscript=\\"Artefact1\\" profile=\\"nodejsapps/NodeName.profile\\" lerunopts=\\"DFHSJNRO\\"></nodejsapp>
+"
+`;
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart 3`] = `
+"# This is a profile for a CICS NODEJSAPP resource
+
+# Import the provisioned configuration file for this NODEJSAPP,
+# this file must be created before this Bundle can be installed in CICS
+INCLUDE=&USSCONFIG;/nodejsapps/NodeName.included.profile
+
+# Set the PORT envionment variable, application code should reference this
+# value in preference to a hard-coded port number, the value references an
+# environment variable that will be configured within the provisioned configuration file.
+PORT=1000
+"
+`;
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart 4`] = `
+"# This is a profile for a CICS NODEJSAPP resource
+
+# Import the provisioned configuration file for this NODEJSAPP,
+# this file must be created before this Bundle can be installed in CICS
+INCLUDE=&USSCONFIG;/nodejsapps/NodeName.included.profile
+
+# Set the PORT envionment variable, application code should reference this
+# value in preference to a hard-coded port number, the value references an
+# environment variable that will be configured within the provisioned configuration file.
+PORT=1000
+"
+`;
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with bad chars 1`] = `"{\\"nodejsapp\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"name\\":\\"NodeNameXisXinvalidXXX\\",\\"startscript\\":\\"Artefact1\\",\\"profile\\":\\"nodejsapps/NodeNameXisXinvalidXXX.profile\\",\\"lerunopts\\":\\"DFHSJNRO\\"}}"`;
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with bad chars 2`] = `
+"<nodejsapp xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" name=\\"NodeNameXisXinvalidXXX\\" startscript=\\"Artefact1\\" profile=\\"nodejsapps/NodeNameXisXinvalidXXX.profile\\" lerunopts=\\"DFHSJNRO\\"></nodejsapp>
+"
+`;
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with bad chars 3`] = `
+"# This is a profile for a CICS NODEJSAPP resource
+
+# Import the provisioned configuration file for this NODEJSAPP,
+# this file must be created before this Bundle can be installed in CICS
+INCLUDE=&USSCONFIG;/nodejsapps/NodeNameXisXinvalidXXX.included.profile
+
+# Set the PORT envionment variable, application code should reference this
+# value in preference to a hard-coded port number, the value references an
+# environment variable that will be configured within the provisioned configuration file.
+PORT=1000
+"
+`;
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with bad chars 4`] = `
+"# This is a profile for a CICS NODEJSAPP resource
+
+# Import the provisioned configuration file for this NODEJSAPP,
+# this file must be created before this Bundle can be installed in CICS
+INCLUDE=&USSCONFIG;/nodejsapps/NodeNameXisXinvalidXXX.included.profile
+
+# Set the PORT envionment variable, application code should reference this
+# value in preference to a hard-coded port number, the value references an
+# environment variable that will be configured within the provisioned configuration file.
+PORT=1000
+"
+`;
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with long name 1`] = `"{\\"nodejsapp\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"name\\":\\"12345678901234567890123456789012\\",\\"startscript\\":\\"Artefact1\\",\\"profile\\":\\"nodejsapps/12345678901234567890123456789012.profile\\",\\"lerunopts\\":\\"DFHSJNRO\\"}}"`;
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with long name 2`] = `
+"<nodejsapp xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" name=\\"12345678901234567890123456789012\\" startscript=\\"Artefact1\\" profile=\\"nodejsapps/12345678901234567890123456789012.profile\\" lerunopts=\\"DFHSJNRO\\"></nodejsapp>
+"
+`;
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with long name 3`] = `
+"# This is a profile for a CICS NODEJSAPP resource
+
+# Import the provisioned configuration file for this NODEJSAPP,
+# this file must be created before this Bundle can be installed in CICS
+INCLUDE=&USSCONFIG;/nodejsapps/12345678901234567890123456789012.included.profile
+
+# Set the PORT envionment variable, application code should reference this
+# value in preference to a hard-coded port number, the value references an
+# environment variable that will be configured within the provisioned configuration file.
+PORT=1000
+"
+`;
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with long name 4`] = `
+"# This is a profile for a CICS NODEJSAPP resource
+
+# Import the provisioned configuration file for this NODEJSAPP,
+# this file must be created before this Bundle can be installed in CICS
+INCLUDE=&USSCONFIG;/nodejsapps/12345678901234567890123456789012.included.profile
+
+# Set the PORT envionment variable, application code should reference this
+# value in preference to a hard-coded port number, the value references an
+# environment variable that will be configured within the provisioned configuration file.
+PORT=1000
+"
+`;
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with missing port number 1`] = `"{\\"nodejsapp\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"name\\":\\"NodeName\\",\\"startscript\\":\\"Artefact1\\",\\"profile\\":\\"nodejsapps/NodeName.profile\\",\\"lerunopts\\":\\"DFHSJNRO\\"}}"`;
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with missing port number 2`] = `
+"<nodejsapp xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" name=\\"NodeName\\" startscript=\\"Artefact1\\" profile=\\"nodejsapps/NodeName.profile\\" lerunopts=\\"DFHSJNRO\\"></nodejsapp>
+"
+`;
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with missing port number 3`] = `
+"# This is a profile for a CICS NODEJSAPP resource
+
+# Import the provisioned configuration file for this NODEJSAPP,
+# this file must be created before this Bundle can be installed in CICS
+INCLUDE=&USSCONFIG;/nodejsapps/NodeName.included.profile
+
+# Set the PORT envionment variable, application code should reference this
+# value in preference to a hard-coded port number, the value references an
+# environment variable that will be configured within the provisioned configuration file.
+PORT=&HTTP_PORT;
+"
+`;
+
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with missing port number 4`] = `
+"# This is a profile for a CICS NODEJSAPP resource
+
+# Import the provisioned configuration file for this NODEJSAPP,
+# this file must be created before this Bundle can be installed in CICS
+INCLUDE=&USSCONFIG;/nodejsapps/NodeName.included.profile
+
+# Set the PORT envionment variable, application code should reference this
+# value in preference to a hard-coded port number, the value references an
+# environment variable that will be configured within the provisioned configuration file.
+PORT=&HTTP_PORT;
+"
+`;

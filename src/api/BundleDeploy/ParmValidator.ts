@@ -13,13 +13,6 @@
 
 import { IHandlerParameters, Logger } from "@brightside/imperative";
 
-
-/**
- * Class to represent a CICS Bundle manifest.
- *
- * @export
- * @class Manifest
- */
 export class ParmValidator {
 
   public static validateDeploy(params: IHandlerParameters) {
@@ -33,6 +26,9 @@ export class ParmValidator {
     ParmValidator.validateCsdgroup(params);
     ParmValidator.validateResgroup(params);
     ParmValidator.validateTimeout(params);
+    ParmValidator.validateCicshlq(params);
+    ParmValidator.validateCpsmhlq(params);
+    ParmValidator.validateJobcard(params);
   }
 
   public static validateUndeploy(params: IHandlerParameters) {
@@ -45,6 +41,9 @@ export class ParmValidator {
     ParmValidator.validateCsdgroup(params);
     ParmValidator.validateResgroup(params);
     ParmValidator.validateTimeout(params);
+    ParmValidator.validateCicshlq(params);
+    ParmValidator.validateCpsmhlq(params);
+    ParmValidator.validateJobcard(params);
   }
 
   private static validateName(params: IHandlerParameters) {
@@ -107,14 +106,7 @@ export class ParmValidator {
     }
 
     // Now check that the profile can be found
-    let prof;
-    try {
-      prof = params.profiles.get("cics-deploy");
-    }
-    catch (error) {
-      // If something goes wrong then 'prof' will remain uninitialised
-      // Note: this can be a common failure for the unit tests
-    }
+    const prof = params.profiles.get("cics-deploy");
 
     // const logger = Logger.getAppLogger();
     // logger.debug("Profile: " + JSON.stringify(prof));
@@ -232,6 +224,88 @@ export class ParmValidator {
 
     if (params.arguments.timeout < 1) {
       throw new Error("--timeout parameter is too small");
+    }
+  }
+
+  private static validateCicshlq(params: IHandlerParameters) {
+    // cicshlq is mandatory
+    if (params.arguments.cicshlq === undefined) {
+      throw new Error("--cicshlq parameter is not set");
+    }
+
+    if (typeof params.arguments.cicshlq !== "string") {
+      throw new Error("--cicshlq parameter is not a string");
+    }
+
+    const MAX_LEN = 35;
+    if (params.arguments.cicshlq.length > MAX_LEN) {
+      throw new Error("--cicshlq parameter is too long");
+    }
+
+    if (params.arguments.cicshlq === "") {
+      throw new Error("--cicshlq parameter is empty");
+    }
+  }
+
+  private static validateCpsmhlq(params: IHandlerParameters) {
+    // cpsmhlq is mandatory
+    if (params.arguments.cpsmhlq === undefined) {
+      throw new Error("--cpsmhlq parameter is not set");
+    }
+
+    if (typeof params.arguments.cpsmhlq !== "string") {
+      throw new Error("--cpsmhlq parameter is not a string");
+    }
+
+    const MAX_LEN = 35;
+    if (params.arguments.cpsmhlq.length > MAX_LEN) {
+      throw new Error("--cpsmhlq parameter is too long");
+    }
+
+    if (params.arguments.cpsmhlq === "") {
+      throw new Error("--cpsmhlq parameter is empty");
+    }
+  }
+
+  private static validateJobcard(params: IHandlerParameters) {
+    // jobcard is mandatory
+    if (params.arguments.jobcard === undefined) {
+      throw new Error("--jobcard parameter is not set");
+    }
+
+    if (typeof params.arguments.jobcard !== "string") {
+      throw new Error("--jobcard parameter is not a string");
+    }
+
+    if (params.arguments.jobcard === "") {
+      throw new Error("--jobcard parameter is empty");
+    }
+
+    // split the jobcard into a comma separated list
+    const jobcardParts = params.arguments.jobcard.split(",");
+    const firstPart = jobcardParts[0].trim();
+
+    // check that it starts with '//'
+    if (firstPart.indexOf("//") !== 0) {
+      throw new Error("--jobcard parameter does not start with //");
+    }
+
+    // split the first section of the jobcard into chunks
+    // e.g. //DFHDPLOY JOB EXAMPLE,
+    const firstPartParts = firstPart.split(" ");
+
+    // check the initial word is max 10 chars long, eg //DFHDPLOY
+    const jobname = firstPartParts[0].trim();
+    const MAX_JOBNAME = 10;
+    const MIN_JOBNAME = 3;
+    if (jobname.length > MAX_JOBNAME || jobname.length < MIN_JOBNAME) {
+      throw new Error("--jobcard parameter does not start with a suitable jobname: '" + jobname + " '");
+    }
+
+    // check the second word is 'JOB'
+    const jobkeyword = firstPartParts[1].trim();
+    if (jobkeyword !== "JOB") {
+      throw new Error("--jobcard parameter does not have JOB keyword after the jobname. Expected 'JOB' but found '" + jobkeyword + "'");
     }
   }
 }

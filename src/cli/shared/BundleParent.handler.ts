@@ -39,7 +39,7 @@ export abstract class BundleParentHandler implements ICommandHandler {
 
           // Perform an action. Each sub-class will implement its own action and
           // either throw an Exception or return a success message.
-          msg = this.performAction(params);
+          msg = await this.performAction(params);
 
           // Issue the success message
           params.response.console.log(msg);
@@ -60,9 +60,9 @@ export abstract class BundleParentHandler implements ICommandHandler {
      * Perform a Bundle action and return a status string.
      *
      * @param {IHandlerParameters} params
-     * @returns {string}
+     * @returns {Promise<string>}
      * @throws ImperativeError
      * @memberof BundleParentHandler
      */
-    public abstract performAction(params: IHandlerParameters): string;
+    public abstract async performAction(params: IHandlerParameters): Promise<string>;
 }

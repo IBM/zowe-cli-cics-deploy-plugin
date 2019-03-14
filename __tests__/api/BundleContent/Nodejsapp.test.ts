@@ -16,39 +16,30 @@ describe("NodejsappBundlePart01", () => {
         // Create a Nodejsapp
         const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
 
-        // Check the bundle part as JSON
-        expect(JSON.stringify(njs.getPart())).toMatch("{\"nodejsapp\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"name\":\"NodeName\",\"startscript\":\"Artefact1\",\"profile\":\"nodejsapps/NodeName.profile\",\"lerunopts\":\"DFHSJNRO\"}}");
-        // Check the bundle part as XML
-        expect(njs.getPartXML()).toMatch("<nodejsapp xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" name=\"NodeName\" startscript=\"Artefact1\" profile=\"nodejsapps/NodeName.profile\" lerunopts=\"DFHSJNRO\"></nodejsapp>");
-        // Check the profile text
-        expect(njs.getProfile()).toContain("INCLUDE=&CONFIGROOT;/nodejsapps/NodeName.included.profile");
-        expect(njs.getProfile()).toContain("PORT=1000");
+        expect(JSON.stringify(njs.getPart())).toMatchSnapshot();
+        expect(njs.getPartXML()).toMatchSnapshot();
+        expect(njs.getProfile()).toMatchSnapshot();
+        expect(njs.getProfile()).toMatchSnapshot();
     });
     it("Create a NodejsappBundlePart with bad chars", () => {
 
         // Create a Nodejsapp
         const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "NodeName is invalid!!!", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
 
-        // Check the bundle part as JSON
-        expect(JSON.stringify(njs.getPart())).toMatch("{\"nodejsapp\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"name\":\"NodeNameXisXinvalidXXX\",\"startscript\":\"Artefact1\",\"profile\":\"nodejsapps/NodeNameXisXinvalidXXX.profile\",\"lerunopts\":\"DFHSJNRO\"}}");
-        // Check the bundle part as XML
-        expect(njs.getPartXML()).toMatch("<nodejsapp xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" name=\"NodeNameXisXinvalidXXX\" startscript=\"Artefact1\" profile=\"nodejsapps/NodeNameXisXinvalidXXX.profile\" lerunopts=\"DFHSJNRO\"></nodejsapp>");
-        // Check the profile text
-        expect(njs.getProfile()).toContain("INCLUDE=&CONFIGROOT;/nodejsapps/NodeNameXisXinvalidXXX.included.profile");
-        expect(njs.getProfile()).toContain("PORT=1000");
+        expect(JSON.stringify(njs.getPart())).toMatchSnapshot();
+        expect(njs.getPartXML()).toMatchSnapshot();
+        expect(njs.getProfile()).toMatchSnapshot();
+        expect(njs.getProfile()).toMatchSnapshot();
     });
     it("Create a NodejsappBundlePart with long name", () => {
 
         // Create a Nodejsapp
         const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "123456789012345678901234567890123", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
 
-        // Check the bundle part as JSON
-        expect(JSON.stringify(njs.getPart())).toMatch("{\"nodejsapp\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"name\":\"12345678901234567890123456789012\",\"startscript\":\"Artefact1\",\"profile\":\"nodejsapps/12345678901234567890123456789012.profile\",\"lerunopts\":\"DFHSJNRO\"}}");
-        // Check the bundle part as XML
-        expect(njs.getPartXML()).toMatch("<nodejsapp xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" name=\"12345678901234567890123456789012\" startscript=\"Artefact1\" profile=\"nodejsapps/12345678901234567890123456789012.profile\" lerunopts=\"DFHSJNRO\"></nodejsapp>");
-        // Check the profile text
-        expect(njs.getProfile()).toContain("INCLUDE=&CONFIGROOT;/nodejsapps/12345678901234567890123456789012.included.profile");
-        expect(njs.getProfile()).toContain("PORT=1000");
+        expect(JSON.stringify(njs.getPart())).toMatchSnapshot();
+        expect(njs.getPartXML()).toMatchSnapshot();
+        expect(njs.getProfile()).toMatchSnapshot();
+        expect(njs.getProfile()).toMatchSnapshot();
     });
     it("Create a NodejsappBundlePart with missing name parameter", () => {
 
@@ -121,12 +112,10 @@ describe("NodejsappBundlePart01", () => {
         const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", undefined);
 
         // Check the bundle part as JSON
-        expect(JSON.stringify(njs.getPart())).toMatch("{\"nodejsapp\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"name\":\"NodeName\",\"startscript\":\"Artefact1\",\"profile\":\"nodejsapps/NodeName.profile\",\"lerunopts\":\"DFHSJNRO\"}}");
-        // Check the bundle part as XML
-        expect(njs.getPartXML()).toMatch("<nodejsapp xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" name=\"NodeName\" startscript=\"Artefact1\" profile=\"nodejsapps/NodeName.profile\" lerunopts=\"DFHSJNRO\"></nodejsapp>");
-        // Check the profile text
-        expect(njs.getProfile()).toContain("INCLUDE=&CONFIGROOT;/nodejsapps/NodeName.included.profile");
-        expect(njs.getProfile()).toContain("PORT=&HTTP_PORT;");
+        expect(JSON.stringify(njs.getPart())).toMatchSnapshot();
+        expect(njs.getPartXML()).toMatchSnapshot();
+        expect(njs.getProfile()).toMatchSnapshot();
+        expect(njs.getProfile()).toMatchSnapshot();
     });
     it("Create a NodejsappBundlePart with missing name", () => {
 

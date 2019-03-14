@@ -13,6 +13,7 @@
 import {IImperativeConfig} from "@brightside/imperative";
 
 const MAX_LENGTH = 8;
+const MAX_HLQ_LENGTH = 35;
 
 const config: IImperativeConfig = {
     commandModuleGlobs: ["**/cli/*/*.definition!(.d).*s"],
@@ -80,9 +81,44 @@ const config: IImperativeConfig = {
                 conflictsWith: [ "csdgroup" ],
               },
               type: "string"
+            },
+            cicshlq: {
+              optionDefinition: {
+                description: "Specifies the High Level Qualifier (up to 35 characters) at which the CICS " +
+                             "datasets can be found in the target environment.",
+                type: "string",
+                name: "cicshlq",
+                aliases: ["hlq"],
+                stringLengthRange: [1, MAX_HLQ_LENGTH],
+                required: true
+              },
+              type: "string"
+            },
+            cpsmhlq: {
+              optionDefinition: {
+                description: "Specifies the High Level Qualifier (up to 35 characters) at which the CPSM " +
+                             "datasets can be found in the target environment.",
+                type: "string",
+                name: "cpsmhlq",
+                aliases: ["cphlq"],
+                stringLengthRange: [1, MAX_HLQ_LENGTH],
+                required: true
+              },
+              type: "string"
+            },
+            jobcard: {
+              optionDefinition: {
+                description: "Specifies the job card to use with any generated DFHDPLOY JCL.",
+                type: "string",
+                name: "jobcard",
+                defaultValue: "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT",
+                aliases: ["jc"],
+                required: true
+              },
+              type: "string"
             }
           },
-          required: ["cicsplex", "scope"]
+          required: ["cicsplex", "scope", "cicshlq", "cpsmhlq", "jobcard"]
         }
       }
     ]

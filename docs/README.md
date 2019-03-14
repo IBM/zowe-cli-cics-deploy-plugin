@@ -4,14 +4,30 @@ The cics-deploy plugin for Zowe CLI is used to generate IBM CICS Bundles from No
 
 CICS TS V5.5 supports the Node.js programming language, Node.js applications can be deployed to CICS as Bundle resources which will run within the CICS address space. For further information on Node.js in CICS see [CICS and Node.js](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.5.0/fundamentals/node/nodeintro.html). The cics-deploy plugin to Zowe CLI enables a Node.js application developer to construct the metadata files that form a Bundle using a command line on their workstation; the generated Bundle metadata might then be stored under Source Control along with the rest of the application, the entire Bundle might be deployed to CICS, or both.
 
-## Dependencies
+The bundle can then be uploaded to z/OS and deployed to a target CICS environment.
+
+# Table of Contents
+1. [Dependencies](#dependencies)
+2. [Installation](#installation)
+3. [Generating a CICS Bundle](#generation)
+3.1. [Usage examples](#genuse)
+3.2. [Bundle metadata](#metadata)
+4. [Deploying a CICS Bundle](#deploying)
+5. [Undeploying a CICS Bundle](#undeploying)
+6. [Contributing](#contributing)
+
+
+<a name="dependencies"></a>
+## Dependencies 
 
 In order to use the cics-deploy plugin you must first have installed Zowe CLI; for further information on Zowe CLI see [Install Zowe CLI](https://zowe.github.io/docs-site/latest/user-guide/cli-installcli.html). The cics-deploy plugin does not require the Zowe runtime to be installed or configured on z/OS. CICS TS V5.5 is not required in order to generate CICS Bundles, but Node.js Bundles will not deploy to earlier versions of CICS.
 
+<a name="installation"></a>
 ## Installation
 
 To install the cics-deploy plugin to Zowe CLI do the following: TO BE DETERMINED; NPM, SOMETHING, SOMETHING.
 
+<a name="generation"></a>
 ## Generating a Bundle from an existing Node.js project
 
 The typical usage pattern for cics-deploy is to start with an existing Node.js application in the working directory and to construct the CICS Bundle from it. This directory will typically include an NPM [package.json](https://docs.npmjs.com/files/package.json) file, though it is not required to do so.
@@ -47,7 +63,8 @@ The `--port` parameter can be used to set a default HTTP port number that the No
 The `--help` parameter can be set to receive further assistance regarding the command line options that are available to be used.
 
 
-## Usage examples
+<a name="genuse"></a>
+### Usage examples
 
 a) You have a package.json file and the contents include a meaningful name and the starting script:
 
@@ -66,7 +83,8 @@ d) You have been reserved a range of port numbers in CICS for testing purposes a
   `zowe cics-deploy generate bundle --port 12345`
 
 
-## CICS Bundle metadata
+<a name="metadata"></a>
+### CICS Bundle metadata
 
 Users of the cics-deploy plugin do not typically need to know about the metadata that forms a CICS Bundle, but it is sometimes useful to be aware of the basics. When you run the 'generate bundle' command it is likely that the following files will be created or changed within your working directory:
 
@@ -80,6 +98,51 @@ The `cics.xml` file is the Bundle's manifest, it lists the contents of the Bundl
 
 You may change some or all of these files yourself, other automated processes may change them during the process of deploying the Bundle to CICS. Typical use does not require these files to be changed by the application developer. You can read more about the Bundle manifest at [Manifest contents for a CICS bundle](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.5.0/configuring/resources/manifestdefinitions.html).
 
+
+<a name="deploying"></a>
+## Deploying a Bundle to a CPSM managed CICS environment
+
+The cics-deploy extensions to Zowe CLI provide a mechanism by which the CICS DFHDPLOY utility can be used to install a Bundle resource in CICS. It requires CICSPlex System Manager (CPSM) to be used to manage the target CICS regions; if the target environment is not CPSM managed then cics-deploy cannot be used to deploy the Bundle. In order to deploy a Bundle you will need:
+
+1. A userid for the target z/OS environment with the necessary authorization to perform the deployment.
+2. The directory structure for the CICS Bundle to already exist on the Unix file system for the target z/OS environment.
+3. The name of the target CICSplex and Scope into which the Bundle should be deployed.
+4. The High Level Qualifier (HLQ) for the CICS datasets in the target environment.
+5. An up to 8 character name for the Bundle resource which is unique within the target CICS regions.
+
+If you have not already done so, start by creating a zosmf profile in Zowe CLI. This profile will identify the target z/OS environment; you will need to know the hostname and port number for the z/OSMF server in your target environment, together with your user name and password. If you only create a single such profile then it will be used as the default z/OS configuration for any further zowe interactions. For further assistance on creating a z/OSMF profile issue the following command:
+
+  `zowe profiles create zosmf-profile --help`
+
+Now create a cics-deploy profile. This profile will identify the target CICS environment for deployment; you will need to know the CICSplex name and Scope, together with the High Level Qualifier (HLQ) for the CICS data sets. You will also have to identify either a target CSD group (typically used for single region configurations) or a BAS resource group (used for multi-region configurations) into which the Bundle will be defined. You may optionally configure a JCL jobcard if your site requires a customised JCL configuration for DFHDPLOY. For further assistance on creating a cics-deploy profile issue the following command:
+
+  `zowe profiles create cics-deploy-profile --help`
+
+For example, you might create the profile using the following command:
+
+  `zowe profiles create cics-deploy-profile example --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --resgroup BUNDGRP1`
+
+You can now use cics-deploy to deploy a Bundle. You will need to know the name to be used for the Bundle, and the location in the Unix file system at which it can be found. For example, you might issue the following command:
+
+  `zowe cics-deploy deploy bundle --name MYBUND01 --bundledir /u/example/bundles/MyBundle01 --cics-deploy-profile example`
+
+The above command will attempt to define and install a CICS Bundle named MYBUND01 from the specified location (bundledir) within the target z/OS environment, using the default z/OSMF configuration and the CICS configuration defined in the `example` cics-deploy profile. For further assistance on `deploy bundle` issue the following command:
+
+  `zowe cics-deploy deploy bundle --help`
+
+<a name="undeploying"></a>
+## Undeploying a Bundle from a CPSM managed CICS environment
+
+Undeploying a Bundle removes it from a target CICS environment. The undeployment action shares the same dependencies as are required for deploying a Bundle, it will use the same zosmf and cics-deploy profiles. You will need to know the name of the Bundle in the target CICS environment.  For example, you might issue the following command:
+
+  `zowe cics-deploy undeploy bundle --name MYBUND01 --cics-deploy-profile example`
+
+The above command will attempt to disable and discard a CICS Bundle named MYBUND01, using the default z/OSMF configuration and the CICS configuration defined in the `example` cics-deploy profile. For further assistance on `undeploy bundle` issue the following command:
+
+  `zowe cics-deploy undeploy bundle --help`
+
+
+<a name="contributing"></a>
 ## Contributing
 
 If you would like to contribute to the cics-deploy project you will need a development envionment from which to do so. Follow the instructions at [Setting up your development environment](./tutorials/Setup.md) for further information.
