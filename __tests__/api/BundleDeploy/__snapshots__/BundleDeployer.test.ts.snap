@@ -16,7 +16,7 @@ exports[`BundleDeployer01 should complain if status can't be determined 1`] = `"
 
 exports[`BundleDeployer01 should complain if status can't be determined 2`] = `"DFHDPLOY command completed, but status cannot be determined."`;
 
-exports[`BundleDeployer01 should complain of SYSTSPRT not found 1`] = `"SYSTSPRT output from DFHDPLOY not found."`;
+exports[`BundleDeployer01 should complain of SYSTSPRT not found 1`] = `"SYSTSPRT output from DFHDPLOY not found. Most recent status update: ''."`;
 
 exports[`BundleDeployer01 should complain with missing zOSMF profile for deploy 1`] = `"Expect Error: Required parameter 'hostname' must be defined"`;
 
@@ -220,7 +220,7 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should handle failure during submitjobs processing 1`] = `"Failure occurred submitting DFHDPLOY JCL: Cannot read property 'hostname' of undefined"`;
+exports[`BundleDeployer01 should handle failure during submitjobs processing 1`] = `"Failure occurred submitting DFHDPLOY JCL: 'Cannot read property 'hostname' of undefined'. Most recent status update: ''."`;
 
 exports[`BundleDeployer01 should support long bundledir 1`] = `"DFHRL2037I"`;
 
@@ -250,7 +250,7 @@ DEPLOY BUNDLE(12345678)
 
 exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 1`] = `"undefined"`;
 
-exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 2`] = `"DFHDPLOY did not generate any output."`;
+exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 2`] = `"DFHDPLOY did not generate any output. Most recent status update: ''."`;
 
 exports[`BundleDeployer01 should undeploy successfully 1`] = `"DFHRL2037I"`;
 

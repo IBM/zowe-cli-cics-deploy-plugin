@@ -374,6 +374,9 @@ describe("bundle Handler", () => {
     it("should complain if jobcard omits JOB ", async () => {
         await testJobcardError("//wibble boj", "--jobcard parameter does not have JOB keyword after the jobname. Expected 'JOB' but found 'boj'");
     });
+    it("should complain if jobcard omits JOB 2", async () => {
+        await testJobcardError("//wibble", "--jobcard parameter does not have JOB keyword after the jobname.");
+    });
     it("should complain if zosmf profile not found", async () => {
 
         const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
