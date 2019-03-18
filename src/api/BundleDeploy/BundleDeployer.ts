@@ -11,7 +11,7 @@
 
 "use strict";
 
-import { IHandlerParameters, Logger, ImperativeError, Session } from "@brightside/imperative";
+import { IHandlerParameters, Logger, ImperativeError, Session, ITaskWithStatus, TaskStage } from "@brightside/imperative";
 import { ZosmfSession, SubmitJobs, List } from "@brightside/core";
 import { ParmValidator } from "./ParmValidator";
 
@@ -205,12 +205,17 @@ export class BundleDeployer {
 
   private async submitJCL(jcl: string, session: Session): Promise<string> {
     let spoolOutput: any;
+    const status: ITaskWithStatus = { percentComplete: 0, statusMessage: "", stageName: TaskStage.NOT_STARTED };
     try {
-      spoolOutput = await SubmitJobs.submitJclString(session, jcl,
-                           { jclSource: "", viewAllSpoolContent: true });
+      spoolOutput = await SubmitJobs.submitJclString(session, jcl, {
+                             jclSource: "",
+                             task: status,
+                             viewAllSpoolContent: true
+                           });
     }
     catch (error) {
-      throw new Error("Failure occurred submitting DFHDPLOY JCL: " + error.message);
+      throw new Error("Failure occurred submitting DFHDPLOY JCL: '" + error.message +
+                      "'. Most recent status update: '" + status.statusMessage + "'.");
     }
 
     // Find the output
@@ -224,7 +229,7 @@ export class BundleDeployer {
         logger.debug(file.data);
 
         if (file.data === undefined || file.data.length === 0) {
-          throw new Error("DFHDPLOY did not generate any output.");
+          throw new Error("DFHDPLOY did not generate any output. Most recent status update: '" + status.statusMessage + "'.");
         }
 
         // Did DFHDPLOY fail?
@@ -245,6 +250,6 @@ export class BundleDeployer {
       }
     }
 
-    throw new Error("SYSTSPRT output from DFHDPLOY not found.");
+    throw new Error("SYSTSPRT output from DFHDPLOY not found. Most recent status update: '" + status.statusMessage + "'.");
   }
 }

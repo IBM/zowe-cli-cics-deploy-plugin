@@ -302,6 +302,11 @@ export class ParmValidator {
       throw new Error("--jobcard parameter does not start with a suitable jobname: '" + jobname + " '");
     }
 
+    // Check that there is a second word
+    if (firstPartParts.length < 2) {
+      throw new Error("--jobcard parameter does not have JOB keyword after the jobname.");
+    }
+
     // check the second word is 'JOB'
     const jobkeyword = firstPartParts[1].trim();
     if (jobkeyword !== "JOB") {
