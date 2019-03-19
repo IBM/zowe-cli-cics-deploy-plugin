@@ -167,7 +167,7 @@ export class BundleDeployer {
   }
 
 
-  private async createZosMFSession(): Promise<AbstractSession> {
+  private async createZosMFSession(): Promise<any> {
     // Create a zosMF session
     const zosmfProfile = this.params.profiles.get("zosmf");
 
@@ -177,7 +177,7 @@ export class BundleDeployer {
     return ZosmfSession.createBasicZosmfSession(zosmfProfile);
   }
 
-  private async checkHLQDatasets(session: AbstractSession) {
+  private async checkHLQDatasets(session: any) {
     // Check that the CICS dataset value looks valid and can be viewed
     // Access errors will trigger an Exception
     const cicspds = this.params.arguments.cicshlq + ".SDFHLOAD";
