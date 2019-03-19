@@ -11,7 +11,8 @@
 
 "use strict";
 
-import { IHandlerParameters, Logger, ImperativeError, Session, ITaskWithStatus, TaskStage , TaskProgress} from "@brightside/imperative";
+import { IHandlerParameters, Logger, ImperativeError, AbstractSession, ITaskWithStatus,
+         TaskStage , TaskProgress} from "@brightside/imperative";
 import { ZosmfSession, SubmitJobs, List } from "@brightside/core";
 import { ParmValidator } from "./ParmValidator";
 
@@ -166,7 +167,7 @@ export class BundleDeployer {
   }
 
 
-  private async createZosMFSession(): Promise<Session> {
+  private async createZosMFSession(): Promise<AbstractSession> {
     // Create a zosMF session
     const zosmfProfile = this.params.profiles.get("zosmf");
 
@@ -176,7 +177,7 @@ export class BundleDeployer {
     return ZosmfSession.createBasicZosmfSession(zosmfProfile);
   }
 
-  private async checkHLQDatasets(session: Session) {
+  private async checkHLQDatasets(session: AbstractSession) {
     // Check that the CICS dataset value looks valid and can be viewed
     // Access errors will trigger an Exception
     const cicspds = this.params.arguments.cicshlq + ".SDFHLOAD";
@@ -218,7 +219,7 @@ export class BundleDeployer {
     }
   }
 
-  private async submitJCL(jcl: string, session: Session): Promise<string> {
+  private async submitJCL(jcl: string, session: AbstractSession): Promise<string> {
     let spoolOutput: any;
     const status: ITaskWithStatus = { percentComplete: TaskProgress.TEN_PERCENT,
                                       statusMessage: "Submitting DFHDPLOY JCL",
