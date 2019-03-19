@@ -11,7 +11,8 @@
 
 "use strict";
 
-import { IHandlerParameters, Logger, ImperativeError, Session, ITaskWithStatus, TaskStage } from "@brightside/imperative";
+import { IHandlerParameters, Logger, ImperativeError, AbstractSession, ITaskWithStatus,
+         TaskStage , TaskProgress} from "@brightside/imperative";
 import { ZosmfSession, SubmitJobs, List } from "@brightside/core";
 import { ParmValidator } from "./ParmValidator";
 
@@ -24,6 +25,8 @@ import { ParmValidator } from "./ParmValidator";
 export class BundleDeployer {
 
   private params: IHandlerParameters;
+  private PROGRESS_BAR_INTERVAL = 1500; // milliseconds
+  private PROGRESS_BAR_MAX = 67;
 
   /**
    * Constructor for a BundleDeployer.
@@ -164,7 +167,7 @@ export class BundleDeployer {
   }
 
 
-  private async createZosMFSession(): Promise<Session> {
+  private async createZosMFSession(): Promise<any> {
     // Create a zosMF session
     const zosmfProfile = this.params.profiles.get("zosmf");
 
@@ -174,7 +177,7 @@ export class BundleDeployer {
     return ZosmfSession.createBasicZosmfSession(zosmfProfile);
   }
 
-  private async checkHLQDatasets(session: Session) {
+  private async checkHLQDatasets(session: any) {
     // Check that the CICS dataset value looks valid and can be viewed
     // Access errors will trigger an Exception
     const cicspds = this.params.arguments.cicshlq + ".SDFHLOAD";
@@ -203,9 +206,31 @@ export class BundleDeployer {
     }
   }
 
-  private async submitJCL(jcl: string, session: Session): Promise<string> {
+  private updateProgressBar(status: ITaskWithStatus) {
+    // Increment the progress by 1%. This will refresh what the user sees
+    // on the console.
+    status.percentComplete = status.percentComplete + 1;
+
+    // Continue iterating on progress updates until we've reached the max value,
+    // or until the processing has completed.
+    if (status.percentComplete < this.PROGRESS_BAR_MAX &&
+        status.stageName === TaskStage.IN_PROGRESS) {
+      setTimeout(this.updateProgressBar.bind(this), this.PROGRESS_BAR_INTERVAL, status);
+    }
+  }
+
+  private async submitJCL(jcl: string, session: any): Promise<string> {
     let spoolOutput: any;
-    const status: ITaskWithStatus = { percentComplete: 0, statusMessage: "", stageName: TaskStage.NOT_STARTED };
+    const status: ITaskWithStatus = { percentComplete: TaskProgress.TEN_PERCENT,
+                                      statusMessage: "Submitting DFHDPLOY JCL",
+                                      stageName: TaskStage.IN_PROGRESS };
+    this.params.response.progress.startBar({task: status});
+
+    // Refresh the progress bar by 1% every second or so up to a max of 67%.
+    // SubmitJobs will initialise it to 30% and set it to 70% when it
+    // completes, we tweak it every so often until then for purely cosmetic purposes.
+    setTimeout(this.updateProgressBar.bind(this), this.PROGRESS_BAR_INTERVAL, status);
+
     try {
       spoolOutput = await SubmitJobs.submitJclString(session, jcl, {
                              jclSource: "",
@@ -214,6 +239,7 @@ export class BundleDeployer {
                            });
     }
     catch (error) {
+      status.stageName = TaskStage.FAILED;
       throw new Error("Failure occurred submitting DFHDPLOY JCL: '" + error.message +
                       "'. Most recent status update: '" + status.statusMessage + "'.");
     }
@@ -229,27 +255,38 @@ export class BundleDeployer {
         logger.debug(file.data);
 
         if (file.data === undefined || file.data.length === 0) {
+          status.stageName = TaskStage.FAILED;
           throw new Error("DFHDPLOY did not generate any output. Most recent status update: '" + status.statusMessage + "'.");
         }
 
+        // Finish the progress bar
+        status.statusMessage = "Completed DFHDPLOY";
+        this.params.response.progress.endBar();
+
         // Did DFHDPLOY fail?
         if (file.data.indexOf("DFHRL2055I") > -1) {
+          status.stageName = TaskStage.FAILED;
           throw new Error("DFHDPLOY stopped processing due to an error.");
         }
         if (file.data.indexOf("DFHRL2043I") > -1) {
+          status.stageName = TaskStage.COMPLETE;
           return "DFHDPLOY completed with warnings.";
         }
         if (file.data.indexOf("DFHRL2012I") > -1) {
+          status.stageName = TaskStage.COMPLETE;
           return "DFHDPLOY DEPLOY command successful.";
         }
         if (file.data.indexOf("DFHRL2037I") > -1) {
+          status.stageName = TaskStage.COMPLETE;
           return "DFHDPLOY UNDEPLOY command successful.";
         }
 
+        status.stageName = TaskStage.FAILED;
         throw new Error("DFHDPLOY command completed, but status cannot be determined.");
       }
     }
 
+    status.stageName = TaskStage.FAILED;
     throw new Error("SYSTSPRT output from DFHDPLOY not found. Most recent status update: '" + status.statusMessage + "'.");
   }
 }
