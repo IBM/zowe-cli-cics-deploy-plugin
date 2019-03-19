@@ -219,7 +219,7 @@ export class BundleDeployer {
     }
   }
 
-  private async submitJCL(jcl: string, session: AbstractSession): Promise<string> {
+  private async submitJCL(jcl: string, session: any): Promise<string> {
     let spoolOutput: any;
     const status: ITaskWithStatus = { percentComplete: TaskProgress.TEN_PERCENT,
                                       statusMessage: "Submitting DFHDPLOY JCL",
