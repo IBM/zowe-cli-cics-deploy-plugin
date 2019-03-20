@@ -200,6 +200,44 @@ describe("BundleDeployer01", () => {
                                   "//         MSGCLASS=X,TIME=NOLIMIT";
         await testDeployJCL(parms);
     });
+    it("should support long line jobcard", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT,NOEL=ABCDEFGHIJKMNOPQRSTUVWXYZ";
+        await testDeployJCL(parms);
+    });
+    it("should support really long line jobcard", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT,NOEL=ABCDEFGHIJKMNOPQRSTUVWXYZ," +
+                                  "72CHARS=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz," +
+                                  "ALPHABETIC=ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        await testDeployJCL(parms);
+    });
+    it("should fail with overlong jobcard", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT,NOEL=ABCDEFGHIJKMNOPQRSTUVWXYZ," +
+                                  "ALPHABETIC=ABCDEFGHIJKLMNOPQRSTUVWXYZ," +
+                                  "73CHARS=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1";
+        let err: Error;
+        try {
+          await testDeployJCL(parms);
+        } catch (e) {
+          err = e;
+        }
+        expect(err).toBeDefined();
+        expect(err.message).toMatchSnapshot();
+    });
     it("should support long bundledir", async () => {
 
         let parms: IHandlerParameters;
