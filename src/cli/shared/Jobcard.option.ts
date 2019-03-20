@@ -21,7 +21,7 @@ export const JobcardOption: ICommandOptionDefinition = {
     type: "string",
     description: "Specifies the job card to use with any generated DFHDPLOY JCL. Use this parameter " +
                  "if you need to tailor the job card and you have not set the --cics-deploy-profile " +
-                 "option.",
+                 "option. You can separate multiple lines of the jobcard with \\n.",
     defaultValue: "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT",
     required: false
 };
