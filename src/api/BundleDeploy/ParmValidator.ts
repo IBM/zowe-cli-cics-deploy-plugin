@@ -281,6 +281,9 @@ export class ParmValidator {
       throw new Error("--jobcard parameter is empty");
     }
 
+    // resolve any new line escape sequences embedded in the jobcard
+    params.arguments.jobcard = params.arguments.jobcard.replace("\\n", "\n");
+
     // split the jobcard into a comma separated list
     const jobcardParts = params.arguments.jobcard.split(",");
     const firstPart = jobcardParts[0].trim();

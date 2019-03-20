@@ -19,8 +19,7 @@ import { ZosmfSession, SubmitJobs, List } from "@brightside/core";
 const DEFAULT_PARAMTERS: IHandlerParameters = {
     arguments: {
         $0: "bright",
-        _: ["zowe-cli-cics-deploy-plugin", "deploy", "bundle"],
-        jobcard: "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT"
+        _: ["zowe-cli-cics-deploy-plugin", "deploy", "bundle"]
     },
     profiles: {
         get: (type: string) => {
@@ -191,6 +190,16 @@ describe("BundleDeployer01", () => {
         parms.arguments.timeout = 1500;
         await testDeployJCL(parms);
     });
+    it("should support multi-line jobcard", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,CLASS=A,\n" +
+                                  "//         MSGCLASS=X,TIME=NOLIMIT";
+        await testDeployJCL(parms);
+    });
     it("should support long bundledir", async () => {
 
         let parms: IHandlerParameters;
@@ -312,6 +321,7 @@ function setCommonParmsForUndeployTests(parms: IHandlerParameters) {
   parms.arguments.resgroup = undefined;
   parms.arguments.timeout = undefined;
   parms.arguments.name = "12345678";
+  parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT";
 }
 
 async function testDeployJCL(parms: IHandlerParameters) {

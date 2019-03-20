@@ -248,6 +248,33 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
+exports[`BundleDeployer01 should support multi-line jobcard 1`] = `"DFHRL2037I"`;
+
+exports[`BundleDeployer01 should support multi-line jobcard 2`] = `
+"//DFHDPLOY JOB DFHDPLOY,CLASS=A,
+//         MSGCLASS=X,TIME=NOLIMIT
+//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
+//STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
+//         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
+//SYSTSPRT DD SYSOUT=*
+//SYSIN    DD *
+*
+SET CICSPLEX(12345678);
+*
+UNDEPLOY BUNDLE(12345678)
+       SCOPE(12345678)
+       STATE(DISCARDED)
+       RESGROUP(12345678);
+*
+DEPLOY BUNDLE(12345678)
+       BUNDLEDIR(1234567890)
+       SCOPE(12345678)
+       STATE(AVAILABLE)
+       RESGROUP(12345678);
+/*
+"
+`;
+
 exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 1`] = `"undefined"`;
 
 exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 2`] = `"DFHDPLOY did not generate any output. Most recent status update: 'Submitting DFHDPLOY JCL'."`;
