@@ -30,6 +30,8 @@ exports[`BundleDeployer01 should deploy successfully 1`] = `"DFHRL2012I"`;
 
 exports[`BundleDeployer01 should deploy successfully 2`] = `"DFHDPLOY DEPLOY command successful."`;
 
+exports[`BundleDeployer01 should fail with overlong jobcard 1`] = `"--jobcard parameter section cannot be split into 72 character lines: '//         73CHARS=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1'."`;
+
 exports[`BundleDeployer01 should generate deploy JCL for csdgroup 1`] = `"DFHRL2037I"`;
 
 exports[`BundleDeployer01 should generate deploy JCL for csdgroup 2`] = `
@@ -248,11 +250,67 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
+exports[`BundleDeployer01 should support long line jobcard 1`] = `"DFHRL2037I"`;
+
+exports[`BundleDeployer01 should support long line jobcard 2`] = `
+"//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT,
+//         NOEL=ABCDEFGHIJKMNOPQRSTUVWXYZ
+//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
+//STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
+//         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
+//SYSTSPRT DD SYSOUT=*
+//SYSIN    DD *
+*
+SET CICSPLEX(12345678);
+*
+UNDEPLOY BUNDLE(12345678)
+       SCOPE(12345678)
+       STATE(DISCARDED)
+       RESGROUP(12345678);
+*
+DEPLOY BUNDLE(12345678)
+       BUNDLEDIR(1234567890)
+       SCOPE(12345678)
+       STATE(AVAILABLE)
+       RESGROUP(12345678);
+/*
+"
+`;
+
 exports[`BundleDeployer01 should support multi-line jobcard 1`] = `"DFHRL2037I"`;
 
 exports[`BundleDeployer01 should support multi-line jobcard 2`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,
 //         MSGCLASS=X,TIME=NOLIMIT
+//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
+//STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
+//         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
+//SYSTSPRT DD SYSOUT=*
+//SYSIN    DD *
+*
+SET CICSPLEX(12345678);
+*
+UNDEPLOY BUNDLE(12345678)
+       SCOPE(12345678)
+       STATE(DISCARDED)
+       RESGROUP(12345678);
+*
+DEPLOY BUNDLE(12345678)
+       BUNDLEDIR(1234567890)
+       SCOPE(12345678)
+       STATE(AVAILABLE)
+       RESGROUP(12345678);
+/*
+"
+`;
+
+exports[`BundleDeployer01 should support really long line jobcard 1`] = `"DFHRL2037I"`;
+
+exports[`BundleDeployer01 should support really long line jobcard 2`] = `
+"//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT,
+//         NOEL=ABCDEFGHIJKMNOPQRSTUVWXYZ,
+//         72CHARS=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz,
+//         ALPHABETIC=ABCDEFGHIJKLMNOPQRSTUVWXYZ
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
 //         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
