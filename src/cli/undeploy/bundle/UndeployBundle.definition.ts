@@ -28,7 +28,7 @@ export const UndeployBundleDefinition: ICommandDefinition = {
     name: "bundle",
     aliases: ["b", "bun", "bund"],
     summary: "Deploy a CICS bundle",
-    description: "Undeploy a CICS bundle from a CPSM managed group of CICS regions. " +
+    description: "Undeploy a CICS bundle from one or more CICS regions within a CICSplex. " +
                  "The DFHDPLOY utility is used to undeploy and remove a BUNDLE resource " +
                  "from the target group of CICS regions.",
     type: "command",
@@ -38,17 +38,17 @@ export const UndeployBundleDefinition: ICommandDefinition = {
     profile: { required: ["zosmf"], optional: ["cics-deploy"] },
     examples: [
         {
-            description: "Undeploy a CICS bundle from a default set of target regions",
-            options: `--name EXAMPLE --cics-deploy-profile default`
+            description: "Undeploy a CICS bundle using the default cics-deploy profile",
+            options: `--name EXAMPLE`
         },
         {
             description: "Undeploy a CICS bundle, and declare a timeout should the processing take too long",
-            options: `--name EXAMPLE --cics-deploy-profile default --timeout 60`
+            options: `--name EXAMPLE --timeout 60`
         },
         {
-            description: "Undeploy a CICS bundle from a specific target environment using a specific zosmf profile",
+            description: "Undeploy a CICS bundle from a specific target environment using specific zosmf and cics-deploy profiles",
             options: `--name EXAMPLE --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP ` +
-                     `--cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --zosmf-profile zprof`
+                     `--cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --zosmf-profile testplex --cics-deploy-profile devcics`
         }
     ]
 };

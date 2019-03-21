@@ -23,6 +23,6 @@ export const NameOption: ICommandOptionDefinition = {
     type: "string",
     required: true,
     stringLengthRange: [1, MAX_LENGTH],
-    description: "Specifies the name of the CICS bundle (up to 8 characters) to deploy or undeploy."
+    description: "Specifies the name of the CICS BUNDLE resource (up to 8 characters) to deploy or undeploy."
 };
 

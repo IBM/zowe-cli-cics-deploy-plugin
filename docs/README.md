@@ -25,7 +25,8 @@ In order to use the cics-deploy plugin you must first have installed Zowe CLI; f
 <a name="installation"></a>
 ## Installation
 
-To install the cics-deploy plugin to Zowe CLI do the following: TO BE DETERMINED; NPM, SOMETHING, SOMETHING.
+To install the cics-deploy plugin to Zowe CLI do the following: 
+`zowe plugins install zowe-cli-cics-deploy-plugin`
 
 <a name="generation"></a>
 ## Generating a Bundle from an existing Node.js project

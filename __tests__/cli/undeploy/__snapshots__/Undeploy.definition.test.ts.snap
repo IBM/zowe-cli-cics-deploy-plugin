@@ -21,10 +21,10 @@ import { UndeployBundleDefinition } from \\"./bundle/UndeployBundle.definition\\
 const UndeployDefinition: ICommandDefinition = {
     name: \\"undeploy\\",
     aliases: [\\"u\\", \\"udep\\"],
-    summary: \\"Undeploy a CICS bundle from a CPSM managed (group of) CICS region(s)\\",
-    description: \\"Undeploy a CICS bundle from a CPSM managed set of CICS regions. \\" +
+    summary: \\"Undeploy a CICS bundle from one or more CICS regions within a CICSplex\\",
+    description: \\"Undeploy a CICS bundle from one or more CICS regions within a CICSplex. \\" +
                  \\"A BUNDLE resource is made UNAVAILABLE, it is then DISABLED and \\" +
-                 \\"DISCARDED from the target CICSplex and scope.\\",
+                 \\"DISCARDED from the target scope with the CICSplex.\\",
     type: \\"group\\",
     children: [UndeployBundleDefinition]
 };

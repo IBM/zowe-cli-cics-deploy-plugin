@@ -21,10 +21,10 @@ import { DeployBundleDefinition } from \\"./bundle/DeployBundle.definition\\";
 const DeployDefinition: ICommandDefinition = {
     name: \\"deploy\\",
     aliases: [\\"d\\", \\"dep\\"],
-    summary: \\"Deploy a CICS bundle to a CPSM managed (group of) CICS region(s)\\",
-    description: \\"Deploy a CICS bundle from zFS into a CPSM managed set of CICS regions. \\" +
-                 \\"A BUNDLE resource is installed and ENABLED and made AVAILABLE in the \\" +
-                 \\"target CICSplex and scope.\\",
+    summary: \\"Deploy a CICS bundle to one or more CICS regions within a CICSplex\\",
+    description: \\"Deploy a CICS bundle from zFS to one or more CICS regions within a CICSplex. \\" +
+                 \\"A BUNDLE resource is installed, ENABLED and made AVAILABLE in the \\" +
+                 \\"target scope of the CICSplex.\\",
     type: \\"group\\",
     children: [DeployBundleDefinition],
 };

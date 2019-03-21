@@ -29,7 +29,7 @@ export const DeployBundleDefinition: ICommandDefinition = {
     name: "bundle",
     aliases: ["b", "bun", "bund"],
     summary: "Deploy a CICS bundle",
-    description: "Deploy a CICS bundle from zFS to a CPSM managed group of CICS regions. " +
+    description: "Deploy a CICS bundle from zFS to one or more CICS regions within a CICSplex. " +
                  "The DFHDPLOY utility is used to install and make available a BUNDLE resource " +
                  "in the target group of CICS regions.",
     type: "command",
@@ -40,16 +40,16 @@ export const DeployBundleDefinition: ICommandDefinition = {
     examples: [
         {
             description: "Deploy a CICS bundle with a specific name and location to a default set of target regions",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cics-deploy-profile default`
+            options: `--name EXAMPLE --bundledir /u/example/bundleDir`
         },
         {
             description: "Deploy a CICS bundle, but declare a timeout should the processing take too long",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cics-deploy-profile default --timeout 60`
+            options: `--name EXAMPLE --bundledir /u/example/bundleDir --timeout 60`
         },
         {
-            description: "Deploy a CICS bundle to a specific target environment using a specific zosmf profile",
+            description: "Deploy a CICS bundle to a specific target environment using specific zosmf & cics-deploy profiles",
             options: `--name EXAMPLE --bundledir /u/example/bundleDir --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP ` +
-                     `--cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --zosmf-profile zprof`
+                     `--cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --zosmf-profile testplex --cics-deploy-profile devcics`
         }
     ]
 };
