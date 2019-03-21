@@ -267,6 +267,34 @@ export class ParmValidator {
     }
   }
 
+  private static wrapJobcard(params: IHandlerParameters) {
+    if (params.arguments.jobcard.indexOf("\\n") === -1) {
+      // if the user hasn't embedded new-line characters into the jobcard
+      // then we'll have to do that ourselves if the value is too long
+      let jobcardLocal = params.arguments.jobcard;
+      let jobcardNew = "";
+      const MAX_JCL_LINE = 71;
+      while (jobcardLocal.length > MAX_JCL_LINE) {
+        const indexOflastComma = jobcardLocal.lastIndexOf(",", MAX_JCL_LINE);
+
+        if (indexOflastComma === -1) {
+          throw new Error("--jobcard parameter section cannot be split into 72 character lines: '" + jobcardLocal + "'.");
+        }
+
+        jobcardNew = jobcardNew + jobcardLocal.substring(0, indexOflastComma + 1) + "\n";
+        jobcardLocal = "//         " + jobcardLocal.substring(indexOflastComma + 1);
+      }
+      jobcardNew = jobcardNew + jobcardLocal;
+      params.arguments.jobcard = jobcardNew;
+    }
+    else {
+      // if the user has embedded new-line characters within the jobcard
+      // then resolve them, the user has taken responsibility for ensuring
+      // line breaks are in suitable places.
+      params.arguments.jobcard = params.arguments.jobcard.replace("\\n", "\n");
+    }
+  }
+
   private static validateJobcard(params: IHandlerParameters) {
     // jobcard is mandatory
     if (params.arguments.jobcard === undefined) {
@@ -281,8 +309,8 @@ export class ParmValidator {
       throw new Error("--jobcard parameter is empty");
     }
 
-    // resolve any new line escape sequences embedded in the jobcard
-    params.arguments.jobcard = params.arguments.jobcard.replace("\\n", "\n");
+    // handle long jobcards
+    ParmValidator.wrapJobcard(params);
 
     // split the jobcard into a comma separated list
     const jobcardParts = params.arguments.jobcard.split(",");

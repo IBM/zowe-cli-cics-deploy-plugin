@@ -86,6 +86,19 @@ export class BundleDeployer {
     return this.submitJCL(jcl, session);
   }
 
+  private wrapLongLineForJCL(lineOfText: string): string {
+    const MAX_LINE_LEN = 71;
+
+    let tempVal = lineOfText;
+    let returnVal = "";
+    while (tempVal.length > MAX_LINE_LEN) {
+      returnVal = returnVal + tempVal.substring(0, MAX_LINE_LEN) + "\n";
+      tempVal = "        " + tempVal.substring(MAX_LINE_LEN);
+    }
+    returnVal = returnVal + tempVal;
+    return returnVal;
+  }
+
   /**
    * Construct the DFHDPLOY DEPLOY BUNDLE JCL.
    * @returns {string}
@@ -101,19 +114,19 @@ export class BundleDeployer {
     jcl = jcl + "*\n";
 
     // Now generate the deploy statement.
-    jcl = jcl + "DEPLOY BUNDLE(" + this.params.arguments.name + ")\n" +
-                "       BUNDLEDIR(" + this.params.arguments.bundledir + ")\n" +
-                "       SCOPE(" + this.params.arguments.scope + ")\n" +
-                "       STATE(AVAILABLE)\n";
+    jcl = jcl + this.wrapLongLineForJCL("DEPLOY BUNDLE(" + this.params.arguments.name + ")\n") +
+                this.wrapLongLineForJCL("       BUNDLEDIR(" + this.params.arguments.bundledir + ")\n") +
+                this.wrapLongLineForJCL("       SCOPE(" + this.params.arguments.scope + ")\n") +
+                this.wrapLongLineForJCL("       STATE(AVAILABLE)\n");
 
     if (this.params.arguments.timeout !== undefined) {
-      jcl = jcl + "       TIMEOUT(" + this.params.arguments.timeout + ")\n";
+      jcl = jcl + this.wrapLongLineForJCL("       TIMEOUT(" + this.params.arguments.timeout + ")\n");
     }
     if (this.params.arguments.csdgroup !== undefined) {
-      jcl = jcl + "       CSDGROUP(" + this.params.arguments.csdgroup + ");\n";
+      jcl = jcl + this.wrapLongLineForJCL("       CSDGROUP(" + this.params.arguments.csdgroup + ");\n");
     }
     if (this.params.arguments.resgroup !== undefined) {
-      jcl = jcl + "       RESGROUP(" + this.params.arguments.resgroup + ");\n";
+      jcl = jcl + this.wrapLongLineForJCL("       RESGROUP(" + this.params.arguments.resgroup + ");\n");
     }
 
     // finally add a terminator
@@ -147,20 +160,20 @@ export class BundleDeployer {
           "//SYSTSPRT DD SYSOUT=*\n" +
           "//SYSIN    DD *\n" +
           "*\n" +
-          "SET CICSPLEX(" + this.params.arguments.cicsplex + ");\n" +
-          "*\n" +
-          "UNDEPLOY BUNDLE(" + this.params.arguments.name + ")\n" +
-          "       SCOPE(" + this.params.arguments.scope + ")\n" +
-          "       STATE(DISCARDED)\n";
+          this.wrapLongLineForJCL("SET CICSPLEX(" + this.params.arguments.cicsplex + ");\n") +
+          this.wrapLongLineForJCL("*\n") +
+          this.wrapLongLineForJCL("UNDEPLOY BUNDLE(" + this.params.arguments.name + ")\n") +
+          this.wrapLongLineForJCL("       SCOPE(" + this.params.arguments.scope + ")\n") +
+          this.wrapLongLineForJCL("       STATE(DISCARDED)\n");
 
     if (this.params.arguments.timeout !== undefined) {
-      jcl = jcl + "       TIMEOUT(" + this.params.arguments.timeout + ")\n";
+      jcl = jcl + this.wrapLongLineForJCL("       TIMEOUT(" + this.params.arguments.timeout + ")\n");
     }
     if (this.params.arguments.csdgroup !== undefined) {
-      jcl = jcl + "       CSDGROUP(" + this.params.arguments.csdgroup + ");\n";
+      jcl = jcl + this.wrapLongLineForJCL("       CSDGROUP(" + this.params.arguments.csdgroup + ");\n");
     }
     if (this.params.arguments.resgroup !== undefined) {
-      jcl = jcl + "       RESGROUP(" + this.params.arguments.resgroup + ");\n";
+      jcl = jcl + this.wrapLongLineForJCL("       RESGROUP(" + this.params.arguments.resgroup + ");\n");
     }
 
     return jcl;
