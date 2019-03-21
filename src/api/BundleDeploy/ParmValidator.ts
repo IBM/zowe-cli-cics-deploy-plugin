@@ -267,21 +267,7 @@ export class ParmValidator {
     }
   }
 
-  private static validateJobcard(params: IHandlerParameters) {
-    // jobcard is mandatory
-    if (params.arguments.jobcard === undefined) {
-      throw new Error("--jobcard parameter is not set");
-    }
-
-    if (typeof params.arguments.jobcard !== "string") {
-      throw new Error("--jobcard parameter is not a string");
-    }
-
-    if (params.arguments.jobcard === "") {
-      throw new Error("--jobcard parameter is empty");
-    }
-
-    // handle long jobcards
+  private static wrapJobcard(params: IHandlerParameters) {
     if (params.arguments.jobcard.indexOf("\\n") === -1) {
       // if the user hasn't embedded new-line characters into the jobcard
       // then we'll have to do that ourselves if the value is too long
@@ -307,6 +293,24 @@ export class ParmValidator {
       // line breaks are in suitable places.
       params.arguments.jobcard = params.arguments.jobcard.replace("\\n", "\n");
     }
+  }
+
+  private static validateJobcard(params: IHandlerParameters) {
+    // jobcard is mandatory
+    if (params.arguments.jobcard === undefined) {
+      throw new Error("--jobcard parameter is not set");
+    }
+
+    if (typeof params.arguments.jobcard !== "string") {
+      throw new Error("--jobcard parameter is not a string");
+    }
+
+    if (params.arguments.jobcard === "") {
+      throw new Error("--jobcard parameter is empty");
+    }
+
+    // handle long jobcards
+    ParmValidator.wrapJobcard(params);
 
     // split the jobcard into a comma separated list
     const jobcardParts = params.arguments.jobcard.split(",");
