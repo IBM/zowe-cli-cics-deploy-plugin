@@ -28,6 +28,7 @@ export class ParmValidator {
     ParmValidator.validateTimeout(params);
     ParmValidator.validateCicshlq(params);
     ParmValidator.validateCpsmhlq(params);
+    ParmValidator.validateTargetStateDeploy(params);
     ParmValidator.validateJobcard(params);
   }
 
@@ -43,6 +44,7 @@ export class ParmValidator {
     ParmValidator.validateTimeout(params);
     ParmValidator.validateCicshlq(params);
     ParmValidator.validateCpsmhlq(params);
+    ParmValidator.validateTargetStateUndeploy(params);
     ParmValidator.validateJobcard(params);
   }
 
@@ -342,6 +344,58 @@ export class ParmValidator {
     const jobkeyword = firstPartParts[1].trim();
     if (jobkeyword !== "JOB") {
       throw new Error("--jobcard parameter does not have JOB keyword after the jobname. Expected 'JOB' but found '" + jobkeyword + "'");
+    }
+  }
+
+  private static validateTargetStateDeploy(params: IHandlerParameters) {
+    // targetstate is mandatory (a default value should be set by Imperative)
+    if (params.arguments.targetstate === undefined) {
+      throw new Error("--targetstate parameter is not set");
+    }
+
+    if (typeof params.arguments.targetstate !== "string") {
+      throw new Error("--targetstate parameter is not a string");
+    }
+
+    if (params.arguments.targetstate === "") {
+      throw new Error("--targetstate parameter is empty");
+    }
+
+    // tolerate mixed case
+    params.arguments.targetstate = params.arguments.targetstate.toUpperCase();
+
+    if (params.arguments.targetstate !== "DISABLED" &&
+        params.arguments.targetstate !== "ENABLED" &&
+        params.arguments.targetstate !== "AVAILABLE") {
+      throw new Error("--targetstate has invalid value. Found " +
+        params.arguments.targetstate +
+        " but expected one of DISABLED, ENABLED or AVAILABLE.");
+    }
+  }
+
+  private static validateTargetStateUndeploy(params: IHandlerParameters) {
+    // targetstate is mandatory (a default value should be set by Imperative)
+    if (params.arguments.targetstate === undefined) {
+      throw new Error("--targetstate parameter is not set");
+    }
+
+    if (typeof params.arguments.targetstate !== "string") {
+      throw new Error("--targetstate parameter is not a string");
+    }
+
+    if (params.arguments.targetstate === "") {
+      throw new Error("--targetstate parameter is empty");
+    }
+
+    // tolerate mixed case
+    params.arguments.targetstate = params.arguments.targetstate.toUpperCase();
+
+    if (params.arguments.targetstate !== "UNAVAILABLE" &&
+        params.arguments.targetstate !== "DISABLED" &&
+        params.arguments.targetstate !== "DISCARDED") {
+      throw new Error("--targetstate has invalid value. Found " +
+        params.arguments.targetstate +
+        " but expected one of UNAVAILABLE, DISABLED or DISCARDED.");
     }
   }
 }

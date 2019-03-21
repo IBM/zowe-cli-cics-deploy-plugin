@@ -109,7 +109,7 @@ export class BundleDeployer {
     const jcl = this.generateCommonJCLHeader() +
       this.wrapLongLineForJCL("DEPLOY BUNDLE(" + this.params.arguments.name + ")\n") +
       this.wrapLongLineForJCL("       BUNDLEDIR(" + this.params.arguments.bundledir + ")\n") +
-      this.generateCommonJCLFooter("AVAILABLE");
+      this.generateCommonJCLFooter();
 
     return jcl;
   }
@@ -123,7 +123,7 @@ export class BundleDeployer {
   private getUndeployJCL(): string {
     const jcl = this.generateCommonJCLHeader() +
       this.wrapLongLineForJCL("UNDEPLOY BUNDLE(" + this.params.arguments.name + ")\n") +
-      this.generateCommonJCLFooter("DISCARDED");
+      this.generateCommonJCLFooter();
 
     return jcl;
   }
@@ -142,10 +142,10 @@ export class BundleDeployer {
     return jcl;
   }
 
-  private generateCommonJCLFooter(targetState: string): string {
+  private generateCommonJCLFooter(): string {
     let jcl =
       this.wrapLongLineForJCL("       SCOPE(" + this.params.arguments.scope + ")\n") +
-      this.wrapLongLineForJCL("       STATE(" + targetState + ")\n");
+      this.wrapLongLineForJCL("       STATE(" + this.params.arguments.targetstate + ")\n");
 
     if (this.params.arguments.timeout !== undefined) {
       jcl = jcl + this.wrapLongLineForJCL("       TIMEOUT(" + this.params.arguments.timeout + ")\n");

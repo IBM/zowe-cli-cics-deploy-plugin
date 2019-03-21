@@ -19,6 +19,7 @@ import { CicshlqOption } from "../../shared/Cicshlq.option";
 import { CpsmhlqOption } from "../../shared/Cpsmhlq.option";
 import { JobcardOption } from "../../shared/Jobcard.option";
 import { TimeoutOption } from "../../shared/Timeout.option";
+import { TargetStateOption } from "./options/TargetState.option";
 
 /**
  * Imperative command for the Bundle sub-option of Deploy.
@@ -34,7 +35,7 @@ export const UndeployBundleDefinition: ICommandDefinition = {
     type: "command",
     handler: __dirname + "/UndeployBundle.handler",
     options: [ NameOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption,
-               CicshlqOption, CpsmhlqOption, JobcardOption, TimeoutOption],
+               CicshlqOption, CpsmhlqOption, JobcardOption, TimeoutOption, TargetStateOption],
     profile: { required: ["zosmf"], optional: ["cics-deploy"] },
     examples: [
         {
