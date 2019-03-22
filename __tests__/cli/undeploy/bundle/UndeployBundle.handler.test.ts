@@ -100,6 +100,29 @@ describe("bundle Handler", () => {
         expect(err.message).toContain("--timeout parameter is too small");
     });
 
+    it("should complain with no targetstate parameter UNDEPLOY", async () => {
+        await testTargetStateUndeployError(undefined, "--targetstate parameter is not set");
+    });
+    it("should complain with invalid type for targetstate parameter UNDEPLOY", async () => {
+
+        const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+        setCommonParmsForTargetStateTests(params);
+        params.arguments.targetstate = 50;
+
+        let err: Error;
+        try {
+          const handler = new UndeployBundleHandler.default();
+          await handler.process(params);
+        } catch (e) {
+            err = e;
+        }
+        expect(err).toBeDefined();
+        expect(err).toBeInstanceOf(ImperativeError);
+        expect(err.message).toContain("--targetstate parameter is not a string");
+    });
+    it("should complain with empty targetstate parameter UNDEPLOY", async () => {
+        await testTargetStateUndeployError("", "--targetstate parameter is empty");
+    });
     it("should complain with invalid targetstate parameter UNDEPLOY", async () => {
         await testTargetStateUndeployError("Wibble", "--targetstate has invalid value. Found WIBBLE but expected one of UNAVAILABLE, DISABLED or DISCARDED.");
     });

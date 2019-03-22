@@ -287,6 +287,28 @@ describe("BundleDeployer01", () => {
         parms.arguments.resgroup = "12345678";
         await testDeployJCL(parms);
     });
+    it("should support verbose=true output for deploy", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.targetstate = "disabled";
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.verbose = true;
+        await testDeployJCL(parms);
+    });
+    it("should support verbose=false output for deploy", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.targetstate = "disabled";
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.verbose = false;
+        await testDeployJCL(parms);
+    });
+
+    // ** UNDEPLOY TESTS **
     it("should generate undeploy JCL for csdgroup", async () => {
 
         let parms: IHandlerParameters;
@@ -325,7 +347,7 @@ describe("BundleDeployer01", () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
-        setCommonParmsForDeployTests(parms);
+        setCommonParmsForUndeployTests(parms);
         parms.arguments.targetstate = "UNAVAILABLE";
         parms.arguments.resgroup = "12345678";
         await testUndeployJCL(parms);
@@ -334,7 +356,7 @@ describe("BundleDeployer01", () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
-        setCommonParmsForDeployTests(parms);
+        setCommonParmsForUndeployTests(parms);
         parms.arguments.targetstate = "DISABLED";
         parms.arguments.resgroup = "12345678";
         await testUndeployJCL(parms);
@@ -343,7 +365,7 @@ describe("BundleDeployer01", () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
-        setCommonParmsForDeployTests(parms);
+        setCommonParmsForUndeployTests(parms);
         parms.arguments.targetstate = "DISCARDED";
         parms.arguments.resgroup = "12345678";
         await testUndeployJCL(parms);
@@ -352,9 +374,29 @@ describe("BundleDeployer01", () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
-        setCommonParmsForDeployTests(parms);
+        setCommonParmsForUndeployTests(parms);
         parms.arguments.targetstate = "discarded";
         parms.arguments.resgroup = "12345678";
+        await testUndeployJCL(parms);
+    });
+    it("should support verbose=true output for undeploy", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForUndeployTests(parms);
+        parms.arguments.targetstate = "disabled";
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.verbose = true;
+        await testUndeployJCL(parms);
+    });
+    it("should support verbose=false output for undeploy", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForUndeployTests(parms);
+        parms.arguments.targetstate = "disabled";
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.verbose = false;
         await testUndeployJCL(parms);
     });
 });

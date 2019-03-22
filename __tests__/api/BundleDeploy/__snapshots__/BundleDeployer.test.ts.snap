@@ -417,6 +417,84 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
+exports[`BundleDeployer01 should support verbose=false output for deploy 1`] = `
+"//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
+//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
+//STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
+//         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
+//SYSTSPRT DD SYSOUT=*
+//SYSIN    DD *
+*
+SET CICSPLEX(12345678);
+*
+DEPLOY BUNDLE(12345678)
+       BUNDLEDIR(1234567890)
+       SCOPE(12345678)
+       STATE(DISABLED)
+       RESGROUP(12345678);
+/*
+"
+`;
+
+exports[`BundleDeployer01 should support verbose=false output for undeploy 1`] = `
+"//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
+//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
+//STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
+//         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
+//SYSTSPRT DD SYSOUT=*
+//SYSIN    DD *
+*
+SET CICSPLEX(12345678);
+*
+UNDEPLOY BUNDLE(12345678)
+       SCOPE(12345678)
+       STATE(DISABLED)
+       RESGROUP(12345678);
+/*
+"
+`;
+
+exports[`BundleDeployer01 should support verbose=true output for deploy 1`] = `"DFHRL2037I"`;
+
+exports[`BundleDeployer01 should support verbose=true output for deploy 2`] = `
+"//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
+//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
+//STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
+//         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
+//SYSTSPRT DD SYSOUT=*
+//SYSIN    DD *
+*
+SET CICSPLEX(12345678);
+*
+DEPLOY BUNDLE(12345678)
+       BUNDLEDIR(1234567890)
+       SCOPE(12345678)
+       STATE(DISABLED)
+       RESGROUP(12345678);
+/*
+"
+`;
+
+exports[`BundleDeployer01 should support verbose=true output for undeploy 1`] = `"DFHRL2037I"`;
+
+exports[`BundleDeployer01 should support verbose=true output for undeploy 2`] = `
+"//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
+//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
+//STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
+//         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
+//SYSTSPRT DD SYSOUT=*
+//SYSIN    DD *
+*
+SET CICSPLEX(12345678);
+*
+UNDEPLOY BUNDLE(12345678)
+       SCOPE(12345678)
+       STATE(DISABLED)
+       RESGROUP(12345678);
+/*
+"
+`;
+
 exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 1`] = `"DFHDPLOY did not generate any output. Most recent status update: 'Submitting DFHDPLOY JCL'."`;
 
 exports[`BundleDeployer01 should undeploy successfully 1`] = `"Bundle undeployment successful."`;

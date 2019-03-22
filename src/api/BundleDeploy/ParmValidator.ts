@@ -121,10 +121,6 @@ export class ParmValidator {
   }
 
   private static validateCicsplex(params: IHandlerParameters) {
-    // cicsplex is optional
-    if (params.arguments.cicsplex === undefined) {
-      return;
-    }
 
     if (typeof params.arguments.cicsplex !== "string") {
       throw new Error("--cicsplex parameter is not a string");
@@ -141,10 +137,6 @@ export class ParmValidator {
   }
 
   private static validateScope(params: IHandlerParameters) {
-    // scope is optional
-    if (params.arguments.scope === undefined) {
-      return;
-    }
 
     if (typeof params.arguments.scope !== "string") {
       throw new Error("--scope parameter is not a string");
