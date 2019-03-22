@@ -50,7 +50,6 @@ const config: IImperativeConfig = {
                 name: "scope",
                 aliases: ["sc"],
                 stringLengthRange: [1, MAX_LENGTH],
-                impliesOneOf: ["csdgroup", "resgroup"],
                 required: true
               },
               type: "string"

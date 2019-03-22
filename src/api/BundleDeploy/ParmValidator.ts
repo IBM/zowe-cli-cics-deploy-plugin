@@ -150,12 +150,6 @@ export class ParmValidator {
     if (params.arguments.scope === "") {
       throw new Error("--scope parameter is empty");
     }
-
-    // if scope set, either csdgroup or resgroup is also needed
-    if (params.arguments.csdgroup === undefined &&
-        params.arguments.resgroup === undefined) {
-      throw new Error("--scope parameter requires either --csdgroup or --resgroup to be set");
-    }
   }
 
   private static validateCsdgroup(params: IHandlerParameters) {

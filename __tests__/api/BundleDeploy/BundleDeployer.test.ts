@@ -156,6 +156,13 @@ describe("BundleDeployer01", () => {
 
         await runUndeployTest();
     });
+    it("should generate deploy JCL with neither csdgroup nor resgroup", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        await testDeployJCL(parms);
+    });
     it("should generate deploy JCL for csdgroup", async () => {
 
         let parms: IHandlerParameters;
@@ -309,6 +316,13 @@ describe("BundleDeployer01", () => {
     });
 
     // ** UNDEPLOY TESTS **
+    it("should generate undeploy JCL with neither csdgroup nor resgroup", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForUndeployTests(parms);
+        await testUndeployJCL(parms);
+    });
     it("should generate undeploy JCL for csdgroup", async () => {
 
         let parms: IHandlerParameters;
