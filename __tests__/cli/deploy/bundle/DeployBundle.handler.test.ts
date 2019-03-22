@@ -194,9 +194,6 @@ describe("bundle Handler", () => {
     it("should complain with empty scope parameter", async () => {
         await testScopeError("", "--scope parameter is empty");
     });
-    it("should complain with missing csdgroup/resgroup", async () => {
-        await testCsdgroupError(undefined, "--scope parameter requires either --csdgroup or --resgroup to be set");
-    });
     it("should complain with invalid type for csdgroup parameter", async () => {
 
         const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);

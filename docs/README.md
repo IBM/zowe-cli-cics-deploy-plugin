@@ -115,7 +115,7 @@ If you have not already done so, start by creating a zosmf profile in Zowe CLI. 
 
   `zowe profiles create zosmf-profile --help`
 
-Now create a cics-deploy profile. This profile will identify the target CICS environment for deployment; you will need to know the CICSplex name and Scope, together with the High Level Qualifier (HLQ) for the CICS data sets. You will also have to identify either a target CSD group (typically used for single region configurations) or a BAS resource group (used for multi-region configurations) into which the Bundle will be defined. You may optionally configure a JCL jobcard if your site requires a customised JCL configuration for DFHDPLOY. For further assistance on creating a cics-deploy profile issue the following command:
+Now create a cics-deploy profile. This profile will identify the target CICS environment for deployment; you will need to know the CICSplex name and Scope, together with the High Level Qualifier (HLQ) for the CICS data sets. You can optionally identify either a target CSD group (typically used for single region configurations) or a BAS resource group (used for multi-region configurations) into which the Bundle will be defined. You can optionally configure a JCL jobcard if your site requires a customised JCL configuration for DFHDPLOY. For further assistance on creating a cics-deploy profile issue the following command:
 
   `zowe profiles create cics-deploy-profile --help`
 
