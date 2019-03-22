@@ -18,7 +18,7 @@ import * as fs from "fs";
 
 process.env.FORCE_COLOR = "0";
 
-const DEFAULT_PARAMTERS: IHandlerParameters = {
+const DEFAULT_PARAMETERS: IHandlerParameters = {
     arguments: {
         $0: "bright",
         _: ["zowe-cli-cics-deploy-plugin", "undeploy", "bundle"],
@@ -64,7 +64,7 @@ describe("bundle Handler", () => {
         let error: Error;
         try {
           const handler = new UndeployBundleHandler.default();
-          const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
+          const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
           await handler.process(params);
         } catch (e) {
             error = e;
@@ -74,13 +74,13 @@ describe("bundle Handler", () => {
     });
 
     // Note we don't need to duplicate all the input validation tests from
-    // Deploy as it's shared code. Just adding the following to ensure that
+    // Deploy as it's shared code. Just adding a few  to ensure that
     // code coverage is sufficient.
 
     it("should complain with too small timeout", async () => {
 
         let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
         parms.arguments.name = "WIBBLE";
         parms.arguments.cicsplex = "Wibble";
         parms.arguments.scope = "wibblE";
@@ -99,4 +99,39 @@ describe("bundle Handler", () => {
         expect(err).toBeInstanceOf(ImperativeError);
         expect(err.message).toContain("--timeout parameter is too small");
     });
+
+    it("should complain with invalid targetstate parameter UNDEPLOY", async () => {
+        await testTargetStateUndeployError("Wibble", "--targetstate has invalid value. Found WIBBLE but expected one of UNAVAILABLE, DISABLED or DISCARDED.");
+    });
 });
+
+function setCommonParmsForTargetStateTests(parms: IHandlerParameters) {
+  parms.arguments.name = "WIBBLE";
+  parms.arguments["cics-deploy-profile"] = undefined;
+  parms.arguments.cicsplex = "Wibble";
+  parms.arguments.scope = "wibblE";
+  parms.arguments.resgroup = "wiBBle";
+  parms.arguments.csdgroup = undefined;
+  parms.arguments.timeout = undefined;
+  parms.arguments.cicshlq = "WIBB.LE";
+  parms.arguments.cpsmhlq = "WIBB.LE";
+  parms.arguments.targetstate = undefined;
+  parms.arguments.jobcard = undefined;
+}
+
+async function testTargetStateUndeployError(targetstate: string, result: string) {
+  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+  setCommonParmsForTargetStateTests(params);
+  params.arguments.targetstate = targetstate;
+
+  let err: Error;
+  try {
+    const handler = new UndeployBundleHandler.default();
+    await handler.process(params);
+  } catch (e) {
+    err = e;
+  }
+  expect(err).toBeDefined();
+  expect(err).toBeInstanceOf(ImperativeError);
+  expect(err.message).toContain(result);
+}

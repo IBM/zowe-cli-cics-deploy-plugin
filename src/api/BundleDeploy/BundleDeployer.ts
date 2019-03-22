@@ -106,31 +106,10 @@ export class BundleDeployer {
    * @memberof BundleDeployer
    */
   private getDeployJCL(): string {
-    // Deploy actions begin by first undeploying any former version of the
-    // Bundle that may still be installed, so generate an undeploy statement
-    // first.
-    let jcl = this.generateUndeployJCLWithoutTerminator();
-
-    jcl = jcl + "*\n";
-
-    // Now generate the deploy statement.
-    jcl = jcl + this.wrapLongLineForJCL("DEPLOY BUNDLE(" + this.params.arguments.name + ")\n") +
-                this.wrapLongLineForJCL("       BUNDLEDIR(" + this.params.arguments.bundledir + ")\n") +
-                this.wrapLongLineForJCL("       SCOPE(" + this.params.arguments.scope + ")\n") +
-                this.wrapLongLineForJCL("       STATE(AVAILABLE)\n");
-
-    if (this.params.arguments.timeout !== undefined) {
-      jcl = jcl + this.wrapLongLineForJCL("       TIMEOUT(" + this.params.arguments.timeout + ")\n");
-    }
-    if (this.params.arguments.csdgroup !== undefined) {
-      jcl = jcl + this.wrapLongLineForJCL("       CSDGROUP(" + this.params.arguments.csdgroup + ");\n");
-    }
-    if (this.params.arguments.resgroup !== undefined) {
-      jcl = jcl + this.wrapLongLineForJCL("       RESGROUP(" + this.params.arguments.resgroup + ");\n");
-    }
-
-    // finally add a terminator
-    jcl = jcl + "/*\n";
+    const jcl = this.generateCommonJCLHeader() +
+      this.wrapLongLineForJCL("DEPLOY BUNDLE(" + this.params.arguments.name + ")\n") +
+      this.wrapLongLineForJCL("       BUNDLEDIR(" + this.params.arguments.bundledir + ")\n") +
+      this.generateCommonJCLFooter();
 
     return jcl;
   }
@@ -142,18 +121,15 @@ export class BundleDeployer {
    * @memberof BundleDeployer
    */
   private getUndeployJCL(): string {
-    // Get the basicundeploy JCL
-    let jcl = this.generateUndeployJCLWithoutTerminator();
-
-    // finally add a terminator
-    jcl = jcl + "/*\n";
+    const jcl = this.generateCommonJCLHeader() +
+      this.wrapLongLineForJCL("UNDEPLOY BUNDLE(" + this.params.arguments.name + ")\n") +
+      this.generateCommonJCLFooter();
 
     return jcl;
   }
 
-  // Generate the JCL for undeploy, but without terminating the stream
-  private generateUndeployJCLWithoutTerminator(): string {
-    let jcl = this.params.arguments.jobcard + "\n" +
+  private generateCommonJCLHeader(): string {
+    const jcl = this.params.arguments.jobcard + "\n" +
           "//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M\n" +
           "//STEPLIB  DD DISP=SHR,DSN=" + this.params.arguments.cicshlq + ".SDFHLOAD\n" +
           "//         DD DISP=SHR,DSN=" + this.params.arguments.cpsmhlq + ".SEYUAUTH\n" +
@@ -161,10 +137,15 @@ export class BundleDeployer {
           "//SYSIN    DD *\n" +
           "*\n" +
           this.wrapLongLineForJCL("SET CICSPLEX(" + this.params.arguments.cicsplex + ");\n") +
-          this.wrapLongLineForJCL("*\n") +
-          this.wrapLongLineForJCL("UNDEPLOY BUNDLE(" + this.params.arguments.name + ")\n") +
-          this.wrapLongLineForJCL("       SCOPE(" + this.params.arguments.scope + ")\n") +
-          this.wrapLongLineForJCL("       STATE(DISCARDED)\n");
+          this.wrapLongLineForJCL("*\n");
+
+    return jcl;
+  }
+
+  private generateCommonJCLFooter(): string {
+    let jcl =
+      this.wrapLongLineForJCL("       SCOPE(" + this.params.arguments.scope + ")\n") +
+      this.wrapLongLineForJCL("       STATE(" + this.params.arguments.targetstate + ")\n");
 
     if (this.params.arguments.timeout !== undefined) {
       jcl = jcl + this.wrapLongLineForJCL("       TIMEOUT(" + this.params.arguments.timeout + ")\n");
@@ -176,9 +157,11 @@ export class BundleDeployer {
       jcl = jcl + this.wrapLongLineForJCL("       RESGROUP(" + this.params.arguments.resgroup + ");\n");
     }
 
+    // finally add a terminator
+    jcl = jcl + "/*\n";
+
     return jcl;
   }
-
 
   private async createZosMFSession(): Promise<any> {
     // Create a zosMF session

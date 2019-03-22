@@ -251,11 +251,47 @@ describe("BundleDeployer01", () => {
                                     "1234567890123456789012345678901234567890123456789012345";
         await testDeployJCL(parms);
     });
-    it("should generate undeploy JCL for csdgroup", async () => {
+    it("should generate deploy JCL for AVAILABLE", async () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
+        parms.arguments.targetstate = "AVAILABLE";
+        parms.arguments.resgroup = "12345678";
+        await testDeployJCL(parms);
+    });
+    it("should generate deploy JCL for ENABLED", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.targetstate = "ENABLED";
+        parms.arguments.resgroup = "12345678";
+        await testDeployJCL(parms);
+    });
+    it("should generate deploy JCL for DISABLED", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.targetstate = "DISABLED";
+        parms.arguments.resgroup = "12345678";
+        await testDeployJCL(parms);
+    });
+    it("should generate deploy JCL for mixed case", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.targetstate = "disabled";
+        parms.arguments.resgroup = "12345678";
+        await testDeployJCL(parms);
+    });
+    it("should generate undeploy JCL for csdgroup", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForUndeployTests(parms);
         parms.arguments.csdgroup = "12345678";
         await testUndeployJCL(parms);
     });
@@ -263,7 +299,7 @@ describe("BundleDeployer01", () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
-        setCommonParmsForDeployTests(parms);
+        setCommonParmsForUndeployTests(parms);
         parms.arguments.csdgroup = "12345678";
         parms.arguments.timeout = 1500;
         await testUndeployJCL(parms);
@@ -272,7 +308,7 @@ describe("BundleDeployer01", () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
-        setCommonParmsForDeployTests(parms);
+        setCommonParmsForUndeployTests(parms);
         parms.arguments.resgroup = "12345678";
         await testUndeployJCL(parms);
     });
@@ -280,9 +316,45 @@ describe("BundleDeployer01", () => {
 
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
-        setCommonParmsForDeployTests(parms);
+        setCommonParmsForUndeployTests(parms);
         parms.arguments.resgroup = "12345678";
         parms.arguments.timeout = 1500;
+        await testUndeployJCL(parms);
+    });
+    it("should generate undeploy JCL for UNAVAILABLE", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.targetstate = "UNAVAILABLE";
+        parms.arguments.resgroup = "12345678";
+        await testUndeployJCL(parms);
+    });
+    it("should generate undeploy JCL for DISABLED", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.targetstate = "DISABLED";
+        parms.arguments.resgroup = "12345678";
+        await testUndeployJCL(parms);
+    });
+    it("should generate undeploy JCL for DISCARDED", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.targetstate = "DISCARDED";
+        parms.arguments.resgroup = "12345678";
+        await testUndeployJCL(parms);
+    });
+    it("should generate undeploy JCL for mixed case", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.targetstate = "discarded";
+        parms.arguments.resgroup = "12345678";
         await testUndeployJCL(parms);
     });
 });
@@ -348,6 +420,7 @@ async function runUndeployTest() {
 function setCommonParmsForDeployTests(parms: IHandlerParameters) {
   setCommonParmsForUndeployTests(parms);
   parms.arguments.bundledir = "1234567890";
+  parms.arguments.targetstate = "ENABLED";
 }
 
 function setCommonParmsForUndeployTests(parms: IHandlerParameters) {
@@ -360,6 +433,7 @@ function setCommonParmsForUndeployTests(parms: IHandlerParameters) {
   parms.arguments.timeout = undefined;
   parms.arguments.name = "12345678";
   parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT";
+  parms.arguments.targetstate = "DISCARDED";
 }
 
 async function testDeployJCL(parms: IHandlerParameters) {
