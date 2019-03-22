@@ -29,6 +29,7 @@ export class ParmValidator {
     ParmValidator.validateCicshlq(params);
     ParmValidator.validateCpsmhlq(params);
     ParmValidator.validateTargetStateDeploy(params);
+    ParmValidator.validateVerbose(params);
     ParmValidator.validateJobcard(params);
   }
 
@@ -45,6 +46,7 @@ export class ParmValidator {
     ParmValidator.validateCicshlq(params);
     ParmValidator.validateCpsmhlq(params);
     ParmValidator.validateTargetStateUndeploy(params);
+    ParmValidator.validateVerbose(params);
     ParmValidator.validateJobcard(params);
   }
 
@@ -398,4 +400,16 @@ export class ParmValidator {
         " but expected one of UNAVAILABLE, DISABLED or DISCARDED.");
     }
   }
+
+  private static validateVerbose(params: IHandlerParameters) {
+    // verbose is optional
+    if (params.arguments.verbose === undefined) {
+      return;
+    }
+
+    if (typeof params.arguments.verbose !== "boolean") {
+      throw new Error("--verbose parameter is not boolean");
+    }
+  }
+
 }

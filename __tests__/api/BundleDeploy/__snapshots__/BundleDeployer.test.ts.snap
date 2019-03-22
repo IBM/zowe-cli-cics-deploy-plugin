@@ -26,15 +26,11 @@ exports[`BundleDeployer01 should complete with warnings  1`] = `"DFHRL2043I"`;
 
 exports[`BundleDeployer01 should complete with warnings  2`] = `"DFHDPLOY completed with warnings."`;
 
-exports[`BundleDeployer01 should deploy successfully 1`] = `"DFHRL2012I"`;
-
-exports[`BundleDeployer01 should deploy successfully 2`] = `"DFHDPLOY DEPLOY command successful."`;
+exports[`BundleDeployer01 should deploy successfully 1`] = `"Bundle deployment successful."`;
 
 exports[`BundleDeployer01 should fail with overlong jobcard 1`] = `"--jobcard parameter section cannot be split into 72 character lines: '//         73CHARS=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1'."`;
 
-exports[`BundleDeployer01 should generate deploy JCL for AVAILABLE 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate deploy JCL for AVAILABLE 2`] = `
+exports[`BundleDeployer01 should generate deploy JCL for AVAILABLE 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -53,9 +49,7 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate deploy JCL for DISABLED 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate deploy JCL for DISABLED 2`] = `
+exports[`BundleDeployer01 should generate deploy JCL for DISABLED 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -74,9 +68,7 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate deploy JCL for ENABLED 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate deploy JCL for ENABLED 2`] = `
+exports[`BundleDeployer01 should generate deploy JCL for ENABLED 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -95,9 +87,7 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate deploy JCL for csdgroup 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate deploy JCL for csdgroup 2`] = `
+exports[`BundleDeployer01 should generate deploy JCL for csdgroup 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -116,9 +106,7 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate deploy JCL for csdgroup with timeout 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate deploy JCL for csdgroup with timeout 2`] = `
+exports[`BundleDeployer01 should generate deploy JCL for csdgroup with timeout 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -138,9 +126,7 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate deploy JCL for mixed case 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate deploy JCL for mixed case 2`] = `
+exports[`BundleDeployer01 should generate deploy JCL for mixed case 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -159,9 +145,7 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate deploy JCL for resgroup 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate deploy JCL for resgroup 2`] = `
+exports[`BundleDeployer01 should generate deploy JCL for resgroup 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -180,9 +164,7 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate deploy JCL for resgroup with timeout 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate deploy JCL for resgroup with timeout 2`] = `
+exports[`BundleDeployer01 should generate deploy JCL for resgroup with timeout 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -202,9 +184,7 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate undeploy JCL for DISABLED 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate undeploy JCL for DISABLED 2`] = `
+exports[`BundleDeployer01 should generate undeploy JCL for DISABLED 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -222,9 +202,7 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate undeploy JCL for DISCARDED 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate undeploy JCL for DISCARDED 2`] = `
+exports[`BundleDeployer01 should generate undeploy JCL for DISCARDED 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -242,9 +220,7 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate undeploy JCL for UNAVAILABLE 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate undeploy JCL for UNAVAILABLE 2`] = `
+exports[`BundleDeployer01 should generate undeploy JCL for UNAVAILABLE 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -262,9 +238,7 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate undeploy JCL for csdgroup 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate undeploy JCL for csdgroup 2`] = `
+exports[`BundleDeployer01 should generate undeploy JCL for csdgroup 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -282,9 +256,7 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate undeploy JCL for csdgroup with timeout 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate undeploy JCL for csdgroup with timeout 2`] = `
+exports[`BundleDeployer01 should generate undeploy JCL for csdgroup with timeout 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -303,9 +275,7 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate undeploy JCL for mixed case 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate undeploy JCL for mixed case 2`] = `
+exports[`BundleDeployer01 should generate undeploy JCL for mixed case 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -323,9 +293,7 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate undeploy JCL for resgroup 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate undeploy JCL for resgroup 2`] = `
+exports[`BundleDeployer01 should generate undeploy JCL for resgroup 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -343,9 +311,7 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should generate undeploy JCL for resgroup with timeout 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should generate undeploy JCL for resgroup with timeout 2`] = `
+exports[`BundleDeployer01 should generate undeploy JCL for resgroup with timeout 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -366,9 +332,7 @@ UNDEPLOY BUNDLE(12345678)
 
 exports[`BundleDeployer01 should handle failure during submitjobs processing 1`] = `"Failure occurred submitting DFHDPLOY JCL: 'Cannot read property 'hostname' of undefined'. Most recent status update: 'Submitting DFHDPLOY JCL'."`;
 
-exports[`BundleDeployer01 should support long bundledir 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should support long bundledir 2`] = `
+exports[`BundleDeployer01 should support long bundledir 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
 //STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
@@ -391,9 +355,7 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should support long line jobcard 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should support long line jobcard 2`] = `
+exports[`BundleDeployer01 should support long line jobcard 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT,
 //         NOEL=ABCDEFGHIJKMNOPQRSTUVWXYZ
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
@@ -413,9 +375,7 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should support multi-line jobcard 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should support multi-line jobcard 2`] = `
+exports[`BundleDeployer01 should support multi-line jobcard 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,
 //         MSGCLASS=X,TIME=NOLIMIT
 //DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
@@ -435,9 +395,7 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should support really long line jobcard 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should support really long line jobcard 2`] = `
+exports[`BundleDeployer01 should support really long line jobcard 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT,
 //         NOEL=ABCDEFGHIJKMNOPQRSTUVWXYZ,
 //         72CHARS=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz,
@@ -459,10 +417,6 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 1`] = `"undefined"`;
+exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 1`] = `"DFHDPLOY did not generate any output. Most recent status update: 'Submitting DFHDPLOY JCL'."`;
 
-exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 2`] = `"DFHDPLOY did not generate any output. Most recent status update: 'Submitting DFHDPLOY JCL'."`;
-
-exports[`BundleDeployer01 should undeploy successfully 1`] = `"DFHRL2037I"`;
-
-exports[`BundleDeployer01 should undeploy successfully 2`] = `"DFHDPLOY UNDEPLOY command successful."`;
+exports[`BundleDeployer01 should undeploy successfully 1`] = `"Bundle undeployment successful."`;

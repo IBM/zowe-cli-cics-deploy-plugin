@@ -403,6 +403,24 @@ describe("bundle Handler", () => {
     it("should complain with invalid targetstate parameter", async () => {
         await testTargetStateDeployError("Wibble", "--targetstate has invalid value. Found WIBBLE but expected one of DISABLED, ENABLED or AVAILABLE.");
     });
+    it("should complain with invalid type for verbose parameter", async () => {
+
+        const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+        setCommonParmsForTargetStateTests(params);
+        params.arguments.targetstate = "ENABLED";
+        params.arguments.verbose = 50;
+
+        let err: Error;
+        try {
+          const handler = new DeployBundleHandler.default();
+          await handler.process(params);
+        } catch (e) {
+            err = e;
+        }
+        expect(err).toBeDefined();
+        expect(err).toBeInstanceOf(ImperativeError);
+        expect(err.message).toContain("--verbose parameter is not boolean");
+    });
     it("should complain if zosmf profile not found", async () => {
 
         const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
@@ -436,6 +454,7 @@ function setCommonParmsForNameTests(parms: IHandlerParameters) {
   parms.arguments.cpsmhlq = undefined;
   parms.arguments.targetstate = undefined;
   parms.arguments.jobcard = undefined;
+  parms.arguments.verbose = undefined;
 }
 
 async function testNameError(name: string, result: string) {
@@ -456,18 +475,8 @@ async function testNameError(name: string, result: string) {
 }
 
 function setCommonParmsForBundledirTests(parms: IHandlerParameters) {
+  setCommonParmsForNameTests(parms);
   parms.arguments.name = "WIBBLE";
-  parms.arguments.bundledir = undefined;
-  parms.arguments["cics-deploy-profile"] = undefined;
-  parms.arguments.cicsplex = undefined;
-  parms.arguments.scope = undefined;
-  parms.arguments.resgroup = undefined;
-  parms.arguments.csdgroup = undefined;
-  parms.arguments.timeout = undefined;
-  parms.arguments.cicshlq = undefined;
-  parms.arguments.cpsmhlq = undefined;
-  parms.arguments.targetstate = undefined;
-  parms.arguments.jobcard = undefined;
 }
 
 async function testBundledirError(bundledir: string, result: string) {
@@ -488,18 +497,8 @@ async function testBundledirError(bundledir: string, result: string) {
 }
 
 function setCommonParmsForProfileTests(parms: IHandlerParameters) {
-  parms.arguments.name = "WIBBLE";
+  setCommonParmsForBundledirTests(parms);
   parms.arguments.bundledir = "wibble";
-  parms.arguments["cics-deploy-profile"] = undefined;
-  parms.arguments.cicsplex = undefined;
-  parms.arguments.scope = undefined;
-  parms.arguments.resgroup = undefined;
-  parms.arguments.csdgroup = undefined;
-  parms.arguments.timeout = undefined;
-  parms.arguments.cicshlq = undefined;
-  parms.arguments.cpsmhlq = undefined;
-  parms.arguments.targetstate = undefined;
-  parms.arguments.jobcard = undefined;
 }
 
 async function testProfileError(profile: string, result: string) {
@@ -520,18 +519,8 @@ async function testProfileError(profile: string, result: string) {
 }
 
 function setCommonParmsForCicsplexTests(parms: IHandlerParameters) {
-  parms.arguments.name = "WIBBLE";
-  parms.arguments.bundledir = "wibble";
-  parms.arguments["cics-deploy-profile"] = undefined;
-  parms.arguments.cicsplex = undefined;
+  setCommonParmsForProfileTests(parms);
   parms.arguments.scope = "wibblE";
-  parms.arguments.resgroup = undefined;
-  parms.arguments.csdgroup = undefined;
-  parms.arguments.timeout = undefined;
-  parms.arguments.cicshlq = undefined;
-  parms.arguments.cpsmhlq = undefined;
-  parms.arguments.targetstate = undefined;
-  parms.arguments.jobcard = undefined;
 }
 
 async function testCicsplexError(cicsplex: string, result: string) {
@@ -552,18 +541,9 @@ async function testCicsplexError(cicsplex: string, result: string) {
 }
 
 function setCommonParmsForScopeTests(parms: IHandlerParameters) {
-  parms.arguments.name = "WIBBLE";
-  parms.arguments.bundledir = "wibble";
+  setCommonParmsForProfileTests(parms);
   parms.arguments["cics-deploy-profile"] = undefined;
   parms.arguments.cicsplex = "Wibble";
-  parms.arguments.scope = undefined;
-  parms.arguments.resgroup = undefined;
-  parms.arguments.csdgroup = undefined;
-  parms.arguments.timeout = undefined;
-  parms.arguments.cicshlq = undefined;
-  parms.arguments.cpsmhlq = undefined;
-  parms.arguments.targetstate = undefined;
-  parms.arguments.jobcard = undefined;
 }
 
 async function testScopeError(scope: string, result: string) {
@@ -584,18 +564,8 @@ async function testScopeError(scope: string, result: string) {
 }
 
 function setCommonParmsForCsdgroupTests(parms: IHandlerParameters) {
-  parms.arguments.name = "WIBBLE";
-  parms.arguments.bundledir = "wibble";
-  parms.arguments["cics-deploy-profile"] = undefined;
-  parms.arguments.cicsplex = "Wibble";
+  setCommonParmsForScopeTests(parms);
   parms.arguments.scope = "wibblE";
-  parms.arguments.resgroup = undefined;
-  parms.arguments.csdgroup = undefined;
-  parms.arguments.timeout = undefined;
-  parms.arguments.cicshlq = undefined;
-  parms.arguments.cpsmhlq = undefined;
-  parms.arguments.targetstate = undefined;
-  parms.arguments.jobcard = undefined;
 }
 
 async function testCsdgroupError(csdgroup: string, result: string) {
@@ -616,18 +586,7 @@ async function testCsdgroupError(csdgroup: string, result: string) {
 }
 
 function setCommonParmsForResgroupTests(parms: IHandlerParameters) {
-  parms.arguments.name = "WIBBLE";
-  parms.arguments.bundledir = "wibble";
-  parms.arguments["cics-deploy-profile"] = undefined;
-  parms.arguments.cicsplex = "Wibble";
-  parms.arguments.scope = "wibblE";
-  parms.arguments.resgroup = undefined;
-  parms.arguments.csdgroup = undefined;
-  parms.arguments.timeout = undefined;
-  parms.arguments.cicshlq = undefined;
-  parms.arguments.cpsmhlq = undefined;
-  parms.arguments.targetstate = undefined;
-  parms.arguments.jobcard = undefined;
+  setCommonParmsForCsdgroupTests(parms);
 }
 
 async function testResgroupError(resgroup: string, result: string) {
@@ -648,18 +607,8 @@ async function testResgroupError(resgroup: string, result: string) {
 }
 
 function setCommonParmsForTimeoutTests(parms: IHandlerParameters) {
-  parms.arguments.name = "WIBBLE";
-  parms.arguments.bundledir = "wibble";
-  parms.arguments["cics-deploy-profile"] = undefined;
-  parms.arguments.cicsplex = "Wibble";
-  parms.arguments.scope = "wibblE";
+  setCommonParmsForResgroupTests(parms);
   parms.arguments.resgroup = "wiBBle";
-  parms.arguments.csdgroup = undefined;
-  parms.arguments.timeout = undefined;
-  parms.arguments.cicshlq = undefined;
-  parms.arguments.cpsmhlq = undefined;
-  parms.arguments.targetstate = undefined;
-  parms.arguments.jobcard = undefined;
 }
 
 async function testTimeoutError(timeout: number, result: string) {
@@ -680,18 +629,7 @@ async function testTimeoutError(timeout: number, result: string) {
 }
 
 function setCommonParmsForCicsHLQTests(parms: IHandlerParameters) {
-  parms.arguments.name = "WIBBLE";
-  parms.arguments.bundledir = "wibble";
-  parms.arguments["cics-deploy-profile"] = undefined;
-  parms.arguments.cicsplex = "Wibble";
-  parms.arguments.scope = "wibblE";
-  parms.arguments.resgroup = "wiBBle";
-  parms.arguments.csdgroup = undefined;
-  parms.arguments.timeout = undefined;
-  parms.arguments.cicshlq = undefined;
-  parms.arguments.cpsmhlq = undefined;
-  parms.arguments.targetstate = undefined;
-  parms.arguments.jobcard = undefined;
+  setCommonParmsForTimeoutTests(parms);
 }
 
 async function testCicsHLQError(cicshlq: string, result: string) {
@@ -712,18 +650,8 @@ async function testCicsHLQError(cicshlq: string, result: string) {
 }
 
 function setCommonParmsForCpsmHLQTests(parms: IHandlerParameters) {
-  parms.arguments.name = "WIBBLE";
-  parms.arguments.bundledir = "wibble";
-  parms.arguments["cics-deploy-profile"] = undefined;
-  parms.arguments.cicsplex = "Wibble";
-  parms.arguments.scope = "wibblE";
-  parms.arguments.resgroup = "wiBBle";
-  parms.arguments.csdgroup = undefined;
-  parms.arguments.timeout = undefined;
+  setCommonParmsForCicsHLQTests(parms);
   parms.arguments.cicshlq = "WIBB.LE";
-  parms.arguments.cpsmhlq = undefined;
-  parms.arguments.targetstate = undefined;
-  parms.arguments.jobcard = undefined;
 }
 
 async function testCpsmHLQError(cpsmhlq: string, result: string) {
@@ -767,18 +695,8 @@ async function testJobcardError(jobcard: string, result: string) {
 }
 
 function setCommonParmsForTargetStateTests(parms: IHandlerParameters) {
-  parms.arguments.name = "WIBBLE";
-  parms.arguments.bundledir = "wibble";
-  parms.arguments["cics-deploy-profile"] = undefined;
-  parms.arguments.cicsplex = "Wibble";
-  parms.arguments.scope = "wibblE";
-  parms.arguments.resgroup = "wiBBle";
-  parms.arguments.csdgroup = undefined;
-  parms.arguments.timeout = undefined;
-  parms.arguments.cicshlq = "WIBB.LE";
-  parms.arguments.cpsmhlq = "WIBB.LE";
+  setCommonParmsForJobcardTests(parms);
   parms.arguments.targetstate = undefined;
-  parms.arguments.jobcard = undefined;
 }
 
 async function testTargetStateDeployError(targetstate: string, result: string) {
