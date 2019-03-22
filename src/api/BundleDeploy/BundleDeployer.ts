@@ -245,15 +245,13 @@ export class BundleDeployer {
       // we're looking for the SYSTSPRT output from the DFHDPLOY step.
       if (file.ddName === "SYSTSPRT" && file.stepName === "DFHDPLOY") {
 
-        // log the output
+        // log the full output for serviceability to the log
         const logger = Logger.getAppLogger();
-        this.params.response.console.log(file.data);
-        logger.debug(file.data);
-
         if (file.data === undefined || file.data.length === 0) {
           status.stageName = TaskStage.FAILED;
           throw new Error("DFHDPLOY did not generate any output. Most recent status update: '" + status.statusMessage + "'.");
         }
+        logger.debug(file.data);
 
         // Finish the progress bar
         status.statusMessage = "Completed DFHDPLOY";
@@ -262,22 +260,36 @@ export class BundleDeployer {
         // Did DFHDPLOY fail?
         if (file.data.indexOf("DFHRL2055I") > -1) {
           status.stageName = TaskStage.FAILED;
+          // log the error output to the console
+          this.params.response.console.log(file.data);
           throw new Error("DFHDPLOY stopped processing due to an error.");
         }
         if (file.data.indexOf("DFHRL2043I") > -1) {
           status.stageName = TaskStage.COMPLETE;
+          // log the error output to the console
+          this.params.response.console.log(file.data);
           return "DFHDPLOY completed with warnings.";
         }
         if (file.data.indexOf("DFHRL2012I") > -1) {
           status.stageName = TaskStage.COMPLETE;
-          return "DFHDPLOY DEPLOY command successful.";
+          // only log the output to the console if verbose output is enabled
+          if (this.params.arguments.verbose) {
+            this.params.response.console.log(file.data);
+          }
+          return "Bundle deployment successful.";
         }
         if (file.data.indexOf("DFHRL2037I") > -1) {
           status.stageName = TaskStage.COMPLETE;
-          return "DFHDPLOY UNDEPLOY command successful.";
+          // only log the output to the console if verbose output is enabled
+          if (this.params.arguments.verbose) {
+            this.params.response.console.log(file.data);
+          }
+          return "Bundle undeployment successful.";
         }
 
         status.stageName = TaskStage.FAILED;
+        // log the error output to the console
+        this.params.response.console.log(file.data);
         throw new Error("DFHDPLOY command completed, but status cannot be determined.");
       }
     }
