@@ -14,7 +14,7 @@ describe("Manifest01", () => {
     it("should read an existing manifest", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/ExampleBundle01");
+        const man = new Manifest("__tests__/__resources__/ExampleBundle01", true, true);
 
         // Check the output as JSON
 // tslint:disable-next-line: max-line-length
@@ -25,7 +25,7 @@ describe("Manifest01", () => {
     it("should create an empty manifest from empty dir", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/EmptyBundle01");
+        const man = new Manifest("__tests__/__resources__/EmptyBundle01", true, true);
 
         // Check the output
         expect(JSON.stringify(man.getJson())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":1,\"bundleRelease\":0}}");
@@ -33,7 +33,7 @@ describe("Manifest01", () => {
     it("should create an empty manifest from empty META-INF dir", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/EmptyBundle02");
+        const man = new Manifest("__tests__/__resources__/EmptyBundle02", true, true);
 
         // Check the output
         expect(JSON.stringify(man.getJson())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":1,\"bundleRelease\":0}}");
@@ -41,7 +41,7 @@ describe("Manifest01", () => {
     it("set the bundleId", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/ExampleBundle01");
+        const man = new Manifest("__tests__/__resources__/ExampleBundle01", true, true);
 
         // Set a bundleId
         man.setBundleId("testing a BundleId");
@@ -53,7 +53,7 @@ describe("Manifest01", () => {
     it("set a long  bundleId", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/ExampleBundle01");
+        const man = new Manifest("__tests__/__resources__/ExampleBundle01", true, true);
 
         // Set a bundleId
         man.setBundleId("1234567890123456789012345678901234567890123456789012345678901234567890");
@@ -65,7 +65,7 @@ describe("Manifest01", () => {
     it("set a null bundleId", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/ExampleBundle01");
+        const man = new Manifest("__tests__/__resources__/ExampleBundle01", true, true);
 
         // Add a definition
         let err: Error;
@@ -82,7 +82,7 @@ describe("Manifest01", () => {
     it("set a valid version number", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/ExampleBundle01");
+        const man = new Manifest("__tests__/__resources__/ExampleBundle01", true, true);
 
         // Set a bundleId
         man.setBundleVersion(1, 2, 3);
@@ -93,7 +93,7 @@ describe("Manifest01", () => {
     it("set an invalid version number", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/EmptyBundle01");
+        const man = new Manifest("__tests__/__resources__/EmptyBundle01", true, true);
 
         let err: Error;
         try {
@@ -110,7 +110,7 @@ describe("Manifest01", () => {
     it("set a null version number", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/EmptyBundle01");
+        const man = new Manifest("__tests__/__resources__/EmptyBundle01", true, true);
 
         let err: Error;
         try {
@@ -129,7 +129,7 @@ describe("Manifest01", () => {
         // Read a bad manifest
         let err: Error;
         try {
-          const man = new Manifest("__tests__/__resources__/BadManifestBundle01");
+          const man = new Manifest("__tests__/__resources__/BadManifestBundle01", true, true);
         }
         catch (error) {
           err = error;
@@ -143,7 +143,7 @@ describe("Manifest01", () => {
         // Read a bad manifest
         let err: Error;
         try {
-          const man = new Manifest("__tests__/__resources__/BadManifestBundle02");
+          const man = new Manifest("__tests__/__resources__/BadManifestBundle02", true, true);
         }
         catch (error) {
           err = error;
@@ -157,7 +157,7 @@ describe("Manifest01", () => {
         // Read a bad manifest
         let err: Error;
         try {
-          const man = new Manifest("__tests__/__resources__/BadManifestBundle03");
+          const man = new Manifest("__tests__/__resources__/BadManifestBundle03", true, true);
         }
         catch (error) {
           err = error;

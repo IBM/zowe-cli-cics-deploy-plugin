@@ -27,17 +27,23 @@ export class Bundle {
   private manifest: Manifest;
   private definedParts: BundlePart[] = [];
   private bundleDirectory: string;
+  private merge: boolean;
+  private overwrite: boolean;
 
   /**
    * Constructor for creating a Bundle.
    * @static
    * @param {string} directory - The bundle directory.
+   * @param {boolean} merge - Changes to the bundle manifest should be merged into any existing manifest.
+   * @param {boolean} overwrite - Changes to the bundle contents should replace any existing contents.
    * @throws ImperativeError
    * @memberof Bundle
    */
-  constructor(directory: string) {
+  constructor(directory: string, merge: boolean, overwrite: boolean) {
+    this.merge = merge;
+    this.overwrite = overwrite;
     this.bundleDirectory = this.path.normalize(directory);
-    this.manifest = new Manifest(this.bundleDirectory);
+    this.manifest = new Manifest(this.bundleDirectory, this.merge, this.overwrite);
   }
 
   /**

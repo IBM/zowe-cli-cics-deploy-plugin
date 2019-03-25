@@ -14,7 +14,7 @@ describe("Bundle01", () => {
     it("should read an existing bundle", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle01");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle01", true, true);
 
         // Check the output as JSON
         expect(JSON.stringify(bund.getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":\"1\",\"bundleRelease\":\"2\",\"id\":\"ThisIsAnId\",\"bundleMajorVer\":\"10\",\"bundleMinorVer\":\"11\",\"bundleMicroVer\":\"12\",\"define\":[{\"name\":\"name1\",\"type\":\"type1\",\"path\":\"path1\"},{\"name\":\"name2\",\"type\":\"type2\",\"path\":\"path2\"},{\"name\":\"name3\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/Test.nodejsapp\"}]}}");
@@ -22,7 +22,7 @@ describe("Bundle01", () => {
     it("set the id and version", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle01");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle01", true, true);
 
         // Set the Id
         bund.setId("TestExample");
@@ -37,7 +37,7 @@ describe("Bundle01", () => {
     it("add definitions", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
 
         // Add a definition
         bund.addDefinition({name: "name1", type: "type1", path: "__tests__/__resources__/ExampleBundle02/Artefact1"});
@@ -50,7 +50,7 @@ describe("Bundle01", () => {
     it("add a definition that references files outside of the bundle", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
 
         // Add a definition that's out of scope
         let err: Error;
@@ -67,7 +67,7 @@ describe("Bundle01", () => {
     it("add a not found definition", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
 
         // Add a definition
         let err: Error;
@@ -84,7 +84,7 @@ describe("Bundle01", () => {
     it("add a part with missing name", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
 
         // Add a definition
         let err: Error;
@@ -101,7 +101,7 @@ describe("Bundle01", () => {
     it("add a part with missing type", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
 
         // Add a definition
         let err: Error;
@@ -118,7 +118,7 @@ describe("Bundle01", () => {
     it("add a part with missing path", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
 
         // Add a definition
         let err: Error;
@@ -135,7 +135,7 @@ describe("Bundle01", () => {
     it("tolerate an existing almost empty manifest", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle03");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle03", true, true);
 
         // Add a definition
         bund.addDefinition({name: "name1", type: "type1", path: "__tests__/__resources__/ExampleBundle03/Artefact1"});
@@ -146,7 +146,7 @@ describe("Bundle01", () => {
     it("add a NODEJSAPP", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle03");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle03", true, true);
 
         // Add a definition
         bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);

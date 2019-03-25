@@ -50,10 +50,12 @@ export class Manifest {
   private MAX_BUNDLEID_LEN = 64;
   private fs = require("fs");
   private path = require("path");
-  private manifestAsJson: IManifestType;
+  private manifestAsJson: IManifestType = undefined;
   private bundleDirectory: string;
   private metainfDir: string;
   private manifestFile: string;
+  private merge: boolean;
+  private overwrite: boolean;
 
 
   /**
@@ -61,27 +63,40 @@ export class Manifest {
    *
    * @static
    * @param {string} directory - The bundle directory.
+   * @param {boolean} merge - Changes to the bundle manifest should be merged into any existing manifest.
+   * @param {boolean} overwrite - Changes to the bundle contents should replace any existing contents.
    * @throws ImperativeError
    * @memberof Manifest
    */
-  constructor(directory: string) {
+  constructor(directory: string, merge: boolean, overwrite: boolean) {
+   this.merge = merge;
+   this.overwrite = overwrite;
    this.bundleDirectory = this.path.normalize(directory);
    this.metainfDir = this.bundleDirectory + "/META-INF";
    this.manifestFile = this.metainfDir + "/cics.xml";
 
-   // If there is an existing manifest file, read it
-   try {
-     this.readManifest();
-   } catch (ex) {
-     if (ex.code === "ENOENT") {
-      // No existing file was found, so magic up an empty manifest
-       this.manifestAsJson = { manifest:
-                               { xmlns: "http://www.ibm.com/xmlns/prod/cics/bundle",
-                                 bundleVersion: 1,
-                                 bundleRelease: 0 } };
-       return;
+   // If 'merge' is set the attempt to read any existing manifest that may
+   // already exist. Subsequent changes will be merged with the existing
+   // content.
+   if (this.merge === true) {
+     try {
+       this.readManifest();
+     } catch (ex) {
+       // Something went wrong. If it's an ENOENT response then there was
+       // no manifest to read, so that can be ignored, otherwise propagate
+       // the exception back to the caller.
+       if (ex.code !== "ENOENT") {
+         throw ex;
+       }
      }
-     throw ex;
+   }
+
+   // If we've not read an existing manifest, create a new one
+   if (this.manifestAsJson === undefined) {
+     this.manifestAsJson = { manifest:
+                             { xmlns: "http://www.ibm.com/xmlns/prod/cics/bundle",
+                               bundleVersion: 1,
+                               bundleRelease: 0 } };
    }
   }
 

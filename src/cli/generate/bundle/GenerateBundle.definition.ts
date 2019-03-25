@@ -15,6 +15,8 @@ import { BundleversionOption } from "./options/Bundleversion.option";
 import { NodejsappOption } from "./options/Nodejsapp.option";
 import { StartscriptOption } from "./options/Startscript.option";
 import { PortOption } from "./options/Port.option";
+import { OverwriteOption } from "./options/Overwrite.option";
+import { MergeOption } from "./options/Merge.option";
 
 /**
  * Imperative command for the Bundle sub-option of Generate.
@@ -30,7 +32,8 @@ export const GenerateBundleDefinition: ICommandDefinition = {
                  "no options are required, but if it does not exist both --startscript and --nodejsapp are required.",
     type: "command",
     handler: __dirname + "/GenerateBundle.handler",
-    options: [ BundleidOption, BundleversionOption, NodejsappOption, StartscriptOption, PortOption ],
+    options: [ BundleidOption, BundleversionOption, NodejsappOption, StartscriptOption, PortOption,
+               OverwriteOption, MergeOption ],
     examples: [
         {
             description: "Generate a CICS bundle in the working directory, taking information from package.json",

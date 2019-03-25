@@ -38,6 +38,8 @@ export class AutoBundler {
   private startscriptOverride: string;
   private portOverride: number;
   private bundleDirectory: string;
+  private overwrite: boolean = false;
+  private merge: boolean = false;
 
   /**
    * Constructor to perform the automatic bundle enablement.
@@ -51,7 +53,8 @@ export class AutoBundler {
 
     this.bundleDirectory = this.path.normalize(directory);
     this.packageJsonFile = directory + "/package.json";
-    this.bundle = new Bundle(this.bundleDirectory);
+    this.validateMergeAndOverwrite(params.arguments.merge, params.arguments.overwrite);
+    this.bundle = new Bundle(this.bundleDirectory, this.merge, this.overwrite);
     this.discoverArguments(params);
 
     this.autoDetectWorkdirContent(params);
@@ -230,5 +233,13 @@ export class AutoBundler {
 
   private validatePort(value: string) {
     this.portOverride = parseInt(value, 10);
+  }
+
+  private validateMergeAndOverwrite(merge: boolean, overwrite: boolean) {
+    if (merge === true && overwrite !== true) {
+      throw new Error("--merge requires the use of --overwrite");
+    }
+    this.merge = merge;
+    this.overwrite = overwrite;
   }
 }
