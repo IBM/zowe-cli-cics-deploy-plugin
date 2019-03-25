@@ -12,6 +12,7 @@
 "use strict";
 
 import { BundlePart } from "./BundlePart";
+import { TemplateNodejsappProfile } from "./TemplateNodejsappProfile";
 
 /**
  * Interface to represent the manifest data for a NODEJSAPP BundlePart.
@@ -174,27 +175,11 @@ export class NodejsappBundlePart extends BundlePart {
 
   private createNodejsappProfile(port: number) {
     const os = require("os");
-    let portStr: string;
+    this.profile = TemplateNodejsappProfile.profile;
 
-    if (port === undefined || isNaN(port)) {
-      portStr = "&HTTP_PORT;";
+    if (port !== undefined) {
+      this.profile = this.profile + "PORT=" + port.toString() + os.EOL;
     }
-    else {
-      portStr = port.toString();
-    }
-
-
-    this.profile =
-       "# This is a profile for a CICS NODEJSAPP resource" + os.EOL +
-       os.EOL +
-       "# Import the provisioned configuration file for this NODEJSAPP," + os.EOL +
-       "# this file must be created before this Bundle can be installed in CICS" + os.EOL +
-       "INCLUDE=&USSCONFIG;/nodejsapps/" + this.getPartData().name + ".included.profile" + os.EOL +
-       os.EOL +
-       "# Set the PORT envionment variable, application code should reference this" + os.EOL +
-       "# value in preference to a hard-coded port number, the value references an" + os.EOL +
-       "# environment variable that will be configured within the provisioned configuration file." + os.EOL +
-       "PORT=" + portStr + os.EOL;
   }
 
   // if the port is set, it must be a valid number
