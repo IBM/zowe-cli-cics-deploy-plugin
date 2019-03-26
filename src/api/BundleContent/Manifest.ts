@@ -101,20 +101,73 @@ export class Manifest {
   }
 
   /**
+   * Perform whatever validation can be done in advance of attempting to save the
+   * manifest, thereby reducing the possibility of a failure after some of the
+   * bundle parts have already been persisted to the file system.
+   *
+   * @throws ImperativeError
+   * @memberof Manifest
+   */
+  public prepareForSave() {
+    // Does the meta-inf directory already exist?
+    if (!this.fs.existsSync(this.metainfDir)) {
+      // we'll have to create it during the save, do we have write permission?
+      try {
+        this.fs.accessSync(this.bundleDirectory, this.fs.constants.W_OK);
+      }
+      catch (err) {
+        throw new Error("cics-deploy requires write permission to: " + this.bundleDirectory);
+      }
+
+      return;
+    }
+
+    // Do we have write permission to the META-INF dir?
+    try {
+      this.fs.accessSync(this.metainfDir, this.fs.constants.W_OK);
+    }
+    catch (err) {
+      throw new Error("cics-deploy requires write permission to: " + this.metainfDir);
+    }
+
+    // Does a manifest file already exist?
+    if (this.fs.existsSync(this.manifestFile) && this.overwrite === false) {
+      throw new Error("A bundle manifest file already exists. Specify --overwrite to replace it, or --merge to merge changes into it.");
+    }
+
+    // Do we have write permission to the manifest?
+    try {
+      this.fs.accessSync(this.manifestFile, this.fs.constants.W_OK);
+    }
+    catch (err) {
+      throw new Error("cics-deploy requires write permission to: " + this.manifestFile);
+    }
+  }
+
+  /**
    * Save the Manifest file.
    *
    * @throws ImperativeError
    * @memberof Manifest
    */
-  // Save the manifest file back into the file system
   public save() {
      // Create the META-INF directory if it doesn't already exist
      if (!this.fs.existsSync(this.metainfDir)) {
-      this.fs.mkdirSync(this.metainfDir);
+       try {
+         this.fs.mkdirSync(this.metainfDir);
+       }
+       catch (err) {
+         throw new Error("An error occurred attempting to create '" + this.metainfDir + "': " + err.message);
+       }
      }
 
      // Write the cics.xml manifest
-     this.fs.writeFileSync(this.manifestFile, this.getXML(), "utf8");
+     try {
+       this.fs.writeFileSync(this.manifestFile, this.getXML(), "utf8");
+     }
+     catch (err) {
+       throw new Error("An error occurred attempting to write manifest file '" + this.manifestFile + "': " + err.message);
+     }
   }
 
   /**
@@ -178,21 +231,21 @@ export class Manifest {
       this.manifestAsJson.manifest.bundleMajorVer = majorVersion;
     }
     else {
-      throw new Error("Invalid Bundle version specified.");
+      throw new Error("Invalid Bundle major version specified: " + majorVersion + ".");
     }
 
     if (Number.isInteger(minorVersion) && minorVersion >= 0) {
       this.manifestAsJson.manifest.bundleMinorVer = minorVersion;
     }
     else {
-      throw new Error("Invalid Bundle version specified.");
+      throw new Error("Invalid Bundle minor version specified: " + minorVersion + ".");
     }
 
     if (Number.isInteger(microVersion) && microVersion >= 0) {
       this.manifestAsJson.manifest.bundleMicroVer = microVersion;
     }
     else {
-      throw new Error("Invalid Bundle version specified.");
+      throw new Error("Invalid Bundle micro version specified: " + microVersion + ".");
     }
   }
 

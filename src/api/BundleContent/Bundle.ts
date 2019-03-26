@@ -29,6 +29,7 @@ export class Bundle {
   private bundleDirectory: string;
   private merge: boolean;
   private overwrite: boolean;
+  private preparedToSave: boolean = false;
 
   /**
    * Constructor for creating a Bundle.
@@ -44,6 +45,7 @@ export class Bundle {
     this.overwrite = overwrite;
     this.bundleDirectory = this.path.normalize(directory);
     this.manifest = new Manifest(this.bundleDirectory, this.merge, this.overwrite);
+    this.preparedToSave = false;
   }
 
   /**
@@ -110,6 +112,7 @@ export class Bundle {
    */
   public addDefinition(partData: IBundlePartDataType) {
     // Create a BundlePart
+    this.preparedToSave = false;
     const bp = new BundlePart(this.bundleDirectory, partData, true, undefined);
     this.definedParts.push(bp);
     this.manifest.addDefinition(bp);
@@ -126,9 +129,30 @@ export class Bundle {
    * @memberof Bundle
    */
   public addNodejsappDefinition(name: string, startscript: string, port: number) {
+    this.preparedToSave = false;
     const nj = new NodejsappBundlePart(this.bundleDirectory, name, startscript, port);
     this.manifest.addDefinition(nj);
     this.definedParts.push(nj);
+  }
+
+  /**
+   * Each bundle part is prompted to ensure that it is in a fit state to be saved.
+   * This might involve ensuring that file system permissions are suitable and that
+   * existing files wont be overwritten. The goal is that errors can be detected
+   * before any changes are actually saved, thereby reducing the probability that
+   * something will go wrong after partial changes are saved, and potentially resulting
+   * in a damaged Bundle on the file system.
+   *
+   * @throws ImperativeError
+   * @memberof Bundle
+   */
+  public prepareForSave() {
+    this.definedParts.forEach( (value) => {
+      value.prepareForSave();
+      });
+    this.manifest.prepareForSave();
+
+    this.preparedToSave = true;
   }
 
   /**
@@ -138,6 +162,12 @@ export class Bundle {
    * @memberof Bundle
    */
   public save() {
+    // Prepare the resources to be saved
+    if (this.preparedToSave === false) {
+      this.prepareForSave();
+    }
+
+    // save them
     this.definedParts.forEach( (value) => {
       value.save();
       });

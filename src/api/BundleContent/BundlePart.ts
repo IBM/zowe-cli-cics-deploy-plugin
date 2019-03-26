@@ -91,13 +91,25 @@ export class BundlePart {
   }
 
   /**
+   * Perform whatever validation can be done in advance of attempting to save the
+   * BundlePart, thereby reducing the possibility of a failure after some of the
+   * bundle's parts have already been persisted to the file system.
+   *
+   * @throws ImperativeError
+   * @memberof BundlePart
+   */
+  public prepareForSave() {
+    // no-op, sub-classes may override this
+  }
+
+  /**
    * Save the current BundlePart. Any changes that have been made will be persisted.
    *
    * @throws ImperativeError
    * @memberof BundlePart
    */
   public save() {
-    // no-op, the files must already exist
+    // no-op, sub-classes may override this
   }
 
   /**
