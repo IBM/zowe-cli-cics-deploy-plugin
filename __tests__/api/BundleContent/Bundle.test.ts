@@ -338,6 +338,152 @@ describe("Bundle01", () => {
         expect(err).toBeDefined();
         expect(err.message).toMatchSnapshot();
     });
+    it("should tolerate absence of .nodejsapp directory", () => {
+
+        // Create a Bundle
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle03", false, false);
+
+        // Mocks for the manifest
+        const spy1 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        const spy2 = jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
+        const spy3 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
+        // Mocks for the Nodejsapp - startscript exists
+        const spy4 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        // Mocks for the Nodejsapp - dir exists
+        const spy5 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
+
+        bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
+        bund.prepareForSave();
+
+        // Check the output as JSON
+        expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
+    });
+    it("should detect unwritable .nodejsapp directory", () => {
+
+        // Create a Bundle
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle03", false, false);
+
+        // Mocks for the manifest
+        const spy1 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        const spy2 = jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
+        const spy3 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
+        // Mocks for the Nodejsapp - startscript exists
+        const spy4 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        // Mocks for the Nodejsapp - dir exists
+        const spy5 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
+        // Mocks for the Nodejsapp - dir not writable
+        const spy6 = jest.spyOn(fs, "accessSync").mockImplementationOnce(() => { throw new Error("Wibble"); });
+
+        bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
+        let err: Error;
+        try {
+          bund.prepareForSave();
+        }
+        catch (error) {
+          err = error;
+        }
+
+        expect(err).toBeDefined();
+        expect(err.message).toMatchSnapshot();
+    });
+    it("should complain if existing .nodejsapp file isn't overwritable", () => {
+
+        // Create a Bundle
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle03", false, false);
+
+        // Mocks for the manifest
+        const spy1 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        const spy2 = jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
+        const spy3 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
+        // Mocks for the Nodejsapp - startscript exists
+        const spy4 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        // Mocks for the Nodejsapp - dir exists
+        const spy5 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        // Mocks for the Nodejsapp - dir writable
+        const spy6 = jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
+        // Mocks for the Nodejsapp - .nodejsapp exists
+        const spy7 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+
+        bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
+        let err: Error;
+        try {
+          bund.prepareForSave();
+        }
+        catch (error) {
+          err = error;
+        }
+
+        expect(err).toBeDefined();
+        expect(err.message).toMatchSnapshot();
+    });
+    it("should complain if no write permission to existing .nodejsapp", () => {
+
+        // Create a Bundle
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle03", false, true);
+
+        // Mocks for the manifest
+        const spy1 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        const spy2 = jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
+        const spy3 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
+        // Mocks for the Nodejsapp - startscript exists
+        const spy4 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        // Mocks for the Nodejsapp - dir exists
+        const spy5 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        // Mocks for the Nodejsapp - dir writable
+        const spy6 = jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
+        // Mocks for the Nodejsapp - .nodejsapp exists
+        const spy7 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        // Mocks for the Nodejsapp - .nodejsapp not writable
+        const spy8 = jest.spyOn(fs, "accessSync").mockImplementationOnce(() => { throw new Error("Wibble"); });
+
+        bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
+        let err: Error;
+        try {
+          bund.prepareForSave();
+        }
+        catch (error) {
+          err = error;
+        }
+
+        expect(err).toBeDefined();
+        expect(err.message).toMatchSnapshot();
+    });
+    it("should complain if no write permission to existing .profile", () => {
+
+        // Create a Bundle
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle03", false, true);
+
+        // Mocks for the manifest
+        const spy1 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        const spy2 = jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
+        const spy3 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
+        // Mocks for the Nodejsapp - startscript exists
+        const spy4 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        // Mocks for the Nodejsapp - dir exists
+        const spy5 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        // Mocks for the Nodejsapp - dir writable
+        const spy6 = jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
+        // Mocks for the Nodejsapp - .nodejsapp exists
+        const spy7 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        // Mocks for the Nodejsapp - .nodejsapp writable
+        const spy8 = jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
+        // Mocks for the Nodejsapp - .profile exists
+        const spy9 = jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
+        // Mocks for the Nodejsapp - .profile writable
+        const spy10 = jest.spyOn(fs, "accessSync").mockImplementationOnce(() => { throw new Error("Wibble"); });
+
+        bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
+        let err: Error;
+        try {
+          bund.prepareForSave();
+        }
+        catch (error) {
+          err = error;
+        }
+
+        expect(err).toBeDefined();
+        expect(err.message).toMatchSnapshot();
+    });
     it("should complain if exceptions are thrown during manifest parsing", () => {
 
         const spy1 = jest.spyOn(JSON, "parse").mockImplementationOnce(() => { throw new Error("Wibble"); });

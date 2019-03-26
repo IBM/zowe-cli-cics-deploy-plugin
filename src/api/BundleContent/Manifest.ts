@@ -131,16 +131,18 @@ export class Manifest {
     }
 
     // Does a manifest file already exist?
-    if (this.fs.existsSync(this.manifestFile) && this.overwrite === false) {
-      throw new Error("A bundle manifest file already exists. Specify --overwrite to replace it, or --merge to merge changes into it.");
-    }
+    if (this.fs.existsSync(this.manifestFile)) {
+      if (this.overwrite === false) {
+        throw new Error("A bundle manifest file already exists. Specify --overwrite to replace it, or --merge to merge changes into it.");
+      }
 
-    // Do we have write permission to the manifest?
-    try {
-      this.fs.accessSync(this.manifestFile, this.fs.constants.W_OK);
-    }
-    catch (err) {
-      throw new Error("cics-deploy requires write permission to: " + this.manifestFile);
+      // Do we have write permission to the manifest?
+      try {
+        this.fs.accessSync(this.manifestFile, this.fs.constants.W_OK);
+      }
+      catch (err) {
+        throw new Error("cics-deploy requires write permission to: " + this.manifestFile);
+      }
     }
   }
 

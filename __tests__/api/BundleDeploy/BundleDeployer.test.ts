@@ -207,6 +207,15 @@ describe("BundleDeployer01", () => {
                                   "//         MSGCLASS=X,TIME=NOLIMIT";
         await testDeployJCL(parms);
     });
+    it("should support multi-line jobcard with embedded new lines", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,CLASS=A,\\n//         MSGCLASS=X,TIME=NOLIMIT";
+        await testDeployJCL(parms);
+    });
     it("should support long line jobcard", async () => {
 
         let parms: IHandlerParameters;

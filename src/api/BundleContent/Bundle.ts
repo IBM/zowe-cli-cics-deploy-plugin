@@ -130,7 +130,7 @@ export class Bundle {
    */
   public addNodejsappDefinition(name: string, startscript: string, port: number) {
     this.preparedToSave = false;
-    const nj = new NodejsappBundlePart(this.bundleDirectory, name, startscript, port);
+    const nj = new NodejsappBundlePart(this.bundleDirectory, name, startscript, port, this.overwrite);
     this.manifest.addDefinition(nj);
     this.definedParts.push(nj);
   }
@@ -147,10 +147,11 @@ export class Bundle {
    * @memberof Bundle
    */
   public prepareForSave() {
+    this.manifest.prepareForSave();
+
     this.definedParts.forEach( (value) => {
       value.prepareForSave();
       });
-    this.manifest.prepareForSave();
 
     this.preparedToSave = true;
   }

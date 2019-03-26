@@ -55,6 +55,7 @@ export class NodejsappBundlePart extends BundlePart {
   private nodejsappProfileLocal: string;
   private partXML: INodejsappType;
   private profile: string;
+  private overwrite: boolean;
 
   /**
    * Constructor for creating a NodejsappBundlePart.
@@ -63,11 +64,12 @@ export class NodejsappBundlePart extends BundlePart {
    * @param {string} name - The name of the NODEJSAPP BundlePart.
    * @param {string} startscript - The path of the start script for the NODEJSAPP.
    * @param {number} port - An optional port number to be added to the profile for the NODEJSAPP.
+   * @param {boolean} overwrite - Can existing files be replaced?
    * @static
    * @throws ImperativeError
    * @memberof NodejsappBundlePart
    */
-  constructor(directory: string, name: string, startscript: string, port: number) {
+  constructor(directory: string, name: string, startscript: string, port: number, overwrite: boolean) {
     const partData = { name: "",
                        type: "http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP",
                        path: "" };
@@ -96,6 +98,7 @@ export class NodejsappBundlePart extends BundlePart {
     this.nodejsappFile = this.nodejsappsDir + "/" + partData.name + ".nodejsapp";
     this.nodejsappProfile = this.nodejsappsDir + "/" + partData.name + ".profile";
     this.nodejsappProfileLocal = "nodejsapps/" + partData.name + ".profile";
+    this.overwrite = overwrite;
 
     // Validate that the startscript resolves to something within the current directory
     startscript = this.normalizeAndValidateFileReference(startscript);
@@ -139,6 +142,36 @@ export class NodejsappBundlePart extends BundlePart {
   }
 
   /**
+   * Perform whatever validation can be done in advance of attempting to save the
+   * Nodejsapp, thereby reducing the possibility of a failure after some of the
+   * bundle parts have already been persisted to the file system.
+   *
+   * @throws ImperativeError
+   * @memberof Manifest
+   */
+  public prepareForSave() {
+    // Does the nodejsapp directory already exist?
+    if (!this.fs.existsSync(this.nodejsappsDir)) {
+      // No, we'll have to create it (and the contents) during saving
+      return;
+    }
+
+    // Do we have write permission to the nodejsapp dir?
+    try {
+      this.fs.accessSync(this.nodejsappsDir, this.fs.constants.W_OK);
+    }
+    catch (err) {
+      throw new Error("cics-deploy requires write permission to: " + this.nodejsappsDir);
+    }
+
+    // Does the .nodejsapp appear to be saveable?
+    this.ensureFileSaveable(this.nodejsappFile, this.overwrite);
+
+    // Does the .profile appear to be saveable?
+    this.ensureFileSaveable(this.nodejsappProfile, this.overwrite);
+  }
+
+  /**
    * Save the NODEJSAPP BundlePart. Any changes that have been made will be persisted.
    *
    * @throws ImperativeError
@@ -152,7 +185,6 @@ export class NodejsappBundlePart extends BundlePart {
 
     // Write the .nodejsapp file
     this.fs.writeFileSync(this.nodejsappFile, this.getPartXML(), "utf8");
-
 
     // Write the .profile file
     this.fs.writeFileSync(this.nodejsappProfile, this.getProfile(), "utf8");

@@ -14,7 +14,7 @@ describe("NodejsappBundlePart01", () => {
     it("Create a NodejsappBundlePart", () => {
 
         // Create a Nodejsapp
-        const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
+        const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000, false);
 
         expect(JSON.stringify(njs.getPart())).toMatchSnapshot();
         expect(njs.getPartXML()).toMatchSnapshot();
@@ -24,7 +24,7 @@ describe("NodejsappBundlePart01", () => {
     it("Create a NodejsappBundlePart with bad chars", () => {
 
         // Create a Nodejsapp
-        const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "NodeName is invalid!!!", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
+        const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "NodeName is invalid!!!", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000, false);
 
         expect(JSON.stringify(njs.getPart())).toMatchSnapshot();
         expect(njs.getPartXML()).toMatchSnapshot();
@@ -34,7 +34,7 @@ describe("NodejsappBundlePart01", () => {
     it("Create a NodejsappBundlePart with long name", () => {
 
         // Create a Nodejsapp
-        const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "123456789012345678901234567890123", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
+        const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "123456789012345678901234567890123", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000, false);
 
         expect(JSON.stringify(njs.getPart())).toMatchSnapshot();
         expect(njs.getPartXML()).toMatchSnapshot();
@@ -45,7 +45,7 @@ describe("NodejsappBundlePart01", () => {
 
         let err: Error;
         try {
-          const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", undefined, "", 1000);
+          const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", undefined, "", 1000, false);
         }
         catch (error) {
           err = error;
@@ -58,7 +58,7 @@ describe("NodejsappBundlePart01", () => {
 
         let err: Error;
         try {
-          const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "test", "__tests__/__resources__/ExampleBundle03/Artefact2", 1000);
+          const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "test", "__tests__/__resources__/ExampleBundle03/Artefact2", 1000, false);
         }
         catch (error) {
           err = error;
@@ -71,7 +71,7 @@ describe("NodejsappBundlePart01", () => {
 
         let err: Error;
         try {
-          const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "test", undefined, 1000);
+          const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "test", undefined, 1000, false);
         }
         catch (error) {
           err = error;
@@ -84,7 +84,7 @@ describe("NodejsappBundlePart01", () => {
 
         let err: Error;
         try {
-          const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "test", "__tests__/__resources__/ExampleBundle03/Artefact1", -1);
+          const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "test", "__tests__/__resources__/ExampleBundle03/Artefact1", -1, false);
         }
         catch (error) {
           err = error;
@@ -97,7 +97,7 @@ describe("NodejsappBundlePart01", () => {
 
         let err: Error;
         try {
-          const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "test", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000.1);
+          const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "test", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000.1, false);
         }
         catch (error) {
           err = error;
@@ -109,7 +109,7 @@ describe("NodejsappBundlePart01", () => {
     it("Create a NodejsappBundlePart with missing port number", () => {
 
         // Create a Nodejsapp
-        const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", undefined);
+        const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", "NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", undefined, false);
 
         // Check the bundle part as JSON
         expect(JSON.stringify(njs.getPart())).toMatchSnapshot();
@@ -121,7 +121,7 @@ describe("NodejsappBundlePart01", () => {
 
         let err: Error;
         try {
-          const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", undefined, "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
+          const njs = new NodejsappBundlePart("__tests__/__resources__/ExampleBundle03", undefined, "__tests__/__resources__/ExampleBundle03/Artefact1", 1000, false);
         }
         catch (error) {
           err = error;

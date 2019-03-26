@@ -146,6 +146,31 @@ export class BundlePart {
     return file;
   }
 
+  /**
+   * Perform checks to determine whether it is likely that a file can be written.
+   *
+   * @param {string} filename - The file to check
+   * @returns {boolean}
+   * @throws ImperativeError
+   * @memberof BundlePart
+   */
+  protected ensureFileSaveable(filename: string, overwrite: boolean): boolean {
+    // Does the file already exist?
+    if (this.fs.existsSync(filename) && overwrite === false) {
+      throw new Error("File " + filename + " already exists. Specify --overwrite to replace it.");
+    }
+
+    // Do we have write permission to the file?
+    try {
+      this.fs.accessSync(filename, this.fs.constants.W_OK);
+    }
+    catch (err) {
+      throw new Error("cics-deploy requires write permission to: " + filename);
+    }
+
+    return true;
+  }
+
   private validateName() {
     if (this.partData.name === undefined) {
       throw new Error(this.simpleType + " name is not set.");
