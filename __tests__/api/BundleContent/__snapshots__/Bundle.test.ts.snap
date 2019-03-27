@@ -21,17 +21,11 @@ exports[`Bundle01 add definitions 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http:/
 
 exports[`Bundle01 set the id and version 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"TestExample\\",\\"bundleMajorVer\\":33,\\"bundleMinorVer\\":44,\\"bundleMicroVer\\":55,\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"path1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"path2\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"}]}}"`;
 
-exports[`Bundle01 should complain if no overwrite permission to manifest 1`] = `"A bundle manifest file already exists. Specify --overwrite to replace it, or --merge to merge changes into it."`;
+exports[`Bundle01 should be able to add a resource to a single item manifest 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"define\\":[{\\"name\\":\\"single\\",\\"type\\":\\"type1\\",\\"path\\":\\"path1\\"},{\\"name\\":\\"item2\\",\\"type\\":\\"type2\\",\\"path\\":\\"Artefact1\\"}]}}"`;
 
-exports[`Bundle01 should complain if no write permission to META-INF directory 1`] = `"cics-deploy requires write permission to: __tests__\\\\__resources__\\\\ExampleBundle01/META-INF"`;
-
-exports[`Bundle01 should complain if no write permission to bundle directory 1`] = `"cics-deploy requires write permission to: __tests__\\\\__resources__\\\\ExampleBundle01"`;
-
-exports[`Bundle01 should complain if no write permission to manifest 1`] = `"cics-deploy requires write permission to: __tests__\\\\__resources__\\\\ExampleBundle01/META-INF/cics.xml"`;
+exports[`Bundle01 should be able to save new definitions 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"ThisIsAnId\\",\\"bundleMajorVer\\":\\"10\\",\\"bundleMinorVer\\":\\"11\\",\\"bundleMicroVer\\":\\"12\\",\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"Artefact1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"path2\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"}]}}"`;
 
 exports[`Bundle01 should read an existing bundle 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"ThisIsAnId\\",\\"bundleMajorVer\\":\\"10\\",\\"bundleMinorVer\\":\\"11\\",\\"bundleMicroVer\\":\\"12\\",\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"path1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"path2\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"}]}}"`;
-
-exports[`Bundle01 should tolerate META-INF directory not existing 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":1,\\"bundleRelease\\":0}}"`;
 
 exports[`Bundle01 should warn that an existing bundle cant be overwritten 1`] = `"A bundle manifest file already exists. Specify --overwrite to replace it, or --merge to merge changes into it."`;
 

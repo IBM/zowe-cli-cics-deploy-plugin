@@ -55,7 +55,6 @@ export class NodejsappBundlePart extends BundlePart {
   private nodejsappProfileLocal: string;
   private partXML: INodejsappType;
   private profile: string;
-  private overwrite: boolean;
 
   /**
    * Constructor for creating a NodejsappBundlePart.
@@ -89,7 +88,7 @@ export class NodejsappBundlePart extends BundlePart {
     }
 
     partData.path = "nodejsapps/" + partData.name + ".nodejsapp";
-    super(directory, partData, false, "NODEJSAPP");
+    super(directory, partData, false, "NODEJSAPP", overwrite);
 
     // Now validate the port
     this.validatePort(port);
@@ -99,6 +98,7 @@ export class NodejsappBundlePart extends BundlePart {
     this.nodejsappProfile = this.nodejsappsDir + "/" + partData.name + ".profile";
     this.nodejsappProfileLocal = "nodejsapps/" + partData.name + ".profile";
     this.overwrite = overwrite;
+    this.bundleDirectory = directory;
 
     // Validate that the startscript resolves to something within the current directory
     startscript = this.normalizeAndValidateFileReference(startscript);
@@ -151,24 +151,31 @@ export class NodejsappBundlePart extends BundlePart {
    */
   public prepareForSave() {
     // Does the nodejsapp directory already exist?
-    if (!this.fs.existsSync(this.nodejsappsDir)) {
-      // No, we'll have to create it (and the contents) during saving
+    if (!BundlePart.fs.existsSync(this.nodejsappsDir)) {
+
+      // We'll have to create it during the save, do we have write permission?
+      try {
+        BundlePart.fs.accessSync(this.bundleDirectory, BundlePart.fs.constants.W_OK);
+      }
+      catch (err) {
+        throw new Error("cics-deploy requires write permission to: " + this.bundleDirectory);
+      }
       return;
     }
 
     // Do we have write permission to the nodejsapp dir?
     try {
-      this.fs.accessSync(this.nodejsappsDir, this.fs.constants.W_OK);
+      BundlePart.fs.accessSync(this.nodejsappsDir, BundlePart.fs.constants.W_OK);
     }
     catch (err) {
       throw new Error("cics-deploy requires write permission to: " + this.nodejsappsDir);
     }
 
     // Does the .nodejsapp appear to be saveable?
-    this.ensureFileSaveable(this.nodejsappFile, this.overwrite);
+    BundlePart.ensureFileSaveable(this.nodejsappFile, this.overwrite);
 
     // Does the .profile appear to be saveable?
-    this.ensureFileSaveable(this.nodejsappProfile, this.overwrite);
+    BundlePart.ensureFileSaveable(this.nodejsappProfile, this.overwrite);
   }
 
   /**
@@ -179,15 +186,30 @@ export class NodejsappBundlePart extends BundlePart {
    */
   public save() {
     // Does the nodejsapps directory exist? If not, create it.
-    if (!this.fs.existsSync(this.nodejsappsDir)) {
-      this.fs.mkdirSync(this.nodejsappsDir);
+    if (!BundlePart.fs.existsSync(this.nodejsappsDir)) {
+       try {
+         BundlePart.fs.mkdirSync(this.nodejsappsDir);
+       }
+       catch (err) {
+         throw new Error("An error occurred attempting to create '" + this.nodejsappsDir + "': " + err.message);
+       }
     }
 
     // Write the .nodejsapp file
-    this.fs.writeFileSync(this.nodejsappFile, this.getPartXML(), "utf8");
+    try {
+      BundlePart.fs.writeFileSync(this.nodejsappFile, this.getPartXML(), "utf8");
+    }
+    catch (err) {
+      throw new Error("An error occurred attempting to write nodejsapp file '" + this.nodejsappFile + "': " + err.message);
+    }
 
     // Write the .profile file
-    this.fs.writeFileSync(this.nodejsappProfile, this.getProfile(), "utf8");
+    try {
+      BundlePart.fs.writeFileSync(this.nodejsappProfile, this.getProfile(), "utf8");
+    }
+    catch (err) {
+      throw new Error("An error occurred attempting to write profile file '" + this.nodejsappProfile + "': " + err.message);
+    }
   }
 
   private createNodejsappXML(startscript: string) {

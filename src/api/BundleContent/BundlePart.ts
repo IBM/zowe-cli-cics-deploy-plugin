@@ -33,6 +33,37 @@ export interface IBundlePartDataType {
  */
 export class BundlePart {
 
+
+  /**
+   * Perform checks to determine whether it is likely that a file can be written.
+   *
+   * @param {string} filename - The file to check
+   * @returns {boolean}
+   * @throws ImperativeError
+   * @memberof BundlePart
+   */
+  public static ensureFileSaveable(filename: string, overwrite: boolean): boolean {
+    // Does the file already exist?
+    if (BundlePart.fs.existsSync(filename)) {
+      // Are we allowed to replace it?
+      if (overwrite === false) {
+        throw new Error("File " + filename + " already exists. Specify --overwrite to replace it.");
+      }
+
+      // Do we have write permission to it?
+      try {
+        BundlePart.fs.accessSync(filename, BundlePart.fs.constants.W_OK);
+      }
+      catch (err) {
+        throw new Error("cics-deploy requires write permission to: " + filename);
+      }
+    }
+
+    return true;
+  }
+
+  protected static fs = require("fs");
+
   /**
    * Function for mangaling a name into something valid for CICS
    *
@@ -51,8 +82,8 @@ export class BundlePart {
     return mangledText.substring(0, maxLength);
   }
 
-  protected fs = require("fs");
   protected bundleDirectory: string;
+  protected overwrite: boolean;
   private path = require("path");
   private partData: IBundlePartDataType;
   private simpleType = "BundlePart";
@@ -62,15 +93,18 @@ export class BundlePart {
    * @param {string} directory - The bundle directory.
    * @param {IBundlePartDataType} partDataLocal - The metadata for the BundlePart.
    * @param {boolean} validatePath - True if the path property should be validated.
+   * @param {boolean} overwrite - True if the parts contents are allowed to be changed.
    * @static
    * @throws ImperativeError
    * @memberof BundlePart
    */
-  constructor(directory: string, partDataLocal: IBundlePartDataType, validatePath: boolean, abbrevType: string) {
+  constructor(directory: string, partDataLocal: IBundlePartDataType, validatePath: boolean,
+              abbrevType: string, overwrite: boolean) {
     if (abbrevType !== undefined) {
       this.simpleType = abbrevType;
     }
     this.partData = partDataLocal;
+    this.overwrite = overwrite;
     this.bundleDirectory = this.path.normalize(directory);
     this.validateName();
     this.validateType();
@@ -136,7 +170,7 @@ export class BundlePart {
 
     // Check that the target file exists
     const fullLocation = this.bundleDirectory + "/" + file;
-    if (!this.fs.existsSync(fullLocation)) {
+    if (!BundlePart.fs.existsSync(fullLocation)) {
       throw new Error(this.simpleType + ' "' + this.partData.name + '" references a file that does not exist: "' + fullLocation + '".');
     }
 
@@ -144,31 +178,6 @@ export class BundlePart {
     file = file.replace(new RegExp("\\\\", "g"), "/");
 
     return file;
-  }
-
-  /**
-   * Perform checks to determine whether it is likely that a file can be written.
-   *
-   * @param {string} filename - The file to check
-   * @returns {boolean}
-   * @throws ImperativeError
-   * @memberof BundlePart
-   */
-  protected ensureFileSaveable(filename: string, overwrite: boolean): boolean {
-    // Does the file already exist?
-    if (this.fs.existsSync(filename) && overwrite === false) {
-      throw new Error("File " + filename + " already exists. Specify --overwrite to replace it.");
-    }
-
-    // Do we have write permission to the file?
-    try {
-      this.fs.accessSync(filename, this.fs.constants.W_OK);
-    }
-    catch (err) {
-      throw new Error("cics-deploy requires write permission to: " + filename);
-    }
-
-    return true;
   }
 
   private validateName() {
