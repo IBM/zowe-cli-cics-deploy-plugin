@@ -9,7 +9,7 @@
 *
 */
 
-import { Logger, ICommandHandler, IHandlerParameters, ICommandArguments, ImperativeError } from "@brightside/imperative";
+import { Logger, ICommandHandler, IHandlerParameters, ICommandArguments, ImperativeError, Imperative } from "@zowe/imperative";
 
 /**
  * Generic Command handler for a CICS bundle action
@@ -30,9 +30,22 @@ export abstract class BundleParentHandler implements ICommandHandler {
      */
     public async process(params: IHandlerParameters): Promise<void> {
 
+        // Initialise Imperative if it is not already initialised
+        try {
+          // But not if silent mode is requested (i.e. unit tests)
+          if (params.arguments.silent === undefined) {
+            await Imperative.init();
+          }
+        }
+        catch (err) {
+          // Imperative may refuse to initialise in unit tests... never mind
+        }
+
         // log the arguments on entry to the Handler
         const logger = Logger.getAppLogger();
-        logger.debug("Arguments received by cics-deploy: " + JSON.stringify(params.arguments));
+        if (params.arguments.silent === undefined) {
+          logger.debug("Arguments received by cics-deploy: " + JSON.stringify(params.arguments));
+        }
 
         try {
           let msg;
@@ -43,15 +56,22 @@ export abstract class BundleParentHandler implements ICommandHandler {
 
           // Issue the success message
           params.response.console.log(msg);
-          logger.debug(msg);
+          if (params.arguments.silent === undefined) {
+            logger.debug(msg);
+          }
         } catch (except) {
           // Construct an error message for the exception
           const msg = "A failure occurred during CICS bundle " + this.actionName + ".\n Reason = " + except.message;
 
           // Log the error message to the Imperative log
-          logger.error(msg);
+          if (params.arguments.silent === undefined) {
+            logger.error(msg);
+          }
 
-          throw new ImperativeError({msg, causeErrors: except});
+          params.response.console.errorHeader("cics-deploy error");
+          params.response.console.error(msg);
+          process.exitCode = 1;
+          params.arguments.errorMsg = msg;
         }
     }
 

@@ -12,7 +12,7 @@
 "use strict";
 
 import { IHandlerParameters, Logger, ImperativeError, AbstractSession, ITaskWithStatus,
-         TaskStage , TaskProgress} from "@brightside/imperative";
+         TaskStage , TaskProgress} from "@zowe/imperative";
 import { ZosmfSession, SubmitJobs, List } from "@brightside/core";
 import { ParmValidator } from "./ParmValidator";
 

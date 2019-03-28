@@ -1,0 +1,6 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`bundle Handler should complain with no name parameter 1`] = `
+"A failure occurred during CICS bundle deployment.
+ Reason = --name parameter is not set"
+`;

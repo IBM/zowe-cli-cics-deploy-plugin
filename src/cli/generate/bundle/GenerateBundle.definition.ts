@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandDefinition } from "@brightside/imperative";
+import { ICommandDefinition } from "@zowe/imperative";
 import { BundleidOption } from "./options/Bundleid.option";
 import { BundleversionOption } from "./options/Bundleversion.option";
 import { NodejsappOption } from "./options/Nodejsapp.option";
