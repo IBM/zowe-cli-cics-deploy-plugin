@@ -509,7 +509,7 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should support verbose=true output for deploy 1`] = `"DFHRL2037I"`;
+exports[`BundleDeployer01 should support verbose=true output for deploy 1`] = `"DFHRL2012I"`;
 
 exports[`BundleDeployer01 should support verbose=true output for deploy 2`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT

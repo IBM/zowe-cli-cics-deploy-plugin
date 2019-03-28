@@ -222,7 +222,7 @@ export class Bundle {
           "*.ttf binary binary\n" +
           "*.woff binary binary\n" +
           "\n" +
-          "# Convert Node.js profiles to EBCDIC\n" +
+          "# Convert CICS Node.js profiles to EBCDIC\n" +
           "*.profile ISO8859-1 IBM-1047";
 
     // Write the zosattributes file

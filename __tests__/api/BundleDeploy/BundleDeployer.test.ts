@@ -506,7 +506,7 @@ async function testDeployJCL(parms: IHandlerParameters) {
   const spy2 = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
                                              .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
   const spy3 = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
-                                              [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2037I"}] );
+                                              [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
 
   const bd = new BundleDeployer(parms);
   const response = await bd.deployBundle();
