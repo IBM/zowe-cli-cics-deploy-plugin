@@ -245,13 +245,16 @@ export class BundleDeployer {
       // we're looking for the SYSTSPRT output from the DFHDPLOY step.
       if (file.ddName === "SYSTSPRT" && file.stepName === "DFHDPLOY") {
 
-        // log the full output for serviceability to the log
-        const logger = Logger.getAppLogger();
         if (file.data === undefined || file.data.length === 0) {
           status.stageName = TaskStage.FAILED;
           throw new Error("DFHDPLOY did not generate any output. Most recent status update: '" + status.statusMessage + "'.");
         }
-        logger.debug(file.data);
+
+        // log the full output for serviceability to the log
+        if (this.params.arguments.silent === undefined) {
+          const logger = Logger.getAppLogger();
+          logger.debug(file.data);
+        }
 
         // Finish the progress bar
         status.statusMessage = "Completed DFHDPLOY";
