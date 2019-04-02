@@ -116,9 +116,19 @@ describe("AutoBundler01", () => {
 
         const parms: IHandlerParameters = DEFAULT_PARAMETERS;
         setCommonParmsForAutoBundleTests(parms);
+        parms.arguments.nodejsapp = "MyExampleOverride";
         parms.arguments.startscript = "wibble";
 
-        await runAutoBundleWithError(parms, "__tests__/__resources__/ExampleBundle04");
+        let err: Error;
+        try {
+          const ab = new AutoBundler("__tests__/__resources__/ExampleBundle01", parms);
+        } catch (e) {
+          err = e;
+        }
+
+        expect(err).toBeDefined();
+        expect(err.message).toContain("NODEJSAPP \"MyExampleOverride\" references a file outside of the Bundle directory:");
+        expect(err.message).toContain("wibble");
     });
     it("should set a port number", async () => {
 

@@ -7,10 +7,6 @@ exports[`Bundle01 add a NODEJSAPP 2`] = `
 "
 `;
 
-exports[`Bundle01 add a definition that references files outside of the bundle 1`] = `"BundlePart \\"name1\\" references a file outside of the Bundle directory: \\"..\\\\ExampleBundle01\\\\META-INF\\\\cics.xml\\"."`;
-
-exports[`Bundle01 add a not found definition 1`] = `"BundlePart \\"name1\\" references a file that does not exist: \\"__tests__\\\\__resources__\\\\ExampleBundle02/Artefact3\\"."`;
-
 exports[`Bundle01 add a part with missing name 1`] = `"BundlePart name is not set."`;
 
 exports[`Bundle01 add a part with missing path 1`] = `"BundlePart path is not set for part \\"name1\\""`;

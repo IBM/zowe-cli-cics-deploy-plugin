@@ -67,7 +67,9 @@ describe("Bundle01", () => {
         }
 
         // Check the output as JSON
-        expect(err.message).toMatchSnapshot();
+        expect(err).toBeDefined();
+        expect(err.message).toContain("BundlePart \"name1\" references a file outside of the Bundle directory:");
+        expect(err.message).toContain("cics.xml");
     });
     it("add a not found definition", () => {
 
@@ -84,7 +86,9 @@ describe("Bundle01", () => {
         }
 
         // Check the output as JSON
-        expect(err.message).toMatchSnapshot();
+        expect(err).toBeDefined();
+        expect(err.message).toContain("BundlePart \"name1\" references a file that does not exist:");
+        expect(err.message).toContain("Artefact3");
     });
     it("add a part with missing name", () => {
 

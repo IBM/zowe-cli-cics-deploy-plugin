@@ -24,8 +24,6 @@ exports[`AutoBundler01 should set a nodejsapp name 2`] = `"{\\"manifest\\":{\\"x
 
 exports[`AutoBundler01 should set a port number 1`] = `"Supplied Port is outside the range of 1-65535: -27"`;
 
-exports[`AutoBundler01 should set a startscript name 1`] = `"NODEJSAPP \\"testBundleName\\" references a file outside of the Bundle directory: \\"..\\\\..\\\\..\\\\wibble\\"."`;
-
 exports[`AutoBundler01 should set the bundle version 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"bundleMajorVer\\":3,\\"bundleMinorVer\\":4,\\"bundleMicroVer\\":5}}"`;
 
 exports[`AutoBundler01 should set the bundleid 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"id\\":\\"test\\"}}"`;
