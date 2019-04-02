@@ -11,20 +11,20 @@
 
 import { ICommandHandler, IHandlerParameters } from "@zowe/imperative";
 import { BundleParentHandler } from "../../shared/BundleParent.handler";
-import { BundleDeployer } from "../../../api/BundleDeploy/BundleDeployer";
+import { BundlePusher } from "../../../api/BundlePush/BundlePusher";
 
 /**
- * Command handler for deploying a bundle
+ * Command handler for pushing a bundle
  * @export
- * @class DeployBundleHandler
+ * @class GenerateBundleHandler
  * @implements {ICommandHandler}
  */
-export default class DeployBundleHandler extends BundleParentHandler implements ICommandHandler {
+export default class PushBundleHandler extends BundleParentHandler implements ICommandHandler {
 
-    public actionName = "deployment";
+    public actionName = "pushing";
 
     /**
-     * Perform the DEPLOY BUNDLE action.
+     * Perform the PUSH BUNDLE action.
      *
      * @param {IHandlerParameters} params
      * @returns {Promise<string>}
@@ -33,8 +33,7 @@ export default class DeployBundleHandler extends BundleParentHandler implements 
      */
     public async performAction(params: IHandlerParameters): Promise<string> {
 
-       const bdep = new BundleDeployer(params);
-       const msg = await bdep.deployBundle();
-       return msg;
+      const pusher = await new BundlePusher(params);
+      return pusher.performPush();
     }
 }

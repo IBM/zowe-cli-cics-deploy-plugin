@@ -22,6 +22,7 @@ export const TimeoutOption: ICommandOptionDefinition = {
     aliases: ["to"],
     type: "number",
     numericValueRange: [1, MAX_VALUE],
-    description: "An optional numerical value that specifies the maximum amount of time in seconds (1 - 1800 inclusive) for the command to complete."
+    description: "An optional numerical value that specifies the maximum amount of time in seconds " +
+                 "(1 - 1800 inclusive) for the DFHDPLOY command to complete."
 };
 

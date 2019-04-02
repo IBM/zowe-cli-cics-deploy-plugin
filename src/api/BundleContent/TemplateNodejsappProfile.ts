@@ -76,17 +76,17 @@ export class TemplateNodejsappProfile {
     "#                      Including files in the profile\n" +
     "#                      ------------------------------\n" +
     "#\n" +
-    "# INCLUDE specifies a file to be included in this profile. The file can\n" +
+    "# %INCLUDE specifies a file to be included in this profile. The file can\n" +
     "# contain common system-wide configuration that can then be maintained\n" +
     "# separate to the application configuration. Symbols can be used when\n" +
     "# specifying the file to be included.\n" +
     "#\n" +
     "# Examples:\n" +
-    "# INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile\n" +
-    "# INCLUDE=&USSCONFIG;/nodejs/sdk.profile\n" +
-    "# INCLUDE=&CONFIGROOT;/debug.profile\n" +
+    "# %INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile\n" +
+    "# %INCLUDE=&USSCONFIG;/nodejs/sdk.profile\n" +
+    "# %INCLUDE=&CONFIGROOT;/debug.profile\n" +
     "#\n" +
-    "INCLUDE=&USSCONFIG;/nodejsapps/general.profile\n" +
+    "%INCLUDE=&USSCONFIG;/nodejsapps/general.profile\n" +
     "#\n" +
     "#**********************************************************************\n" +
     "#\n" +

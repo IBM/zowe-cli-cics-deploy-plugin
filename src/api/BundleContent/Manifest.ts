@@ -75,7 +75,7 @@ export class Manifest {
    this.metainfDir = this.bundleDirectory + "/META-INF";
    this.manifestFile = this.metainfDir + "/cics.xml";
 
-   // If 'merge' is set the attempt to read any existing manifest that may
+   // If 'merge' is set then attempt to read any existing manifest that may
    // already exist. Subsequent changes will be merged with the existing
    // content.
    if (this.merge === true) {

@@ -5,7 +5,7 @@ Before you begin, [set up](../Setup.md) your environment to install a plug-in.
 ## Overview
 This tutorial covers installing and running this bundled Zowe CLI cics-deploy plugin as-is (without modification). 
 
-The plug-in adds a command to the CLI that supports generation and deployment of CICS bundle resources from the current directory of your PC.
+The plug-in adds a command to the CLI that supports generation and deployment of CICS bundle resources from the current directory of your workstation.
 
 ## Installing the cics-deploy plug-in to Zowe CLI
 

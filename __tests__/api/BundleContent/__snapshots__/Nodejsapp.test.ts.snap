@@ -71,17 +71,17 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart 3`] = `
 #                      Including files in the profile
 #                      ------------------------------
 #
-# INCLUDE specifies a file to be included in this profile. The file can
+# %INCLUDE specifies a file to be included in this profile. The file can
 # contain common system-wide configuration that can then be maintained
 # separate to the application configuration. Symbols can be used when
 # specifying the file to be included.
 #
 # Examples:
-# INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
-# INCLUDE=&USSCONFIG;/nodejs/sdk.profile
-# INCLUDE=&CONFIGROOT;/debug.profile
+# %INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
+# %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
+# %INCLUDE=&CONFIGROOT;/debug.profile
 #
-INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
 #
 #**********************************************************************
 #
@@ -201,17 +201,17 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart 4`] = `
 #                      Including files in the profile
 #                      ------------------------------
 #
-# INCLUDE specifies a file to be included in this profile. The file can
+# %INCLUDE specifies a file to be included in this profile. The file can
 # contain common system-wide configuration that can then be maintained
 # separate to the application configuration. Symbols can be used when
 # specifying the file to be included.
 #
 # Examples:
-# INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
-# INCLUDE=&USSCONFIG;/nodejs/sdk.profile
-# INCLUDE=&CONFIGROOT;/debug.profile
+# %INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
+# %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
+# %INCLUDE=&CONFIGROOT;/debug.profile
 #
-INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
 #
 #**********************************************************************
 #
@@ -338,17 +338,17 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with bad chars 3`] =
 #                      Including files in the profile
 #                      ------------------------------
 #
-# INCLUDE specifies a file to be included in this profile. The file can
+# %INCLUDE specifies a file to be included in this profile. The file can
 # contain common system-wide configuration that can then be maintained
 # separate to the application configuration. Symbols can be used when
 # specifying the file to be included.
 #
 # Examples:
-# INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
-# INCLUDE=&USSCONFIG;/nodejs/sdk.profile
-# INCLUDE=&CONFIGROOT;/debug.profile
+# %INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
+# %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
+# %INCLUDE=&CONFIGROOT;/debug.profile
 #
-INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
 #
 #**********************************************************************
 #
@@ -468,17 +468,17 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with bad chars 4`] =
 #                      Including files in the profile
 #                      ------------------------------
 #
-# INCLUDE specifies a file to be included in this profile. The file can
+# %INCLUDE specifies a file to be included in this profile. The file can
 # contain common system-wide configuration that can then be maintained
 # separate to the application configuration. Symbols can be used when
 # specifying the file to be included.
 #
 # Examples:
-# INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
-# INCLUDE=&USSCONFIG;/nodejs/sdk.profile
-# INCLUDE=&CONFIGROOT;/debug.profile
+# %INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
+# %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
+# %INCLUDE=&CONFIGROOT;/debug.profile
 #
-INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
 #
 #**********************************************************************
 #
@@ -605,17 +605,17 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with long name 3`] =
 #                      Including files in the profile
 #                      ------------------------------
 #
-# INCLUDE specifies a file to be included in this profile. The file can
+# %INCLUDE specifies a file to be included in this profile. The file can
 # contain common system-wide configuration that can then be maintained
 # separate to the application configuration. Symbols can be used when
 # specifying the file to be included.
 #
 # Examples:
-# INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
-# INCLUDE=&USSCONFIG;/nodejs/sdk.profile
-# INCLUDE=&CONFIGROOT;/debug.profile
+# %INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
+# %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
+# %INCLUDE=&CONFIGROOT;/debug.profile
 #
-INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
 #
 #**********************************************************************
 #
@@ -735,17 +735,17 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with long name 4`] =
 #                      Including files in the profile
 #                      ------------------------------
 #
-# INCLUDE specifies a file to be included in this profile. The file can
+# %INCLUDE specifies a file to be included in this profile. The file can
 # contain common system-wide configuration that can then be maintained
 # separate to the application configuration. Symbols can be used when
 # specifying the file to be included.
 #
 # Examples:
-# INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
-# INCLUDE=&USSCONFIG;/nodejs/sdk.profile
-# INCLUDE=&CONFIGROOT;/debug.profile
+# %INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
+# %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
+# %INCLUDE=&CONFIGROOT;/debug.profile
 #
-INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
 #
 #**********************************************************************
 #
@@ -872,17 +872,17 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with missing port nu
 #                      Including files in the profile
 #                      ------------------------------
 #
-# INCLUDE specifies a file to be included in this profile. The file can
+# %INCLUDE specifies a file to be included in this profile. The file can
 # contain common system-wide configuration that can then be maintained
 # separate to the application configuration. Symbols can be used when
 # specifying the file to be included.
 #
 # Examples:
-# INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
-# INCLUDE=&USSCONFIG;/nodejs/sdk.profile
-# INCLUDE=&CONFIGROOT;/debug.profile
+# %INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
+# %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
+# %INCLUDE=&CONFIGROOT;/debug.profile
 #
-INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
 #
 #**********************************************************************
 #
@@ -1001,17 +1001,17 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with missing port nu
 #                      Including files in the profile
 #                      ------------------------------
 #
-# INCLUDE specifies a file to be included in this profile. The file can
+# %INCLUDE specifies a file to be included in this profile. The file can
 # contain common system-wide configuration that can then be maintained
 # separate to the application configuration. Symbols can be used when
 # specifying the file to be included.
 #
 # Examples:
-# INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
-# INCLUDE=&USSCONFIG;/nodejs/sdk.profile
-# INCLUDE=&CONFIGROOT;/debug.profile
+# %INCLUDE=/etc/cicsts/prodplex/nodejs/sdk.profile
+# %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
+# %INCLUDE=&CONFIGROOT;/debug.profile
 #
-INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
 #
 #**********************************************************************
 #

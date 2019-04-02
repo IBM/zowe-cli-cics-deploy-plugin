@@ -14,3 +14,4 @@ export * from "./api/BundleContent/BundlePart";
 export * from "./api/BundleContent/Manifest";
 export * from "./api/BundleContent/NodejsappBundlePart";
 export * from "./api/BundleDeploy/BundleDeployer";
+export * from "./api/BundlePush/BundlePusher";

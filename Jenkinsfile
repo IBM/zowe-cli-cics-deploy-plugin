@@ -78,7 +78,7 @@ def PRODUCT_NAME = "zowe-cli-cics-deploy-plugin"
 /**
  * This is where the Zowe project needs to be installed
  */
-def ZOWE_CLI_INSTALL_DIR = "/.npm-global/lib/node_modules/@brightside/core"
+def ZOWE_CLI_INSTALL_DIR = "/.npm-global/lib/node_modules/@zowee/cli"
 
 def ARTIFACTORY_CREDENTIALS_ID = "c8e3aa62-5eef-4e6b-8a3f-aa1006a7ef01"
 
@@ -201,7 +201,8 @@ pipeline {
                     echo "Install Zowe CLI globaly"
                     sh("npm set registry https://registry.npmjs.org")
                     sh("npm set @brightside:registry https://api.bintray.com/npm/ca/brightside/")
-                    sh("npm install -g @brightside/core@next")
+                    sh("npm set @zowe:registry https://api.bintray.com/npm/ca/brightside/")
+                    sh("npm install -g @zowe/cli@latest")
                     sh("zowe --version")
                 }
             }
