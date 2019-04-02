@@ -99,8 +99,10 @@ export class AutoBundler {
           params.response.console.log(msg);
 
           // Also log the message for posterity
-          const logger = Logger.getAppLogger();
-          logger.debug(msg);
+          if (params.arguments.silent === undefined) {
+            const logger = Logger.getAppLogger();
+            logger.debug(msg);
+          }
         }
         catch (error) {
           // logging errors can be thrown in some of the mocked tests... just ignore it.
@@ -179,8 +181,10 @@ export class AutoBundler {
       params.response.console.log(msg);
 
       // Also log the message for posterity
-      const logger = Logger.getAppLogger();
-      logger.debug(msg);
+      if (params.arguments.silent === undefined) {
+        const logger = Logger.getAppLogger();
+        logger.debug(msg);
+      }
     }
     catch (error) {
       // logging errors can be thrown in some of the mocked tests... just ignore it.
