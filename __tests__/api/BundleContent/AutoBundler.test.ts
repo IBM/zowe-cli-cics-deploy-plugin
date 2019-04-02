@@ -19,6 +19,7 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
     arguments: {
         $0: "bright",
         _: ["zowe-cli-cics-deploy-plugin", "generate", "bundle"],
+        silent: true
     },
     profiles: {
         get: (type: string) => {
@@ -28,18 +29,18 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
     response: {
         data: {
             setMessage: jest.fn((setMsgArgs) => {
-                expect("" + setMsgArgs).toMatchSnapshot();
+                expect("" + setMsgArgs).toMatch("NO MESSAGE IS EXPECTED");
             }),
             setObj: jest.fn((setObjArgs) => {
-                expect(setObjArgs).toMatchSnapshot();
+                expect(setObjArgs).toMatch("NO OBJECT IS EXPECTED");
             })
         },
         console: {
             log: jest.fn((logs) => {
-                expect("" + logs).toMatchSnapshot();
+                expect("" + logs).toMatch("NO LOGS ARE EXPECTED");
             }),
             error: jest.fn((errors) => {
-                expect("" + errors).toMatchSnapshot();
+                expect("" + errors).toMatch("NO ERRORS ARE EXPECTED");
             }),
             errorHeader: jest.fn(() => undefined)
         },

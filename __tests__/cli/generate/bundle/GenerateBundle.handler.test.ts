@@ -32,18 +32,19 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     response: {
         data: {
             setMessage: jest.fn((setMsgArgs) => {
-                expect("" + setMsgArgs).toMatchSnapshot();
+                expect("" + setMsgArgs).toMatch("NO RESPONSE MESSAGE IS EXPECTED");
             }),
             setObj: jest.fn((setObjArgs) => {
-                expect(setObjArgs).toMatchSnapshot();
+                expect(setObjArgs).toMatch("NO RESPONSE OBJECT IS EXPECTED");
             })
         },
         console: {
             log: jest.fn((logs) => {
-                expect("" + logs).toMatchSnapshot();
+                expect("" + logs).toContain("CICS Bundle");
+                expect("" + logs).toContain("generated");
             }),
             error: jest.fn((errors) => {
-                expect("" + errors).toMatchSnapshot();
+                expect("" + errors).toMatch("NO ERROR MESSAGE IS EXPECTED");
             }),
             errorHeader: jest.fn(() => undefined)
         },

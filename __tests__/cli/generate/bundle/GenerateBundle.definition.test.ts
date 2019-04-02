@@ -28,6 +28,6 @@ describe("bundle definition", () => {
             Imperative.console.error(`Error reading GenerateBundle.definition.ts Did you move the file? Details: ${e.message}`);
         }
         expect(error).toBeUndefined();
-        expect(contents).toMatchSnapshot();
+        // Removed the snapshot testing - it's not very useful, and it causes snapshots to be generated unexpectedly under Jenkins.
     });
 });

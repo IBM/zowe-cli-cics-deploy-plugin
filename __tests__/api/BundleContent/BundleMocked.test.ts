@@ -12,206 +12,16 @@
 import { Bundle } from "../../../src/api/BundleContent/Bundle";
 import * as fs from "fs";
 
-describe("Bundle01", () => {
-    afterEach(() => {
-      jest.resetAllMocks();
-    });
-    it("should read an existing bundle", () => {
-
-        // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle01", true, true);
-
-        // Check the output as JSON
-        expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
-    });
-    it("set the id and version", () => {
-
-        // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle01", true, true);
-
-        // Set the Id
-        bund.setId("TestExample");
-        expect(bund.getId()).toMatch("TestExample");
-
-        // Set the Version
-        bund.setVersion(33, 44, 55);
-
-        // Check the output as JSON
-        expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
-    });
-    it("add definitions", () => {
-
-        // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
-
-        // Add a definition
-        bund.addDefinition({name: "name1", type: "type1", path: "__tests__/__resources__/ExampleBundle02/Artefact1"});
-        bund.addDefinition({name: "name2", type: "type2", path: "__tests__/__resources__/ExampleBundle02/Artefact2.txt"});
-        bund.addDefinition({name: "name3", type: "type3", path: "__tests__/__resources__/ExampleBundle02/folder/Artefact3.jpg"});
-
-        // Check the output as JSON
-        expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
-    });
-    it("add a definition that references files outside of the bundle", () => {
-
-        // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
-
-        // Add a definition that's out of scope
-        let err: Error;
-        try {
-          bund.addDefinition({name: "name1", type: "type1", path: "__tests__/__resources__/ExampleBundle01/META-INF/cics.xml"});
-        }
-        catch (error) {
-          err = error;
-        }
-
-        // Check the output as JSON
-        expect(err).toBeDefined();
-        expect(err.message).toContain("BundlePart \"name1\" references a file outside of the Bundle directory:");
-        expect(err.message).toContain("cics.xml");
-    });
-    it("add a not found definition", () => {
-
-        // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
-
-        // Add a definition
-        let err: Error;
-        try {
-          bund.addDefinition({name: "name1", type: "type1", path: "__tests__/__resources__/ExampleBundle02/Artefact3"});
-        }
-        catch (error) {
-          err = error;
-        }
-
-        // Check the output as JSON
-        expect(err).toBeDefined();
-        expect(err.message).toContain("BundlePart \"name1\" references a file that does not exist:");
-        expect(err.message).toContain("Artefact3");
-    });
-    it("add a part with missing name", () => {
-
-        // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
-
-        // Add a definition
-        let err: Error;
-        try {
-          bund.addDefinition({name: undefined, type: "type1", path: "__tests__/__resources__/ExampleBundle02/Artefact1"});
-        }
-        catch (error) {
-          err = error;
-        }
-
-        // Check the output as JSON
-        expect(err.message).toMatchSnapshot();
-    });
-    it("add a part with missing type", () => {
-
-        // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
-
-        // Add a definition
-        let err: Error;
-        try {
-          bund.addDefinition({name: "name1", type: undefined, path: "__tests__/__resources__/ExampleBundle02/Artefact1"});
-        }
-        catch (error) {
-          err = error;
-        }
-
-        // Check the output as JSON
-        expect(err.message).toMatchSnapshot();
-    });
-    it("add a part with missing path", () => {
-
-        // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
-
-        // Add a definition
-        let err: Error;
-        try {
-          bund.addDefinition({name: "name1", type: "type1", path: undefined});
-        }
-        catch (error) {
-          err = error;
-        }
-
-        // Check the output as JSON
-        expect(err.message).toMatchSnapshot();
-    });
-    it("tolerate an existing almost empty manifest", () => {
-
-        // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle03", true, true);
-
-        // Add a definition
-        bund.addDefinition({name: "name1", type: "type1", path: "__tests__/__resources__/ExampleBundle03/Artefact1"});
-
-        // Check the output as JSON
-        expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
-    });
-    it("should be able to add a resource to a single item manifest", () => {
-
-        // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle06", true, true);
-
-        // Add a definition
-        bund.addDefinition({name: "item2", type: "type2", path: "__tests__/__resources__/ExampleBundle06/Artefact1"});
-
-        // Check the output as JSON
-        expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
-    });
-    it("add a NODEJSAPP", () => {
-
-        // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle03", true, true);
-
-        // Add a definition
-        bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
-
-        // Check the manifest as JSON
-        expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
-        // Check the manifest as XML
-        expect(bund.getManifestXML()).toMatchSnapshot();
-    });
-    it("should warn that an existing bundle cant be overwritten", () => {
-
-        // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle01", false, false);
-
-        let err: Error;
-        try {
-          bund.prepareForSave();
-        }
-        catch (error) {
-          err = error;
-        }
-
-        // Check the output as JSON
-        expect(err.message).toMatchSnapshot();
-    });
-    it("should be able to save new definitions", () => {
-
-        // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
-
-        // Add a definition
-        bund.addDefinition({name: "name1", type: "type1", path: "__tests__/__resources__/ExampleBundle02/Artefact1"});
-        bund.prepareForSave();
-
-        // Check the output as JSON
-        expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
-    });
-});
-
 
 // Note, the following tests mock the file-system. Snapshot based tests are unlikely to
 // work as the jest implementation will itself need to interact with the filesystem.
 describe("MockedFilesystemTests", () => {
     afterEach(() => {
       jest.resetAllMocks();
+    });
+    beforeAll(() => {
+      // Allow xml2json to initialise itself before we start messing with the filesystem below it.
+      const parser = require("xml2json");
     });
     it("should tolerate META-INF directory not existing", () => {
 
@@ -249,10 +59,10 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(1);
-        expect(accessSpy).toHaveBeenCalledTimes(1);
         expect(err).toBeDefined();
         expect(err.message).toContain("cics-deploy requires write permission to: ");
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(accessSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if no write permission to META-INF directory", () => {
 
@@ -270,10 +80,10 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(1);
-        expect(accessSpy).toHaveBeenCalledTimes(1);
         expect(err).toBeDefined();
         expect(err.message).toContain("cics-deploy requires write permission to: ");
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(accessSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if no overwrite permission to manifest", () => {
 
@@ -293,10 +103,10 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(2);
-        expect(accessSpy).toHaveBeenCalledTimes(1);
         expect(err).toBeDefined();
         expect(err.message).toContain("A bundle manifest file already exists. Specify --overwrite to replace it, or --merge to merge changes into it.");
+        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(accessSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if no write permission to manifest", () => {
 
@@ -318,11 +128,11 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(2);
-        expect(accessSpy).toHaveBeenCalledTimes(2);
         expect(err).toBeDefined();
         expect(err.message).toContain("cics-deploy requires write permission to:");
         expect(err.message).toContain("cics.xml");
+        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(accessSpy).toHaveBeenCalledTimes(2);
     });
     it("should tolerate absence of .nodejsapp directory", () => {
 
@@ -382,10 +192,10 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(4);
-        expect(accessSpy).toHaveBeenCalledTimes(2);
         expect(err).toBeDefined();
         expect(err.message).toContain("cics-deploy requires write permission to: ");
+        expect(existsSpy).toHaveBeenCalledTimes(4);
+        expect(accessSpy).toHaveBeenCalledTimes(2);
     });
     it("should detect unwritable nodejsapps directory", () => {
 
@@ -414,11 +224,11 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(4);
-        expect(accessSpy).toHaveBeenCalledTimes(2);
         expect(err).toBeDefined();
         expect(err.message).toContain("cics-deploy requires write permission to: ");
         expect(err.message).toContain("nodejsapps");
+        expect(existsSpy).toHaveBeenCalledTimes(4);
+        expect(accessSpy).toHaveBeenCalledTimes(2);
     });
     it("should complain if existing .nodejsapp file isn't overwritable", () => {
 
@@ -447,10 +257,10 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(5);
-        expect(accessSpy).toHaveBeenCalledTimes(2);
         expect(err).toBeDefined();
         expect(err.message).toContain("NodeName.nodejsapp already exists. Specify --overwrite to replace it.");
+        expect(existsSpy).toHaveBeenCalledTimes(5);
+        expect(accessSpy).toHaveBeenCalledTimes(2);
     });
     it("should complain if no write permission to existing .nodejsapp", () => {
 
@@ -481,11 +291,11 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(5);
-        expect(accessSpy).toHaveBeenCalledTimes(3);
         expect(err).toBeDefined();
         expect(err.message).toContain("cics-deploy requires write permission to: ");
         expect(err.message).toContain("NodeName.nodejsapp");
+        expect(existsSpy).toHaveBeenCalledTimes(5);
+        expect(accessSpy).toHaveBeenCalledTimes(3);
     });
     it("should complain if no write permission to existing .profile", () => {
 
@@ -520,11 +330,11 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(6);
-        expect(accessSpy).toHaveBeenCalledTimes(4);
         expect(err).toBeDefined();
         expect(err.message).toContain("cics-deploy requires write permission to: ");
         expect(err.message).toContain("NodeName.profile");
+        expect(existsSpy).toHaveBeenCalledTimes(6);
+        expect(accessSpy).toHaveBeenCalledTimes(4);
     });
     it("should complain if no overwrite permission for existing .zosattributes", () => {
 
@@ -557,10 +367,10 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(7);
-        expect(accessSpy).toHaveBeenCalledTimes(2);
         expect(err).toBeDefined();
         expect(err.message).toContain(".zosattributes already exists. Specify --overwrite to replace it.");
+        expect(existsSpy).toHaveBeenCalledTimes(7);
+        expect(accessSpy).toHaveBeenCalledTimes(2);
     });
     it("should complain if can't make a new META-INF directory", () => {
 
@@ -584,13 +394,13 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(3);
-        expect(accessSpy).toHaveBeenCalledTimes(1);
-        expect(mkdirSpy).toHaveBeenCalledTimes(1);
         expect(err).toBeDefined();
         expect(err.message).toContain("An error occurred attempting to create");
         expect(err.message).toContain("META-INF");
         expect(err.message).toContain("InjectedError");
+        expect(existsSpy).toHaveBeenCalledTimes(3);
+        expect(accessSpy).toHaveBeenCalledTimes(1);
+        expect(mkdirSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if writing the manifest fails", () => {
 
@@ -614,13 +424,14 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(3);
-        expect(accessSpy).toHaveBeenCalledTimes(1);
-        expect(writeSpy).toHaveBeenCalledTimes(1);
         expect(err).toBeDefined();
         expect(err.message).toContain("An error occurred attempting to write manifest file");
         expect(err.message).toContain("cics.xml");
         expect(err.message).toContain("InjectedError");
+
+        expect(existsSpy).toHaveBeenCalledTimes(3);
+        expect(accessSpy).toHaveBeenCalledTimes(1);
+        expect(writeSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if creating nodejsapps dir fails", () => {
 
@@ -658,13 +469,13 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(8);
-        expect(accessSpy).toHaveBeenCalledTimes(2);
-        expect(mkdirSpy).toHaveBeenCalledTimes(1);
         expect(err).toBeDefined();
         expect(err.message).toContain("An error occurred attempting to create");
         expect(err.message).toContain("nodejsapps'");
         expect(err.message).toContain("InjectedError");
+        expect(existsSpy).toHaveBeenCalledTimes(8);
+        expect(accessSpy).toHaveBeenCalledTimes(2);
+        expect(mkdirSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if writing .nodejsapp file fails", () => {
 
@@ -702,13 +513,13 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(8);
-        expect(accessSpy).toHaveBeenCalledTimes(2);
-        expect(writeSpy).toHaveBeenCalledTimes(1);
         expect(err).toBeDefined();
         expect(err.message).toContain("An error occurred attempting to write nodejsapp file");
         expect(err.message).toContain(".nodejsapp'");
         expect(err.message).toContain("InjectedError");
+        expect(existsSpy).toHaveBeenCalledTimes(8);
+        expect(accessSpy).toHaveBeenCalledTimes(2);
+        expect(writeSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if writing .profile fails", () => {
 
@@ -748,13 +559,13 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(8);
-        expect(accessSpy).toHaveBeenCalledTimes(2);
-        expect(writeSpy).toHaveBeenCalledTimes(2);
         expect(err).toBeDefined();
         expect(err.message).toContain("An error occurred attempting to write profile file");
         expect(err.message).toContain(".profile'");
         expect(err.message).toContain("InjectedError");
+        expect(existsSpy).toHaveBeenCalledTimes(8);
+        expect(accessSpy).toHaveBeenCalledTimes(2);
+        expect(writeSpy).toHaveBeenCalledTimes(2);
     });
     it("should complain if writing .zosattributes fails", () => {
 
@@ -796,22 +607,18 @@ describe("MockedFilesystemTests", () => {
           err = error;
         }
 
-        expect(existsSpy).toHaveBeenCalledTimes(8);
-        expect(accessSpy).toHaveBeenCalledTimes(2);
-        expect(writeSpy).toHaveBeenCalledTimes(3);
         expect(err).toBeDefined();
         expect(err.message).toContain("An error occurred attempting to write .zosattributes file");
         expect(err.message).toContain(".zosattributes'");
         expect(err.message).toContain("InjectedError");
+        expect(existsSpy).toHaveBeenCalledTimes(8);
+        expect(accessSpy).toHaveBeenCalledTimes(2);
+        expect(writeSpy).toHaveBeenCalledTimes(3);
     });
-});
 
-// Note, the following tests mock JSON parsing. It has been split into its own suite for isolation
-// purposes.
-describe("MockedJSONParsingTests", () => {
-    afterEach(() => {
-      jest.resetAllMocks();
-    });
+
+    // Note, the following test mocks JSON parsing. It should run last or it will interfere with the
+    // other tests
     it("should complain if exceptions are thrown during manifest parsing", () => {
 
         const jsonSpy = jest.spyOn(JSON, "parse").mockImplementationOnce(() => { throw new Error("Wibble"); });
@@ -824,8 +631,8 @@ describe("MockedJSONParsingTests", () => {
           err = error;
         }
 
-        expect(jsonSpy).toHaveBeenCalledTimes(1);
         expect(err).toBeDefined();
         expect(err.message).toContain("Parsing error occurred reading a CICS manifest file: Wibble");
+        expect(jsonSpy).toHaveBeenCalledTimes(1);
     });
 });
