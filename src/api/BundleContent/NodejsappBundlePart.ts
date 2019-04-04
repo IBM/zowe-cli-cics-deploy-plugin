@@ -12,6 +12,7 @@
 "use strict";
 
 import { BundlePart } from "./BundlePart";
+import { TemplateNodejsappProfile } from "./TemplateNodejsappProfile";
 
 /**
  * Interface to represent the manifest data for a NODEJSAPP BundlePart.
@@ -62,11 +63,12 @@ export class NodejsappBundlePart extends BundlePart {
    * @param {string} name - The name of the NODEJSAPP BundlePart.
    * @param {string} startscript - The path of the start script for the NODEJSAPP.
    * @param {number} port - An optional port number to be added to the profile for the NODEJSAPP.
+   * @param {boolean} overwrite - Can existing files be replaced?
    * @static
    * @throws ImperativeError
    * @memberof NodejsappBundlePart
    */
-  constructor(directory: string, name: string, startscript: string, port: number) {
+  constructor(directory: string, name: string, startscript: string, port: number, overwrite: boolean) {
     const partData = { name: "",
                        type: "http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP",
                        path: "" };
@@ -86,7 +88,7 @@ export class NodejsappBundlePart extends BundlePart {
     }
 
     partData.path = "nodejsapps/" + partData.name + ".nodejsapp";
-    super(directory, partData, false, "NODEJSAPP");
+    super(directory, partData, false, "NODEJSAPP", overwrite);
 
     // Now validate the port
     this.validatePort(port);
@@ -95,6 +97,8 @@ export class NodejsappBundlePart extends BundlePart {
     this.nodejsappFile = this.nodejsappsDir + "/" + partData.name + ".nodejsapp";
     this.nodejsappProfile = this.nodejsappsDir + "/" + partData.name + ".profile";
     this.nodejsappProfileLocal = "nodejsapps/" + partData.name + ".profile";
+    this.overwrite = overwrite;
+    this.bundleDirectory = directory;
 
     // Validate that the startscript resolves to something within the current directory
     startscript = this.normalizeAndValidateFileReference(startscript);
@@ -138,6 +142,43 @@ export class NodejsappBundlePart extends BundlePart {
   }
 
   /**
+   * Perform whatever validation can be done in advance of attempting to save the
+   * Nodejsapp, thereby reducing the possibility of a failure after some of the
+   * bundle parts have already been persisted to the file system.
+   *
+   * @throws ImperativeError
+   * @memberof Manifest
+   */
+  public prepareForSave() {
+    // Does the nodejsapp directory already exist?
+    if (!BundlePart.fs.existsSync(this.nodejsappsDir)) {
+
+      // We'll have to create it during the save, do we have write permission?
+      try {
+        BundlePart.fs.accessSync(this.bundleDirectory, BundlePart.fs.constants.W_OK);
+      }
+      catch (err) {
+        throw new Error("cics-deploy requires write permission to: " + this.bundleDirectory);
+      }
+      return;
+    }
+
+    // Do we have write permission to the nodejsapp dir?
+    try {
+      BundlePart.fs.accessSync(this.nodejsappsDir, BundlePart.fs.constants.W_OK);
+    }
+    catch (err) {
+      throw new Error("cics-deploy requires write permission to: " + this.nodejsappsDir);
+    }
+
+    // Does the .nodejsapp appear to be saveable?
+    BundlePart.ensureFileSaveable(this.nodejsappFile, this.overwrite);
+
+    // Does the .profile appear to be saveable?
+    BundlePart.ensureFileSaveable(this.nodejsappProfile, this.overwrite);
+  }
+
+  /**
    * Save the NODEJSAPP BundlePart. Any changes that have been made will be persisted.
    *
    * @throws ImperativeError
@@ -145,16 +186,30 @@ export class NodejsappBundlePart extends BundlePart {
    */
   public save() {
     // Does the nodejsapps directory exist? If not, create it.
-    if (!this.fs.existsSync(this.nodejsappsDir)) {
-      this.fs.mkdirSync(this.nodejsappsDir);
+    if (!BundlePart.fs.existsSync(this.nodejsappsDir)) {
+       try {
+         BundlePart.fs.mkdirSync(this.nodejsappsDir);
+       }
+       catch (err) {
+         throw new Error("An error occurred attempting to create '" + this.nodejsappsDir + "': " + err.message);
+       }
     }
 
     // Write the .nodejsapp file
-    this.fs.writeFileSync(this.nodejsappFile, this.getPartXML(), "utf8");
-
+    try {
+      BundlePart.fs.writeFileSync(this.nodejsappFile, this.getPartXML(), "utf8");
+    }
+    catch (err) {
+      throw new Error("An error occurred attempting to write nodejsapp file '" + this.nodejsappFile + "': " + err.message);
+    }
 
     // Write the .profile file
-    this.fs.writeFileSync(this.nodejsappProfile, this.getProfile(), "utf8");
+    try {
+      BundlePart.fs.writeFileSync(this.nodejsappProfile, this.getProfile(), "utf8");
+    }
+    catch (err) {
+      throw new Error("An error occurred attempting to write profile file '" + this.nodejsappProfile + "': " + err.message);
+    }
   }
 
   private createNodejsappXML(startscript: string) {
@@ -174,27 +229,11 @@ export class NodejsappBundlePart extends BundlePart {
 
   private createNodejsappProfile(port: number) {
     const os = require("os");
-    let portStr: string;
+    this.profile = TemplateNodejsappProfile.profile;
 
-    if (port === undefined || isNaN(port)) {
-      portStr = "&HTTP_PORT;";
+    if (port !== undefined) {
+      this.profile = this.profile + "PORT=" + port.toString() + os.EOL;
     }
-    else {
-      portStr = port.toString();
-    }
-
-
-    this.profile =
-       "# This is a profile for a CICS NODEJSAPP resource" + os.EOL +
-       os.EOL +
-       "# Import the provisioned configuration file for this NODEJSAPP," + os.EOL +
-       "# this file must be created before this Bundle can be installed in CICS" + os.EOL +
-       "INCLUDE=&USSCONFIG;/nodejsapps/" + this.getPartData().name + ".included.profile" + os.EOL +
-       os.EOL +
-       "# Set the PORT envionment variable, application code should reference this" + os.EOL +
-       "# value in preference to a hard-coded port number, the value references an" + os.EOL +
-       "# environment variable that will be configured within the provisioned configuration file." + os.EOL +
-       "PORT=" + portStr + os.EOL;
   }
 
   // if the port is set, it must be a valid number

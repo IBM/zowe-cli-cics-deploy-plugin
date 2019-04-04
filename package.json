@@ -30,35 +30,32 @@
     "configurationModule": "lib/imperative.js"
   },
   "dependencies": {
+    "@zowe/imperative": "^3.0.0",
+    "@brightside/core": "^2.0.0",
     "xml2json": "^0.11.2"
   },
-  "peerDependencies": {
-    "@brightside/core": ">=2.0.0-0",
-    "@brightside/imperative": ">=2.0.0-0"
-  },
   "devDependencies": {
+    "@zowe/cli": "^3.2.0",
     "@types/fs-extra": "^5.0.5",
     "@types/jest": "^20.0.5",
     "@types/node": "^8.0.0",
     "@types/yargs": "8.0.2",
-    "@brightside/core": "^2.0.0",
-    "@brightside/imperative": "^2.1.0",
     "env-cmd": "^8.0.2",
     "fs-extra": "^5.0.0",
-    "jest": "^22.0.4",
-    "jest-cli": "^22.4.3",
-    "jest-environment-node": "^22.0.4",
+    "jest": "^24.5.0",
+    "jest-cli": "^24.5.0",
+    "jest-environment-node": "^24.5.0",
     "jest-environment-node-debug": "^2.0.0",
     "jest-html-reporter": "^2.2.0",
     "jest-junit": "^3.6.0",
     "jest-stare": "^1.0.5",
     "js-yaml": "^3.12.1",
     "rimraf": "^2.6.2",
-    "ts-jest": "^22.0.0",
+    "ts-jest": "^24.0.0",
     "ts-node": "^3.2.0",
     "tslint": "^5.0.0",
     "typedoc": "^0.9.0",
-    "typescript": "^2.3.0",
+    "typescript": "^3.2.2",
     "uuid": "^3.2.1"
   },
   "jest": {

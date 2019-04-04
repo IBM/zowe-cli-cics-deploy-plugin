@@ -50,10 +50,12 @@ export class Manifest {
   private MAX_BUNDLEID_LEN = 64;
   private fs = require("fs");
   private path = require("path");
-  private manifestAsJson: IManifestType;
+  private manifestAsJson: IManifestType = undefined;
   private bundleDirectory: string;
   private metainfDir: string;
   private manifestFile: string;
+  private merge: boolean;
+  private overwrite: boolean;
 
 
   /**
@@ -61,28 +63,87 @@ export class Manifest {
    *
    * @static
    * @param {string} directory - The bundle directory.
+   * @param {boolean} merge - Changes to the bundle manifest should be merged into any existing manifest.
+   * @param {boolean} overwrite - Changes to the bundle contents should replace any existing contents.
    * @throws ImperativeError
    * @memberof Manifest
    */
-  constructor(directory: string) {
+  constructor(directory: string, merge: boolean, overwrite: boolean) {
+   this.merge = merge;
+   this.overwrite = overwrite;
    this.bundleDirectory = this.path.normalize(directory);
    this.metainfDir = this.bundleDirectory + "/META-INF";
    this.manifestFile = this.metainfDir + "/cics.xml";
 
-   // If there is an existing manifest file, read it
-   try {
-     this.readManifest();
-   } catch (ex) {
-     if (ex.code === "ENOENT") {
-      // No existing file was found, so magic up an empty manifest
-       this.manifestAsJson = { manifest:
-                               { xmlns: "http://www.ibm.com/xmlns/prod/cics/bundle",
-                                 bundleVersion: 1,
-                                 bundleRelease: 0 } };
-       return;
+   // If 'merge' is set then attempt to read any existing manifest that may
+   // already exist. Subsequent changes will be merged with the existing
+   // content.
+   if (this.merge === true) {
+     try {
+       this.readManifest();
+     } catch (ex) {
+       // Something went wrong. If it's an ENOENT response then there was
+       // no manifest to read, so that can be ignored, otherwise propagate
+       // the exception back to the caller.
+       if (ex.code !== "ENOENT") {
+         throw ex;
+       }
      }
-     throw ex;
    }
+
+   // If we've not read an existing manifest, create a new one
+   if (this.manifestAsJson === undefined) {
+     this.manifestAsJson = { manifest:
+                             { xmlns: "http://www.ibm.com/xmlns/prod/cics/bundle",
+                               bundleVersion: 1,
+                               bundleRelease: 0 } };
+   }
+  }
+
+  /**
+   * Perform whatever validation can be done in advance of attempting to save the
+   * manifest, thereby reducing the possibility of a failure after some of the
+   * bundle parts have already been persisted to the file system.
+   *
+   * @throws ImperativeError
+   * @memberof Manifest
+   */
+  public prepareForSave() {
+    // Does the meta-inf directory already exist?
+    if (!this.fs.existsSync(this.metainfDir)) {
+      // we'll have to create it during the save, do we have write permission?
+      try {
+        this.fs.accessSync(this.bundleDirectory, this.fs.constants.W_OK);
+      }
+      catch (err) {
+        throw new Error("cics-deploy requires write permission to: " + this.bundleDirectory);
+      }
+
+      return;
+    }
+
+    // Do we have write permission to the META-INF dir?
+    try {
+      this.fs.accessSync(this.metainfDir, this.fs.constants.W_OK);
+    }
+    catch (err) {
+      throw new Error("cics-deploy requires write permission to: " + this.metainfDir);
+    }
+
+    // Does a manifest file already exist?
+    if (this.fs.existsSync(this.manifestFile)) {
+      if (this.overwrite === false) {
+        throw new Error("A bundle manifest file already exists. Specify --overwrite to replace it, or --merge to merge changes into it.");
+      }
+
+      // Do we have write permission to the manifest?
+      try {
+        this.fs.accessSync(this.manifestFile, this.fs.constants.W_OK);
+      }
+      catch (err) {
+        throw new Error("cics-deploy requires write permission to: " + this.manifestFile);
+      }
+    }
   }
 
   /**
@@ -91,15 +152,24 @@ export class Manifest {
    * @throws ImperativeError
    * @memberof Manifest
    */
-  // Save the manifest file back into the file system
   public save() {
      // Create the META-INF directory if it doesn't already exist
      if (!this.fs.existsSync(this.metainfDir)) {
-      this.fs.mkdirSync(this.metainfDir);
+       try {
+         this.fs.mkdirSync(this.metainfDir);
+       }
+       catch (err) {
+         throw new Error("An error occurred attempting to create '" + this.metainfDir + "': " + err.message);
+       }
      }
 
      // Write the cics.xml manifest
-     this.fs.writeFileSync(this.manifestFile, this.getXML(), "utf8");
+     try {
+       this.fs.writeFileSync(this.manifestFile, this.getXML(), "utf8");
+     }
+     catch (err) {
+       throw new Error("An error occurred attempting to write manifest file '" + this.manifestFile + "': " + err.message);
+     }
   }
 
   /**
@@ -163,21 +233,21 @@ export class Manifest {
       this.manifestAsJson.manifest.bundleMajorVer = majorVersion;
     }
     else {
-      throw new Error("Invalid Bundle version specified.");
+      throw new Error("Invalid Bundle major version specified: " + majorVersion + ".");
     }
 
     if (Number.isInteger(minorVersion) && minorVersion >= 0) {
       this.manifestAsJson.manifest.bundleMinorVer = minorVersion;
     }
     else {
-      throw new Error("Invalid Bundle version specified.");
+      throw new Error("Invalid Bundle minor version specified: " + minorVersion + ".");
     }
 
     if (Number.isInteger(microVersion) && microVersion >= 0) {
       this.manifestAsJson.manifest.bundleMicroVer = microVersion;
     }
     else {
-      throw new Error("Invalid Bundle version specified.");
+      throw new Error("Invalid Bundle micro version specified: " + microVersion + ".");
     }
   }
 

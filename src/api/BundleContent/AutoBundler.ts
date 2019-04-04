@@ -12,7 +12,7 @@
 "use strict";
 
 import { Bundle } from "./Bundle";
-import { Logger, IHandlerParameters } from "@brightside/imperative";
+import { Logger, IHandlerParameters } from "@zowe/imperative";
 
 
 /**
@@ -38,6 +38,8 @@ export class AutoBundler {
   private startscriptOverride: string;
   private portOverride: number;
   private bundleDirectory: string;
+  private overwrite: boolean = false;
+  private merge: boolean = false;
 
   /**
    * Constructor to perform the automatic bundle enablement.
@@ -51,7 +53,8 @@ export class AutoBundler {
 
     this.bundleDirectory = this.path.normalize(directory);
     this.packageJsonFile = directory + "/package.json";
-    this.bundle = new Bundle(this.bundleDirectory);
+    this.validateMergeAndOverwrite(params.arguments.merge, params.arguments.overwrite);
+    this.bundle = new Bundle(this.bundleDirectory, this.merge, this.overwrite);
     this.discoverArguments(params);
 
     this.autoDetectWorkdirContent(params);
@@ -96,8 +99,10 @@ export class AutoBundler {
           params.response.console.log(msg);
 
           // Also log the message for posterity
-          const logger = Logger.getAppLogger();
-          logger.debug(msg);
+          if (params.arguments.silent === undefined) {
+            const logger = Logger.getAppLogger();
+            logger.debug(msg);
+          }
         }
         catch (error) {
           // logging errors can be thrown in some of the mocked tests... just ignore it.
@@ -176,8 +181,10 @@ export class AutoBundler {
       params.response.console.log(msg);
 
       // Also log the message for posterity
-      const logger = Logger.getAppLogger();
-      logger.debug(msg);
+      if (params.arguments.silent === undefined) {
+        const logger = Logger.getAppLogger();
+        logger.debug(msg);
+      }
     }
     catch (error) {
       // logging errors can be thrown in some of the mocked tests... just ignore it.
@@ -230,5 +237,13 @@ export class AutoBundler {
 
   private validatePort(value: string) {
     this.portOverride = parseInt(value, 10);
+  }
+
+  private validateMergeAndOverwrite(merge: boolean, overwrite: boolean) {
+    if (merge === true && overwrite !== true) {
+      throw new Error("--merge requires the use of --overwrite");
+    }
+    this.merge = merge;
+    this.overwrite = overwrite;
   }
 }

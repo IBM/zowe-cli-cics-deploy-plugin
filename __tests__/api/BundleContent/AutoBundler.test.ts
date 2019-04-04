@@ -10,15 +10,16 @@
 */
 
 import { AutoBundler } from "../../../src/api/BundleContent/AutoBundler";
-import { IHandlerParameters } from "@brightside/imperative";
+import { IHandlerParameters } from "@zowe/imperative";
 import * as GenerateBundleDefinition from "../../../src/cli/generate/bundle/GenerateBundle.definition";
 import * as fse from "fs-extra";
 
 
-const DEFAULT_PARAMTERS: IHandlerParameters = {
+const DEFAULT_PARAMETERS: IHandlerParameters = {
     arguments: {
         $0: "bright",
         _: ["zowe-cli-cics-deploy-plugin", "generate", "bundle"],
+        silent: true
     },
     profiles: {
         get: (type: string) => {
@@ -28,18 +29,18 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     response: {
         data: {
             setMessage: jest.fn((setMsgArgs) => {
-                expect("" + setMsgArgs).toMatchSnapshot();
+                expect("" + setMsgArgs).toMatch("NO MESSAGE IS EXPECTED");
             }),
             setObj: jest.fn((setObjArgs) => {
-                expect(setObjArgs).toMatchSnapshot();
+                expect(setObjArgs).toMatch("NO OBJECT IS EXPECTED");
             })
         },
         console: {
             log: jest.fn((logs) => {
-                expect("" + logs).toMatchSnapshot();
+                expect("" + logs).toMatch("NO LOGS ARE EXPECTED");
             }),
             error: jest.fn((errors) => {
-                expect("" + errors).toMatchSnapshot();
+                expect("" + errors).toMatch("NO ERRORS ARE EXPECTED");
             }),
             errorHeader: jest.fn(() => undefined)
         },
@@ -59,188 +60,151 @@ describe("AutoBundler01", () => {
         fse.ensureDir("__tests__/__resources__/EmptyBundle01");
     });
 
-    it("should read an existing bundle", () => {
+    it("should read an existing bundle", async () => {
 
-        let parms: IHandlerParameters;
-        parms = DEFAULT_PARAMTERS;
+        const parms: IHandlerParameters = DEFAULT_PARAMETERS;
+        setCommonParmsForAutoBundleTests(parms);
 
-        // Create a Bundle
-        const ab = new AutoBundler("__tests__/__resources__/ExampleBundle01", parms);
-
-        // Check the output as JSON
-// tslint:disable-next-line: max-line-length
-        expect(JSON.stringify(ab.getBundle().getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":\"1\",\"bundleRelease\":\"2\",\"id\":\"ThisIsAnId\",\"bundleMajorVer\":\"10\",\"bundleMinorVer\":\"11\",\"bundleMicroVer\":\"12\",\"define\":[{\"name\":\"name1\",\"type\":\"type1\",\"path\":\"path1\"},{\"name\":\"name2\",\"type\":\"type2\",\"path\":\"path2\"},{\"name\":\"name3\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/Test.nodejsapp\"}]}}");
+        await runAutoBundle(parms, "__tests__/__resources__/ExampleBundle01");
     });
-    it("should set the bundleid", () => {
+    it("should not merge an existing bundle", async () => {
 
-        let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        const parms: IHandlerParameters = DEFAULT_PARAMETERS;
+        setCommonParmsForAutoBundleTests(parms);
+        parms.arguments.merge = false;
+
+        await runAutoBundle(parms, "__tests__/__resources__/ExampleBundle01");
+    });
+    it("should set the bundleid", async () => {
+
+        const parms: IHandlerParameters = DEFAULT_PARAMETERS;
+        setCommonParmsForAutoBundleTests(parms);
         parms.arguments.bundleid = "test";
 
-        // Create a Bundle
-        const ab = new AutoBundler("__tests__/__resources__/ExampleBundle03", parms);
-
-        // Check the output as JSON
-// tslint:disable-next-line: max-line-length
-        expect(JSON.stringify(ab.getBundle().getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"$t\":\"\",\"id\":\"test\"}}");
+        await runAutoBundle(parms, "__tests__/__resources__/ExampleBundle03");
     });
-    it("should set the bundle version", () => {
+    it("should set the bundle version", async () => {
 
-        let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        const parms: IHandlerParameters = DEFAULT_PARAMETERS;
+        setCommonParmsForAutoBundleTests(parms);
         parms.arguments.bundleversion = "3.4.5";
 
-        // Create a Bundle
-        const ab = new AutoBundler("__tests__/__resources__/ExampleBundle03", parms);
-
-        // Check the output as JSON
-        expect(JSON.stringify(ab.getBundle().getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"$t\":\"\",\"bundleMajorVer\":3,\"bundleMinorVer\":4,\"bundleMicroVer\":5}}");
+        await runAutoBundle(parms, "__tests__/__resources__/ExampleBundle03");
     });
-    it("should receive default values from package.json", () => {
+    it("should receive default values from package.json", async () => {
 
-        let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        const parms: IHandlerParameters = DEFAULT_PARAMETERS;
+        setCommonParmsForAutoBundleTests(parms);
 
-        // Create a Bundle
-        const ab = new AutoBundler("__tests__/__resources__/ExampleBundle04", parms);
-
-        // Check the output as JSON
-        expect(JSON.stringify(ab.getBundle().getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"$t\":\"\",\"id\":\"testBundleName\",\"bundleMajorVer\":1,\"bundleMinorVer\":0,\"bundleMicroVer\":0,\"define\":[{\"name\":\"testBundleName\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/testBundleName.nodejsapp\"}]}}");
+        await runAutoBundle(parms, "__tests__/__resources__/ExampleBundle04");
     });
-    it("should support main script from package.json", () => {
+    it("should support main script from package.json", async () => {
 
-        let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        const parms: IHandlerParameters = DEFAULT_PARAMETERS;
+        setCommonParmsForAutoBundleTests(parms);
 
-        // Create a Bundle
-        const ab = new AutoBundler("__tests__/__resources__/ExampleBundle05", parms);
-
-        // Check the output as JSON
-        expect(JSON.stringify(ab.getBundle().getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"$t\":\"\",\"id\":\"testBundleName\",\"bundleMajorVer\":1,\"bundleMinorVer\":0,\"bundleMicroVer\":0,\"define\":[{\"name\":\"testBundleName\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/testBundleName.nodejsapp\"}]}}");
+        await runAutoBundle(parms, "__tests__/__resources__/ExampleBundle05");
     });
-    it("should set a nodejsapp name", () => {
+    it("should set a nodejsapp name", async () => {
 
-        let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        const parms: IHandlerParameters = DEFAULT_PARAMETERS;
+        setCommonParmsForAutoBundleTests(parms);
         parms.arguments.nodejsapp = "MyExampleOverride";
 
-        // Create a Bundle
-        const ab = new AutoBundler("__tests__/__resources__/ExampleBundle04", parms);
-
-        // Check the output as JSON
-        expect(JSON.stringify(ab.getBundle().getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"$t\":\"\",\"id\":\"testBundleName\",\"bundleMajorVer\":1,\"bundleMinorVer\":0,\"bundleMicroVer\":0,\"define\":[{\"name\":\"MyExampleOverride\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/MyExampleOverride.nodejsapp\"}]}}");
+        await runAutoBundle(parms, "__tests__/__resources__/ExampleBundle04");
     });
-    it("should set a startscript name", () => {
+    it("should set a startscript name", async () => {
 
-        let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        const parms: IHandlerParameters = DEFAULT_PARAMETERS;
+        setCommonParmsForAutoBundleTests(parms);
+        parms.arguments.nodejsapp = "MyExampleOverride";
         parms.arguments.startscript = "wibble";
 
-        // Read a bad manifest
         let err: Error;
         try {
-          const ab = new AutoBundler("__tests__/__resources__/ExampleBundle04", parms);
-        }
-        catch (error) {
-          err = error;
+          const ab = new AutoBundler("__tests__/__resources__/ExampleBundle01", parms);
+        } catch (e) {
+          err = e;
         }
 
-        // Check the output as JSON
-        expect(err.message).toContain("NODEJSAPP \"testBundleName\" references a file outside of the Bundle directory:");
+        expect(err).toBeDefined();
+        expect(err.message).toContain("NODEJSAPP \"MyExampleOverride\" references a file outside of the Bundle directory:");
+        expect(err.message).toContain("wibble");
     });
-    it("should set a port number", () => {
+    it("should set a port number", async () => {
 
-        let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        const parms: IHandlerParameters = DEFAULT_PARAMETERS;
+        setCommonParmsForAutoBundleTests(parms);
         parms.arguments.port = -27;
 
-        // Read a bad manifest
-        let err: Error;
-        try {
-          const ab = new AutoBundler("__tests__/__resources__/ExampleBundle04", parms);
-        }
-        catch (error) {
-          err = error;
-        }
-
-        // Check the output as JSON
-        expect(err.message).toMatch("Supplied Port is outside the range of 1-65535: -27");
+        await runAutoBundleWithError(parms, "__tests__/__resources__/ExampleBundle04");
     });
-    it("should cope with an empty directory", () => {
+    it("should cope with an empty directory", async () => {
 
-        let parms: IHandlerParameters;
-        parms = DEFAULT_PARAMTERS;
+        const parms: IHandlerParameters = DEFAULT_PARAMETERS;
+        setCommonParmsForAutoBundleTests(parms);
 
-        // Create a Bundle
-        const ab = new AutoBundler("__tests__/__resources__/EmptyBundle01", parms);
-
-        // Check the output as JSON
-        expect(JSON.stringify(ab.getBundle().getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":1,\"bundleRelease\":0}}");
+        await runAutoBundle(parms, "__tests__/__resources__/EmptyBundle01");
     });
-    it("should cope with an empty directory and generate a NODEJSAPP", () => {
+    it("should cope with an empty directory and generate a NODEJSAPP", async () => {
 
-        let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMTERS));
+        const parms: IHandlerParameters = DEFAULT_PARAMETERS;
+        setCommonParmsForAutoBundleTests(parms);
         parms.arguments.port = 500;
         parms.arguments.nodejsapp = "wibble";
         parms.arguments.startscript = "__tests__/__resources__/EmptyBundle02/script.js";
 
-        // Create a Bundle
-        const ab = new AutoBundler("__tests__/__resources__/EmptyBundle02", parms);
-
-        // Check the output as JSON
-// tslint:disable-next-line: max-line-length
-        expect(JSON.stringify(ab.getBundle().getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":1,\"bundleRelease\":0,\"define\":[{\"name\":\"wibble\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/wibble.nodejsapp\"}]}}");
+        await runAutoBundle(parms, "__tests__/__resources__/EmptyBundle02");
     });
-    it("should detect a bad package.json", () => {
-
-        let parms: IHandlerParameters;
-        parms = DEFAULT_PARAMTERS;
-
-        // Create a Bundle
-        let err: Error;
-        try {
-          const ab = new AutoBundler("__tests__/__resources__/BadPackageJson", parms);
-        }
-        catch (error) {
-          err = error;
-        }
-
-        // Check the output as JSON
-        expect(err.message).toContain("Parsing error occurred reading package.json:");
+    it("should detect a bad package.json", async () => {
+        const parms: IHandlerParameters = DEFAULT_PARAMETERS;
+        setCommonParmsForAutoBundleTests(parms);
+        await runAutoBundleWithError(parms, "__tests__/__resources__/BadPackageJson");
     });
-    it("should tolerate an empty package.json", () => {
-
-        let parms: IHandlerParameters;
-        parms = DEFAULT_PARAMTERS;
-
-        // Create a Bundle
-        let err: Error;
-        try {
-          const ab = new AutoBundler("__tests__/__resources__/EmptyPackageJson", parms);
-        }
-        catch (error) {
-          err = error;
-        }
-
-        // Check the output as JSON
-        expect(err.message).toMatch("No bundleid value set");
+    it("should tolerate an empty package.json", async () => {
+        const parms: IHandlerParameters = DEFAULT_PARAMETERS;
+        setCommonParmsForAutoBundleTests(parms);
+        await runAutoBundleWithError(parms, "__tests__/__resources__/EmptyPackageJson");
     });
-    it("should tolerate an almost empty package.json", () => {
-
-        let parms: IHandlerParameters;
-        parms = DEFAULT_PARAMTERS;
-
-        // Create a Bundle
-        let err: Error;
-        try {
-          const ab = new AutoBundler("__tests__/__resources__/AlmostEmptyPackageJson", parms);
-        }
-        catch (error) {
-          err = error;
-        }
-
-        // Check the output as JSON
-        expect(err.message).toMatch("No startscript value set for NODEJSAPP \"almostEmpty\"");
+    it("should tolerate an almost empty package.json", async () => {
+        const parms: IHandlerParameters = DEFAULT_PARAMETERS;
+        setCommonParmsForAutoBundleTests(parms);
+        await runAutoBundleWithError(parms, "__tests__/__resources__/AlmostEmptyPackageJson");
+    });
+    it("should detect --merge without --overwrite", async () => {
+        const parms: IHandlerParameters = DEFAULT_PARAMETERS;
+        setCommonParmsForAutoBundleTests(parms);
+        parms.arguments.overwrite = false;
+        await runAutoBundleWithError(parms, "__tests__/__resources__/AlmostEmptyPackageJson");
     });
 });
+
+function setCommonParmsForAutoBundleTests(parms: IHandlerParameters) {
+  parms.arguments.merge = true;
+  parms.arguments.overwrite = true;
+  parms.arguments.port = undefined;
+  parms.arguments.nodejsapp = undefined;
+  parms.arguments.startscript = undefined;
+  parms.arguments.bundleid = undefined;
+  parms.arguments.bundleversion = undefined;
+}
+
+async function runAutoBundleWithError(parms: IHandlerParameters, dir: string) {
+
+  let err: Error;
+  try {
+    const ab = new AutoBundler(dir, parms);
+  } catch (e) {
+    err = e;
+  }
+
+  expect(err).toBeDefined();
+  expect(err.message).toMatchSnapshot();
+}
+
+async function runAutoBundle(parms: IHandlerParameters, dir: string) {
+
+  const ab = new AutoBundler(dir, parms);
+
+  expect(JSON.stringify(ab.getBundle().getManifest())).toMatchSnapshot();
+}

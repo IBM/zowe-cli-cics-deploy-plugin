@@ -12,7 +12,7 @@
 "use strict";
 
 import { IHandlerParameters, Logger, ImperativeError, AbstractSession, ITaskWithStatus,
-         TaskStage , TaskProgress} from "@brightside/imperative";
+         TaskStage , TaskProgress} from "@zowe/imperative";
 import { ZosmfSession, SubmitJobs, List } from "@brightside/core";
 import { ParmValidator } from "./ParmValidator";
 
@@ -27,6 +27,8 @@ export class BundleDeployer {
   private params: IHandlerParameters;
   private PROGRESS_BAR_INTERVAL = 1500; // milliseconds
   private PROGRESS_BAR_MAX = 67;
+  private parmsValidated: boolean = false;
+  private hlqsValidated: boolean = false;
 
   /**
    * Constructor for a BundleDeployer.
@@ -47,7 +49,7 @@ export class BundleDeployer {
   public async deployBundle(): Promise<string> {
 
     // Validate that the parms are valid for Deploy
-    ParmValidator.validateDeploy(this.params);
+    this.validateDeployParms();
 
     // Create a zosMF session
     const session = await this.createZosMFSession();
@@ -70,8 +72,8 @@ export class BundleDeployer {
    */
   public async undeployBundle(): Promise<string> {
 
-    // Validate that the parms are valid for Deploy
-    ParmValidator.validateUndeploy(this.params);
+    // Validate that the parms are valid for Undeploy
+    this.validateUndeployParms();
 
     // Create a zosMF session
     const session = await this.createZosMFSession();
@@ -84,6 +86,32 @@ export class BundleDeployer {
 
     // Submit it
     return this.submitJCL(jcl, session);
+  }
+
+  /**
+   * Validate the input parameters are suitable for the DEPLOY action
+   * @returns {Promise<string>}
+   * @throws ImperativeError
+   * @memberof BundleDeployer
+   */
+  public validateDeployParms() {
+    if (this.parmsValidated === false) {
+      ParmValidator.validateDeploy(this.params);
+      this.parmsValidated = true;
+    }
+  }
+
+  /**
+   * Validate the input parameters are suitable for the UNDEPLOY action
+   * @returns {Promise<string>}
+   * @throws ImperativeError
+   * @memberof BundleDeployer
+   */
+  public validateUndeployParms() {
+    if (this.parmsValidated === false) {
+      ParmValidator.validateUndeploy(this.params);
+      this.parmsValidated = true;
+    }
   }
 
   private wrapLongLineForJCL(lineOfText: string): string {
@@ -174,6 +202,12 @@ export class BundleDeployer {
   }
 
   private async checkHLQDatasets(session: any) {
+
+    // No need to revalidate multiple times during a push command
+    if (this.hlqsValidated === true) {
+      return;
+    }
+
     // Check that the CICS dataset value looks valid and can be viewed
     // Access errors will trigger an Exception
     const cicspds = this.params.arguments.cicshlq + ".SDFHLOAD";
@@ -200,6 +234,8 @@ export class BundleDeployer {
     if (JSON.stringify(listResp).indexOf("EYU9ABSI") === -1) {
       throw new Error("EYU9ABSI not found in SEYUAUTH within the --cpsmhlq dataset: " + cpsmpds);
     }
+
+    this.hlqsValidated = true;
   }
 
   private updateProgressBar(status: ITaskWithStatus) {
@@ -245,13 +281,16 @@ export class BundleDeployer {
       // we're looking for the SYSTSPRT output from the DFHDPLOY step.
       if (file.ddName === "SYSTSPRT" && file.stepName === "DFHDPLOY") {
 
-        // log the full output for serviceability to the log
-        const logger = Logger.getAppLogger();
         if (file.data === undefined || file.data.length === 0) {
           status.stageName = TaskStage.FAILED;
           throw new Error("DFHDPLOY did not generate any output. Most recent status update: '" + status.statusMessage + "'.");
         }
-        logger.debug(file.data);
+
+        // log the full output for serviceability to the log
+        if (this.params.arguments.silent === undefined) {
+          const logger = Logger.getAppLogger();
+          logger.debug(file.data);
+        }
 
         // Finish the progress bar
         status.statusMessage = "Completed DFHDPLOY";

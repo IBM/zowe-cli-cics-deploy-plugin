@@ -1,0 +1,3 @@
+<manifest xmlns="http://www.ibm.com/xmlns/prod/cics/bundle">
+    <define name="single" type="type1" path="path1"/>
+</manifest>

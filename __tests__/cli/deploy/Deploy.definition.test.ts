@@ -11,7 +11,7 @@
 */
 
 import * as fs from "fs";
-import { Imperative } from "@brightside/imperative";
+import { Imperative } from "@zowe/imperative";
 
 describe("Deploy definition", () => {
     it("should match the snapshot", () => {
@@ -28,6 +28,6 @@ describe("Deploy definition", () => {
             Imperative.console.error(`Error reading Deploy.definition.ts Did you move the file? Details: ${e.message}`);
         }
         expect(error).toBeUndefined();
-        expect(contents).toMatchSnapshot();
+        // Removed the snapshot testing - it's not very useful, and it causes snapshots to be generated unexpectedly under Jenkins.
     });
 });

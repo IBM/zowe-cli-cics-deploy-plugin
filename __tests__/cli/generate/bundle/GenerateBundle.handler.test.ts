@@ -11,7 +11,7 @@
 */
 
 import {CheckStatus, ZosmfSession} from "@brightside/core";
-import {IHandlerParameters, Imperative, ImperativeError} from "@brightside/imperative";
+import {IHandlerParameters, Imperative, ImperativeError} from "@zowe/imperative";
 import * as GenerateBundleDefinition from "../../../../src/cli/generate/bundle/GenerateBundle.definition";
 import * as GenerateBundleHandler from "../../../../src/cli/generate/bundle/GenerateBundle.handler";
 import * as fs from "fs";
@@ -22,6 +22,7 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     arguments: {
         $0: "bright",
         _: ["zowe-cli-cics-deploy-plugin", "generate", "bundle"],
+        silent: true
     },
     profiles: {
         get: (type: string) => {
@@ -31,18 +32,19 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     response: {
         data: {
             setMessage: jest.fn((setMsgArgs) => {
-                expect("" + setMsgArgs).toMatchSnapshot();
+                expect("" + setMsgArgs).toMatch("NO RESPONSE MESSAGE IS EXPECTED");
             }),
             setObj: jest.fn((setObjArgs) => {
-                expect(setObjArgs).toMatchSnapshot();
+                expect(setObjArgs).toMatch("NO RESPONSE OBJECT IS EXPECTED");
             })
         },
         console: {
             log: jest.fn((logs) => {
-                expect("" + logs).toMatchSnapshot();
+                expect("" + logs).toContain("CICS Bundle");
+                expect("" + logs).toContain("generated");
             }),
             error: jest.fn((errors) => {
-                expect("" + errors).toMatchSnapshot();
+                expect("" + errors).toMatch("NO ERROR MESSAGE IS EXPECTED");
             }),
             errorHeader: jest.fn(() => undefined)
         },
@@ -114,25 +116,5 @@ describe("bundle Handler", () => {
         }
         process.chdir(currentDir);
         expect(error).toBeUndefined();
-    });
-    it("should wrap exceptions in ImperativeError", async () => {
-        DEFAULT_PARAMTERS.arguments.nosave = "true";
-        DEFAULT_PARAMTERS.arguments.startscript = "wibble";
-
-        const currentDir = process.cwd();
-        process.chdir("__tests__/__resources__/ExampleBundle04");
-
-        let error: Error;
-        try {
-          const handler = new GenerateBundleHandler.default();
-          // The handler should succeed
-          const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
-          await handler.process(params);
-        } catch (e) {
-            error = e;
-        }
-        process.chdir(currentDir);
-        expect(error).toBeDefined();
-        expect(error).toBeInstanceOf(ImperativeError);
     });
 });

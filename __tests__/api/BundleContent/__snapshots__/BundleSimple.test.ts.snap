@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Bundle01 add a NODEJSAPP 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"define\\":[{\\"name\\":\\"NodeName\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/NodeName.nodejsapp\\"}]}}"`;
+
+exports[`Bundle01 add a NODEJSAPP 2`] = `
+"<manifest xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle\\"><define name=\\"NodeName\\" type=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" path=\\"nodejsapps/NodeName.nodejsapp\\"></define></manifest>
+"
+`;
+
+exports[`Bundle01 add a part with missing name 1`] = `"BundlePart name is not set."`;
+
+exports[`Bundle01 add a part with missing path 1`] = `"BundlePart path is not set for part \\"name1\\""`;
+
+exports[`Bundle01 add a part with missing type 1`] = `"BundlePart type is not set for part \\"name1\\""`;
+
+exports[`Bundle01 add definitions 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"ThisIsAnId\\",\\"bundleMajorVer\\":\\"10\\",\\"bundleMinorVer\\":\\"11\\",\\"bundleMicroVer\\":\\"12\\",\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"Artefact1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"Artefact2.txt\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"type3\\",\\"path\\":\\"folder/Artefact3.jpg\\"}]}}"`;
+
+exports[`Bundle01 set the id and version 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"TestExample\\",\\"bundleMajorVer\\":33,\\"bundleMinorVer\\":44,\\"bundleMicroVer\\":55,\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"path1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"path2\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"}]}}"`;
+
+exports[`Bundle01 should be able to add a resource to a single item manifest 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"define\\":[{\\"name\\":\\"single\\",\\"type\\":\\"type1\\",\\"path\\":\\"path1\\"},{\\"name\\":\\"item2\\",\\"type\\":\\"type2\\",\\"path\\":\\"Artefact1\\"}]}}"`;
+
+exports[`Bundle01 should be able to save new definitions 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"ThisIsAnId\\",\\"bundleMajorVer\\":\\"10\\",\\"bundleMinorVer\\":\\"11\\",\\"bundleMicroVer\\":\\"12\\",\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"Artefact1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"path2\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"}]}}"`;
+
+exports[`Bundle01 should read an existing bundle 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"ThisIsAnId\\",\\"bundleMajorVer\\":\\"10\\",\\"bundleMinorVer\\":\\"11\\",\\"bundleMicroVer\\":\\"12\\",\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"path1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"path2\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"}]}}"`;
+
+exports[`Bundle01 should warn that an existing bundle cant be overwritten 1`] = `"A bundle manifest file already exists. Specify --overwrite to replace it, or --merge to merge changes into it."`;
+
+exports[`Bundle01 tolerate an existing almost empty manifest 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"Artefact1\\"}]}}"`;

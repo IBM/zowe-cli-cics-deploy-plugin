@@ -11,7 +11,7 @@
 */
 
 import {CheckStatus, ZosmfSession} from "@brightside/core";
-import {IHandlerParameters, Imperative, ImperativeError} from "@brightside/imperative";
+import {IHandlerParameters, Imperative, ImperativeError} from "@zowe/imperative";
 import * as DeployBundleDefinition from "../../../../src/cli/deploy/bundle/DeployBundle.definition";
 import * as DeployBundleHandler from "../../../../src/cli/deploy/bundle/DeployBundle.handler";
 import * as fs from "fs";
@@ -22,6 +22,7 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
     arguments: {
         $0: "bright",
         _: ["zowe-cli-cics-deploy-plugin", "deploy", "bundle"],
+        silent: true
     },
     profiles: {
         get: (type: string) => {
@@ -81,9 +82,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--name parameter is not a string");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--name parameter is not a string");
     });
     it("should complain with overlong name parameter", async () => {
         await testNameError("123456789", "--name parameter is too long");
@@ -107,9 +108,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--bundledir parameter is not a string");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--bundledir parameter is not a string");
     });
     it("should complain with overlong bundledir parameter", async () => {
         const dir = "12345678901234567890123456789012345678901234567890" +
@@ -141,9 +142,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--cics-deploy-profile parameter is not a string");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--cics-deploy-profile parameter is not a string");
     });
     it("should complain if profile is empty", async () => {
         await testProfileError("", "--cics-deploy-profile parameter is empty");
@@ -161,9 +162,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--cicsplex parameter is not a string");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--cicsplex parameter is not a string");
     });
     it("should complain with overlong cicsplex parameter", async () => {
         await testCicsplexError("123456789", "--cicsplex parameter is too long");
@@ -184,9 +185,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--scope parameter is not a string");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--scope parameter is not a string");
     });
     it("should complain with overlong scope parameter", async () => {
         await testScopeError("123456789", "--scope parameter is too long");
@@ -207,9 +208,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--csdgroup parameter is not a string");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--csdgroup parameter is not a string");
     });
     it("should complain with overlong csdgroup parameter", async () => {
         await testCsdgroupError("123456789", "--csdgroup parameter is too long");
@@ -231,9 +232,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--csdgroup and --resgroup cannot both be set");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--csdgroup and --resgroup cannot both be set");
     });
     it("should complain with invalid type for resgroup parameter", async () => {
 
@@ -248,9 +249,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--resgroup parameter is not a string");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--resgroup parameter is not a string");
     });
     it("should complain with overlong resgroup parameter", async () => {
         await testResgroupError("123456789", "--resgroup parameter is too long");
@@ -271,9 +272,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--timeout parameter is not an integer");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--timeout parameter is not an integer");
     });
     it("should complain with non-integer timeout", async () => {
         await testTimeoutError(1.1, "--timeout parameter is not an integer");
@@ -300,9 +301,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--cicshlq parameter is not a string");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--cicshlq parameter is not a string");
     });
     it("should complain with overlong cicshlq parameter", async () => {
         await testCicsHLQError("123456789012345678901234567890123456", "--cicshlq parameter is too long");
@@ -326,9 +327,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--cpsmhlq parameter is not a string");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--cpsmhlq parameter is not a string");
     });
     it("should complain with overlong cpsmhlq parameter", async () => {
         await testCpsmHLQError("123456789012345678901234567890123456", "--cpsmhlq parameter is too long");
@@ -352,9 +353,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--jobcard parameter is not a string");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--jobcard parameter is not a string");
     });
     it("should complain with empty jobcard parameter", async () => {
         await testJobcardError("", "--jobcard parameter is empty");
@@ -390,9 +391,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--targetstate parameter is not a string");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--targetstate parameter is not a string");
     });
     it("should complain with empty targetstate parameter", async () => {
         await testTargetStateDeployError("", "--targetstate parameter is empty");
@@ -414,9 +415,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--verbose parameter is not boolean");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--verbose parameter is not boolean");
     });
     it("should complain if zosmf profile not found", async () => {
 
@@ -432,9 +433,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("No zosmf profile found");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("No zosmf profile found");
     });
 });
 
@@ -466,9 +467,9 @@ async function testNameError(name: string, result: string) {
   } catch (e) {
     err = e;
   }
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(result);
+  expect(err).toBeUndefined();
+  expect(params.arguments.errorMsg).toBeDefined();
+  expect(params.arguments.errorMsg).toContain(result);
 }
 
 function setCommonParmsForBundledirTests(parms: IHandlerParameters) {
@@ -488,9 +489,9 @@ async function testBundledirError(bundledir: string, result: string) {
   } catch (e) {
     err = e;
   }
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(result);
+  expect(err).toBeUndefined();
+  expect(params.arguments.errorMsg).toBeDefined();
+  expect(params.arguments.errorMsg).toContain(result);
 }
 
 function setCommonParmsForProfileTests(parms: IHandlerParameters) {
@@ -510,9 +511,9 @@ async function testProfileError(profile: string, result: string) {
   } catch (e) {
     err = e;
   }
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(result);
+  expect(err).toBeUndefined();
+  expect(params.arguments.errorMsg).toBeDefined();
+  expect(params.arguments.errorMsg).toContain(result);
 }
 
 function setCommonParmsForCicsplexTests(parms: IHandlerParameters) {
@@ -532,9 +533,9 @@ async function testCicsplexError(cicsplex: string, result: string) {
   } catch (e) {
     err = e;
   }
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(result);
+  expect(err).toBeUndefined();
+  expect(params.arguments.errorMsg).toBeDefined();
+  expect(params.arguments.errorMsg).toContain(result);
 }
 
 function setCommonParmsForScopeTests(parms: IHandlerParameters) {
@@ -555,9 +556,9 @@ async function testScopeError(scope: string, result: string) {
   } catch (e) {
     err = e;
   }
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(result);
+  expect(err).toBeUndefined();
+  expect(params.arguments.errorMsg).toBeDefined();
+  expect(params.arguments.errorMsg).toContain(result);
 }
 
 function setCommonParmsForCsdgroupTests(parms: IHandlerParameters) {
@@ -577,9 +578,9 @@ async function testCsdgroupError(csdgroup: string, result: string) {
   } catch (e) {
     err = e;
   }
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(result);
+  expect(err).toBeUndefined();
+  expect(params.arguments.errorMsg).toBeDefined();
+  expect(params.arguments.errorMsg).toContain(result);
 }
 
 function setCommonParmsForResgroupTests(parms: IHandlerParameters) {
@@ -598,9 +599,9 @@ async function testResgroupError(resgroup: string, result: string) {
   } catch (e) {
     err = e;
   }
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(result);
+  expect(err).toBeUndefined();
+  expect(params.arguments.errorMsg).toBeDefined();
+  expect(params.arguments.errorMsg).toContain(result);
 }
 
 function setCommonParmsForTimeoutTests(parms: IHandlerParameters) {
@@ -620,9 +621,9 @@ async function testTimeoutError(timeout: number, result: string) {
   } catch (e) {
     err = e;
   }
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(result);
+  expect(err).toBeUndefined();
+  expect(params.arguments.errorMsg).toBeDefined();
+  expect(params.arguments.errorMsg).toContain(result);
 }
 
 function setCommonParmsForCicsHLQTests(parms: IHandlerParameters) {
@@ -641,9 +642,9 @@ async function testCicsHLQError(cicshlq: string, result: string) {
   } catch (e) {
     err = e;
   }
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(result);
+  expect(err).toBeUndefined();
+  expect(params.arguments.errorMsg).toBeDefined();
+  expect(params.arguments.errorMsg).toContain(result);
 }
 
 function setCommonParmsForCpsmHLQTests(parms: IHandlerParameters) {
@@ -663,9 +664,9 @@ async function testCpsmHLQError(cpsmhlq: string, result: string) {
   } catch (e) {
     err = e;
   }
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(result);
+  expect(err).toBeUndefined();
+  expect(params.arguments.errorMsg).toBeDefined();
+  expect(params.arguments.errorMsg).toContain(result);
 }
 
 function setCommonParmsForJobcardTests(parms: IHandlerParameters) {
@@ -686,9 +687,9 @@ async function testJobcardError(jobcard: string, result: string) {
   } catch (e) {
     err = e;
   }
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(result);
+  expect(err).toBeUndefined();
+  expect(params.arguments.errorMsg).toBeDefined();
+  expect(params.arguments.errorMsg).toContain(result);
 }
 
 function setCommonParmsForTargetStateTests(parms: IHandlerParameters) {
@@ -708,7 +709,7 @@ async function testTargetStateDeployError(targetstate: string, result: string) {
   } catch (e) {
     err = e;
   }
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(result);
+  expect(err).toBeUndefined();
+  expect(params.arguments.errorMsg).toBeDefined();
+  expect(params.arguments.errorMsg).toContain(result);
 }

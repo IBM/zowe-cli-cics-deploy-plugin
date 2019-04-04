@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AutoBundler01 should cope with an empty directory 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":1,\\"bundleRelease\\":0}}"`;
+
+exports[`AutoBundler01 should cope with an empty directory and generate a NODEJSAPP 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":1,\\"bundleRelease\\":0,\\"define\\":[{\\"name\\":\\"wibble\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/wibble.nodejsapp\\"}]}}"`;
+
+exports[`AutoBundler01 should detect --merge without --overwrite 1`] = `"--merge requires the use of --overwrite"`;
+
+exports[`AutoBundler01 should detect a bad package.json 1`] = `"Parsing error occurred reading package.json: Unexpected token g in JSON at position 0"`;
+
+exports[`AutoBundler01 should not merge an existing bundle 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":1,\\"bundleRelease\\":0}}"`;
+
+exports[`AutoBundler01 should read an existing bundle 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"ThisIsAnId\\",\\"bundleMajorVer\\":\\"10\\",\\"bundleMinorVer\\":\\"11\\",\\"bundleMicroVer\\":\\"12\\",\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"path1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"path2\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"}]}}"`;
+
+exports[`AutoBundler01 should receive default values from package.json 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"id\\":\\"testBundleName\\",\\"bundleMajorVer\\":1,\\"bundleMinorVer\\":0,\\"bundleMicroVer\\":0,\\"define\\":[{\\"name\\":\\"testBundleName\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/testBundleName.nodejsapp\\"}]}}"`;
+
+exports[`AutoBundler01 should set a nodejsapp name 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"id\\":\\"testBundleName\\",\\"bundleMajorVer\\":1,\\"bundleMinorVer\\":0,\\"bundleMicroVer\\":0,\\"define\\":[{\\"name\\":\\"MyExampleOverride\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/MyExampleOverride.nodejsapp\\"}]}}"`;
+
+exports[`AutoBundler01 should set a port number 1`] = `"Supplied Port is outside the range of 1-65535: -27"`;
+
+exports[`AutoBundler01 should set the bundle version 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"bundleMajorVer\\":3,\\"bundleMinorVer\\":4,\\"bundleMicroVer\\":5}}"`;
+
+exports[`AutoBundler01 should set the bundleid 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"id\\":\\"test\\"}}"`;
+
+exports[`AutoBundler01 should support main script from package.json 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"id\\":\\"testBundleName\\",\\"bundleMajorVer\\":1,\\"bundleMinorVer\\":0,\\"bundleMicroVer\\":0,\\"define\\":[{\\"name\\":\\"testBundleName\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/testBundleName.nodejsapp\\"}]}}"`;
+
+exports[`AutoBundler01 should tolerate an almost empty package.json 1`] = `"No startscript value set for NODEJSAPP \\"almostEmpty\\""`;
+
+exports[`AutoBundler01 should tolerate an empty package.json 1`] = `"No bundleid value set"`;

@@ -14,58 +14,57 @@ describe("Manifest01", () => {
     it("should read an existing manifest", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/ExampleBundle01");
+        const man = new Manifest("__tests__/__resources__/ExampleBundle01", true, true);
 
         // Check the output as JSON
-// tslint:disable-next-line: max-line-length
-        expect(JSON.stringify(man.getJson())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":\"1\",\"bundleRelease\":\"2\",\"id\":\"ThisIsAnId\",\"bundleMajorVer\":\"10\",\"bundleMinorVer\":\"11\",\"bundleMicroVer\":\"12\",\"define\":[{\"name\":\"name1\",\"type\":\"type1\",\"path\":\"path1\"},{\"name\":\"name2\",\"type\":\"type2\",\"path\":\"path2\"},{\"name\":\"name3\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/Test.nodejsapp\"}]}}");
+        expect(JSON.stringify(man.getJson())).toMatchSnapshot();
         // Check the output as XML
-        expect(man.getXML()).toMatch("<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\" bundleVersion=\"1\" bundleRelease=\"2\" id=\"ThisIsAnId\" bundleMajorVer=\"10\" bundleMinorVer=\"11\" bundleMicroVer=\"12\"><define name=\"name1\" type=\"type1\" path=\"path1\"></define><define name=\"name2\" type=\"type2\" path=\"path2\"></define><define name=\"name3\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/Test.nodejsapp\"></define></manifest>");
+        expect(man.getXML()).toMatchSnapshot();
     });
     it("should create an empty manifest from empty dir", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/EmptyBundle01");
+        const man = new Manifest("__tests__/__resources__/EmptyBundle01", true, true);
 
         // Check the output
-        expect(JSON.stringify(man.getJson())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":1,\"bundleRelease\":0}}");
+        expect(JSON.stringify(man.getJson())).toMatchSnapshot();
     });
     it("should create an empty manifest from empty META-INF dir", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/EmptyBundle02");
+        const man = new Manifest("__tests__/__resources__/EmptyBundle02", true, true);
 
         // Check the output
-        expect(JSON.stringify(man.getJson())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":1,\"bundleRelease\":0}}");
+        expect(JSON.stringify(man.getJson())).toMatchSnapshot();
     });
     it("set the bundleId", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/ExampleBundle01");
+        const man = new Manifest("__tests__/__resources__/ExampleBundle01", true, true);
 
         // Set a bundleId
         man.setBundleId("testing a BundleId");
 
         // Check the output as JSON
-        expect(JSON.stringify(man.getJson())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":\"1\",\"bundleRelease\":\"2\",\"id\":\"testingXaXBundleId\",\"bundleMajorVer\":\"10\",\"bundleMinorVer\":\"11\",\"bundleMicroVer\":\"12\",\"define\":[{\"name\":\"name1\",\"type\":\"type1\",\"path\":\"path1\"},{\"name\":\"name2\",\"type\":\"type2\",\"path\":\"path2\"},{\"name\":\"name3\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/Test.nodejsapp\"}]}}");
-        expect(man.getBundleId()).toMatch("testingXaXBundleId");
+        expect(JSON.stringify(man.getJson())).toMatchSnapshot();
+        expect(man.getBundleId()).toMatchSnapshot();
     });
     it("set a long  bundleId", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/ExampleBundle01");
+        const man = new Manifest("__tests__/__resources__/ExampleBundle01", true, true);
 
         // Set a bundleId
         man.setBundleId("1234567890123456789012345678901234567890123456789012345678901234567890");
 
         // Check the output as JSON
-        expect(JSON.stringify(man.getJson())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":\"1\",\"bundleRelease\":\"2\",\"id\":\"1234567890123456789012345678901234567890123456789012345678901234\",\"bundleMajorVer\":\"10\",\"bundleMinorVer\":\"11\",\"bundleMicroVer\":\"12\",\"define\":[{\"name\":\"name1\",\"type\":\"type1\",\"path\":\"path1\"},{\"name\":\"name2\",\"type\":\"type2\",\"path\":\"path2\"},{\"name\":\"name3\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/Test.nodejsapp\"}]}}");
-        expect(man.getBundleId()).toMatch("1234567890123456789012345678901234567890123456789012345678901234");
+        expect(JSON.stringify(man.getJson())).toMatchSnapshot();
+        expect(man.getBundleId()).toMatchSnapshot();
     });
     it("set a null bundleId", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/ExampleBundle01");
+        const man = new Manifest("__tests__/__resources__/ExampleBundle01", true, true);
 
         // Add a definition
         let err: Error;
@@ -77,40 +76,74 @@ describe("Manifest01", () => {
         }
 
         // Check the output as JSON
-        expect(err.message).toMatch("BundleId not set.");
+        expect(err.message).toMatchSnapshot();
     });
     it("set a valid version number", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/ExampleBundle01");
+        const man = new Manifest("__tests__/__resources__/ExampleBundle01", true, true);
 
         // Set a bundleId
         man.setBundleVersion(1, 2, 3);
 
         // Check the output as JSON
-        expect(JSON.stringify(man.getJson())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":\"1\",\"bundleRelease\":\"2\",\"id\":\"ThisIsAnId\",\"bundleMajorVer\":1,\"bundleMinorVer\":2,\"bundleMicroVer\":3,\"define\":[{\"name\":\"name1\",\"type\":\"type1\",\"path\":\"path1\"},{\"name\":\"name2\",\"type\":\"type2\",\"path\":\"path2\"},{\"name\":\"name3\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/Test.nodejsapp\"}]}}");
+        expect(JSON.stringify(man.getJson())).toMatchSnapshot();
     });
-    it("set an invalid version number", () => {
+    it("set an invalid major version number", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/EmptyBundle01");
+        const man = new Manifest("__tests__/__resources__/EmptyBundle01", true, true);
 
         let err: Error;
         try {
           // Set a bundleId
-          man.setBundleVersion(-1, 2.4, 3.0);
+          man.setBundleVersion(-1, 0, 0);
         }
         catch (error) {
           err = error;
         }
 
         // Check the output as JSON
-        expect(err.message).toContain("Invalid Bundle version specified.");
+        expect(err.message).toMatchSnapshot();
+    });
+    it("set an invalid minor version number", () => {
+
+        // Create a Manifest
+        const man = new Manifest("__tests__/__resources__/EmptyBundle01", true, true);
+
+        let err: Error;
+        try {
+          // Set a bundleId
+          man.setBundleVersion(1, 3.4, 0);
+        }
+        catch (error) {
+          err = error;
+        }
+
+        // Check the output as JSON
+        expect(err.message).toMatchSnapshot();
+    });
+    it("set an invalid micro version number", () => {
+
+        // Create a Manifest
+        const man = new Manifest("__tests__/__resources__/EmptyBundle01", true, true);
+
+        let err: Error;
+        try {
+          // Set a bundleId
+          man.setBundleVersion(1, 3, 4.3);
+        }
+        catch (error) {
+          err = error;
+        }
+
+        // Check the output as JSON
+        expect(err.message).toMatchSnapshot();
     });
     it("set a null version number", () => {
 
         // Create a Manifest
-        const man = new Manifest("__tests__/__resources__/EmptyBundle01");
+        const man = new Manifest("__tests__/__resources__/EmptyBundle01", true, true);
 
         let err: Error;
         try {
@@ -122,48 +155,48 @@ describe("Manifest01", () => {
         }
 
         // Check the output as JSON
-        expect(err.message).toContain("Invalid Bundle version specified.");
+        expect(err.message).toMatchSnapshot();
     });
     it("Parse a garbage manifest", () => {
 
         // Read a bad manifest
         let err: Error;
         try {
-          const man = new Manifest("__tests__/__resources__/BadManifestBundle01");
+          const man = new Manifest("__tests__/__resources__/BadManifestBundle01", true, true);
         }
         catch (error) {
           err = error;
         }
 
         // Check the output as JSON
-        expect(err.message).toContain("Existing CICS Manifest file found with unparsable content.");
+        expect(err.message).toMatchSnapshot();
     });
     it("Parse a manifest with bad namespace", () => {
 
         // Read a bad manifest
         let err: Error;
         try {
-          const man = new Manifest("__tests__/__resources__/BadManifestBundle02");
+          const man = new Manifest("__tests__/__resources__/BadManifestBundle02", true, true);
         }
         catch (error) {
           err = error;
         }
 
         // Check the output as JSON
-        expect(err.message).toContain("Existing CICS Manifest file found with unexpected namespace: wibble .");
+        expect(err.message).toMatchSnapshot();
     });
     it("Parse a malformed manifest", () => {
 
         // Read a bad manifest
         let err: Error;
         try {
-          const man = new Manifest("__tests__/__resources__/BadManifestBundle03");
+          const man = new Manifest("__tests__/__resources__/BadManifestBundle03", true, true);
         }
         catch (error) {
           err = error;
         }
 
         // Check the output as JSON
-        expect(err.message).toContain("Existing CICS Manifest file found with unparsable content.");
+        expect(err.message).toMatchSnapshot();
     });
 });

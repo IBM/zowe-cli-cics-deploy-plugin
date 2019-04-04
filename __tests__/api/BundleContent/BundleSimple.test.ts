@@ -10,19 +10,24 @@
 */
 
 import { Bundle } from "../../../src/api/BundleContent/Bundle";
+import * as fs from "fs";
+
 describe("Bundle01", () => {
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
     it("should read an existing bundle", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle01");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle01", true, true);
 
         // Check the output as JSON
-        expect(JSON.stringify(bund.getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":\"1\",\"bundleRelease\":\"2\",\"id\":\"ThisIsAnId\",\"bundleMajorVer\":\"10\",\"bundleMinorVer\":\"11\",\"bundleMicroVer\":\"12\",\"define\":[{\"name\":\"name1\",\"type\":\"type1\",\"path\":\"path1\"},{\"name\":\"name2\",\"type\":\"type2\",\"path\":\"path2\"},{\"name\":\"name3\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/Test.nodejsapp\"}]}}");
+        expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
     });
     it("set the id and version", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle01");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle01", true, true);
 
         // Set the Id
         bund.setId("TestExample");
@@ -32,12 +37,12 @@ describe("Bundle01", () => {
         bund.setVersion(33, 44, 55);
 
         // Check the output as JSON
-        expect(JSON.stringify(bund.getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":\"1\",\"bundleRelease\":\"2\",\"id\":\"TestExample\",\"bundleMajorVer\":33,\"bundleMinorVer\":44,\"bundleMicroVer\":55,\"define\":[{\"name\":\"name1\",\"type\":\"type1\",\"path\":\"path1\"},{\"name\":\"name2\",\"type\":\"type2\",\"path\":\"path2\"},{\"name\":\"name3\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/Test.nodejsapp\"}]}}");
+        expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
     });
     it("add definitions", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
 
         // Add a definition
         bund.addDefinition({name: "name1", type: "type1", path: "__tests__/__resources__/ExampleBundle02/Artefact1"});
@@ -45,12 +50,12 @@ describe("Bundle01", () => {
         bund.addDefinition({name: "name3", type: "type3", path: "__tests__/__resources__/ExampleBundle02/folder/Artefact3.jpg"});
 
         // Check the output as JSON
-        expect(JSON.stringify(bund.getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"bundleVersion\":\"1\",\"bundleRelease\":\"2\",\"id\":\"ThisIsAnId\",\"bundleMajorVer\":\"10\",\"bundleMinorVer\":\"11\",\"bundleMicroVer\":\"12\",\"define\":[{\"name\":\"name1\",\"type\":\"type1\",\"path\":\"Artefact1\"},{\"name\":\"name2\",\"type\":\"type2\",\"path\":\"Artefact2.txt\"},{\"name\":\"name3\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/Test.nodejsapp\"},{\"name\":\"name3\",\"type\":\"type3\",\"path\":\"folder/Artefact3.jpg\"}]}}");
+        expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
     });
     it("add a definition that references files outside of the bundle", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
 
         // Add a definition that's out of scope
         let err: Error;
@@ -62,12 +67,14 @@ describe("Bundle01", () => {
         }
 
         // Check the output as JSON
+        expect(err).toBeDefined();
         expect(err.message).toContain("BundlePart \"name1\" references a file outside of the Bundle directory:");
+        expect(err.message).toContain("cics.xml");
     });
     it("add a not found definition", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
 
         // Add a definition
         let err: Error;
@@ -79,12 +86,14 @@ describe("Bundle01", () => {
         }
 
         // Check the output as JSON
+        expect(err).toBeDefined();
         expect(err.message).toContain("BundlePart \"name1\" references a file that does not exist:");
+        expect(err.message).toContain("Artefact3");
     });
     it("add a part with missing name", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
 
         // Add a definition
         let err: Error;
@@ -96,12 +105,12 @@ describe("Bundle01", () => {
         }
 
         // Check the output as JSON
-        expect(err.message).toMatch("BundlePart name is not set.");
+        expect(err.message).toMatchSnapshot();
     });
     it("add a part with missing type", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
 
         // Add a definition
         let err: Error;
@@ -113,12 +122,12 @@ describe("Bundle01", () => {
         }
 
         // Check the output as JSON
-        expect(err.message).toMatch("BundlePart type is not set for part \"name1\"");
+        expect(err.message).toMatchSnapshot();
     });
     it("add a part with missing path", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle02");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
 
         // Add a definition
         let err: Error;
@@ -130,30 +139,69 @@ describe("Bundle01", () => {
         }
 
         // Check the output as JSON
-        expect(err.message).toMatch("BundlePart path is not set for part \"name1\"");
+        expect(err.message).toMatchSnapshot();
     });
     it("tolerate an existing almost empty manifest", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle03");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle03", true, true);
 
         // Add a definition
         bund.addDefinition({name: "name1", type: "type1", path: "__tests__/__resources__/ExampleBundle03/Artefact1"});
 
         // Check the output as JSON
-        expect(JSON.stringify(bund.getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"$t\":\"\",\"define\":[{\"name\":\"name1\",\"type\":\"type1\",\"path\":\"Artefact1\"}]}}");
+        expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
+    });
+    it("should be able to add a resource to a single item manifest", () => {
+
+        // Create a Bundle
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle06", true, true);
+
+        // Add a definition
+        bund.addDefinition({name: "item2", type: "type2", path: "__tests__/__resources__/ExampleBundle06/Artefact1"});
+
+        // Check the output as JSON
+        expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
     });
     it("add a NODEJSAPP", () => {
 
         // Create a Bundle
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle03");
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle03", true, true);
 
         // Add a definition
         bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
 
         // Check the manifest as JSON
-        expect(JSON.stringify(bund.getManifest())).toMatch("{\"manifest\":{\"xmlns\":\"http://www.ibm.com/xmlns/prod/cics/bundle\",\"$t\":\"\",\"define\":[{\"name\":\"NodeName\",\"type\":\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\",\"path\":\"nodejsapps/NodeName.nodejsapp\"}]}}");
+        expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
         // Check the manifest as XML
-        expect(bund.getManifestXML()).toMatch("<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\"><define name=\"NodeName\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/NodeName.nodejsapp\"></define></manifest>");
+        expect(bund.getManifestXML()).toMatchSnapshot();
+    });
+    it("should warn that an existing bundle cant be overwritten", () => {
+
+        // Create a Bundle
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle01", false, false);
+
+        let err: Error;
+        try {
+          bund.prepareForSave();
+        }
+        catch (error) {
+          err = error;
+        }
+
+        // Check the output as JSON
+        expect(err.message).toMatchSnapshot();
+    });
+    it("should be able to save new definitions", () => {
+
+        // Create a Bundle
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
+
+        // Add a definition
+        bund.addDefinition({name: "name1", type: "type1", path: "__tests__/__resources__/ExampleBundle02/Artefact1"});
+        bund.prepareForSave();
+
+        // Check the output as JSON
+        expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
     });
 });

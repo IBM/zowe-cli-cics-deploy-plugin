@@ -11,7 +11,7 @@
 */
 
 import {CheckStatus, ZosmfSession} from "@brightside/core";
-import {IHandlerParameters, Imperative, ImperativeError} from "@brightside/imperative";
+import {IHandlerParameters, Imperative, ImperativeError} from "@zowe/imperative";
 import * as UndeployBundleDefinition from "../../../../src/cli/undeploy/bundle/UndeployBundle.definition";
 import * as UndeployBundleHandler from "../../../../src/cli/undeploy/bundle/UndeployBundle.handler";
 import * as fs from "fs";
@@ -22,6 +22,7 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
     arguments: {
         $0: "bright",
         _: ["zowe-cli-cics-deploy-plugin", "undeploy", "bundle"],
+        silent: true
     },
     profiles: {
         get: (type: string) => {
@@ -61,44 +62,22 @@ describe("bundle Handler", () => {
     });
     it("should complain with no parameters", async () => {
 
-        let error: Error;
+        let err: Error;
+        const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
         try {
           const handler = new UndeployBundleHandler.default();
-          const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
           await handler.process(params);
         } catch (e) {
-            error = e;
+            err = e;
         }
-        expect(error).toBeDefined();
-        expect(error).toBeInstanceOf(ImperativeError);
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--name parameter is not set");
     });
 
     // Note we don't need to duplicate all the input validation tests from
     // Deploy as it's shared code. Just adding a few  to ensure that
     // code coverage is sufficient.
-
-    it("should complain with too small timeout", async () => {
-
-        let parms: IHandlerParameters;
-        parms = JSON.parse(JSON.stringify(DEFAULT_PARAMETERS));
-        parms.arguments.name = "WIBBLE";
-        parms.arguments.cicsplex = "Wibble";
-        parms.arguments.scope = "wibblE";
-        parms.arguments.resgroup = "wiBBle";
-        parms.arguments.timeout = 0;
-
-        let err: Error;
-        try {
-          const handler = new UndeployBundleHandler.default();
-          const params = Object.assign({}, ...[parms]);
-          await handler.process(params);
-        } catch (e) {
-            err = e;
-        }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--timeout parameter is too small");
-    });
 
     it("should complain with no targetstate parameter UNDEPLOY", async () => {
         await testTargetStateUndeployError(undefined, "--targetstate parameter is not set");
@@ -116,9 +95,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeDefined();
-        expect(err).toBeInstanceOf(ImperativeError);
-        expect(err.message).toContain("--targetstate parameter is not a string");
+        expect(err).toBeUndefined();
+        expect(params.arguments.errorMsg).toBeDefined();
+        expect(params.arguments.errorMsg).toContain("--targetstate parameter is not a string");
     });
     it("should complain with empty targetstate parameter UNDEPLOY", async () => {
         await testTargetStateUndeployError("", "--targetstate parameter is empty");
@@ -154,7 +133,7 @@ async function testTargetStateUndeployError(targetstate: string, result: string)
   } catch (e) {
     err = e;
   }
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(result);
+  expect(err).toBeUndefined();
+  expect(params.arguments.errorMsg).toBeDefined();
+  expect(params.arguments.errorMsg).toContain(result);
 }
