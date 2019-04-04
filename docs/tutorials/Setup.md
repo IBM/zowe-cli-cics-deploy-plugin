@@ -3,7 +3,7 @@ Before you can develop for the cics-deploy plugin, follow these steps to set up 
 
 ## Prequisites
 ### Install Zowe CLI
-You'll need to install the @tatest branch of Zowe CLI to develop for the cics-deploy plugin.
+You'll need to install the @latest branch of Zowe CLI to develop for the cics-deploy plugin.
 
 ```
 npm config set @zowe:registry https://api.bintray.com/npm/ca/brightside
