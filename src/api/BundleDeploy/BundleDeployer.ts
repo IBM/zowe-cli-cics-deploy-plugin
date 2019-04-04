@@ -13,7 +13,7 @@
 
 import { IHandlerParameters, Logger, ImperativeError, AbstractSession, ITaskWithStatus,
          TaskStage , TaskProgress} from "@zowe/imperative";
-import { ZosmfSession, SubmitJobs, List } from "@brightside/core";
+import { ZosmfSession, SubmitJobs, List } from "@zowe/cli";
 import { ParmValidator } from "./ParmValidator";
 
 /**
