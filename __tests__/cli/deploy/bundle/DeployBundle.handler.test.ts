@@ -10,7 +10,7 @@
 *
 */
 
-import {CheckStatus, ZosmfSession} from "@brightside/core";
+import {CheckStatus, ZosmfSession} from "@zowe/cli";
 import {IHandlerParameters, Imperative, ImperativeError} from "@zowe/imperative";
 import * as DeployBundleDefinition from "../../../../src/cli/deploy/bundle/DeployBundle.definition";
 import * as DeployBundleHandler from "../../../../src/cli/deploy/bundle/DeployBundle.handler";
