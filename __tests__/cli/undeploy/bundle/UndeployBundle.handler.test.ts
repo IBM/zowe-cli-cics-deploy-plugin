@@ -70,9 +70,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeUndefined();
-        expect(params.arguments.errorMsg).toBeDefined();
-        expect(params.arguments.errorMsg).toContain("--name parameter is not set");
+        expect(err).toBeDefined();
+        expect(err).toBeInstanceOf(ImperativeError);
+        expect(err.message).toContain("--name parameter is not set");
     });
 
     // Note we don't need to duplicate all the input validation tests from
@@ -95,9 +95,9 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expect(err).toBeUndefined();
-        expect(params.arguments.errorMsg).toBeDefined();
-        expect(params.arguments.errorMsg).toContain("--targetstate parameter is not a string");
+        expect(err).toBeDefined();
+        expect(err).toBeInstanceOf(ImperativeError);
+        expect(err.message).toContain("--targetstate parameter is not a string");
     });
     it("should complain with empty targetstate parameter UNDEPLOY", async () => {
         await testTargetStateUndeployError("", "--targetstate parameter is empty");
@@ -133,7 +133,7 @@ async function testTargetStateUndeployError(targetstate: string, result: string)
   } catch (e) {
     err = e;
   }
-  expect(err).toBeUndefined();
-  expect(params.arguments.errorMsg).toBeDefined();
-  expect(params.arguments.errorMsg).toContain(result);
+  expect(err).toBeDefined();
+  expect(err).toBeInstanceOf(ImperativeError);
+  expect(err.message).toContain(result);
 }

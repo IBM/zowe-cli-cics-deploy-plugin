@@ -68,10 +68,7 @@ export abstract class BundleParentHandler implements ICommandHandler {
             logger.error(msg);
           }
 
-          params.response.console.errorHeader("cics-deploy error");
-          params.response.console.error(msg);
-          process.exitCode = 1;
-          params.arguments.errorMsg = msg;
+          throw new ImperativeError({msg, causeErrors: except});
         }
     }
 
