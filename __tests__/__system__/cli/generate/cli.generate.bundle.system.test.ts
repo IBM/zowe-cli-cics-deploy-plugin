@@ -63,7 +63,7 @@ describe("cics-deploy generate bundle", () => {
         expect(fse.existsSync(path.join(NO_PACKAGE_JSON_APP, "nodejsapps"))).toBeFalsy();
     });
 
-    describe("paramters", async () => {
+    describe("paramters", () => {
         it("should customise bundle ID according to command line args", async () => {
             await testBundleGenerateWorks(["--bundleid", "myNodeBundle"], "myNodeBundle");
         });
@@ -102,7 +102,7 @@ describe("cics-deploy generate bundle", () => {
         });
     });
 
-    describe("package.json variations", async () => {
+    describe("package.json variations", () => {
         it("should mangle name supplied in package.json", async () => {
             await testBundleGenerateWorks([], "thisisareallylongnamethatwillnee", path.join(TEST_APPS_DIR, "long-name"));
         });
