@@ -144,7 +144,13 @@ describe("MockedFilesystemTests", () => {
           if (path.endsWith("nodejsapps")) {
             return false;
           }
+          if (path.endsWith(".nodejsapp")) {
+            return false;
+          }
           if (path.endsWith("cics.xml")) {
+            return false;
+          }
+          if (path.endsWith(".profile")) {
             return false;
           }
           if (path.endsWith(".zosattributes")) {
@@ -205,7 +211,7 @@ describe("MockedFilesystemTests", () => {
         expect(err).toBeDefined();
         expect(err.message).toContain("cics-deploy requires write permission to: ");
     });
-    it.skip("should detect unwritable nodejsapps directory", () => {
+    it("should detect unwritable nodejsapps directory", () => {
         jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
             if (path.endsWith("nodejsapps")) {
               return false;
