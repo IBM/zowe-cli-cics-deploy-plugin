@@ -58,7 +58,7 @@ describe("MockedFilesystemTests", () => {
         expect(err).toBeUndefined();
     });
     it("should complain if no write permission to bundle directory", () => {
-        // Mocks for the manifest - META-INF exists
+        // Mocks for the manifest - META-INF doesn't exist
         jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
         // Mocks for the manifest - Bundle dir writable
         jest.spyOn(fs, "accessSync").mockImplementationOnce(() => { throw new Error("Wibble"); });
@@ -170,8 +170,6 @@ describe("MockedFilesystemTests", () => {
         expect(err).toBeUndefined();
     });
     it("should detect inability to create .nodejsapp directory", () => {
-
-        // nodejsapps and manifest don't exist
         jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
             if (path.endsWith("nodejsapps")) {
               return false;
@@ -208,8 +206,6 @@ describe("MockedFilesystemTests", () => {
         expect(err.message).toContain("cics-deploy requires write permission to: ");
     });
     it.skip("should detect unwritable nodejsapps directory", () => {
-
-        // nodejsapps and manifest don't exist
         jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
             if (path.endsWith("nodejsapps")) {
               return false;
@@ -334,7 +330,6 @@ describe("MockedFilesystemTests", () => {
     });
     it("should complain if no overwrite permission for existing .zosattributes", () => {
 
-        // manifest don't exist, everying else does
         jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
             if (path.endsWith("cics.xml")) {
               return false;
@@ -369,16 +364,15 @@ describe("MockedFilesystemTests", () => {
         expect(err.message).toContain(".zosattributes already exists. Specify --overwrite to replace it.");
     });
     it("should complain if can't make a new META-INF directory", () => {
+        jest.spyOn(fs, "accessSync").mockReturnValue(true);
+         // manifest don't exist, everying else does
+        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
+            if (path.endsWith("META-INF")) {
+              return false;
+            }
+            return true;
+          });
 
-        // Mocks for the manifest - META-INF exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the manifest - META-INF is writable
-        jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the manifest - manifest exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
-        // Mocks for the manifest - META-INF exists (on save() rather than prepareForSave())
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
-        // Mocks for the manifest - META-INF creation)
         jest.spyOn(fs, "mkdirSync").mockImplementationOnce(() => { throw new Error("InjectedError"); });
 
         let err: Error;
@@ -405,7 +399,7 @@ describe("MockedFilesystemTests", () => {
             return true;
           });
 
-        // Mocks for the manifest - manifest write)
+        // Mocks for the manifest - manifest write
         jest.spyOn(fs, "writeFileSync").mockImplementationOnce(() => { throw new Error("InjectedError"); });
 
 
@@ -425,7 +419,6 @@ describe("MockedFilesystemTests", () => {
     });
     it("should complain if creating nodejsapps dir fails", () => {
         jest.spyOn(fs, "accessSync").mockReturnValue(true);
-         // manifest don't exist, everying else does
         jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
             if (path.endsWith("nodejsapps")) {
               return false;
@@ -452,7 +445,6 @@ describe("MockedFilesystemTests", () => {
     });
     it("should complain if writing .nodejsapp file fails", () => {
         jest.spyOn(fs, "accessSync").mockReturnValue(true);
-         // manifest don't exist, everying else does
         jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
             if (path.endsWith(".nodejsapp")) {
               return false;
@@ -479,32 +471,19 @@ describe("MockedFilesystemTests", () => {
         expect(err.message).toContain("InjectedError");
     });
     it("should complain if writing .profile fails", () => {
+        jest.spyOn(fs, "accessSync").mockReturnValue(true);
+        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
+            if (path.endsWith(".profile")) {
+                return false;
+              }
+            return true;
+          });
 
-        // Mocks for the Nodejsapp - startscript exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the manifest - META-INF exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the manifest - META-INF is writable
-        jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the manifest - manifest exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
-        // Mocks for the Nodejsapp - nodejsapp dir exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the Nodejsapp - nodejsapp dir writable
-        jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the Nodejsapp - .nodejsapp file exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
-        // Mocks for the Nodejsapp - .profile file exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
-        // Mocks for the Nodejsapp - .zosattributes file exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
-
-        // Mocks for the nodejsapp - nodejsapps dir exists (on save() rather than prepareForSave())
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the nodejsapp - write .nodejsapp file)
-        jest.spyOn(fs, "writeFileSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the nodejsapp - write .profile file)
-        jest.spyOn(fs, "writeFileSync").mockImplementationOnce(() => { throw new Error("InjectedError"); });
+        jest.spyOn(fs, "writeFileSync").mockImplementation((path: string) => {
+            if (path.endsWith(".profile")) {
+                throw new Error("InjectedError");
+            }
+        });
 
         let err: Error;
         try {
@@ -522,34 +501,20 @@ describe("MockedFilesystemTests", () => {
         expect(err.message).toContain("InjectedError");
     });
     it("should complain if writing .zosattributes fails", () => {
+        jest.spyOn(fs, "accessSync").mockReturnValue(true);
+        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
+            if (path.endsWith(".zosattributes")) {
+                return false;
+              }
+            return true;
+          });
 
-        // Mocks for the Nodejsapp - startscript exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the manifest - META-INF exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the manifest - META-INF is writable
-        jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the manifest - manifest exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
-        // Mocks for the Nodejsapp - nodejsapp dir exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the Nodejsapp - nodejsapp dir writable
-        jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the Nodejsapp - .nodejsapp file exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
-        // Mocks for the Nodejsapp - .profile file exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
-        // Mocks for the Nodejsapp - .zosattributes file exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
-
-        // Mocks for the nodejsapp - nodejsapps dir exists (on save() rather than prepareForSave())
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the nodejsapp - write .nodejsapp file)
-        jest.spyOn(fs, "writeFileSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the nodejsapp - write .profile file)
-        jest.spyOn(fs, "writeFileSync").mockImplementationOnce(() => ( true ));
-        // Mocks for the zosattributes - write .zosattributes file)
-        jest.spyOn(fs, "writeFileSync").mockImplementationOnce(() => { throw new Error("InjectedError"); });
+        // Mocks for the nodejsapp - write .zosattributes
+        jest.spyOn(fs, "writeFileSync").mockImplementation((path: string) => {
+            if (path.endsWith(".zosattributes")) {
+                throw new Error("InjectedError");
+            }
+        });
 
         let err: Error;
         try {
