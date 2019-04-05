@@ -37,7 +37,7 @@
   "devDependencies": {
     "@zowe/cli": "^3.2.0",
     "@types/fs-extra": "^5.0.5",
-    "@types/jest": "^20.0.5",
+    "@types/jest": "^22.0.0",
     "@types/node": "^8.0.0",
     "@types/yargs": "8.0.2",
     "env-cmd": "^8.0.2",
