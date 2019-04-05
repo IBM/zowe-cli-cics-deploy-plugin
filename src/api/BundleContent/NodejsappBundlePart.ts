@@ -160,15 +160,15 @@ export class NodejsappBundlePart extends BundlePart {
       catch (err) {
         throw new Error("cics-deploy requires write permission to: " + this.bundleDirectory);
       }
-      // Do we have write permission to the nodejsapp dir?
-      try {
-        BundlePart.fs.accessSync(this.nodejsappsDir, BundlePart.fs.constants.W_OK);
-      }
-      catch (err) {
-        throw new Error("cics-deploy requires write permission to: " + this.nodejsappsDir);
-      }
+      return;
     }
-
+    // Do we have write permission to the nodejsapp dir?
+    try {
+        BundlePart.fs.accessSync(this.nodejsappsDir, BundlePart.fs.constants.W_OK);
+    }
+    catch (err) {
+        throw new Error("cics-deploy requires write permission to: " + this.nodejsappsDir);
+    }
 
     // Does the .nodejsapp appear to be saveable?
     BundlePart.ensureFileSaveable(this.nodejsappFile, this.overwrite);

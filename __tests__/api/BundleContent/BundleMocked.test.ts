@@ -213,9 +213,6 @@ describe("MockedFilesystemTests", () => {
     });
     it("should detect unwritable nodejsapps directory", () => {
         jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
-            if (path.endsWith("nodejsapps")) {
-              return false;
-            }
             if (path.endsWith("cics.xml")) {
               return false;
             }
