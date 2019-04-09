@@ -162,13 +162,12 @@ export class NodejsappBundlePart extends BundlePart {
       }
       return;
     }
-
     // Do we have write permission to the nodejsapp dir?
     try {
-      BundlePart.fs.accessSync(this.nodejsappsDir, BundlePart.fs.constants.W_OK);
+        BundlePart.fs.accessSync(this.nodejsappsDir, BundlePart.fs.constants.W_OK);
     }
     catch (err) {
-      throw new Error("cics-deploy requires write permission to: " + this.nodejsappsDir);
+        throw new Error("cics-deploy requires write permission to: " + this.nodejsappsDir);
     }
 
     // Does the .nodejsapp appear to be saveable?
