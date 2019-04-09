@@ -14,7 +14,7 @@
     "zowe-cli-cics-deploy": "./lib/main.js"
   },
   "scripts": {
-    "build": "tsc --pretty && npm run checkTestsCompile",
+    "build": "tsc --pretty && npm run checkTestsCompile && gulp doc",
     "checkTestsCompile": "echo \"Checking that test source compiles...\" && tsc --project __tests__/test-tsconfig.json --noEmit ",
     "prebuild": "npm run clean && npm run lint && echo Using TypeScript && tsc --version",
     "clean": "rimraf lib",
@@ -24,7 +24,8 @@
     "test": "npm run test:unit && npm run test:system",
     "test:system": "env-cmd __tests__/__resources__/env/system.env jest .*/__system__/.* --coverage false",
     "test:unit": "env-cmd __tests__/__resources__/env/unit.env jest --coverage --testPathIgnorePatterns \".*/__system__/.*\"",
-    "installPlugin": "npm install && npm run clean && npm run build && zowe plugins install ."
+    "installPlugin": "npm install && npm run clean && npm run build && zowe plugins install .",
+    "doc": "gulp doc"
   },
   "imperative": {
     "configurationModule": "lib/imperative.js"
@@ -39,8 +40,15 @@
     "@types/jest": "^22.0.0",
     "@types/node": "^8.0.0",
     "@types/yargs": "8.0.2",
+    "clear-require": "^2.0.0",
     "env-cmd": "^8.0.2",
     "fs-extra": "^5.0.0",
+    "gulp": "^4.0.0",
+    "gulp-cli": "^2.0.1",
+    "gulp-debug": "^3.1.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-replace": "^0.6.1",
+    "gulp-util": "^3.0.8",
     "jest": "^24.5.0",
     "jest-cli": "^24.5.0",
     "jest-environment-node": "^24.5.0",
