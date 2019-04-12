@@ -159,7 +159,7 @@ The cics-deploy push command combines several activities into a single combined 
 <a name="zosmf_profile"></a>
 #### The zosmf profile
 
-The `cics-deploy push bundle` command interacts with the target z/OS environment using several different protocols, one of which is zOSMF. The zosmf profile in Zowe defines the connectivity parameters required to connect to a remote zOSMF server in the target z/OS environment. You will typically require the hostname of the target server, the port number at which the zOSMF service is running, and a suitable userid and password for the target server. Your userid will need to have been authorised to perform the various actions that will be needed in order to deploy the Bundle.
+The `cics-deploy push bundle` command interacts with the target z/OS environment using several different protocols, one of which is z/OSMF. The zosmf profile in Zowe defines the connectivity parameters required to connect to a remote z/OSMF server in the target z/OS environment. You will typically require the hostname of the target server, the port number at which the z/OSMF server is running, and a suitable user ID and password for the target server. Your user ID will need to have been authorised to perform the various actions that will be needed in order to deploy the Bundle.
 
 If you have not already done so, start by creating a zosmf profile in Zowe CLI. If you only create a single such profile then it will be used as the default z/OS configuration for any further zowe interactions. For further assistance on creating a z/OSMF profile issue the following command:
 
