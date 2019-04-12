@@ -12,7 +12,7 @@
 "use strict";
 
 import { IHandlerParameters, AbstractSession, ITaskWithStatus, TaskStage } from "@zowe/imperative";
-import { List, ZosmfSession, SshSession, Shell, Upload, IUploadOptions, ZosFilesAttributes } from "@zowe/cli";
+import { List, ZosmfSession, SshSession, Shell, Upload, IUploadOptions, ZosFilesAttributes, Create } from "@zowe/cli";
 import { BundleDeployer } from "../BundleDeploy/BundleDeployer";
 import { Bundle } from "../BundleContent/Bundle";
 
@@ -71,7 +71,7 @@ export class BundlePusher {
     this.params.response.progress.startBar({task: this.progressBar});
 
     // Attempt to make the target bundledir
-    await this.makeBundleDir(sshSession);
+    await this.makeBundleDir(zosMFSession);
 
     // Check that the remote bundledir is suitable.
     await this.validateBundleDirExistsAndIsEmpty(zosMFSession);
@@ -246,9 +246,31 @@ export class BundlePusher {
     this.sshOutputText += data;
   }
 
-  private async makeBundleDir(sshSession: SshSession) {
+  private async makeBundleDir(zosMFSession: AbstractSession) {
     this.updateStatus("Making remote bundle directory");
-    await this.runSshCommandInRemoteDirectory(sshSession, this.params.arguments.targetdir, "mkdir " + this.params.arguments.name);
+
+    const WARNING = 4;
+    const ALREADY_EXISTS = 19;
+    try {
+      await Create.uss(zosMFSession, this.params.arguments.bundledir, "directory");
+    }
+    catch (error) {
+      try {
+        const json = JSON.parse(error.causeErrors);
+        if (json.category === 1 &&
+            json.rc === WARNING &&
+            json.reason === ALREADY_EXISTS) {
+          // if it already exists, no worries
+          return;
+        }
+      }
+      catch (innerError) {
+        // If this occurs we probably didn't receive an ImperativeError
+      }
+
+      throw new Error("A problem occurred attempting to create directory '" + this.params.arguments.bundledir + "'. " +
+                      "Problem is: " + error.message);
+    }
   }
 
   private async deleteBundleDirContents(sshSession: SshSession) {

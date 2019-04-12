@@ -57,7 +57,7 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
 describe("BundleDeployer01", () => {
 
     afterEach(() => {
-        jest.resetAllMocks();
+        jest.restoreAllMocks();
     });
     it("should complain with missing zOSMF profile for deploy", async () => {
         const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => { throw new Error( "Injected Create error" ); });

@@ -14,7 +14,7 @@ import * as fs from "fs";
 
 describe("Bundle01", () => {
     afterEach(() => {
-      jest.resetAllMocks();
+      jest.restoreAllMocks();
     });
     it("should read an existing bundle", () => {
 

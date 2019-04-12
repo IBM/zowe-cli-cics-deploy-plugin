@@ -14,7 +14,7 @@ import { IHandlerParameters } from "@zowe/imperative";
 import * as PushBundleDefinition from "../../../src/cli/push/bundle/PushBundle.definition";
 import * as fse from "fs-extra";
 import * as fs from "fs";
-import { ZosmfSession, SshSession, SubmitJobs, Shell, List, Upload } from "@zowe/cli";
+import { ZosmfSession, SshSession, SubmitJobs, Shell, List, Upload, Create } from "@zowe/cli";
 
 
 const DEFAULT_PARAMTERS: IHandlerParameters = {
@@ -58,7 +58,7 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
 describe("BundlePusher01", () => {
 
     afterEach(() => {
-        jest.resetAllMocks();
+        jest.restoreAllMocks();
     });
     it("should complain with missing name", async () => {
         const parms = getCommonParmsForPushTests();
@@ -145,70 +145,70 @@ describe("BundlePusher01", () => {
     it("should complain if remote bundle dir mkdir fails", async () => {
         const zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
         const sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementationOnce(() => ({}));
-        const shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementationOnce(() =>
-                                              { throw new Error( "Injected Shell error" ); });
+        const createSpy = jest.spyOn(Create, "uss").mockImplementationOnce(() =>
+                                              { throw new Error( "Injected Create error" ); });
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01",  false,
-              "A problem occurred attempting to run 'mkdir 12345678' in remote directory '/u/ThisDoesNotExist'. Problem is: Injected Shell error");
+              "A problem occurred attempting to create directory '/u/ThisDoesNotExist/12345678'. Problem is: Injected Create error");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
-        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if remote bundle dir error", async () => {
         const zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
         const sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementationOnce(() => ({}));
-        const shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementationOnce(() => ({}));
+        const createSpy = jest.spyOn(Create, "uss").mockImplementationOnce(() => ({}));
         const listSpy = jest.spyOn(List, "fileList").mockImplementationOnce(() => { throw new Error( "Injected List error" ); });
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01",  false, "Injected List error");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
-        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if remote bundledir list fails", async () => {
         const zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
         const sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementationOnce(() => ({}));
-        const shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementationOnce(() => ({}));
+        const createSpy = jest.spyOn(Create, "uss").mockImplementationOnce(() => ({}));
         const listSpy = jest.spyOn(List, "fileList").mockImplementationOnce(() => ( { success: false } ));
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
               "A problem occurred accessing remote bundle directory '/u/ThisDoesNotExist/12345678'. Problem is: Command Failed.");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
-        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if remote bundledir list returns empty response", async () => {
         const zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
         const sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementationOnce(() => ({}));
-        const shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementationOnce(() => ({}));
+        const createSpy = jest.spyOn(Create, "uss").mockImplementationOnce(() => ({}));
         const listSpy = jest.spyOn(List, "fileList").mockImplementationOnce(() => ( { success: true, apiResponse: undefined } ));
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
               "A problem occurred accessing remote bundle directory '/u/ThisDoesNotExist/12345678'. Problem is: Command response is empty.");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
-        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if remote bundledir list returns empty items", async () => {
         const zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
         const sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementationOnce(() => ({}));
-        const shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementationOnce(() => ({}));
+        const createSpy = jest.spyOn(Create, "uss").mockImplementationOnce(() => ({}));
         const listSpy = jest.spyOn(List, "fileList").mockImplementationOnce(() => ( { success: true, apiResponse: {} } ));
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
               "A problem occurred accessing remote bundle directory '/u/ThisDoesNotExist/12345678'. Problem is: Command response items are missing.");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
-        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if remote bundledir exists and is not a Bundle", async () => {
         const zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
         const sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementationOnce(() => ({}));
-        const shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementationOnce(() => ({}));
+        const createSpy = jest.spyOn(Create, "uss").mockImplementationOnce(() => ({}));
         const listSpy = jest.spyOn(List, "fileList").mockImplementationOnce(() =>
               ( { success: true, apiResponse: { items: [ {name: "."}, {name: ".."}, {name: "wibble"} ] } } ));
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
@@ -217,13 +217,13 @@ describe("BundlePusher01", () => {
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
-        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if remote bundledir is not empty and --overwrite not set", async () => {
         const zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
         const sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementationOnce(() => ({}));
-        const shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementationOnce(() => ({}));
+        const createSpy = jest.spyOn(Create, "uss").mockImplementationOnce(() => ({}));
         const listSpy = jest.spyOn(List, "fileList").mockImplementationOnce(() =>
               ( { success: true, apiResponse: { items: [ {name: "."}, {name: ".."}, {name: "META-INF"} ] } } ));
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
@@ -232,13 +232,13 @@ describe("BundlePusher01", () => {
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
-        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
     });
     it("should handle error undeploying existing bundle", async () => {
         const zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
         const sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementationOnce(() => ({}));
-        const shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementationOnce(() => ({}));
+        const createSpy = jest.spyOn(Create, "uss").mockImplementationOnce(() => ({}));
         const listSpy = jest.spyOn(List, "fileList").mockImplementationOnce(() =>
               ( { success: true, apiResponse: { items: [ ".", ".." ] } } ));
 
@@ -251,7 +251,7 @@ describe("BundlePusher01", () => {
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
-        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(1);
@@ -259,9 +259,9 @@ describe("BundlePusher01", () => {
     it("should cope with error during delete of existing bundledir contents", async () => {
         const zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
         const sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementationOnce(() => ({}));
-        const shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementationOnce(() => ({}))
-                                                           .mockImplementationOnce(() =>
-                                                             { throw new Error( "Injected Shell error" ); });
+        const createSpy = jest.spyOn(Create, "uss").mockImplementationOnce(() => ({}));
+        const shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementationOnce(() =>
+              { throw new Error( "Injected Shell error" ); });
         const listSpy = jest.spyOn(List, "fileList").mockImplementationOnce(() =>
               ( { success: true, apiResponse: { items: [ ".", ".." ] } } ));
 
@@ -274,14 +274,16 @@ describe("BundlePusher01", () => {
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
-        expect(shellSpy).toHaveBeenCalledTimes(2);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(1);
     });
     it("should handle error with attribs file", async () => {
         const zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
         const sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementationOnce(() => ({}));
+        const createSpy = jest.spyOn(Create, "uss").mockImplementationOnce(() => ({}));
         const shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementation(() => ({}));
         const listSpy = jest.spyOn(List, "fileList").mockImplementationOnce(() =>
               ( { success: true, apiResponse: { items: [ ".", ".." ] } } ));
@@ -308,8 +310,9 @@ describe("BundlePusher01", () => {
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
-        expect(shellSpy).toHaveBeenCalledTimes(2);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(1);
         expect(existsSpy).toHaveBeenCalledTimes(1);
@@ -318,6 +321,7 @@ describe("BundlePusher01", () => {
     it("should handle error with bundle upload", async () => {
         const zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
         const sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementationOnce(() => ({}));
+        const createSpy = jest.spyOn(Create, "uss").mockImplementationOnce(() => ({}));
         const shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementation(() => ({}));
         const listSpy = jest.spyOn(List, "fileList").mockImplementationOnce(() =>
               ( { success: true, apiResponse: { items: [ ".", ".." ] } } ));
@@ -343,7 +347,8 @@ describe("BundlePusher01", () => {
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
-        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
         expect(membersSpy).toHaveBeenCalledTimes(0);
         expect(submitSpy).toHaveBeenCalledTimes(0);
         expect(existsSpy).toHaveBeenCalledTimes(1);
@@ -353,6 +358,7 @@ describe("BundlePusher01", () => {
     it("should handle error with remote npm install", async () => {
         const zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
         const sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementationOnce(() => ({}));
+        const createSpy = jest.spyOn(Create, "uss").mockImplementationOnce(() => ({}));
         const shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementation((session: any, cmd: string) => {
           if (cmd.indexOf("npm install") > -1) {
             throw new Error("Injected NPM error");
@@ -387,8 +393,9 @@ describe("BundlePusher01", () => {
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
-        expect(shellSpy).toHaveBeenCalledTimes(2);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
         expect(membersSpy).toHaveBeenCalledTimes(0);
         expect(submitSpy).toHaveBeenCalledTimes(0);
         expect(existsSpy).toHaveBeenCalledTimes(2);
@@ -398,7 +405,8 @@ describe("BundlePusher01", () => {
     it("should handle error with remote bundle deploy", async () => {
         const zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
         const sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementationOnce(() => ({}));
-        const shellSpy = jest.spyOn(Shell, "executeSshCwd");
+        const createSpy = jest.spyOn(Create, "uss").mockImplementationOnce(() => ({}));
+        const shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementationOnce(() => ({}));
         const listSpy = jest.spyOn(List, "fileList").mockImplementationOnce(() =>
               ( { success: true, apiResponse: { items: [ ".", ".." ] } } ));
 
@@ -411,7 +419,7 @@ describe("BundlePusher01", () => {
             return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\"></manifest>";
           }
         });
-        const uploadSpy = jest.spyOn(Upload, "dirToUSSDirRecursive");
+        const uploadSpy = jest.spyOn(Upload, "dirToUSSDirRecursive").mockImplementationOnce(() => ({}));
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
               "Failure occurred submitting DFHDPLOY JCL: 'Injected deploy error'. " +
@@ -420,7 +428,8 @@ describe("BundlePusher01", () => {
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
-        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(1);
         expect(existsSpy).toHaveBeenCalledTimes(2);
@@ -430,7 +439,8 @@ describe("BundlePusher01", () => {
     it("should run to completion", async () => {
         const zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
         const sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementationOnce(() => ({}));
-        const shellSpy = jest.spyOn(Shell, "executeSshCwd");
+        const createSpy = jest.spyOn(Create, "uss").mockImplementationOnce(() => ({}));
+        const shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementationOnce(() => ({}));
         const listSpy = jest.spyOn(List, "fileList").mockImplementationOnce(() =>
               ( { success: true, apiResponse: { items: [ ".", ".." ] } } ));
 
@@ -443,14 +453,15 @@ describe("BundlePusher01", () => {
             return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\"></manifest>";
           }
         });
-        const uploadSpy = jest.spyOn(Upload, "dirToUSSDirRecursive");
+        const uploadSpy = jest.spyOn(Upload, "dirToUSSDirRecursive").mockImplementationOnce(() => ({}));
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
-        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(1);
         expect(existsSpy).toHaveBeenCalledTimes(2);

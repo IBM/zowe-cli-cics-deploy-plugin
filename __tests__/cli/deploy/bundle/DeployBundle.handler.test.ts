@@ -62,7 +62,7 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
 
 describe("bundle Handler", () => {
     afterEach(() => {
-        jest.resetAllMocks();
+        jest.restoreAllMocks();
     });
     it("should complain with no name parameter", async () => {
         await testNameError(undefined, "--name parameter is not set");
