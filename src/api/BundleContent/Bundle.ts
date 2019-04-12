@@ -53,6 +53,44 @@ export class Bundle {
   }
 
   /**
+   * Validates that a Bundle appears to be valid on the file-system
+   * @returns {string}
+   * @throws ImperativeError
+   * @memberof Bundle
+   */
+  public validate() {
+
+    // check that the manifest file exists. We could perform a more rigorous
+    // validation of the contents of the Bundle, but this simple check is
+    // sufficient to ensure the bundle is broadly valid on the file-system.
+    // Errors will be thrown to report problems.
+    this.manifest.validate();
+  }
+
+  /**
+   * Determines whether the Bundle contains the named resource
+   * @param {string} resource - The resource to query
+   * @returns {boolean}
+   * @throws ImperativeError
+   * @memberof Bundle
+   */
+  public contains(resource: string): boolean {
+    const fullyQualifiedResourceName = this.path.join(this.bundleDirectory, resource);
+    const relative = BundlePart.getRelativeFileReference(fullyQualifiedResourceName, this.bundleDirectory);
+    if (relative === undefined) {
+      // The file isn't within the Bundle directory
+      return false;
+    }
+
+    const fullLocation = this.path.join(this.bundleDirectory, relative);
+    if (!this.fs.existsSync(fullLocation)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
    * Returns the Bundle's identity (id) value.
    * @returns {string}
    * @throws ImperativeError
@@ -64,7 +102,7 @@ export class Bundle {
 
   /**
    * Set the Bundle's identity (id) value.
-   * @param {string} id - The identiry value for the Bundle.
+   * @param {string} id - The identity value for the Bundle.
    * @throws ImperativeError
    * @memberof Bundle
    */

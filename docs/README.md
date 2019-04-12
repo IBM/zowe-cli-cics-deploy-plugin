@@ -14,7 +14,11 @@ The bundle can then be uploaded to z/OS and deployed to a target CICS environmen
 3.2. [Bundle metadata](#metadata)
 4. [Deploying a CICS Bundle](#deploying)
 5. [Undeploying a CICS Bundle](#undeploying)
-6. [Contributing](#contributing)
+6. [Pushing a Bundle to CICS](#pushing)
+6.1. [Requirements for Push](#push_req)
+6.2. [The push command](#push_command)
+6.3. [Sub-components of push](#push_components)
+7. [Contributing](#contributing)
 
 
 <a name="dependencies"></a>
@@ -141,6 +145,91 @@ Undeploying a Bundle removes it from a target CICS environment. The undeployment
 The above command will attempt to disable and discard a CICS Bundle named MYBUND01, using the default z/OSMF configuration and the CICS configuration defined in the `example` cics-deploy profile. For further assistance on `undeploy bundle` issue the following command:
 
   `zowe cics-deploy undeploy bundle --help`
+
+<a name="pushing"></a>
+## Pushing a Bundle to a CPSM managed CICS environment
+
+Pushing a Bundle to CICS is a composite action that will upload a bundle from the current directory to zFS, then install and enable it in the target CICS environment. This process consists of several stages which are combined together as a simple atomic action. Advanced users may prefer to issue the sub-commands individually, perhaps adding customised site-specific automation, rather than using the `push` action.
+
+<a name="push_req"></a>
+### Requirements for using push
+
+The cics-deploy push command combines several activities into a single combined action. In order to use the `push` command you will need several Zowe profiles to have been created. You will need a `zosmf` profile and an `ssh` profile, you might also consider creating a `cics-deploy` profile. You will also need a CICS bundle to exist in the current working directory (for further information on bundle enabling a directory see [Generating a CICS Bundle](#generation)).
+
+<a name="zosmf_profile"></a>
+#### The zosmf profile
+
+The `cics-deploy push bundle` command interacts with the target z/OS environment using several different protocols, one of which is zOSMF. The zosmf profile in Zowe defines the connectivity parameters required to connect to a remote zOSMF server in the target z/OS environment. You will typically require the hostname of the target server, the port number at which the zOSMF service is running, and a suitable userid and password for the target server. Your userid will need to have been authorised to perform the various actions that will be needed in order to deploy the Bundle.
+
+If you have not already done so, start by creating a zosmf profile in Zowe CLI. If you only create a single such profile then it will be used as the default z/OS configuration for any further zowe interactions. For further assistance on creating a z/OSMF profile issue the following command:
+
+  `zowe profiles create zosmf-profile --help`
+
+<a name="ssh_profile"></a>
+#### The ssh profile
+
+The `cics-deploy push bundle` command may attempt to issue Unix commands over the SSH protocol. In order to do so it requires a profile to be defined for the remote SSH server. You will typically need to know the hostname of the target server, the port at which the SSH service is running, and a suitable userid and password for the target server. It is recommended that you use the same userid and host for running SSH as is used for zOSMF, failure to do so will result in undefined behaviour.
+
+If you have not already done so, create an ssh profile in Zowe CLI. If you only create a single such profile then it will be used as the default z/OS configuration for any further Zowe interactions. For further assistance on creating an SSH profile issue the following command:
+
+  `zowe profiles create ssh-profile --help`
+
+
+<a name="deploy_profile"></a>
+#### The cics-deploy profile
+
+The `cics-deploy push bundle` command uses the CICS DFHDPLOY utility to install and enable a Bundle resource in a CICS environment. It requires CICSPlex System Manager (CPSM) to be used to manage the target CICS regions; if the target environment is not CPSM managed then cics-deploy cannot be used to deploy the Bundle. In order to deploy a Bundle you will need:
+
+1. The name of the target CICSplex and Scope into which the Bundle should be deployed.
+2. The High Level Qualifier (HLQ) for the CICS datasets in the target environment.
+
+Use of a cics-deploy profile is not mandatory, but is encouraged; using a profile avoids the requirement to enter the associated parameters each time a cics-deploy command is issued. If you have not already done so, create a cics-deploy profile. You can optionally identify either a target CSD group (typically used for single region configurations) or a BAS resource group (used for multi-region configurations) into which the Bundle will be defined. You can optionally configure a JCL jobcard if your site requires a customised JCL configuration for DFHDPLOY. For further assistance on creating a cics-deploy profile issue the following command:
+
+  `zowe profiles create cics-deploy-profile --help`
+
+For example, you might create the profile using the following command:
+
+  `zowe profiles create cics-deploy-profile example --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --resgroup BUNDGRP1`
+
+
+<a name="push_command"></a>
+### The push command
+
+The `cics-deploy push bundle` command pushes a bundle from the working directory to a target CICS environment. It requires the use of a zosmf profile and an ssh profile, use of a cics-deploy profile is also encouraged (for more information on these dependencies see [Requirements for Push](#push_req)). You can request assistance on using the push command by issuing the following command:
+
+  `zowe cics-deploy push bundle --help`
+
+If you have configured default profiles for zosmf, ssh and cics-deploy then two further items are needed:
+
+1. An up to 8 character unique name to use for the Bundle resource in CICS.
+2. A directory in the target zFS in which do stage the Bundle's resources.
+
+For example, you might issue the following command:
+
+  `zowe cics-deploy push bundle --name EXAMPLE1 --targetdir /u/user01/myBundles`
+
+This command will cause cics-deploy to attempt to deploy a bundle from the working directory to the target CICS environment under the name `EXAMPLE1`. If a Bundle already exists in the target environment with the same name, cics-deploy will return an error. You may instruct cics-deploy to overwrite the existing Bundle by adding the --overwrite parameter, for example:
+
+  `zowe cics-deploy push bundle --name EXAMPLE1 --targetdir /u/user01/myBundles --overwrite`
+
+You can also request verbose messages from cics-deploy by adding the --verbose option, for example:
+
+  `zowe cics-deploy push bundle --name EXAMPLE1 --targetdir /u/user01/myBundles --overwrite --verbose`
+
+
+<a name="push_components"></a>
+### Sub-components of the push command
+
+The `cics-deploy push bundle` command consists of several separate actions, each of which may be issued separately if there is a requirement to do so. The push command performs the following actions:
+
+1. It undeploys an existing Bundle using `zowe cics-deploy undeploy bundle` (See [Undeploying a CICS Bundle](#undeploying)).
+2. It uploads the local Bundle directory to zFS using `zowe zos-files upload dir-to-uss`.
+3. If the bundle contains a package.json file it runs `npm install` using `zowe zos-uss issue ssh`.
+4. It deploys an Bundle using `zowe cics-deploy deploy bundle` (See [Deploying a CICS Bundle](#deploying)).
+
+Advanced users may prefer to use these sub-commands themselves. For example, if the target CICS regions are not CPSM managed then you might use Zowe to generate and subsequently upload the Bundle, and your own scripts to deploy the Bundle into a CICS region.
+
+
 
 
 <a name="contributing"></a>

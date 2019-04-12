@@ -2,7 +2,7 @@
 
 exports[`BundleDeployer01 should complain if DFHDPLOY ends with an error 1`] = `"DFHDPLOY stopped processing due to an error."`;
 
-exports[`BundleDeployer01 should complain if SYSTSPRT not found 1`] = `"SYSTSPRT output from DFHDPLOY not found. Most recent status update: 'Submitting DFHDPLOY JCL'."`;
+exports[`BundleDeployer01 should complain if SYSTSPRT not found 1`] = `"SYSTSPRT output from DFHDPLOY not found. Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'."`;
 
 exports[`BundleDeployer01 should complain if cicshlq not found 1`] = `"Validation of --cicshlq dataset failed: Injected CICSHLQ error"`;
 
@@ -14,9 +14,9 @@ exports[`BundleDeployer01 should complain if cpsmhlq not found2 1`] = `"EYU9ABSI
 
 exports[`BundleDeployer01 should complain if status can't be determined 1`] = `"DFHDPLOY command completed, but status cannot be determined."`;
 
-exports[`BundleDeployer01 should complain with missing zOSMF profile for deploy 1`] = `"Expect Error: Required parameter 'hostname' must be defined"`;
+exports[`BundleDeployer01 should complain with missing zOSMF profile for deploy 1`] = `"Injected Create error"`;
 
-exports[`BundleDeployer01 should complain with missing zOSMF profile for undeploy 1`] = `"Expect Error: Required parameter 'hostname' must be defined"`;
+exports[`BundleDeployer01 should complain with missing zOSMF profile for undeploy 1`] = `"Injected Create error"`;
 
 exports[`BundleDeployer01 should complete with warnings  1`] = `"DFHDPLOY completed with warnings."`;
 
@@ -359,7 +359,7 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should handle failure during submitjobs processing 1`] = `"Failure occurred submitting DFHDPLOY JCL: 'Injected Submit error'. Most recent status update: 'Submitting DFHDPLOY JCL'."`;
+exports[`BundleDeployer01 should handle failure during submitjobs processing 1`] = `"Failure occurred submitting DFHDPLOY JCL: 'Injected Submit error'. Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'."`;
 
 exports[`BundleDeployer01 should support long bundledir 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
@@ -540,6 +540,6 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 1`] = `"DFHDPLOY did not generate any output. Most recent status update: 'Submitting DFHDPLOY JCL'."`;
+exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 1`] = `"DFHDPLOY did not generate any output. Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'."`;
 
 exports[`BundleDeployer01 should undeploy successfully 1`] = `"Bundle undeployment successful."`;

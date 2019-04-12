@@ -204,4 +204,39 @@ describe("Bundle01", () => {
         // Check the output as JSON
         expect(JSON.stringify(bund.getManifest())).toMatchSnapshot();
     });
+    it("should find a directory within the Bundle", () => {
+
+        // Create a Bundle
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
+
+        expect(bund.contains("META-INF")).toBeTruthy();
+    });
+    it("should find a file within the Bundle", () => {
+
+        // Create a Bundle
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
+
+        expect(bund.contains("Artefact2.txt")).toBeTruthy();
+    });
+    it("should find a file within a directory within the Bundle", () => {
+
+        // Create a Bundle
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
+
+        expect(bund.contains("META-INF/cics.xml")).toBeTruthy();
+    });
+    it("should not find a missing file within the Bundle", () => {
+
+        // Create a Bundle
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
+
+        expect(bund.contains("doesNotexist")).toBeFalsy();
+    });
+    it("should not find a file outside of the Bundle", () => {
+
+        // Create a Bundle
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle02", true, true);
+
+        expect(bund.contains("../ExampleBundle01")).toBeFalsy();
+    });
 });

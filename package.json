@@ -33,14 +33,14 @@
     "xml2json": "^0.11.2"
   },
   "devDependencies": {
-    "@zowe/cli": "^3.2.0",
-    "@zowe/imperative": "^3.0.0",
+    "@zowe/cli": "^3.4.0-alpha.201904021322",
+    "@zowe/imperative": "^3.1.0-alpha.201903281852",
     "@types/fs-extra": "^5.0.5",
     "@types/jest": "^22.0.0",
     "@types/node": "^8.0.0",
     "@types/yargs": "8.0.2",
     "env-cmd": "^8.0.2",
-    "fs-extra": "^5.0.0",
+    "fs-extra": "^7.0.1",
     "jest": "^24.5.0",
     "jest-cli": "^24.5.0",
     "jest-environment-node": "^24.5.0",
@@ -55,7 +55,7 @@
     "tslint": "^5.0.0",
     "typedoc": "^0.9.0",
     "typescript": "^3.2.2",
-    "uuid": "^3.2.1"
+    "uuid": "^3.3.2"
   },
   "peerDependencies": {
     "@zowe/cli": "^3.2.0",

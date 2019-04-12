@@ -54,6 +54,7 @@ export class Manifest {
   private bundleDirectory: string;
   private metainfDir: string;
   private manifestFile: string;
+  private manifestExists: boolean = false;
   private merge: boolean;
   private overwrite: boolean;
 
@@ -170,6 +171,22 @@ export class Manifest {
      catch (err) {
        throw new Error("An error occurred attempting to write manifest file '" + this.manifestFile + "': " + err.message);
      }
+
+     this.manifestExists = true;
+  }
+
+  /**
+   * Validates that a manifest file exists. If the manifest has not yet been saved then it is
+   * invalid.
+   *
+   * @returns {object}
+   * @throws ImperativeError
+   * @memberof Manifest
+   */
+  public validate() {
+    if (!this.manifestExists) {
+      throw new Error("No bundle manifest file found: " + this.manifestFile);
+    }
   }
 
   /**
@@ -320,6 +337,8 @@ export class Manifest {
     if (this.manifestAsJson.manifest.xmlns !== "http://www.ibm.com/xmlns/prod/cics/bundle") {
       throw new Error("Existing CICS Manifest file found with unexpected namespace: " + this.manifestAsJson.manifest.xmlns + " .");
     }
+
+    this.manifestExists = true;
   }
 
   // Function for mangaling a string for inclusion in the manifest

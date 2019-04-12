@@ -534,4 +534,35 @@ describe("MockedFilesystemTests", () => {
         expect(err.message).toContain(".zosattributes'");
         expect(err.message).toContain("InjectedError");
     });
+    it("should know if the bundle is valid", () => {
+        jest.spyOn(fs, "accessSync").mockReturnValue(true);
+        jest.spyOn(fs, "existsSync").mockReturnValue(false);
+        jest.spyOn(fs, "writeFileSync").mockReturnValue(true);
+        jest.spyOn(fs, "mkdirSync").mockReturnValue(true);
+
+        let err: Error;
+        let bund;
+        try {
+          bund = new Bundle("__tests__/__resources__/ExampleBundle01", false, false);
+          bund.validate();
+        }
+        catch (error) {
+          err = error;
+        }
+
+        expect(err).toBeDefined();
+        expect(err.message).toContain("No bundle manifest file found");
+        expect(err.message).toContain("cics.xml");
+
+        err = undefined;
+        try {
+          bund.save();
+          bund.validate();
+        }
+        catch (error) {
+          err = error;
+        }
+
+        expect(err).toBeUndefined();
+    });
 });

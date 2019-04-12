@@ -60,10 +60,16 @@ describe("BundleDeployer01", () => {
         jest.resetAllMocks();
     });
     it("should complain with missing zOSMF profile for deploy", async () => {
+        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => { throw new Error( "Injected Create error" ); });
         await runDeployTestWithError();
+
+        expect(createSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain with missing zOSMF profile for undeploy", async () => {
+        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => { throw new Error( "Injected Create error" ); });
         await runUndeployTestWithError();
+
+        expect(createSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if cicshlq not found", async () => {
 
