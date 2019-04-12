@@ -149,7 +149,7 @@ The above command will attempt to disable and discard a CICS Bundle named MYBUND
 <a name="pushing"></a>
 ## Pushing a Bundle to a CPSM managed CICS environment
 
-Pushing a Bundle to CICS is a composite action that will upload a bundle from the current directory to zFS, then install and enable it in the target CICS environment. This process consists of several stages which are combined together as a simple atomic action. Advanced users may prefer to issue the sub-commands individually, perhaps adding customised site-specific automation, rather than using the `push` action.
+Pushing a Bundle to CICS is a composite action that will upload a bundle from the current directory to zFS, then install and enable it in the target CICS environment. This process consists of several stages which are combined together as a simple action. Advanced users may prefer to issue the sub-commands individually, perhaps adding customised site-specific automation, rather than using the `push` action.
 
 <a name="push_req"></a>
 ### Requirements for using push
