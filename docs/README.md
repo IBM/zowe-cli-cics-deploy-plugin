@@ -159,7 +159,7 @@ The cics-deploy push command combines several activities into a single combined 
 <a name="zosmf_profile"></a>
 #### The zosmf profile
 
-The `cics-deploy push bundle` command interacts with the target z/OS environment using several different protocols, one of which is zOSMF. The zosmf profile in Zowe defines the connectivity parameters required to connect to a remote zOSMF server in the target z/OS environment. You will typically require the hostname of the target server, the port number at which the zOSMF service is running, and a suitable userid and password for the target server. Your userid will need to have been authorised to perform the various actions that will be needed in order to deploy the Bundle.
+The `cics-deploy push bundle` command interacts with the target z/OS environment using several different protocols, one of which is z/OSMF. The zosmf profile in Zowe defines the connectivity parameters required to connect to a remote z/OSMF server in the target z/OS environment. You will typically require the hostname of the target server, the port number at which the z/OSMF server is running, and a suitable user ID and password for the target server. Your user ID will need to have been authorised to perform the various actions that will be needed in order to deploy the Bundle.
 
 If you have not already done so, start by creating a zosmf profile in Zowe CLI. If you only create a single such profile then it will be used as the default z/OS configuration for any further zowe interactions. For further assistance on creating a z/OSMF profile issue the following command:
 
@@ -168,7 +168,7 @@ If you have not already done so, start by creating a zosmf profile in Zowe CLI. 
 <a name="ssh_profile"></a>
 #### The ssh profile
 
-The `cics-deploy push bundle` command may attempt to issue Unix commands over the SSH protocol. In order to do so it requires a profile to be defined for the remote SSH server. You will typically need to know the hostname of the target server, the port at which the SSH service is running, and a suitable userid and password for the target server. It is recommended that you use the same userid and host for running SSH as is used for zOSMF, failure to do so will result in undefined behaviour.
+The `cics-deploy push bundle` command may attempt to issue Unix commands over the SSH protocol. In order to do so it requires a profile to be defined for the remote SSH server. You will typically need to know the hostname of the target server, the port at which the SSH service is running, and a suitable user ID and password for the target server. It is recommended that you use the same user ID and host to connect with SSH as is used for z/OSMF, failure to do so will result in undefined behaviour.
 
 If you have not already done so, create an ssh profile in Zowe CLI. If you only create a single such profile then it will be used as the default z/OS configuration for any further Zowe interactions. For further assistance on creating an SSH profile issue the following command:
 
@@ -201,7 +201,7 @@ The `cics-deploy push bundle` command pushes a bundle from the working directory
 
 If you have configured default profiles for zosmf, ssh and cics-deploy then only two further items are needed:
 
-1. An up to 8 character unique name to use for the Bundle resource in CICS.
+1. A unique name (up to 8 characters) to use for the BUNDLE resource in CICS.
 2. A directory in the target zFS in which do stage the Bundle's resources.
 
 For example, you might issue the following command:

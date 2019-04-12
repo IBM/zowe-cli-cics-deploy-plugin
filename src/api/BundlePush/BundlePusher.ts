@@ -160,7 +160,6 @@ export class BundlePusher {
   }
 
   private async createSshSession(): Promise<SshSession> {
-    // Create a zosMF session
     const sshProfile = this.params.profiles.get("ssh");
 
     if (sshProfile === undefined) {
