@@ -558,6 +558,6 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 1`] = `"DFHDPLOY did not generate any output. Most recent status update: 'Submitting DFHDPLOY JCL'."`;
+exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 1`] = `"DFHDPLOY did not generate any output. Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'."`;
 
 exports[`BundleDeployer01 should undeploy successfully 1`] = `"Bundle undeployment successful."`;

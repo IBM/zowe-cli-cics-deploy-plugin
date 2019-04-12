@@ -24,22 +24,6 @@ describe("MockedFilesystemTests", () => {
       const parser = require("xml2json");
     });
 
-    it("should complain if exceptions are thrown during manifest parsing", () => {
-
-      jest.spyOn(JSON, "parse").mockImplementationOnce(() => { throw new Error("Wibble"); });
-
-      let err: Error;
-      try {
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle01", true, true);
-      }
-      catch (error) {
-        err = error;
-      }
-
-      expect(err).toBeDefined();
-      expect(err.message).toContain("Parsing error occurred reading a CICS manifest file: Wibble");
-    });
-
     it("should tolerate META-INF directory not existing", () => {
         // Mocks for the manifest - META-INF exists
         jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
@@ -564,5 +548,21 @@ describe("MockedFilesystemTests", () => {
         }
 
         expect(err).toBeUndefined();
+    });
+
+    it("should complain if exceptions are thrown during manifest parsing", () => {
+
+      jest.spyOn(JSON, "parse").mockImplementationOnce(() => { throw new Error("Wibble"); });
+
+      let err: Error;
+      try {
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle01", true, true);
+      }
+      catch (error) {
+        err = error;
+      }
+
+      expect(err).toBeDefined();
+      expect(err.message).toContain("Parsing error occurred reading a CICS manifest file: Wibble");
     });
 });
