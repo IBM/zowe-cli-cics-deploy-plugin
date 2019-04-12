@@ -168,7 +168,7 @@ If you have not already done so, start by creating a zosmf profile in Zowe CLI. 
 <a name="ssh_profile"></a>
 #### The ssh profile
 
-The `cics-deploy push bundle` command may attempt to issue Unix commands over the SSH protocol. In order to do so it requires a profile to be defined for the remote SSH server. You will typically need to know the hostname of the target server, the port at which the SSH service is running, and a suitable userid and password for the target server. It is recommended that you use the same userid and host for running SSH as is used for zOSMF, failure to do so will result in undefined behaviour.
+The `cics-deploy push bundle` command may attempt to issue Unix commands over the SSH protocol. In order to do so it requires a profile to be defined for the remote SSH server. You will typically need to know the hostname of the target server, the port at which the SSH service is running, and a suitable user ID and password for the target server. It is recommended that you use the same user ID and host to connect with SSH as is used for z/OSMF, failure to do so will result in undefined behaviour.
 
 If you have not already done so, create an ssh profile in Zowe CLI. If you only create a single such profile then it will be used as the default z/OS configuration for any further Zowe interactions. For further assistance on creating an SSH profile issue the following command:
 
