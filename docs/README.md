@@ -201,7 +201,7 @@ The `cics-deploy push bundle` command pushes a bundle from the working directory
 
 If you have configured default profiles for zosmf, ssh and cics-deploy then only two further items are needed:
 
-1. An up to 8 character unique name to use for the Bundle resource in CICS.
+1. A unique name (up to 8 characters) to use for the BUNDLE resource in CICS.
 2. A directory in the target zFS in which do stage the Bundle's resources.
 
 For example, you might issue the following command:
