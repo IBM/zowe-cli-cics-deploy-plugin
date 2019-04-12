@@ -197,15 +197,17 @@ pipeline {
                 }
             }
             steps('Install Zowe CLI') {
-                timeout(time: 10, unit: 'MINUTES') {
-                    echo "Install Zowe CLI globaly"
-                    sh "rm -f ~/.npmrc"
-                    sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> ~/.npmrc'
-                    sh "echo registry=$TEST_NPM_REGISTRY >> ~/.npmrc"
-                    sh "echo @brightside:registry=$TEST_NPM_REGISTRY >> ~/.npmrc"
-                    sh "echo @zowe:registry=$TEST_NPM_REGISTRY >> ~/.npmrc"
-                    sh("npm install -g @zowe/cli@cicsdev")
-                    sh("zowe --version")
+                withCredentials([usernamePassword(credentialsId: ARTIFACTORY_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'API_KEY')]) {
+                    timeout(time: 10, unit: 'MINUTES') {
+                        echo "Install Zowe CLI globaly"
+                        sh "rm -f ~/.npmrc"
+                        sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> ~/.npmrc'
+                        sh "echo registry=$TEST_NPM_REGISTRY >> ~/.npmrc"
+                        sh "echo @brightside:registry=$TEST_NPM_REGISTRY >> ~/.npmrc"
+                        sh "echo @zowe:registry=$TEST_NPM_REGISTRY >> ~/.npmrc"
+                        sh("npm install -g @zowe/cli@cicsdev")
+                        sh("zowe --version")
+                    }
                 }
             }
         }
