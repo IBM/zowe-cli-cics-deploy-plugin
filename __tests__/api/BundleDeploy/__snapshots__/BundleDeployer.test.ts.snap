@@ -540,6 +540,24 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 1`] = `"DFHDPLOY did not generate any output. Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'."`;
+exports[`BundleDeployer01 should tolerate bundledir with extra slasshes 1`] = `
+"//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
+//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
+//STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
+//         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
+//SYSTSPRT DD SYSOUT=*
+//SYSIN    DD *
+*
+SET CICSPLEX(12345678);
+*
+DEPLOY BUNDLE(12345678)
+       BUNDLEDIR(/bundledir/with/extra/slashes)
+       SCOPE(12345678)
+       STATE(ENABLED)
+/*
+"
+`;
+
+exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 1`] = `"DFHDPLOY did not generate any output. Most recent status update: 'Submitting DFHDPLOY JCL'."`;
 
 exports[`BundleDeployer01 should undeploy successfully 1`] = `"Bundle undeployment successful."`;

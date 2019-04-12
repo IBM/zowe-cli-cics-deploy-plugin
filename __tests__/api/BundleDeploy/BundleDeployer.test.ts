@@ -313,7 +313,6 @@ describe("BundleDeployer01", () => {
         expect(err.message).toMatchSnapshot();
     });
     it("should support long bundledir", async () => {
-
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
@@ -323,6 +322,13 @@ describe("BundleDeployer01", () => {
                                     "12345678901234567890123456789012345678901234567890" +
                                     "12345678901234567890123456789012345678901234567890" +
                                     "1234567890123456789012345678901234567890123456789012345";
+        await testDeployJCL(parms);
+    });
+    it("should tolerate bundledir with extra slasshes", async () => {
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.bundledir = "//bundledir/with/extra//slashes";
         await testDeployJCL(parms);
     });
     it("should generate deploy JCL for AVAILABLE", async () => {
