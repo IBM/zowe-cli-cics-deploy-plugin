@@ -15,6 +15,7 @@ import { IHandlerParameters, Logger, ImperativeError, AbstractSession, ITaskWith
          TaskStage , TaskProgress} from "@zowe/imperative";
 import { ZosmfSession, SubmitJobs, List } from "@zowe/cli";
 import { ParmValidator } from "./ParmValidator";
+import * as path from "path";
 
 /**
  * Class to represent a CICS Bundle Deployer.
@@ -134,9 +135,12 @@ export class BundleDeployer {
    * @memberof BundleDeployer
    */
   private getDeployJCL(): string {
+    // Get rid of any extra slashes which may be needed on git-bash to avoid path munging
+    const bundledir = path.posix.normalize(this.params.arguments.bundledir);
+
     const jcl = this.generateCommonJCLHeader() +
       this.wrapLongLineForJCL("DEPLOY BUNDLE(" + this.params.arguments.name + ")\n") +
-      this.wrapLongLineForJCL("       BUNDLEDIR(" + this.params.arguments.bundledir + ")\n") +
+      this.wrapLongLineForJCL("       BUNDLEDIR(" + bundledir + ")\n") +
       this.generateCommonJCLFooter();
 
     return jcl;

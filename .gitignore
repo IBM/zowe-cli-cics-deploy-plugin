@@ -7,3 +7,4 @@ __results__/
 __tests__/__results__/
 /__tests__/__resources__/properties/**
 !/__tests__/__resources__/properties/example_properties.yaml
+package-lock.json
