@@ -43,17 +43,20 @@ export class BundleDeployer {
 
   /**
    * Deploy a CICS Bundle
+   * @param {AbstractSession} session - An optional zOSMF session
    * @returns {Promise<string>}
    * @throws ImperativeError
    * @memberof BundleDeployer
    */
-  public async deployBundle(): Promise<string> {
+  public async deployBundle(session?: AbstractSession): Promise<string> {
 
     // Validate that the parms are valid for Deploy
     this.validateDeployParms();
 
     // Create a zosMF session
-    const session = await this.createZosMFSession();
+    if (session === undefined) {
+      session = await this.createZosMFSession();
+    }
 
     // Check that the CICS dataset value looks valid and can be viewed
     await this.checkHLQDatasets(session);
@@ -62,22 +65,25 @@ export class BundleDeployer {
     const jcl = this.getDeployJCL();
 
     // Submit it
-    return this.submitJCL(jcl, session);
+    return this.submitJCL(jcl, "DEPLOY", session);
   }
 
   /**
    * Undeploy a CICS Bundle
+   * @param {AbstractSession} session - An optional zOSMF session
    * @returns {Promise<string>}
    * @throws ImperativeError
    * @memberof BundleDeployer
    */
-  public async undeployBundle(): Promise<string> {
+  public async undeployBundle(session?: AbstractSession): Promise<string> {
 
     // Validate that the parms are valid for Undeploy
     this.validateUndeployParms();
 
     // Create a zosMF session
-    const session = await this.createZosMFSession();
+    if (session === undefined) {
+      session = await this.createZosMFSession();
+    }
 
     // Check that the CICS dataset value looks valid and can be viewed
     await this.checkHLQDatasets(session);
@@ -86,7 +92,7 @@ export class BundleDeployer {
     const jcl = this.getUndeployJCL();
 
     // Submit it
-    return this.submitJCL(jcl, session);
+    return this.submitJCL(jcl, "UNDEPLOY", session);
   }
 
   /**
@@ -195,7 +201,7 @@ export class BundleDeployer {
     return jcl;
   }
 
-  private async createZosMFSession(): Promise<any> {
+  private async createZosMFSession(): Promise<AbstractSession> {
     // Create a zosMF session
     const zosmfProfile = this.params.profiles.get("zosmf");
 
@@ -255,10 +261,10 @@ export class BundleDeployer {
     }
   }
 
-  private async submitJCL(jcl: string, session: any): Promise<string> {
+  private async submitJCL(jcl: string, action: string, session: any): Promise<string> {
     let spoolOutput: any;
     const status: ITaskWithStatus = { percentComplete: TaskProgress.TEN_PERCENT,
-                                      statusMessage: "Submitting DFHDPLOY JCL",
+                                      statusMessage: "Submitting DFHDPLOY JCL for the " + action + " action",
                                       stageName: TaskStage.IN_PROGRESS };
     this.params.response.progress.startBar({task: status});
 

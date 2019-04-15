@@ -62,7 +62,32 @@ export class BundlePart {
     return true;
   }
 
+  /**
+   * Determine whether a file reference is local to the Bundle. Returns a normalised
+   * reference, or null if the reference is invalid.
+   *
+   * @param {string} filename - The filename to validate.
+   * @param {string} bundledir - The home directory for the Bundle.
+   * @returns {string}
+   * @throws ImperativeError
+   * @memberof BundlePart
+   */
+  public static getRelativeFileReference(filename: string, bundledir: string): string {
+    // normalise it (to get rid of dots)
+    let file = BundlePart.path.normalize(filename);
+
+    // find the location of the target relative to the current directory
+    file = this.path.relative(bundledir, file);
+
+    // the target file is not within the current directory tree throw an error
+    if (file.indexOf("..") === 0) {
+      return undefined;
+    }
+    return file;
+  }
+
   protected static fs = require("fs");
+  protected static path = require("path");
 
   /**
    * Function for mangaling a name into something valid for CICS
@@ -84,7 +109,6 @@ export class BundlePart {
 
   protected bundleDirectory: string;
   protected overwrite: boolean;
-  private path = require("path");
   private partData: IBundlePartDataType;
   private simpleType = "BundlePart";
 
@@ -105,7 +129,7 @@ export class BundlePart {
     }
     this.partData = partDataLocal;
     this.overwrite = overwrite;
-    this.bundleDirectory = this.path.normalize(directory);
+    this.bundleDirectory = BundlePart.path.normalize(directory);
     this.validateName();
     this.validateType();
     if (validatePath) {
@@ -158,14 +182,11 @@ export class BundlePart {
   protected normalizeAndValidateFileReference(filename: string): string {
 
     // normalise it (to get rid of dots)
-    let file = this.path.normalize(filename);
-
-    // find the location of the target relative to the current directory
-    file = this.path.relative(this.bundleDirectory, file);
+    let file = BundlePart.getRelativeFileReference(filename, this.bundleDirectory);
 
     // the target file is not within the current directory tree throw an error
-    if (file.indexOf("..") === 0) {
-      throw new Error(this.simpleType + ' "' + this.partData.name + '" references a file outside of the Bundle directory: "' + file + '".');
+    if (file === undefined) {
+      throw new Error(this.simpleType + ' "' + this.partData.name + '" references a file outside of the Bundle directory: "' + filename + '".');
     }
 
     // Check that the target file exists

@@ -442,9 +442,10 @@ Push a CICS bundle from the working directory to a target CICSplex.
 	* Specifies the name of the CICS BUNDLE resource (up to 8 characters) to deploy or
 undeploy.
 
-*   `--bundledir`  | `--bd` *(string)*
+*   `--targetdir`  | `--td` *(string)*
 
-	* Specifies the location of the CICS bundle (up to 255 characters) on zFS.
+	* Specifies the target zFS location in which the CICS bundle should be created (up
+to 255 characters)
 
 #### Options
 
@@ -524,6 +525,10 @@ on the remote system.
 
 	* The name of a (zosmf) profile to load for this command execution.
 
+*   `--ssh-profile`  | `--ssh-p` *(string)*
+
+	* The name of a (ssh) profile to load for this command execution.
+
 *   `--cics-deploy-profile`  | `--cics-deploy-p` *(string)*
 
 	* The name of a (cics-deploy) profile to load for this command execution.
@@ -531,19 +536,19 @@ on the remote system.
 ### Examples
 
    *-  Push a CICS bundle from the working directory using default
-   cics-deploy and zosmf profiles:
+   cics-deploy, ssh and zosmf profiles:
 
-* `          $  zowe push bundle --name EXAMPLE --bundledir /u/example/bundleDir`
+* `          $  zowe push bundle --name EXAMPLE --targetdir /u/example/bundles`
 
    *-  Push a CICS bundle from the working directory using
-   specific zosmf & cics-deploy profiles:
+   specific zosmf, ssh & cics-deploy profiles:
 
-* `          $  zowe push bundle --name EXAMPLE --bundledir /u/example/bundleDir --zosmf-profile testplex --cics-deploy-profile devcics`
+* `          $  zowe push bundle --name EXAMPLE --targetdir /u/example/bundles --zosmf-profile testplex --cics-deploy-profile devcics --ssh-profile ssh`
 
    *-  Push a CICS bundle from the working directory replacing any
    bundle of the same name that is already deployed:
 
-* `          $  zowe push bundle --bundleid mybundle --nodejsapp myapp --startscript server.js --overwrite`
+* `          $  zowe push bundle --name EXAMPLE --targetdir /u/example/bundles --overwrite`
 
 # undeploy | u | udep<a name="module-undeploy"></a>
 Undeploy a CICS bundle from one or more CICS regions within a CICSplex. A BUNDLE resource is made UNAVAILABLE, it is then DISABLED and DISCARDED from the target scope with the CICSplex.

@@ -11,7 +11,7 @@
 
 import { ICommandDefinition } from "@zowe/imperative";
 import { NameOption } from "../../shared/Name.option";
-import { BundledirOption } from "../../deploy/bundle/options/Bundledir.option";
+import { TargetdirOption } from "./options/Targetdir.option";
 import { CicsplexOption } from "../../shared/Cicsplex.option";
 import { ScopeOption } from "../../shared/Scope.option";
 import { CsdgroupOption } from "../../shared/Csdgroup.option";
@@ -35,22 +35,22 @@ export const PushBundleDefinition: ICommandDefinition = {
     description: "Push a CICS bundle from the working directory to a target CICSplex.",
     type: "command",
     handler: __dirname + "/PushBundle.handler",
-    options: [ NameOption, BundledirOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption,
+    options: [ NameOption, TargetdirOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption,
                CicshlqOption, CpsmhlqOption, JobcardOption, TimeoutOption, TargetStateOption, VerboseOption,
                OverwriteOption ],
-    profile: { required: ["zosmf"], optional: ["cics-deploy"] },
+    profile: { required: ["zosmf", "ssh"], optional: ["cics-deploy"] },
     examples: [
         {
-            description: "Push a CICS bundle from the working directory using default cics-deploy and zosmf profiles",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir`
+            description: "Push a CICS bundle from the working directory using default cics-deploy, ssh and zosmf profiles",
+            options: `--name EXAMPLE --targetdir /u/example/bundles`
         },
         {
-            description: "Push a CICS bundle from the working directory using specific zosmf & cics-deploy profiles",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir --zosmf-profile testplex --cics-deploy-profile devcics`
+            description: "Push a CICS bundle from the working directory using specific zosmf, ssh & cics-deploy profiles",
+            options: `--name EXAMPLE --targetdir /u/example/bundles --zosmf-profile testplex --cics-deploy-profile devcics --ssh-profile ssh`
         },
         {
             description: "Push a CICS bundle from the working directory replacing any bundle of the same name that is already deployed",
-            options: `--bundleid mybundle --nodejsapp myapp --startscript server.js --overwrite`
+            options: `--name EXAMPLE --targetdir /u/example/bundles --overwrite`
         }
     ]
 };

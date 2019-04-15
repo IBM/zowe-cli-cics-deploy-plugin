@@ -59,7 +59,7 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
 
 describe("bundle Handler", () => {
     afterEach(() => {
-        jest.resetAllMocks();
+        jest.restoreAllMocks();
     });
     it("should process the current directory", async () => {
         DEFAULT_PARAMTERS.arguments.nosave = "true";

@@ -1,11 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Manifest01 Parse a garbage manifest 1`] = `"Existing CICS Manifest file found with unparsable content."`;
-
-exports[`Manifest01 Parse a malformed manifest 1`] = `"Existing CICS Manifest file found with unparsable content."`;
-
-exports[`Manifest01 Parse a manifest with bad namespace 1`] = `"Existing CICS Manifest file found with unexpected namespace: wibble ."`;
-
 exports[`Manifest01 set a long  bundleId 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"1234567890123456789012345678901234567890123456789012345678901234\\",\\"bundleMajorVer\\":\\"10\\",\\"bundleMinorVer\\":\\"11\\",\\"bundleMicroVer\\":\\"12\\",\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"path1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"path2\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"}]}}"`;
 
 exports[`Manifest01 set a long  bundleId 2`] = `"1234567890123456789012345678901234567890123456789012345678901234"`;

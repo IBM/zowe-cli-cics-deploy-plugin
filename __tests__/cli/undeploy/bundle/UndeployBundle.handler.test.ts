@@ -58,7 +58,7 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
 
 describe("bundle Handler", () => {
     afterEach(() => {
-        jest.resetAllMocks();
+        jest.restoreAllMocks();
     });
     it("should complain with no parameters", async () => {
 

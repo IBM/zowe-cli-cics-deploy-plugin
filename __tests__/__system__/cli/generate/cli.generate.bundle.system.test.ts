@@ -46,7 +46,7 @@ describe("cics-deploy generate bundle", () => {
             fse.removeSync(TEST_APPS_DIR);
         }
         fse.mkdirSync(TEST_APPS_DIR);
-        fse.copySync(__dirname + "../../../../__resources__/apps", TEST_APPS_DIR);
+        fse.copySync(__dirname + "/../../../__resources__/apps", TEST_APPS_DIR);
     });
 
     it("should generate a bundle using defaults from package.json", async () => {

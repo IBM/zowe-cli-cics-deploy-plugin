@@ -33,7 +33,7 @@ export default class PushBundleHandler extends BundleParentHandler implements IC
      */
     public async performAction(params: IHandlerParameters): Promise<string> {
 
-      const pusher = await new BundlePusher(params);
+      const pusher = await new BundlePusher(params, process.cwd());
       return pusher.performPush();
     }
 }

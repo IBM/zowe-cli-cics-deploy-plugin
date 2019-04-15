@@ -24,22 +24,6 @@ describe("MockedFilesystemTests", () => {
       const parser = require("xml2json");
     });
 
-    it("should complain if exceptions are thrown during manifest parsing", () => {
-
-      jest.spyOn(JSON, "parse").mockImplementationOnce(() => { throw new Error("Wibble"); });
-
-      let err: Error;
-      try {
-        const bund = new Bundle("__tests__/__resources__/ExampleBundle01", true, true);
-      }
-      catch (error) {
-        err = error;
-      }
-
-      expect(err).toBeDefined();
-      expect(err.message).toContain("Parsing error occurred reading a CICS manifest file: Wibble");
-    });
-
     it("should tolerate META-INF directory not existing", () => {
         // Mocks for the manifest - META-INF exists
         jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
@@ -533,5 +517,52 @@ describe("MockedFilesystemTests", () => {
         expect(err.message).toContain("An error occurred attempting to write .zosattributes file");
         expect(err.message).toContain(".zosattributes'");
         expect(err.message).toContain("InjectedError");
+    });
+    it("should know if the bundle is valid", () => {
+        jest.spyOn(fs, "accessSync").mockReturnValue(true);
+        jest.spyOn(fs, "existsSync").mockReturnValue(false);
+        jest.spyOn(fs, "writeFileSync").mockReturnValue(true);
+        jest.spyOn(fs, "mkdirSync").mockReturnValue(true);
+
+        let err: Error;
+        let bund;
+        try {
+          bund = new Bundle("__tests__/__resources__/ExampleBundle01", false, false);
+          bund.validate();
+        }
+        catch (error) {
+          err = error;
+        }
+
+        expect(err).toBeDefined();
+        expect(err.message).toContain("No bundle manifest file found");
+        expect(err.message).toContain("cics.xml");
+
+        err = undefined;
+        try {
+          bund.save();
+          bund.validate();
+        }
+        catch (error) {
+          err = error;
+        }
+
+        expect(err).toBeUndefined();
+    });
+
+    it("should complain if exceptions are thrown during manifest parsing", () => {
+
+      jest.spyOn(JSON, "parse").mockImplementationOnce(() => { throw new Error("Wibble"); });
+
+      let err: Error;
+      try {
+        const bund = new Bundle("__tests__/__resources__/ExampleBundle01", true, true);
+      }
+      catch (error) {
+        err = error;
+      }
+
+      expect(err).toBeDefined();
+      expect(err.message).toContain("Parsing error occurred reading a CICS manifest file: Wibble");
     });
 });
