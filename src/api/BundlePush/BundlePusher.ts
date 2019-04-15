@@ -11,7 +11,7 @@
 
 "use strict";
 
-import { IHandlerParameters, AbstractSession, ITaskWithStatus, TaskStage } from "@zowe/imperative";
+import { IHandlerParameters, AbstractSession, ITaskWithStatus, TaskStage, Logger } from "@zowe/imperative";
 import { List, ZosmfSession, SshSession, Shell, Upload, IUploadOptions, ZosFilesAttributes, Create } from "@zowe/cli";
 import { BundleDeployer } from "../BundleDeploy/BundleDeployer";
 import { Bundle } from "../BundleContent/Bundle";
@@ -353,6 +353,11 @@ export class BundlePusher {
 
     if (this.params.arguments.verbose) {
       this.params.response.console.log(status + "\n");
+    }
+
+    if (this.params.arguments.silent === undefined) {
+      const logger = Logger.getAppLogger();
+      logger.debug(status);
     }
   }
 }
