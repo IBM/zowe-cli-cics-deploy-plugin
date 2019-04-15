@@ -48,8 +48,7 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
         progress: {
             startBar: jest.fn((parms) => undefined),
             endBar: jest.fn(() => undefined)
-        },
-        consoleText: ""
+        }
     } as any,
     definition: PushBundleDefinition.PushBundleDefinition,
     fullDefinition: PushBundleDefinition.PushBundleDefinition,
