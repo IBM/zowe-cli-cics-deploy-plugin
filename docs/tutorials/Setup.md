@@ -31,6 +31,7 @@ cics-deploy
     The first time that you build, the script will interactively ask you for the location of your Zowe CLI directory. Subsequent builds will not ask again.
     
     The build script creates symbolic links. On Windows, you might need to have Administrator privileges to create those symbolic links.
+    If you change Node versions, you may need to remove the `node_modules` directory and rerun `npm install` to ensure native dependencies are rebuilt.
 
 ### (Optional) Run the automated tests
 
