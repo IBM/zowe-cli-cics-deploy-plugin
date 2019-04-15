@@ -238,6 +238,29 @@ export class Manifest {
   }
 
   /**
+   * Returns the Bundle's version number.
+   *
+   * @returns {string}
+   * @throws ImperativeError
+   * @memberof Manifest
+   */
+  public getBundleVersion(): string {
+    if (this.manifestAsJson.manifest.bundleMajorVer === undefined) {
+      this.manifestAsJson.manifest.bundleMajorVer = 1;
+    }
+    if (this.manifestAsJson.manifest.bundleMinorVer === undefined) {
+      this.manifestAsJson.manifest.bundleMinorVer = 0;
+    }
+    if (this.manifestAsJson.manifest.bundleMicroVer === undefined) {
+      this.manifestAsJson.manifest.bundleMicroVer = 0;
+    }
+
+    return this.manifestAsJson.manifest.bundleMajorVer + "." +
+           this.manifestAsJson.manifest.bundleMinorVer + "." +
+           this.manifestAsJson.manifest.bundleMicroVer;
+  }
+
+  /**
    * Set the Bundle's version number.
    * @param {number} majorVersion - The major version number.
    * @param {number} minorVersion - The minor version number.

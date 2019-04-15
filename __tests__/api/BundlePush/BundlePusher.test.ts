@@ -325,6 +325,51 @@ describe("BundlePusher01", () => {
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
     });
+    it("should handle custom bundle id", async () => {
+        uploadSpy.mockImplementationOnce(() => { throw new Error("Injected upload error"); });
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\" id=\"InjectedBundleId\" ></manifest>";
+          }
+        });
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
+              "A problem occurred uploading the bundle to the remote directory '/u/ThisDoesNotExist/InjectedBundleId_1.0.0'. Problem is: Injected upload error");
+
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
+        expect(membersSpy).toHaveBeenCalledTimes(0);
+        expect(submitSpy).toHaveBeenCalledTimes(0);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should handle custom bundle id and version", async () => {
+        uploadSpy.mockImplementationOnce(() => { throw new Error("Injected upload error"); });
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\" id=\"InjectedBundleId\" " +
+                   " bundleMajorVer=\"33\" bundleMinorVer=\"22\" bundleMicroVer=\"11\"></manifest>";
+          }
+        });
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
+              "A problem occurred uploading the bundle to the remote directory '/u/ThisDoesNotExist/InjectedBundleId_33.22.11'. Problem is: Injected upload error");
+
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
+        expect(membersSpy).toHaveBeenCalledTimes(0);
+        expect(submitSpy).toHaveBeenCalledTimes(0);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+    });
     it("should handle error with remote npm install", async () => {
         shellSpy.mockImplementation((session: any, cmd: string) => {
           if (cmd.indexOf("npm install") > -1) {

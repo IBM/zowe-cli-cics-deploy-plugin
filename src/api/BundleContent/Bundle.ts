@@ -111,6 +111,16 @@ export class Bundle {
   }
 
   /**
+   * Returns the Bundle's version value.
+   * @returns {string}
+   * @throws ImperativeError
+   * @memberof Bundle
+   */
+  public getVersion(): string {
+    return this.manifest.getBundleVersion();
+  }
+
+  /**
    * Set the Bundle's version number.
    * @param {number} majorVersion - The major version number.
    * @param {number} minorVersion - The minor version number.

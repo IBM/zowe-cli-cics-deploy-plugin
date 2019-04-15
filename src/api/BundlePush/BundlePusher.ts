@@ -44,7 +44,7 @@ export class BundlePusher {
     this.localDirectory = localDirectory;
     this.validateParameters();
 
-    // Construct a bundledir from the targetdir and bundle name
+    // Set an initial bundledir value for validation purposes (we'll replace it with a better value shortly)
     this.params.arguments.bundledir = this.path.posix.join(this.params.arguments.targetdir, this.params.arguments.name);
   }
 
@@ -58,6 +58,12 @@ export class BundlePusher {
     // Check that the current working directory is a CICS bundle
     const bundle = new Bundle(this.localDirectory, true, true);
     bundle.validate();
+
+    // If the bundle has an id, use it in the target directory name
+    if (bundle.getId() !== undefined) {
+      this.params.arguments.bundledir = this.path.posix.join(this.params.arguments.targetdir, bundle.getId()) +
+                                        "_" + bundle.getVersion();
+    }
 
     // Create a zOSMF session
     const zosMFSession = await this.createZosMFSession();
