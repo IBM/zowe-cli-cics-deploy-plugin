@@ -30,29 +30,31 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     response: {
         data: {
             setMessage: jest.fn((setMsgArgs) => {
-                expect("" + setMsgArgs).toMatchSnapshot();
+                throw new Error("Unexpected use of setMessage in Mock: " + setMsgArgs.toString());
             }),
             setObj: jest.fn((setObjArgs) => {
-                expect(setObjArgs).toMatchSnapshot();
+                throw new Error("Unexpected use of setObj in Mock: " + setObjArgs.toString());
             })
         },
         console: {
             log: jest.fn((logs) => {
-                expect("" + logs).toMatchSnapshot();
+                consoleText += logs.toString();
             }),
             error: jest.fn((errors) => {
-                expect("" + errors).toMatchSnapshot();
+                throw new Error("Unexpected use of error log in Mock: " + errors.toString());
             }),
             errorHeader: jest.fn(() => undefined)
         },
         progress: {
             startBar: jest.fn((parms) => undefined),
             endBar: jest.fn(() => undefined)
-        }
+        },
+        consoleText: ""
     } as any,
     definition: PushBundleDefinition.PushBundleDefinition,
     fullDefinition: PushBundleDefinition.PushBundleDefinition,
 };
+let consoleText = "";
 
 // Initialise xml2json before mocking anything
 const parser = require("xml2json");
@@ -87,6 +89,7 @@ describe("BundlePusher01", () => {
           }
         });
         uploadSpy = jest.spyOn(Upload, "dirToUSSDirRecursive").mockImplementation(() => ({}));
+        consoleText = "";
     });
     afterEach(() => {
         jest.restoreAllMocks();
@@ -355,6 +358,40 @@ describe("BundlePusher01", () => {
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
     });
+    it("should handle failure of remote npm install", async () => {
+        shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
+          if (cmd.indexOf("npm install") > -1) {
+            stdoutHandler("Injected stdout error message");
+          }
+          else {
+            return true;
+          }
+        });
+        existsSpy.mockImplementation((data: string) => {
+          if (data.indexOf(".zosattributes") > -1) {
+            return false;
+          }
+          if (data.indexOf("package.json") > -1) {
+            return true;
+          }
+        });
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
+              "A problem occurred attempting to run 'npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
+              "Problem is: The output from the remote command implied that an error occurred.");
+
+        expect(consoleText).toContain("Injected stdout error message");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(membersSpy).toHaveBeenCalledTimes(0);
+        expect(submitSpy).toHaveBeenCalledTimes(0);
+        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+    });
     it("should handle error with remote bundle deploy", async () => {
         submitSpy.mockImplementationOnce(() => { throw new Error("Injected deploy error"); });
 
@@ -388,6 +425,41 @@ describe("BundlePusher01", () => {
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
     });
+    it("should run to completion with verbose output", async () => {
+        const parms = getCommonParmsForPushTests();
+        parms.arguments.verbose = true;
+        shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
+          stdoutHandler("Injected stdout shell message");
+        });
+        existsSpy.mockImplementation((data: string) => {
+          if (data.indexOf(".zosattributes") > -1) {
+            return false;
+          }
+          if (data.indexOf("package.json") > -1) {
+            return true;
+          }
+        });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.", parms);
+
+        expect(consoleText).toContain("Making remote bundle directory");
+        expect(consoleText).toContain("Accessing contents of remote bundle directory");
+        expect(consoleText).toContain("Uploading the bundle to the remote bundle directory");
+        expect(consoleText).toContain("Running npm install for the remote bundle");
+        expect(consoleText).toContain("Injected stdout shell message");
+        expect(consoleText).toContain("Deploying the bundle to CICS");
+        expect(consoleText).toContain("Deployed existing bundle to CICS");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+    });
 });
 
 async function runPushTestWithError(localBundleDir: string, overwrite: boolean, errorText: string, parmsIn?: IHandlerParameters) {
@@ -411,8 +483,14 @@ async function runPushTestWithError(localBundleDir: string, overwrite: boolean, 
   expect(err.message).toContain(errorText);
 }
 
-async function runPushTest(localBundleDir: string, overwrite: boolean, expectedResponse: string) {
-  const parms = getCommonParmsForPushTests();
+async function runPushTest(localBundleDir: string, overwrite: boolean, expectedResponse: string, parmsIn?: IHandlerParameters) {
+  let parms: IHandlerParameters;
+  if (parmsIn === undefined) {
+    parms = getCommonParmsForPushTests();
+  }
+  else {
+    parms = parmsIn;
+  }
   parms.arguments.overwrite = overwrite;
 
   let err: Error;
