@@ -44,7 +44,7 @@ export class BundlePusher {
     this.localDirectory = localDirectory;
     this.validateParameters();
 
-    // Construct a bundledir from the targetdir and bundle name
+    // Set an initial bundledir value for validation purposes (we'll replace it with a better value shortly)
     this.params.arguments.bundledir = this.path.posix.join(this.params.arguments.targetdir, this.params.arguments.name);
   }
 
@@ -58,6 +58,12 @@ export class BundlePusher {
     // Check that the current working directory is a CICS bundle
     const bundle = new Bundle(this.localDirectory, true, true);
     bundle.validate();
+
+    // If the bundle has an id, use it in the target directory name
+    if (bundle.getId() !== undefined) {
+      this.params.arguments.bundledir = this.path.posix.join(this.params.arguments.targetdir, bundle.getId()) +
+                                        "_" + bundle.getVersion();
+    }
 
     // Create a zOSMF session
     const zosMFSession = await this.createZosMFSession();
@@ -243,6 +249,11 @@ export class BundlePusher {
   }
 
   private sshOutput(data: string) {
+    // If verbose output is requested then log SSH output directly to the console
+    if (this.params.arguments.verbose) {
+      this.params.response.console.log(data);
+    }
+
     this.sshOutputText += data;
   }
 
@@ -287,6 +298,17 @@ export class BundlePusher {
     try {
       this.sshOutputText = "";
       const shell = await Shell.executeSshCwd(sshSession, sshCommand, directory, this.sshOutput.bind(this));
+
+      // Did the SSH command work? It's unclear how to tell, but for starters let's look for the word
+      // 'error' in the output text.
+      if (this.sshOutputText.toUpperCase().indexOf("ERROR ") > -1) {
+        // if we've not already logged the output, log it now
+        if (this.params.arguments.verbose !== true)
+        {
+          this.params.response.console.log(this.sshOutputText);
+        }
+        throw new Error("The output from the remote command implied that an error occurred.");
+      }
     }
     catch (error) {
       throw new Error("A problem occurred attempting to run '" + sshCommand + "' in remote directory '" + directory +
@@ -330,7 +352,7 @@ export class BundlePusher {
     this.progressBar.statusMessage = status;
 
     if (this.params.arguments.verbose) {
-      this.params.response.console.log(status);
+      this.params.response.console.log(status + "\n");
     }
   }
 }

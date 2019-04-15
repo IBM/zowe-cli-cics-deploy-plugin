@@ -111,6 +111,16 @@ export class Bundle {
   }
 
   /**
+   * Returns the Bundle's version value.
+   * @returns {string}
+   * @throws ImperativeError
+   * @memberof Bundle
+   */
+  public getVersion(): string {
+    return this.manifest.getBundleVersion();
+  }
+
+  /**
    * Set the Bundle's version number.
    * @param {number} majorVersion - The major version number.
    * @param {number} minorVersion - The minor version number.
@@ -245,12 +255,18 @@ export class Bundle {
     }
 
     const contents = "" +
+          "#z/OS File Attributes Document\n" +
+          "#-----------------------------\n" +
+          "# This document specfies the encodings for the files within\n" +
+          "# the project in a form that is compatible with the\n" +
+          "# 'Zowe files upload dir-to-uss' command.\n" +
+          "#\n" +
           "# Don't upload node_modules\n" +
           "node_modules -\n" +
           "# Don't upload things that start with dots\n" +
           ".* -\n" +
           "\n" +
-          "# Upload images in binary\n" +
+          "# Upload the following file types in binary\n" +
           "*.jpg binary binary\n" +
           "*.png binary binary\n" +
           "*.gif binary binary\n" +

@@ -4,7 +4,7 @@ exports[`BundleDeployer01 should complain if DFHDPLOY ends with an error 1`] = `
 
 exports[`BundleDeployer01 should complain if DFHDPLOY ends with an error 2`] = `"DFHDPLOY stopped processing due to an error."`;
 
-exports[`BundleDeployer01 should complain if SYSTSPRT not found 1`] = `"SYSTSPRT output from DFHDPLOY not found. Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'."`;
+exports[`BundleDeployer01 should complain if SYSTSPRT not found 1`] = `"SYSTSPRT and JESMSGLG output from DFHDPLOY not found. Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'."`;
 
 exports[`BundleDeployer01 should complain if cicshlq not found 1`] = `"Validation of --cicshlq dataset failed: Injected CICSHLQ error"`;
 
@@ -29,6 +29,10 @@ exports[`BundleDeployer01 should complete with warnings  2`] = `"DFHDPLOY comple
 exports[`BundleDeployer01 should deploy successfully 1`] = `"Bundle deployment successful."`;
 
 exports[`BundleDeployer01 should fail with overlong jobcard 1`] = `"--jobcard parameter section cannot be split into 72 character lines: '//         73CHARS=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1'."`;
+
+exports[`BundleDeployer01 should failover to JESMSGLG if SYSTSPRT not found 1`] = `"undefined"`;
+
+exports[`BundleDeployer01 should failover to JESMSGLG if SYSTSPRT not found 2`] = `"DFHDPLOY command completed in error without generating SYSTSPRT output."`;
 
 exports[`BundleDeployer01 should generate deploy JCL for AVAILABLE 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT

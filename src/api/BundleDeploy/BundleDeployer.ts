@@ -343,7 +343,17 @@ export class BundleDeployer {
       }
     }
 
+    // If we haven't found SYSTSPRT then echo JESMSGLG instead
+    for (const file of spoolOutput) {
+      if (file.ddName === "JESMSGLG") {
+        status.stageName = TaskStage.FAILED;
+        // log the error output to the console
+        this.params.response.console.log(file.data);
+        throw new Error("DFHDPLOY command completed in error without generating SYSTSPRT output.");
+      }
+    }
+
     status.stageName = TaskStage.FAILED;
-    throw new Error("SYSTSPRT output from DFHDPLOY not found. Most recent status update: '" + status.statusMessage + "'.");
+    throw new Error("SYSTSPRT and JESMSGLG output from DFHDPLOY not found. Most recent status update: '" + status.statusMessage + "'.");
   }
 }

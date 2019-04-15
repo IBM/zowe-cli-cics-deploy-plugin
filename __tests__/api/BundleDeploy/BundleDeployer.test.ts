@@ -133,6 +133,19 @@ describe("BundleDeployer01", () => {
         expect(listSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(1);
     });
+    it("should failover to JESMSGLG if SYSTSPRT not found", async () => {
+
+        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
+        const listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
+                                                      .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
+        const submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
+                                                   [{ddName: "JESMSGLG", stepName: "DFHDPLOY"}] );
+        await runDeployTestWithError();
+
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+    });
     it("should tolerate empty output from DFHDPLOY", async () => {
 
         const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
