@@ -262,15 +262,15 @@ export class BundleDeployer {
         if (statusWords[2] !== undefined && statusWords[2].indexOf("JOB") === 0) {
            this.jobId = statusWords[2];
            status.statusMessage += " (Processing DFHDPLOY " + action + " action)";
-        }
 
-        // log the jobid for posterity
-        if (this.params.arguments.verbose) {
-          this.params.response.console.log(status.statusMessage + "\n");
-        }
-        if (this.params.arguments.silent === undefined) {
-          const logger = Logger.getAppLogger();
-          logger.debug(status.statusMessage);
+           // log the jobid for posterity
+           if (this.params.arguments.verbose) {
+             this.params.response.console.log(status.statusMessage + "\n");
+           }
+           if (this.params.arguments.silent === undefined) {
+             const logger = Logger.getAppLogger();
+             logger.debug(status.statusMessage);
+           }
         }
       }
     }
