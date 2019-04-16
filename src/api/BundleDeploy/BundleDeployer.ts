@@ -30,6 +30,7 @@ export class BundleDeployer {
   private PROGRESS_BAR_MAX = 67;
   private parmsValidated: boolean = false;
   private hlqsValidated: boolean = false;
+  private jobId: string;
 
   /**
    * Constructor for a BundleDeployer.
@@ -248,16 +249,37 @@ export class BundleDeployer {
     this.hlqsValidated = true;
   }
 
-  private updateProgressBar(status: ITaskWithStatus) {
+  private updateProgressBar(status: ITaskWithStatus, action: string) {
     // Increment the progress by 1%. This will refresh what the user sees
     // on the console.
     status.percentComplete = status.percentComplete + 1;
+
+    // Have a look at the status message for the progress bar, has it been updated with
+    // the jobid yet? If so, parse it out and refresh the message.
+    if (this.jobId === "UNKNOWN") {
+      const statusWords = status.statusMessage.split(" ");
+      if (statusWords.length >= 2) {
+        if (statusWords[2] !== undefined && statusWords[2].indexOf("JOB") === 0) {
+           this.jobId = statusWords[2];
+           status.statusMessage += " (Processing DFHDPLOY " + action + " action)";
+        }
+
+        // log the jobid for posterity
+        if (this.params.arguments.verbose) {
+          this.params.response.console.log(status.statusMessage + "\n");
+        }
+        if (this.params.arguments.silent === undefined) {
+          const logger = Logger.getAppLogger();
+          logger.debug(status.statusMessage);
+        }
+      }
+    }
 
     // Continue iterating on progress updates until we've reached the max value,
     // or until the processing has completed.
     if (status.percentComplete < this.PROGRESS_BAR_MAX &&
         status.stageName === TaskStage.IN_PROGRESS) {
-      setTimeout(this.updateProgressBar.bind(this), this.PROGRESS_BAR_INTERVAL, status);
+      setTimeout(this.updateProgressBar.bind(this), this.PROGRESS_BAR_INTERVAL, status, action);
     }
   }
 
@@ -267,11 +289,12 @@ export class BundleDeployer {
                                       statusMessage: "Submitting DFHDPLOY JCL for the " + action + " action",
                                       stageName: TaskStage.IN_PROGRESS };
     this.params.response.progress.startBar({task: status});
+    this.jobId = "UNKNOWN";
 
     // Refresh the progress bar by 1% every second or so up to a max of 67%.
     // SubmitJobs will initialise it to 30% and set it to 70% when it
     // completes, we tweak it every so often until then for purely cosmetic purposes.
-    setTimeout(this.updateProgressBar.bind(this), this.PROGRESS_BAR_INTERVAL, status);
+    setTimeout(this.updateProgressBar.bind(this), this.PROGRESS_BAR_INTERVAL, status, action);
 
     try {
       spoolOutput = await SubmitJobs.submitJclString(session, jcl, {
@@ -282,7 +305,7 @@ export class BundleDeployer {
     }
     catch (error) {
       status.stageName = TaskStage.FAILED;
-      throw new Error("Failure occurred submitting DFHDPLOY JCL: '" + error.message +
+      throw new Error("Failure occurred submitting DFHDPLOY JCL for JOBID " + this.jobId + ": '" + error.message +
                       "'. Most recent status update: '" + status.statusMessage + "'.");
     }
 
@@ -293,7 +316,8 @@ export class BundleDeployer {
 
         if (file.data === undefined || file.data.length === 0) {
           status.stageName = TaskStage.FAILED;
-          throw new Error("DFHDPLOY did not generate any output. Most recent status update: '" + status.statusMessage + "'.");
+          throw new Error("DFHDPLOY did not generate any output for JOBID " + this.jobId +
+            ". Most recent status update: '" + status.statusMessage + "'.");
         }
 
         // log the full output for serviceability to the log
@@ -311,7 +335,7 @@ export class BundleDeployer {
           status.stageName = TaskStage.FAILED;
           // log the error output to the console
           this.params.response.console.log(file.data);
-          throw new Error("DFHDPLOY stopped processing due to an error.");
+          throw new Error("DFHDPLOY stopped processing for JOBID " + this.jobId + " due to an error.");
         }
         if (file.data.indexOf("DFHRL2043I") > -1) {
           status.stageName = TaskStage.COMPLETE;
@@ -339,7 +363,7 @@ export class BundleDeployer {
         status.stageName = TaskStage.FAILED;
         // log the error output to the console
         this.params.response.console.log(file.data);
-        throw new Error("DFHDPLOY command completed, but status cannot be determined.");
+        throw new Error("DFHDPLOY command completed for JOBID " + this.jobId + ", but status cannot be determined.");
       }
     }
 
@@ -349,11 +373,12 @@ export class BundleDeployer {
         status.stageName = TaskStage.FAILED;
         // log the error output to the console
         this.params.response.console.log(file.data);
-        throw new Error("DFHDPLOY command completed in error without generating SYSTSPRT output.");
+        throw new Error("DFHDPLOY command completed in error for JOBID " + this.jobId + " without generating SYSTSPRT output.");
       }
     }
 
     status.stageName = TaskStage.FAILED;
-    throw new Error("SYSTSPRT and JESMSGLG output from DFHDPLOY not found. Most recent status update: '" + status.statusMessage + "'.");
+    throw new Error("SYSTSPRT and JESMSGLG output from DFHDPLOY not found for JOBID " + this.jobId +
+                    ". Most recent status update: '" + status.statusMessage + "'.");
   }
 }

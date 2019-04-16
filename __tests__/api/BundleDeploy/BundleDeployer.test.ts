@@ -10,7 +10,7 @@
 */
 
 import { BundleDeployer } from "../../../src/api/BundleDeploy/BundleDeployer";
-import { IHandlerParameters } from "@zowe/imperative";
+import { IHandlerParameters, TaskStage } from "@zowe/imperative";
 import * as DeployBundleDefinition from "../../../src/cli/deploy/bundle/DeployBundle.definition";
 import * as fse from "fs-extra";
 import { ZosmfSession, SubmitJobs, List } from "@zowe/cli";
@@ -54,67 +54,106 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     fullDefinition: DeployBundleDefinition.DeployBundleDefinition,
 };
 
+
+let createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementation(() => ({}));
+let listSpy = jest.spyOn(List, "allMembers").mockImplementation(() => ({}));
+let submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() => ({}));
+
+
 describe("BundleDeployer01", () => {
 
+    beforeEach(() => {
+        createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementation(() => ({}));
+        listSpy = jest.spyOn(List, "allMembers").mockImplementation(() => ( { val: "DFHDPLOY EYU9ABSI" }));
+        submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() => ({}));
+    });
     afterEach(() => {
         jest.restoreAllMocks();
     });
     it("should complain with missing zOSMF profile for deploy", async () => {
-        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => { throw new Error( "Injected Create error" ); });
+        createSpy.mockImplementationOnce(() => { throw new Error( "Injected Create error" ); });
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain with missing zOSMF profile for undeploy", async () => {
-        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => { throw new Error( "Injected Create error" ); });
+        createSpy.mockImplementationOnce(() => { throw new Error( "Injected Create error" ); });
         await runUndeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if cicshlq not found", async () => {
-
-        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
-        const listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => { throw new Error( "Injected CICSHLQ error" ); });
+        listSpy.mockImplementationOnce(() => { throw new Error( "Injected CICSHLQ error" ); });
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if cicshlq not found2", async () => {
-
-        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
-        const listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val1: "wibble"}));
+        listSpy.mockImplementationOnce(() => ( { val1: "wibble"}));
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if cpsmhlq not found", async () => {
-
-        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
-        const listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val1: "DFHDPLOY"}))
-                                                      .mockImplementationOnce(() => { throw new Error( "Injected CPSMHLQ error" ); });
+        listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val1: "DFHDPLOY"}))
+                                                .mockImplementationOnce(() => { throw new Error( "Injected CPSMHLQ error" ); });
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(2);
     });
     it("should complain if cpsmhlq not found2", async () => {
-
-        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
-        const listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
-                                                      .mockImplementationOnce(() => ( { val: "wibble" }));
+        listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
+                                                .mockImplementationOnce(() => ( { val: "wibble" }));
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(2);
     });
     it("should handle failure during submitjobs processing", async () => {
+        submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() => { throw new Error( "Injected Submit error" ); });
+        await runDeployTestWithError();
 
-        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
-        const listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
-                                                      .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
-        const submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() => { throw new Error( "Injected Submit error" ); });
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should update the progress bar", async () => {
+        submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce((session: any, jcl: string, parms: any) => {
+                parms.task.statusMessage = "Waiting for JOB12345 to enter OUTPUT";
+                parms.task.stageName = TaskStage.IN_PROGRESS;
+                const expectedMsg = "Waiting for JOB12345 to enter OUTPUT (Processing DFHDPLOY DEPLOY action)";
+                // wait 1.5 seconds
+                return new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    // Now check that the status message has been updated by the progress bar processing
+                    if (parms.task.statusMessage !== expectedMsg) {
+                      throw new Error("Failed to find the expected message. Got: '" + parms.task.statusMessage + "' expected " +
+                      expectedMsg);
+                    }
+                    resolve();
+                  }, 1500);
+                });
+              });
+        await runDeployTestWithError();
+
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should include the JOBID in an error", async () => {
+        submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce((session: any, jcl: string, parms: any) => {
+                parms.task.statusMessage = "Waiting for JOB12345 to enter OUTPUT";
+                parms.task.stageName = TaskStage.IN_PROGRESS;
+                // wait 1.5 seconds
+                return new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    reject(new Error("Injected submit error"));
+                  }, 1500);
+                });
+              });
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
@@ -122,11 +161,7 @@ describe("BundleDeployer01", () => {
         expect(submitSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if SYSTSPRT not found", async () => {
-
-        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
-        const listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
-                                                      .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
-        const submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() => [{}] );
+        submitSpy.mockImplementationOnce(() => [{}] );
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
@@ -134,12 +169,7 @@ describe("BundleDeployer01", () => {
         expect(submitSpy).toHaveBeenCalledTimes(1);
     });
     it("should failover to JESMSGLG if SYSTSPRT not found", async () => {
-
-        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
-        const listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
-                                                      .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
-        const submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
-                                                   [{ddName: "JESMSGLG", stepName: "DFHDPLOY"}] );
+        submitSpy.mockImplementationOnce(() => [{ddName: "JESMSGLG", stepName: "DFHDPLOY"}] );
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
@@ -147,12 +177,7 @@ describe("BundleDeployer01", () => {
         expect(submitSpy).toHaveBeenCalledTimes(1);
     });
     it("should tolerate empty output from DFHDPLOY", async () => {
-
-        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
-        const listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
-                                                      .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
-        const submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
-                                                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY"}] );
+        submitSpy.mockImplementationOnce(() => [{ddName: "SYSTSPRT", stepName: "DFHDPLOY"}] );
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
@@ -160,12 +185,7 @@ describe("BundleDeployer01", () => {
         expect(submitSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if status can't be determined", async () => {
-
-        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
-        const listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
-                                                      .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
-        const submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
-                                                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: " "}] );
+        submitSpy.mockImplementationOnce(() => [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: " "}] );
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
@@ -173,12 +193,7 @@ describe("BundleDeployer01", () => {
         expect(submitSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if DFHDPLOY ends with an error", async () => {
-
-        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
-        const listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
-                                                      .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
-        const submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
-                                                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2055I"}] );
+        submitSpy.mockImplementationOnce(() => [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2055I"}] );
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
@@ -186,12 +201,7 @@ describe("BundleDeployer01", () => {
         expect(submitSpy).toHaveBeenCalledTimes(1);
     });
     it("should complete with warnings ", async () => {
-
-        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
-        const listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
-                                                      .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
-        const submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
-                                                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2043I"}] );
+        submitSpy.mockImplementationOnce(() => [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2043I"}] );
 
         await runDeployTest();
 
@@ -200,12 +210,7 @@ describe("BundleDeployer01", () => {
         expect(submitSpy).toHaveBeenCalledTimes(1);
     });
     it("should deploy successfully", async () => {
-
-        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
-        const listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
-                                                      .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
-        const submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
-                                                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
+        submitSpy.mockImplementationOnce(() => [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
 
         await runDeployTest();
 
@@ -214,12 +219,7 @@ describe("BundleDeployer01", () => {
         expect(submitSpy).toHaveBeenCalledTimes(1);
     });
     it("should undeploy successfully", async () => {
-
-        const createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
-        const listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
-                                                      .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
-        const submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
-                                                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2037I"}] );
+        submitSpy.mockImplementationOnce(() => [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2037I"}] );
 
         await runUndeployTest();
 
@@ -579,29 +579,21 @@ function setCommonParmsForUndeployTests(parms: IHandlerParameters) {
 }
 
 async function testDeployJCL(parms: IHandlerParameters) {
-  const spy1 = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
-  const spy2 = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
-                                             .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
-  const spy3 = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
-                                              [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
+  submitSpy.mockImplementationOnce(() => [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
 
   const bd = new BundleDeployer(parms);
   const response = await bd.deployBundle();
 
   // Check the generated JCL
-  expect(spy3.mock.calls[spy3.mock.calls.length - 1][1]).toMatchSnapshot();
+  expect(submitSpy.mock.calls[submitSpy.mock.calls.length - 1][1]).toMatchSnapshot();
 }
 
 async function testUndeployJCL(parms: IHandlerParameters) {
-  const spy1 = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementationOnce(() => ({}));
-  const spy2 = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
-                                             .mockImplementationOnce(() => ( { val: "EYU9ABSI" }));
-  const spy3 = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce(() =>
-                                              [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2037I"}] );
+  submitSpy.mockImplementationOnce(() => [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2037I"}] );
 
   const bd = new BundleDeployer(parms);
   const response = await bd.undeployBundle();
 
   // Check the generated JCL
-  expect(spy3.mock.calls[spy3.mock.calls.length - 1][1]).toMatchSnapshot();
+  expect(submitSpy.mock.calls[submitSpy.mock.calls.length - 1][1]).toMatchSnapshot();
 }

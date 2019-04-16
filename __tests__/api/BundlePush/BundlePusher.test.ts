@@ -440,7 +440,7 @@ describe("BundlePusher01", () => {
         submitSpy.mockImplementationOnce(() => { throw new Error("Injected deploy error"); });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "Failure occurred submitting DFHDPLOY JCL: 'Injected deploy error'. " +
+              "Failure occurred submitting DFHDPLOY JCL for JOBID UNKNOWN: 'Injected deploy error'. " +
               "Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'.");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
