@@ -134,7 +134,7 @@ exports[`cics-deploy generate bundle paramters should customise port in generate
 # %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
 # %INCLUDE=&CONFIGROOT;/debug.profile
 #
-%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsprofiles/general.profile
 #
 #**********************************************************************
 #
@@ -314,7 +314,7 @@ exports[`cics-deploy generate bundle should generate a bundle using defaults fro
 # %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
 # %INCLUDE=&CONFIGROOT;/debug.profile
 #
-%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsprofiles/general.profile
 #
 #**********************************************************************
 #

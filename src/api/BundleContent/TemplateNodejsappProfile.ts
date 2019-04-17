@@ -86,7 +86,7 @@ export class TemplateNodejsappProfile {
     "# %INCLUDE=&USSCONFIG;/nodejs/sdk.profile\n" +
     "# %INCLUDE=&CONFIGROOT;/debug.profile\n" +
     "#\n" +
-    "%INCLUDE=&USSCONFIG;/nodejsapps/general.profile\n" +
+    "%INCLUDE=&USSCONFIG;/nodejsprofiles/general.profile\n" +
     "#\n" +
     "#**********************************************************************\n" +
     "#\n" +
