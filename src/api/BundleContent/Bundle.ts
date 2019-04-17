@@ -23,6 +23,37 @@ import { NodejsappBundlePart } from "./NodejsappBundlePart";
  */
 export class Bundle {
 
+  /**
+   * Get a template version of the .zosattributes file
+   * @returns {string}
+   * @memberof Bundle
+   */
+  public static getTemplateZosAttributesFile(): string {
+    return `#z/OS File Attributes Document
+#-----------------------------
+# This document specfies the encodings for the files within
+# the project in a form that is compatible with the
+# 'Zowe files upload dir-to-uss' command.
+#
+# Don't upload node_modules
+node_modules -
+# Don't upload things that start with dots
+.* -
+
+# Upload the following file types in binary
+*.jpg binary binary
+*.png binary binary
+*.gif binary binary
+*.zip binary binary
+*.eot binary binary
+*.svg binary binary
+*.ttf binary binary
+*.woff binary binary
+
+# Convert CICS Node.js profiles to EBCDIC
+*.profile ISO8859-1 IBM-1047`;
+  }
+
   private path = require("path");
   private fs = require("fs");
   private manifest: Manifest;
@@ -254,30 +285,7 @@ export class Bundle {
       return;
     }
 
-    const contents = "" +
-          "#z/OS File Attributes Document\n" +
-          "#-----------------------------\n" +
-          "# This document specfies the encodings for the files within\n" +
-          "# the project in a form that is compatible with the\n" +
-          "# 'Zowe files upload dir-to-uss' command.\n" +
-          "#\n" +
-          "# Don't upload node_modules\n" +
-          "node_modules -\n" +
-          "# Don't upload things that start with dots\n" +
-          ".* -\n" +
-          "\n" +
-          "# Upload the following file types in binary\n" +
-          "*.jpg binary binary\n" +
-          "*.png binary binary\n" +
-          "*.gif binary binary\n" +
-          "*.zip binary binary\n" +
-          "*.eot binary binary\n" +
-          "*.svg binary binary\n" +
-          "*.ttf binary binary\n" +
-          "*.woff binary binary\n" +
-          "\n" +
-          "# Convert CICS Node.js profiles to EBCDIC\n" +
-          "*.profile ISO8859-1 IBM-1047";
+    const contents = Bundle.getTemplateZosAttributesFile();
 
     // Write the zosattributes file
     try {

@@ -324,6 +324,50 @@ describe("BundlePusher01", () => {
         expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(2);
     });
+    it("should load zosattribs file", async () => {
+        existsSpy.mockImplementation((data: string) => {
+          if (data.indexOf(".zosattributes") > -1) {
+            return true;
+          }
+        });
+        readSpy.mockImplementation((data: string) => {
+          if (data.indexOf(".zosattributes") > -1) {
+            return "";
+          }
+          else if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\"></manifest>";
+          }
+        });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed.");
+
+        expect(consoleText).not.toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied.");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(2);
+        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(readSpy).toHaveBeenCalledTimes(2);
+    });
+    it("should use a default zosattribs file", async () => {
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed.");
+
+        expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied.");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(2);
+        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+    });
     it("should handle error with bundle upload", async () => {
         uploadSpy.mockImplementationOnce(() => { throw new Error("Injected upload error"); });
 

@@ -306,8 +306,8 @@ export class BundlePusher {
       const shell = await Shell.executeSshCwd(sshSession, sshCommand, directory, this.sshOutput.bind(this));
 
       // Did the SSH command work? It's unclear how to tell, but for starters let's look for common
-      // signifiers in the output text. Note that FSUM9195 implies that we've tried to delete an
-      // empty directory - that's permitted.
+      // signifiers in the output text. Note that FSUM9195 implies that we've tried to delete the
+      // contents of an empty directory - that's not a problem.
       const upperCaseOutputText = this.sshOutputText.toUpperCase();
       if (upperCaseOutputText.indexOf("ERROR ") > -1 ||
           (upperCaseOutputText.indexOf("FSUM") > -1 &&
@@ -354,7 +354,17 @@ export class BundlePusher {
                        "'. Problem is: " + error.message);
       }
     }
-    return undefined;
+
+    // A project specific .zosattributes has not been found, so use a default
+    const warningMsg = "WARNING: No .zosAttributes file found in the bundle directory, default values will be applied.";
+    this.params.response.progress.endBar();
+    this.params.response.console.log(warningMsg);
+    if (this.params.arguments.silent === undefined) {
+      const logger = Logger.getAppLogger();
+      logger.warn(warningMsg);
+    }
+    this.params.response.progress.startBar({task: this.progressBar});
+    return new ZosFilesAttributes(Bundle.getTemplateZosAttributesFile());
   }
 
   private updateStatus(status: string) {
