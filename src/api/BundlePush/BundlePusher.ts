@@ -292,7 +292,12 @@ export class BundlePusher {
 
   private async runNpmInstall(sshSession: SshSession) {
     this.updateStatus("Running npm install for the remote bundle");
-    await this.runSshCommandInRemoteDirectory(sshSession, this.params.arguments.bundledir, "npm install");
+
+    // Attempt to set the PATH for the default location of Node on z/OS. Note,
+    // we might be able to improve this by looking for the location via the
+    // architected .profile within the USSCONFIG structure.
+    const setNodehomeCmd = "export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\"";
+    await this.runSshCommandInRemoteDirectory(sshSession, this.params.arguments.bundledir, setNodehomeCmd + " && npm install");
   }
 
   private async runSshCommandInRemoteDirectory(sshSession: SshSession, directory: string, sshCommand: string) {
@@ -300,10 +305,14 @@ export class BundlePusher {
       this.sshOutputText = "";
       const shell = await Shell.executeSshCwd(sshSession, sshCommand, directory, this.sshOutput.bind(this));
 
-      // Did the SSH command work? It's unclear how to tell, but for starters let's look for the word
-      // 'error' in the output text.
-      if (this.sshOutputText.toUpperCase().indexOf("ERROR ") > -1 ||
-          this.sshOutputText.toUpperCase().indexOf("FSUM") > -1 ) {
+      // Did the SSH command work? It's unclear how to tell, but for starters let's look for common
+      // signifiers in the output text. Note that FSUM9195 implies that we've tried to delete an
+      // empty directory - that's permitted.
+      const upperCaseOutputText = this.sshOutputText.toUpperCase();
+      if (upperCaseOutputText.indexOf("ERROR ") > -1 ||
+          (upperCaseOutputText.indexOf("FSUM") > -1 &&
+           upperCaseOutputText.indexOf("FSUM9195") === -1) ||
+          upperCaseOutputText.indexOf("ERR!") > -1 ) {
         // if we've not already logged the output, log it now
         if (this.params.arguments.verbose !== true)
         {
