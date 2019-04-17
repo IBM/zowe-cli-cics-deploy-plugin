@@ -436,6 +436,40 @@ describe("BundlePusher01", () => {
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
     });
+    it("should handle failure of remote npm install with FSUM message", async () => {
+        shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
+          if (cmd.indexOf("npm install") > -1) {
+            stdoutHandler("Injected FSUM7351 not found message");
+          }
+          else {
+            return true;
+          }
+        });
+        existsSpy.mockImplementation((data: string) => {
+          if (data.indexOf(".zosattributes") > -1) {
+            return false;
+          }
+          if (data.indexOf("package.json") > -1) {
+            return true;
+          }
+        });
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
+              "A problem occurred attempting to run 'npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
+              "Problem is: The output from the remote command implied that an error occurred.");
+
+        expect(consoleText).toContain("Injected FSUM7351 not found message");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(membersSpy).toHaveBeenCalledTimes(0);
+        expect(submitSpy).toHaveBeenCalledTimes(0);
+        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+    });
     it("should handle error with remote bundle deploy", async () => {
         submitSpy.mockImplementationOnce(() => { throw new Error("Injected deploy error"); });
 

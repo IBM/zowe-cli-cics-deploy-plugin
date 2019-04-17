@@ -302,7 +302,8 @@ export class BundlePusher {
 
       // Did the SSH command work? It's unclear how to tell, but for starters let's look for the word
       // 'error' in the output text.
-      if (this.sshOutputText.toUpperCase().indexOf("ERROR ") > -1) {
+      if (this.sshOutputText.toUpperCase().indexOf("ERROR ") > -1 ||
+          this.sshOutputText.toUpperCase().indexOf("FSUM") > -1 ) {
         // if we've not already logged the output, log it now
         if (this.params.arguments.verbose !== true)
         {
