@@ -251,9 +251,10 @@ export class BundlePusher {
   private sshOutput(data: string) {
     // If verbose output is requested then log SSH output directly to the console
     if (this.params.arguments.verbose) {
-      this.params.response.console.log(data);
+      this.params.response.progress.endBar();
+      this.params.response.console.log(Buffer.from(data));
+      this.params.response.progress.startBar({task: this.progressBar});
     }
-
     this.sshOutputText += data;
   }
 

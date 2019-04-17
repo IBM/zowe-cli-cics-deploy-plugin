@@ -263,6 +263,7 @@ export class BundleDeployer {
            this.jobId = statusWords[2];
            status.statusMessage += " (Processing DFHDPLOY " + action + " action)";
 
+           this.params.response.progress.endBar();
            // log the jobid for posterity
            if (this.params.arguments.verbose) {
              this.params.response.console.log(status.statusMessage + "\n");
@@ -271,6 +272,7 @@ export class BundleDeployer {
              const logger = Logger.getAppLogger();
              logger.debug(status.statusMessage);
            }
+           this.params.response.progress.startBar({task: status});
         }
       }
     }
