@@ -118,7 +118,19 @@ const config: IImperativeConfig = {
             }
           },
           required: ["cicsplex", "scope", "cicshlq", "cpsmhlq", "jobcard"]
-        }
+        },
+        createProfileExamples: [
+          {
+            options: "example1 --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550",
+            description: "Create a cics-deploy profile called 'example1' to connect to a CPSM managed group of CICS regions " +
+                         "within the TESTGRP1 scope of a cicsplex named PLEX1"
+          },
+          {
+            options: "example2 --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --resgroup BUNDGRP1",
+            description: "Create a cics-deploy profile called 'example2' to connect to the same CPSM managed group of regions, " +
+                         "and identify a BAS resource group BUNDGRP1 in which to store resource definitions"
+          }
+        ]
       }
     ]
 };
