@@ -81,7 +81,7 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart 3`] = `
 # %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
 # %INCLUDE=&CONFIGROOT;/debug.profile
 #
-%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsprofiles/general.profile
 #
 #**********************************************************************
 #
@@ -211,7 +211,7 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart 4`] = `
 # %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
 # %INCLUDE=&CONFIGROOT;/debug.profile
 #
-%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsprofiles/general.profile
 #
 #**********************************************************************
 #
@@ -348,7 +348,7 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with bad chars 3`] =
 # %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
 # %INCLUDE=&CONFIGROOT;/debug.profile
 #
-%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsprofiles/general.profile
 #
 #**********************************************************************
 #
@@ -478,7 +478,7 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with bad chars 4`] =
 # %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
 # %INCLUDE=&CONFIGROOT;/debug.profile
 #
-%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsprofiles/general.profile
 #
 #**********************************************************************
 #
@@ -615,7 +615,7 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with long name 3`] =
 # %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
 # %INCLUDE=&CONFIGROOT;/debug.profile
 #
-%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsprofiles/general.profile
 #
 #**********************************************************************
 #
@@ -745,7 +745,7 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with long name 4`] =
 # %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
 # %INCLUDE=&CONFIGROOT;/debug.profile
 #
-%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsprofiles/general.profile
 #
 #**********************************************************************
 #
@@ -882,7 +882,7 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with missing port nu
 # %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
 # %INCLUDE=&CONFIGROOT;/debug.profile
 #
-%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsprofiles/general.profile
 #
 #**********************************************************************
 #
@@ -1011,7 +1011,7 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with missing port nu
 # %INCLUDE=&USSCONFIG;/nodejs/sdk.profile
 # %INCLUDE=&CONFIGROOT;/debug.profile
 #
-%INCLUDE=&USSCONFIG;/nodejsapps/general.profile
+%INCLUDE=&USSCONFIG;/nodejsprofiles/general.profile
 #
 #**********************************************************************
 #

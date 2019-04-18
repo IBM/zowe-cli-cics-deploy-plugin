@@ -280,6 +280,22 @@ describe("BundlePusher01", () => {
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(1);
     });
+    it("should tolerate delete of empty directory", async () => {
+        shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
+          stdoutHandler("Injected FSUM9195 empty directory message");
+        });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed.");
+
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(2);
+    });
     it("should handle error with attribs file", async () => {
         existsSpy.mockImplementation((data: string) => {
           if (data.indexOf(".zosattributes") > -1) {
@@ -307,6 +323,50 @@ describe("BundlePusher01", () => {
         expect(submitSpy).toHaveBeenCalledTimes(1);
         expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(2);
+    });
+    it("should load zosattribs file", async () => {
+        existsSpy.mockImplementation((data: string) => {
+          if (data.indexOf(".zosattributes") > -1) {
+            return true;
+          }
+        });
+        readSpy.mockImplementation((data: string) => {
+          if (data.indexOf(".zosattributes") > -1) {
+            return "";
+          }
+          else if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\"></manifest>";
+          }
+        });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed.");
+
+        expect(consoleText).not.toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied.");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(2);
+        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(readSpy).toHaveBeenCalledTimes(2);
+    });
+    it("should use a default zosattribs file", async () => {
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed.");
+
+        expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied.");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(2);
+        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(readSpy).toHaveBeenCalledTimes(1);
     });
     it("should handle error with bundle upload", async () => {
         uploadSpy.mockImplementationOnce(() => { throw new Error("Injected upload error"); });
@@ -421,10 +481,81 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "A problem occurred attempting to run 'npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
+              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\" " +
+              "&& npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
               "Problem is: The output from the remote command implied that an error occurred.");
 
         expect(consoleText).toContain("Injected stdout error message");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(membersSpy).toHaveBeenCalledTimes(0);
+        expect(submitSpy).toHaveBeenCalledTimes(0);
+        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should handle failure of remote npm install with FSUM message", async () => {
+        shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
+          if (cmd.indexOf("npm install") > -1) {
+            stdoutHandler("Injected FSUM7351 not found message");
+          }
+          else {
+            return true;
+          }
+        });
+        existsSpy.mockImplementation((data: string) => {
+          if (data.indexOf(".zosattributes") > -1) {
+            return false;
+          }
+          if (data.indexOf("package.json") > -1) {
+            return true;
+          }
+        });
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
+              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\" " +
+              "&& npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
+              "Problem is: The output from the remote command implied that an error occurred.");
+
+        expect(consoleText).toContain("Injected FSUM7351 not found message");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(membersSpy).toHaveBeenCalledTimes(0);
+        expect(submitSpy).toHaveBeenCalledTimes(0);
+        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should handle failure of remote npm install with node error", async () => {
+        shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
+          if (cmd.indexOf("npm install") > -1) {
+            stdoutHandler("Injected npm ERR! Exit status 1 message");
+          }
+          else {
+            return true;
+          }
+        });
+        existsSpy.mockImplementation((data: string) => {
+          if (data.indexOf(".zosattributes") > -1) {
+            return false;
+          }
+          if (data.indexOf("package.json") > -1) {
+            return true;
+          }
+        });
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
+              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\" " +
+              "&& npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
+              "Problem is: The output from the remote command implied that an error occurred.");
+
+        expect(consoleText).toContain("Injected npm ERR! Exit status 1 message");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
         expect(createSpy).toHaveBeenCalledTimes(1);
