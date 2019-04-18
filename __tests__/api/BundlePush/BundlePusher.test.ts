@@ -10,7 +10,7 @@
 */
 
 import { BundlePusher } from "../../../src/api/BundlePush/BundlePusher";
-import { IHandlerParameters } from "@zowe/imperative";
+import { IHandlerParameters, ImperativeError, IImperativeError } from "@zowe/imperative";
 import * as PushBundleDefinition from "../../../src/cli/push/bundle/PushBundle.definition";
 import * as fse from "fs-extra";
 import * as fs from "fs";
@@ -185,6 +185,45 @@ describe("BundlePusher01", () => {
         createSpy.mockImplementationOnce(() => { throw new Error( "Injected Create error" ); });
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01",  false,
               "A problem occurred attempting to create directory '/u/ThisDoesNotExist/12345678'. Problem is: Injected Create error");
+
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should complain if remote target dir can't be found", async () => {
+        createSpy.mockImplementationOnce(() => {
+          const cause = "{ \"category\": 8, \"rc\": -1, \"reason\": 93651005 }";
+          const impError: IImperativeError = { msg: "Injected Create error", causeErrors: cause };
+          throw new ImperativeError(impError);
+        });
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01",  false,
+          "The target directory does not exist, consider creating it by issuing: \nzowe zos-uss issue ssh \"mkdir -p /u/ThisDoesNotExist\"");
+
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should complain if remote bundle dir not auth", async () => {
+        createSpy.mockImplementationOnce(() => {
+          const cause = "{ \"category\": 8, \"rc\": -1, \"reason\": -276865003 }";
+          const impError: IImperativeError = { msg: "Injected Create error", causeErrors: cause };
+          throw new ImperativeError(impError);
+        });
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01",  false,
+          "You are not authorized to create the target bundle directory '/u/ThisDoesNotExist/12345678'.");
+
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should not complain if remote bundle dir already exists", async () => {
+        createSpy.mockImplementationOnce(() => {
+          const cause = "{ \"category\": 1, \"rc\": 4, \"reason\": 19 }";
+          const impError: IImperativeError = { msg: "Injected Create error", causeErrors: cause };
+          throw new ImperativeError(impError);
+        });
+        await runPushTest("__tests__/__resources__/ExampleBundle01",  false,
+              "PUSH operation completed.");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);

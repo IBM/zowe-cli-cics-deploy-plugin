@@ -263,23 +263,38 @@ export class BundlePusher {
 
     const WARNING = 4;
     const ALREADY_EXISTS = 19;
+    const EIGHT = 8;
+    const TARGET_DIR_NOT_EXIST = 93651005;
+    const NO_PERMISSION = -276865003;
     try {
       await Create.uss(zosMFSession, this.params.arguments.bundledir, "directory");
     }
     catch (error) {
-      try {
-        const json = JSON.parse(error.causeErrors);
-        if (json.category === 1 &&
-            json.rc === WARNING &&
-            json.reason === ALREADY_EXISTS) {
-          // if it already exists, no worries
-          return;
+      if (error.causeErrors !== undefined)
+      {
+        const cause = JSON.parse(error.causeErrors);
+
+        // Special case some known errors
+        if (cause !== undefined) {
+          if (cause.category === 1 &&
+              cause.rc === WARNING &&
+              cause.reason === ALREADY_EXISTS) {
+            // if it already exists, no worries
+            return;
+          }
+          if (cause.category === EIGHT &&
+              cause.rc === -1 &&
+              cause.reason === TARGET_DIR_NOT_EXIST) {
+            throw new Error("The target directory does not exist, consider creating it by issuing: \n" +
+                            "zowe zos-uss issue ssh \"mkdir -p " + this.params.arguments.targetdir + "\"");
+          }
+          if (cause.category === EIGHT &&
+              cause.rc === -1 &&
+              cause.reason === NO_PERMISSION) {
+            throw new Error("You are not authorized to create the target bundle directory '" + this.params.arguments.bundledir + "'.");
+          }
         }
       }
-      catch (innerError) {
-        // If this occurs we probably didn't receive an ImperativeError
-      }
-
       throw new Error("A problem occurred attempting to create directory '" + this.params.arguments.bundledir + "'. " +
                       "Problem is: " + error.message);
     }
