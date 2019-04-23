@@ -70,11 +70,11 @@ export class BundlePusher {
     // Create an SSH session
     const sshSession = await this.createSshSession();
 
-    // Start a progress bar
+    // Start a progress bar (but only in non-verbose mode)
     this.progressBar = { percentComplete: 0,
                          statusMessage: "Starting Push operation",
                          stageName: TaskStage.IN_PROGRESS };
-    this.params.response.progress.startBar({task: this.progressBar});
+    this.startProgressBar();
 
     // Attempt to make the target bundledir
     await this.makeBundleDir(zosMFSession);
@@ -103,7 +103,7 @@ export class BundlePusher {
     // Run DFHDPLOY to install the bundle
     await this.deployBundle(zosMFSession, bd);
 
-    this.params.response.progress.endBar();
+    this.endProgressBar();
     return "PUSH operation completed.";
   }
 
@@ -223,7 +223,8 @@ export class BundlePusher {
   private async undeployExistingBundle(zosMFSession: AbstractSession, bd: BundleDeployer) {
     // End the current progress bar so that UNDEPLOY can create its own
     this.updateStatus("Undeploying any existing bundle from CICS");
-    this.params.response.progress.endBar();
+    this.endProgressBar();
+
 
     const targetstateLocal = this.params.arguments.targetstate;
     this.params.arguments.targetstate = "DISCARDED";
@@ -231,29 +232,27 @@ export class BundlePusher {
     this.params.arguments.targetstate = targetstateLocal;
 
     // Resume the current progress bar
-    this.params.response.progress.endBar();
+    this.endProgressBar();
     this.updateStatus("Undeployed existing bundle from CICS");
-    this.params.response.progress.startBar({task: this.progressBar});
+    this.startProgressBar();
   }
 
   private async deployBundle(zosMFSession: AbstractSession, bd: BundleDeployer) {
     // End the current progress bar so that DEPLOY can create its own
     this.updateStatus("Deploying the bundle to CICS");
-    this.params.response.progress.endBar();
+    this.endProgressBar();
 
     await bd.deployBundle(zosMFSession);
     // Resume the current progress bar
-    this.params.response.progress.endBar();
+    this.endProgressBar();
     this.updateStatus("Deployed existing bundle to CICS");
-    this.params.response.progress.startBar({task: this.progressBar});
+    this.startProgressBar();
   }
 
   private sshOutput(data: string) {
     // If verbose output is requested then log SSH output directly to the console
     if (this.params.arguments.verbose) {
-      this.params.response.progress.endBar();
       this.params.response.console.log(Buffer.from(data));
-      this.params.response.progress.startBar({task: this.progressBar});
     }
     this.sshOutputText += data;
   }
@@ -342,7 +341,7 @@ export class BundlePusher {
         // if we've not already logged the output, log it now
         if (this.params.arguments.verbose !== true)
         {
-          this.params.response.console.log(this.sshOutputText);
+          this.params.response.console.log(Buffer.from(this.sshOutputText));
         }
         throw new Error("The output from the remote command implied that an error occurred.");
       }
@@ -383,13 +382,13 @@ export class BundlePusher {
 
     // A project specific .zosattributes has not been found, so use a default
     const warningMsg = "WARNING: No .zosAttributes file found in the bundle directory, default values will be applied.";
-    this.params.response.progress.endBar();
-    this.params.response.console.log(warningMsg);
+    this.endProgressBar();
+    this.params.response.console.log(Buffer.from(warningMsg));
     if (this.params.arguments.silent === undefined) {
       const logger = Logger.getAppLogger();
       logger.warn(warningMsg);
     }
-    this.params.response.progress.startBar({task: this.progressBar});
+    this.startProgressBar();
     return new ZosFilesAttributes(Bundle.getTemplateZosAttributesFile());
   }
 
@@ -399,12 +398,24 @@ export class BundlePusher {
     this.progressBar.statusMessage = status;
 
     if (this.params.arguments.verbose) {
-      this.params.response.console.log(status + "\n");
+      this.params.response.console.log(Buffer.from(status + "\n"));
     }
 
     if (this.params.arguments.silent === undefined) {
       const logger = Logger.getAppLogger();
       logger.debug(status);
+    }
+  }
+
+  private startProgressBar() {
+    if (this.params.arguments.verbose !== true) {
+      this.params.response.progress.startBar({task: this.progressBar});
+    }
+  }
+
+  private endProgressBar() {
+    if (this.params.arguments.verbose !== true) {
+      this.params.response.progress.endBar();
     }
   }
 }
