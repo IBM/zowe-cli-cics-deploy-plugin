@@ -319,15 +319,26 @@ export class BundlePusher {
     try {
       this.sshOutputText = "";
       const shell = await Shell.executeSshCwd(sshSession, sshCommand, directory, this.sshOutput.bind(this));
+      const upperCaseOutputText = this.sshOutputText.toUpperCase();
 
       // Did the SSH command work? It's unclear how to tell, but for starters let's look for common
-      // signifiers in the output text. Note that FSUM9195 implies that we've tried to delete the
+      // signifiers in the output text. Note that FSUM9195 can imply that we've tried to delete the
       // contents of an empty directory - that's not a problem.
-      const upperCaseOutputText = this.sshOutputText.toUpperCase();
-      if (upperCaseOutputText.indexOf("ERROR ") > -1 ||
-          (upperCaseOutputText.indexOf("FSUM") > -1 &&
-           upperCaseOutputText.indexOf("FSUM9195") === -1) ||
+
+      // If there any FSUM messages other than FSUM9195 then that's a problem
+      let otherFSUMMessages = false;
+      const countFSUM = (upperCaseOutputText.match(/FSUM/g) || []).length;
+      const countFSUM9195 = (upperCaseOutputText.match(/FSUM9195/g) || []).length;
+      if (countFSUM > countFSUM9195) {
+        otherFSUMMessages = true;
+      }
+
+      // Now check for other common error signifiers
+      if (otherFSUMMessages ||
+          upperCaseOutputText.indexOf("ERROR ") > -1 ||
+          upperCaseOutputText.indexOf("EDC") > -1 ||
           upperCaseOutputText.indexOf("ERR!") > -1 ) {
+
         // if we've not already logged the output, log it now
         if (this.params.arguments.verbose !== true)
         {
