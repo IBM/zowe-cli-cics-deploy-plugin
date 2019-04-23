@@ -55,7 +55,7 @@ export abstract class BundleParentHandler implements ICommandHandler {
           msg = await this.performAction(params);
 
           // Issue the success message
-          params.response.console.log(msg);
+          params.response.console.log(Buffer.from(msg));
           if (params.arguments.silent === undefined) {
             logger.debug(msg);
           }

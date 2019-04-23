@@ -280,6 +280,20 @@ if a bundle is undeployed then the definition is removed. The --csdgroup and
 
 	* Overwrite the cics-deploy profile when a profile of the same name exists.
 
+### Examples
+
+   *-  Create a cics-deploy profile called 'example1' to connect
+   to a CPSM managed group of CICS regions within the TESTGRP1 scope of a cicsplex
+   named PLEX1:
+
+* `          $  zowe profiles create cics-deploy-profile example1 --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550`
+
+   *-  Create a cics-deploy profile called 'example2' to connect
+   to the same CPSM managed group of regions, and identify a BAS resource group
+   BUNDGRP1 in which to store resource definitions:
+
+* `          $  zowe profiles create cics-deploy-profile example2 --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --resgroup BUNDGRP1`
+
 ## update | upd<a name="module-update"></a>
 Update a  profile.You can update any property present within the profile configuration. The updated profile  will be printed so that you can review the result of the updates.
 ### cics-deploy-profile<a name="command-cics-deploy-profile"></a>

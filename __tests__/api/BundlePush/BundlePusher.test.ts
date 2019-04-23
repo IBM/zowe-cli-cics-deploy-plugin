@@ -335,6 +335,24 @@ describe("BundlePusher01", () => {
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(2);
     });
+    it("should not tolerate mixture of FSUM9195 and other FSUM messages", async () => {
+        shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
+          stdoutHandler("Injected FSUM9195 and FSUM9196 error message");
+        });
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", true,
+              "A problem occurred attempting to run 'rm -r *' in remote directory '/u/ThisDoesNotExist/12345678'. " +
+              "Problem is: The output from the remote command implied that an error occurred.");
+
+        expect(consoleText).toContain("Injected FSUM9195 and FSUM9196 error message");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+    });
     it("should handle error with attribs file", async () => {
         existsSpy.mockImplementation((data: string) => {
           if (data.indexOf(".zosattributes") > -1) {
