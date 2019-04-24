@@ -54,6 +54,11 @@ export abstract class BundleParentHandler implements ICommandHandler {
           // either throw an Exception or return a success message.
           msg = await this.performAction(params);
 
+          // Add a newline char if its needed
+          if (msg.slice(-1) !== "\n") {
+            msg += "\n";
+          }
+
           // Issue the success message
           params.response.console.log(Buffer.from(msg));
           if (params.arguments.silent === undefined) {
