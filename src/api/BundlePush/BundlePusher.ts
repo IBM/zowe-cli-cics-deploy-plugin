@@ -305,7 +305,7 @@ export class BundlePusher {
   }
 
   private async runSingleNpmInstall(sshSession: SshSession, remoteDirectory: string) {
-    this.updateStatus("Running 'npm install' for remote directory '" + remoteDirectory + "'");
+    this.updateStatus("Running 'npm install' in '" + remoteDirectory + "'");
 
     // Attempt to set the PATH for the default location of Node on z/OS.
     const setNodehomeCmd = "export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\"";
@@ -396,8 +396,16 @@ export class BundlePusher {
 
   private updateStatus(status: string) {
     const PERCENT3 = 3;
+    const MAX_PROGRESS_BAR_MESSAGE = 70;
     this.progressBar.percentComplete += PERCENT3;
-    this.progressBar.statusMessage = status;
+
+    if (status.length > MAX_PROGRESS_BAR_MESSAGE)
+    {
+      this.progressBar.statusMessage = status.substring(0, MAX_PROGRESS_BAR_MESSAGE) + "...";
+    }
+    else {
+      this.progressBar.statusMessage = status;
+    }
 
     if (this.params.arguments.verbose) {
       this.params.response.console.log(Buffer.from(status + "\n"));

@@ -717,9 +717,9 @@ describe("BundlePusher01", () => {
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.", parms);
 
-        expect(consoleText).toContain("Running 'npm install' for remote directory '/u/escapedDirName/12345678/XXXDIRXXX'");
-        expect(consoleText).toContain("Running 'npm install' for remote directory '/u/escapedDirName/12345678/XXXDIRXXX/ZZZDIRZZZ'");
-        expect(consoleText).not.toContain("Running 'npm install' for remote directory '/u/escapedDirName/12345678/node_modules'");
+        expect(consoleText).toContain("Running 'npm install' in '/u/escapedDirName/12345678/XXXDIRXXX'");
+        expect(consoleText).toContain("Running 'npm install' in '/u/escapedDirName/12345678/XXXDIRXXX/ZZZDIRZZZ'");
+        expect(consoleText).not.toContain("Running 'npm install' in '/u/escapedDirName/12345678/node_modules'");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
@@ -748,7 +748,7 @@ describe("BundlePusher01", () => {
         expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Accessing contents of the remote bundle directory");
         expect(consoleText).toContain("Uploading the bundle contents to the remote bundle directory");
-        expect(consoleText).toContain("Running 'npm install' for remote directory '/u/ThisDoesNotExist/12345678'");
+        expect(consoleText).toContain("Running 'npm install' in '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Injected stdout shell message");
         expect(consoleText).toContain("Deploying bundle '12345678' to CICS");
         expect(consoleText).toContain("Deployed bundle '12345678' to CICS");
