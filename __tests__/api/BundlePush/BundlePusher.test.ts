@@ -429,7 +429,8 @@ describe("BundlePusher01", () => {
         uploadSpy.mockImplementationOnce(() => { throw new Error("Injected upload error"); });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "A problem occurred uploading the bundle to the remote directory '/u/ThisDoesNotExist/12345678'. Problem is: Injected upload error");
+              "A problem occurred uploading the bundle contents to the remote directory " +
+              "'/u/ThisDoesNotExist/12345678'. Problem is: Injected upload error");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -451,7 +452,8 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "A problem occurred uploading the bundle to the remote directory '/u/ThisDoesNotExist/InjectedBundleId_1.0.0'. Problem is: Injected upload error");
+              "A problem occurred uploading the bundle contents to the remote directory " +
+              "'/u/ThisDoesNotExist/InjectedBundleId_1.0.0'. Problem is: Injected upload error");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -474,7 +476,8 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "A problem occurred uploading the bundle to the remote directory '/u/ThisDoesNotExist/InjectedBundleId_33.22.11'. Problem is: Injected upload error");
+              "A problem occurred uploading the bundle contents to the remote directory " +
+              "'/u/ThisDoesNotExist/InjectedBundleId_33.22.11'. Problem is: Injected upload error");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -657,6 +660,36 @@ describe("BundlePusher01", () => {
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
     });
+    it("should processed an escaped targetdir", async () => {
+        const parms = getCommonParmsForPushTests();
+        parms.arguments.verbose = true;
+        parms.arguments.targetdir = "//u//escapedDirName";
+        shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
+          stdoutHandler("Injected stdout shell message");
+        });
+        existsSpy.mockImplementation((data: string) => {
+          if (data.indexOf(".zosattributes") > -1) {
+            return false;
+          }
+          if (data.indexOf("package.json") > -1) {
+            return true;
+          }
+        });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.", parms);
+
+        expect(consoleText).toContain("Making remote bundle directory '/u/escapedDirName/12345678'");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+    });
     it("should run to completion with verbose output", async () => {
         const parms = getCommonParmsForPushTests();
         parms.arguments.verbose = true;
@@ -674,13 +707,13 @@ describe("BundlePusher01", () => {
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.", parms);
 
-        expect(consoleText).toContain("Making remote bundle directory");
-        expect(consoleText).toContain("Accessing contents of remote bundle directory");
-        expect(consoleText).toContain("Uploading the bundle to the remote bundle directory");
+        expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
+        expect(consoleText).toContain("Accessing contents of the remote bundle directory");
+        expect(consoleText).toContain("Uploading the bundle contents to the remote bundle directory");
         expect(consoleText).toContain("Running npm install for the remote bundle");
         expect(consoleText).toContain("Injected stdout shell message");
-        expect(consoleText).toContain("Deploying the bundle to CICS");
-        expect(consoleText).toContain("Deployed existing bundle to CICS");
+        expect(consoleText).toContain("Deploying bundle '12345678' to CICS");
+        expect(consoleText).toContain("Deployed bundle '12345678' to CICS");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);

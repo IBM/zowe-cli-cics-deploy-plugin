@@ -44,6 +44,9 @@ export class BundlePusher {
     this.localDirectory = localDirectory;
     this.validateParameters();
 
+    // The targetdir may contain escaped slashes, get rid of them
+    this.params.arguments.targetdir = this.path.posix.normalize(this.params.arguments.targetdir);
+
     // Set an initial bundledir value for validation purposes (we'll replace it with a better value shortly)
     this.params.arguments.bundledir = this.path.posix.join(this.params.arguments.targetdir, this.params.arguments.name);
   }
@@ -177,7 +180,7 @@ export class BundlePusher {
 
   private async validateBundleDirExistsAndIsEmpty(zosMFSession: AbstractSession) {
     try {
-      this.updateStatus("Accessing contents of remote bundle directory");
+      this.updateStatus("Accessing contents of the remote bundle directory");
 
       const fileListResponse = await List.fileList(zosMFSession, this.params.arguments.bundledir, {});
 
@@ -222,9 +225,8 @@ export class BundlePusher {
 
   private async undeployExistingBundle(zosMFSession: AbstractSession, bd: BundleDeployer) {
     // End the current progress bar so that UNDEPLOY can create its own
-    this.updateStatus("Undeploying any existing bundle from CICS");
+    this.updateStatus("Undeploying any existing bundle named '" + this.params.arguments.name + "' from CICS");
     this.endProgressBar();
-
 
     const targetstateLocal = this.params.arguments.targetstate;
     this.params.arguments.targetstate = "DISCARDED";
@@ -239,13 +241,13 @@ export class BundlePusher {
 
   private async deployBundle(zosMFSession: AbstractSession, bd: BundleDeployer) {
     // End the current progress bar so that DEPLOY can create its own
-    this.updateStatus("Deploying the bundle to CICS");
+    this.updateStatus("Deploying bundle '" + this.params.arguments.name + "' to CICS");
     this.endProgressBar();
 
     await bd.deployBundle(zosMFSession);
     // Resume the current progress bar
     this.endProgressBar();
-    this.updateStatus("Deployed existing bundle to CICS");
+    this.updateStatus("Deployed bundle '" + this.params.arguments.name + "' to CICS");
     this.startProgressBar();
   }
 
@@ -258,7 +260,7 @@ export class BundlePusher {
   }
 
   private async makeBundleDir(zosMFSession: AbstractSession) {
-    this.updateStatus("Making remote bundle directory");
+    this.updateStatus("Making remote bundle directory '" + this.params.arguments.bundledir + "'");
 
     const WARNING = 4;
     const ALREADY_EXISTS = 19;
@@ -316,6 +318,10 @@ export class BundlePusher {
 
   private async runSshCommandInRemoteDirectory(sshSession: SshSession, directory: string, sshCommand: string) {
     try {
+      if (this.params.arguments.verbose) {
+        this.updateStatus("Issuing SSH command '" + sshCommand + "' in remote directory '" + directory + "'");
+      }
+
       this.sshOutputText = "";
       const shell = await Shell.executeSshCwd(sshSession, sshCommand, directory, this.sshOutput.bind(this));
       const upperCaseOutputText = this.sshOutputText.toUpperCase();
@@ -353,7 +359,7 @@ export class BundlePusher {
   }
 
   private async uploadBundle(zosMFSession: AbstractSession) {
-    this.updateStatus("Uploading the bundle to the remote bundle directory");
+    this.updateStatus("Uploading the bundle contents to the remote bundle directory");
 
     const uploadOptions: IUploadOptions = { recursive: true };
     uploadOptions.attributes = this.findZosAttributes();
@@ -362,7 +368,7 @@ export class BundlePusher {
       await Upload.dirToUSSDirRecursive(zosMFSession, this.localDirectory, this.params.arguments.bundledir, uploadOptions);
     }
     catch (error) {
-      throw new Error("A problem occurred uploading the bundle to the remote directory '" + this.params.arguments.bundledir +
+      throw new Error("A problem occurred uploading the bundle contents to the remote directory '" + this.params.arguments.bundledir +
                        "'. Problem is: " + error.message);
     }
   }
