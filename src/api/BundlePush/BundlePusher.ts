@@ -98,10 +98,8 @@ export class BundlePusher {
     // Upload the bundle
     await this.uploadBundle(zosMFSession);
 
-    // If there's a package.json file in the root of the bundle then run npm install
-    if (bundle.contains("package.json")) {
-      await this.runNpmInstall(sshSession);
-    }
+    // Run 'npm install' for each package.json file that exists in the bundle
+    await this.runAllNpmInstalls(sshSession);
 
     // Run DFHDPLOY to install the bundle
     await this.deployBundle(zosMFSession, bd);
@@ -306,14 +304,12 @@ export class BundlePusher {
     await this.runSshCommandInRemoteDirectory(sshSession, this.params.arguments.bundledir, "rm -r *");
   }
 
-  private async runNpmInstall(sshSession: SshSession) {
-    this.updateStatus("Running npm install for the remote bundle");
+  private async runSingleNpmInstall(sshSession: SshSession, remoteDirectory: string) {
+    this.updateStatus("Running 'npm install' in '" + remoteDirectory + "'");
 
-    // Attempt to set the PATH for the default location of Node on z/OS. Note,
-    // we might be able to improve this by looking for the location via the
-    // architected .profile within the USSCONFIG structure.
+    // Attempt to set the PATH for the default location of Node on z/OS.
     const setNodehomeCmd = "export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\"";
-    await this.runSshCommandInRemoteDirectory(sshSession, this.params.arguments.bundledir, setNodehomeCmd + " && npm install");
+    await this.runSshCommandInRemoteDirectory(sshSession, remoteDirectory, setNodehomeCmd + " && npm install");
   }
 
   private async runSshCommandInRemoteDirectory(sshSession: SshSession, directory: string, sshCommand: string) {
@@ -400,8 +396,16 @@ export class BundlePusher {
 
   private updateStatus(status: string) {
     const PERCENT3 = 3;
+    const MAX_PROGRESS_BAR_MESSAGE = 70;
     this.progressBar.percentComplete += PERCENT3;
-    this.progressBar.statusMessage = status;
+
+    if (status.length > MAX_PROGRESS_BAR_MESSAGE)
+    {
+      this.progressBar.statusMessage = status.substring(0, MAX_PROGRESS_BAR_MESSAGE) + "...";
+    }
+    else {
+      this.progressBar.statusMessage = status;
+    }
 
     if (this.params.arguments.verbose) {
       this.params.response.console.log(Buffer.from(status + "\n"));
@@ -422,6 +426,35 @@ export class BundlePusher {
   private endProgressBar() {
     if (this.params.arguments.verbose !== true) {
       this.params.response.progress.endBar();
+    }
+  }
+
+  private findAllPackageJSONDirs(directoryNameLocal: string, directoryNameRemote: string, found: string[]) {
+    // accumulate an array of all directories / sub-directories that contain a package.json file
+    const files = this.fs.readdirSync(directoryNameLocal);
+    for (const currentFile of files) {
+      const localFileName = this.path.join(directoryNameLocal, currentFile);
+      const remoteFileName = this.path.posix.join(directoryNameRemote, currentFile);
+      const stat = this.fs.lstatSync(localFileName);
+
+      if (stat.isDirectory() && currentFile !== "node_modules") {
+        // If we've found a sub-directory, and it's not the special node_modules directory, scan it too.
+        this.findAllPackageJSONDirs(localFileName, remoteFileName, found);
+      }
+      else if (currentFile === "package.json") {
+        // The current directory has a package.json
+        found.push(directoryNameRemote);
+      }
+    }
+  }
+
+  private async runAllNpmInstalls(sshSession: SshSession) {
+    // Find each directory/sub-directory that has a package.json file
+    const packageJsonFiles: string[] = [];
+    this.findAllPackageJSONDirs(this.localDirectory, this.params.arguments.bundledir, packageJsonFiles);
+
+    for (const remoteDirectory of packageJsonFiles) {
+      await this.runSingleNpmInstall(sshSession, remoteDirectory);
     }
   }
 }

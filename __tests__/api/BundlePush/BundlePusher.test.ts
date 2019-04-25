@@ -53,6 +53,12 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     definition: PushBundleDefinition.PushBundleDefinition,
     fullDefinition: PushBundleDefinition.PushBundleDefinition,
 };
+const IS_DIRECTORY: any = {
+  isDirectory: jest.fn((directory) => (true))
+};
+const IS_NOT_DIRECTORY: any = {
+  isDirectory: jest.fn((directory) => (false))
+};
 let consoleText = "";
 
 // Initialise xml2json before mocking anything
@@ -68,6 +74,8 @@ let shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementation(() => ({}))
 let existsSpy = jest.spyOn(fs, "existsSync").mockImplementation(() => ({}));
 let readSpy = jest.spyOn(fs, "readFileSync").mockImplementation(() => ({}));
 let uploadSpy = jest.spyOn(Upload, "dirToUSSDirRecursive").mockImplementation(() => ({}));
+let readdirSpy = jest.spyOn(fs, "readdirSync").mockImplementation(() => ({}));
+let lstatSpy = jest.spyOn(fs, "lstatSync").mockImplementation(() => ({}));
 
 describe("BundlePusher01", () => {
 
@@ -88,6 +96,8 @@ describe("BundlePusher01", () => {
           }
         });
         uploadSpy = jest.spyOn(Upload, "dirToUSSDirRecursive").mockImplementation(() => ({}));
+        readdirSpy = jest.spyOn(fs, "readdirSync").mockImplementation(() => ([]));
+        lstatSpy = jest.spyOn(fs, "lstatSync").mockImplementation(() => ( IS_NOT_DIRECTORY ));
         consoleText = "";
     });
     afterEach(() => {
@@ -407,7 +417,7 @@ describe("BundlePusher01", () => {
         expect(shellSpy).toHaveBeenCalledTimes(1);
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(2);
-        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(2);
     });
     it("should use a default zosattribs file", async () => {
@@ -422,7 +432,7 @@ describe("BundlePusher01", () => {
         expect(shellSpy).toHaveBeenCalledTimes(1);
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(2);
-        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
     });
     it("should handle error with bundle upload", async () => {
@@ -499,13 +509,8 @@ describe("BundlePusher01", () => {
             return true;
           }
         });
-        existsSpy.mockImplementation((data: string) => {
-          if (data.indexOf(".zosattributes") > -1) {
-            return false;
-          }
-          if (data.indexOf("package.json") > -1) {
-            return true;
-          }
+        readdirSpy.mockImplementation((data: string) => {
+          return [ "package.json" ];
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
@@ -518,9 +523,11 @@ describe("BundlePusher01", () => {
         expect(shellSpy).toHaveBeenCalledTimes(1);
         expect(membersSpy).toHaveBeenCalledTimes(0);
         expect(submitSpy).toHaveBeenCalledTimes(0);
-        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(readdirSpy).toHaveBeenCalledTimes(1);
+        expect(lstatSpy).toHaveBeenCalledTimes(1);
     });
     it("should handle failure of remote npm install", async () => {
         shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
@@ -531,13 +538,8 @@ describe("BundlePusher01", () => {
             return true;
           }
         });
-        existsSpy.mockImplementation((data: string) => {
-          if (data.indexOf(".zosattributes") > -1) {
-            return false;
-          }
-          if (data.indexOf("package.json") > -1) {
-            return true;
-          }
+        readdirSpy.mockImplementation((data: string) => {
+          return [ "package.json" ];
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
@@ -553,9 +555,11 @@ describe("BundlePusher01", () => {
         expect(shellSpy).toHaveBeenCalledTimes(1);
         expect(membersSpy).toHaveBeenCalledTimes(0);
         expect(submitSpy).toHaveBeenCalledTimes(0);
-        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(readdirSpy).toHaveBeenCalledTimes(1);
+        expect(lstatSpy).toHaveBeenCalledTimes(1);
     });
     it("should handle failure of remote npm install with FSUM message", async () => {
         shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
@@ -566,13 +570,8 @@ describe("BundlePusher01", () => {
             return true;
           }
         });
-        existsSpy.mockImplementation((data: string) => {
-          if (data.indexOf(".zosattributes") > -1) {
-            return false;
-          }
-          if (data.indexOf("package.json") > -1) {
-            return true;
-          }
+        readdirSpy.mockImplementation((data: string) => {
+          return [ "package.json" ];
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
@@ -588,9 +587,11 @@ describe("BundlePusher01", () => {
         expect(shellSpy).toHaveBeenCalledTimes(1);
         expect(membersSpy).toHaveBeenCalledTimes(0);
         expect(submitSpy).toHaveBeenCalledTimes(0);
-        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(readdirSpy).toHaveBeenCalledTimes(1);
+        expect(lstatSpy).toHaveBeenCalledTimes(1);
     });
     it("should handle failure of remote npm install with node error", async () => {
         shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
@@ -601,13 +602,8 @@ describe("BundlePusher01", () => {
             return true;
           }
         });
-        existsSpy.mockImplementation((data: string) => {
-          if (data.indexOf(".zosattributes") > -1) {
-            return false;
-          }
-          if (data.indexOf("package.json") > -1) {
-            return true;
-          }
+        readdirSpy.mockImplementation((data: string) => {
+          return [ "package.json" ];
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
@@ -623,9 +619,11 @@ describe("BundlePusher01", () => {
         expect(shellSpy).toHaveBeenCalledTimes(1);
         expect(membersSpy).toHaveBeenCalledTimes(0);
         expect(submitSpy).toHaveBeenCalledTimes(0);
-        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(readdirSpy).toHaveBeenCalledTimes(1);
+        expect(lstatSpy).toHaveBeenCalledTimes(1);
     });
     it("should handle error with remote bundle deploy", async () => {
         submitSpy.mockImplementationOnce(() => { throw new Error("Injected deploy error"); });
@@ -641,7 +639,7 @@ describe("BundlePusher01", () => {
         expect(shellSpy).toHaveBeenCalledTimes(0);
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(1);
-        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
     });
@@ -656,24 +654,19 @@ describe("BundlePusher01", () => {
         expect(shellSpy).toHaveBeenCalledTimes(0);
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(1);
-        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
     });
-    it("should processed an escaped targetdir", async () => {
+    it("should process an escaped targetdir", async () => {
         const parms = getCommonParmsForPushTests();
         parms.arguments.verbose = true;
         parms.arguments.targetdir = "//u//escapedDirName";
         shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
           stdoutHandler("Injected stdout shell message");
         });
-        existsSpy.mockImplementation((data: string) => {
-          if (data.indexOf(".zosattributes") > -1) {
-            return false;
-          }
-          if (data.indexOf("package.json") > -1) {
-            return true;
-          }
+        readdirSpy.mockImplementation((data: string) => {
+          return [ "package.json" ];
         });
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.", parms);
@@ -686,9 +679,59 @@ describe("BundlePusher01", () => {
         expect(shellSpy).toHaveBeenCalledTimes(1);
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(1);
-        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(readdirSpy).toHaveBeenCalledTimes(1);
+        expect(lstatSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should run npm install for each package.json", async () => {
+        const parms = getCommonParmsForPushTests();
+        parms.arguments.verbose = true;
+        parms.arguments.targetdir = "//u//escapedDirName";
+        shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
+          stdoutHandler("Injected stdout shell message for " + dir);
+        });
+        readdirSpy.mockImplementation((data: string) => {
+          if (data.endsWith("XXXDIRXXX")) {
+            return ["file.XXX.1", "package.json", "ZZZDIRZZZ"];
+          }
+          if (data.endsWith("YYYDIRYYY")) {
+            return [ "file.YYY.1"];
+          }
+          if (data.endsWith("ZZZDIRZZZ")) {
+            return ["package.json"];
+          }
+          if (data.endsWith("node_modules")) {
+            return ["package.json"];
+          }
+          return [ "file.1", "file.2", "XXXDIRXXX", "YYYDIRYYY", "node_modules" ];
+        });
+        lstatSpy.mockImplementation((data: string) => {
+          if (data.endsWith("XXXDIRXXX") || data.endsWith("YYYDIRYYY") || data.endsWith("ZZZDIRZZZ") ||
+              data.endsWith("node_modules")) {
+            return IS_DIRECTORY;
+          }
+          return IS_NOT_DIRECTORY;
+        });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.", parms);
+
+        expect(consoleText).toContain("Running 'npm install' in '/u/escapedDirName/12345678/XXXDIRXXX'");
+        expect(consoleText).toContain("Running 'npm install' in '/u/escapedDirName/12345678/XXXDIRXXX/ZZZDIRZZZ'");
+        expect(consoleText).not.toContain("Running 'npm install' in '/u/escapedDirName/12345678/node_modules'");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(2);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(readdirSpy).toHaveBeenCalledTimes(4);
+        expect(lstatSpy).toHaveBeenCalledTimes(10);
     });
     it("should run to completion with verbose output", async () => {
         const parms = getCommonParmsForPushTests();
@@ -696,13 +739,8 @@ describe("BundlePusher01", () => {
         shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
           stdoutHandler("Injected stdout shell message");
         });
-        existsSpy.mockImplementation((data: string) => {
-          if (data.indexOf(".zosattributes") > -1) {
-            return false;
-          }
-          if (data.indexOf("package.json") > -1) {
-            return true;
-          }
+        readdirSpy.mockImplementation((data: string) => {
+          return [ "package.json" ];
         });
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.", parms);
@@ -710,7 +748,7 @@ describe("BundlePusher01", () => {
         expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Accessing contents of the remote bundle directory");
         expect(consoleText).toContain("Uploading the bundle contents to the remote bundle directory");
-        expect(consoleText).toContain("Running npm install for the remote bundle");
+        expect(consoleText).toContain("Running 'npm install' in '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Injected stdout shell message");
         expect(consoleText).toContain("Deploying bundle '12345678' to CICS");
         expect(consoleText).toContain("Deployed bundle '12345678' to CICS");
@@ -721,9 +759,11 @@ describe("BundlePusher01", () => {
         expect(shellSpy).toHaveBeenCalledTimes(1);
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(1);
-        expect(existsSpy).toHaveBeenCalledTimes(2);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(readdirSpy).toHaveBeenCalledTimes(1);
+        expect(lstatSpy).toHaveBeenCalledTimes(1);
     });
 });
 
