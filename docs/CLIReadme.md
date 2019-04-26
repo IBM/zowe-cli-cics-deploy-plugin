@@ -86,6 +86,11 @@ not set the --cics-deploy-profile option.
 datasets can be found in the target environment. Use this parameter if you have
 not set the --cics-deploy-profile option.
 
+*   `--description`  | `--desc` *(string)*
+
+	* An optional value that specifies a description of the bundle definition (up to
+58 characters).
+
 *   `--jobcard`  | `--jc` *(string)*
 
 	* Specifies the job card to use with any generated DFHDPLOY JCL. Use this
@@ -502,6 +507,11 @@ not set the --cics-deploy-profile option.
 	* Specifies the high-level qualifier (up to 35 characters) at which the CPSM
 datasets can be found in the target environment. Use this parameter if you have
 not set the --cics-deploy-profile option.
+
+*   `--description`  | `--desc` *(string)*
+
+	* An optional value that specifies a description of the bundle definition (up to
+58 characters).
 
 *   `--jobcard`  | `--jc` *(string)*
 

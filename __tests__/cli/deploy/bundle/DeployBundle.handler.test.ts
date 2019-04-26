@@ -241,6 +241,27 @@ describe("bundle Handler", () => {
     it("should complain with empty resgroup parameter", async () => {
         await testResgroupError("", "--resgroup parameter is empty");
     });
+    it("should complain with invalid type for description parameter", async () => {
+
+        const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+        setCommonParmsForDescriptionTests(params);
+        params.arguments.description = -4;
+
+        let err: Error;
+        try {
+          const handler = new DeployBundleHandler.default();
+          await handler.process(params);
+        } catch (e) {
+            err = e;
+        }
+        expectImperativeErrorWithMessage(err, "--description parameter is not a string");
+    });
+    it("should complain with overlong description parameter", async () => {
+        await testDescriptionError("12345678901234567890123456789012345678901234567890123456789", "--description parameter is too long");
+    });
+    it("should complain with empty description parameter", async () => {
+        await testDescriptionError("", "--description parameter is empty");
+    });
     it("should complain with non-numeric timeout", async () => {
 
         const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
@@ -421,6 +442,7 @@ function setCommonParmsForNameTests(parms: IHandlerParameters) {
   parms.arguments.targetstate = undefined;
   parms.arguments.jobcard = undefined;
   parms.arguments.verbose = undefined;
+  parms.arguments.description = undefined;
 }
 
 async function testNameError(name: string, result: string) {
@@ -547,6 +569,25 @@ async function testResgroupError(resgroup: string, result: string) {
   const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
   setCommonParmsForResgroupTests(params);
   params.arguments.resgroup = resgroup;
+
+  let err: Error;
+  try {
+    const handler = new DeployBundleHandler.default();
+    await handler.process(params);
+  } catch (e) {
+    err = e;
+  }
+  expectImperativeErrorWithMessage(err, result);
+}
+
+function setCommonParmsForDescriptionTests(parms: IHandlerParameters) {
+  setCommonParmsForResgroupTests(parms);
+}
+
+async function testDescriptionError(description: string, result: string) {
+  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+  setCommonParmsForDescriptionTests(params);
+  params.arguments.description = description;
 
   let err: Error;
   try {

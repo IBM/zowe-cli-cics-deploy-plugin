@@ -21,6 +21,7 @@ import { CpsmhlqOption } from "../../shared/Cpsmhlq.option";
 import { JobcardOption } from "../../shared/Jobcard.option";
 import { TimeoutOption } from "../../shared/Timeout.option";
 import { TargetStateOption } from "../../deploy/bundle/options/TargetState.option";
+import { DescriptionOption } from "../../deploy/bundle/options/Description.option";
 import { VerboseOption } from "../../shared/Verbose.option";
 import { OverwriteOption } from "./options/Overwrite.option";
 
@@ -36,8 +37,8 @@ export const PushBundleDefinition: ICommandDefinition = {
     type: "command",
     handler: __dirname + "/PushBundle.handler",
     options: [ NameOption, TargetdirOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption,
-               CicshlqOption, CpsmhlqOption, JobcardOption, TimeoutOption, TargetStateOption, VerboseOption,
-               OverwriteOption ],
+               CicshlqOption, CpsmhlqOption, DescriptionOption, JobcardOption, TimeoutOption, TargetStateOption,
+               VerboseOption, OverwriteOption ],
     profile: { required: ["zosmf", "ssh"], optional: ["cics-deploy"] },
     examples: [
         {
