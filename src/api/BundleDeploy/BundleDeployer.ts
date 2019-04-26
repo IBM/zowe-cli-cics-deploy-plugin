@@ -146,10 +146,13 @@ export class BundleDeployer {
     // Get rid of any extra slashes which may be needed on git-bash to avoid path munging
     const bundledir = path.posix.normalize(this.params.arguments.bundledir);
 
-    const jcl = this.generateCommonJCLHeader() +
+    let jcl = this.generateCommonJCLHeader() +
       this.wrapLongLineForJCL("DEPLOY BUNDLE(" + this.params.arguments.name + ")\n") +
-      this.wrapLongLineForJCL("       BUNDLEDIR(" + bundledir + ")\n") +
-      this.generateCommonJCLFooter();
+      this.wrapLongLineForJCL("       BUNDLEDIR(" + bundledir + ")\n");
+    if (this.params.arguments.description !== undefined) {
+      jcl += this.wrapLongLineForJCL("       DESCRIPTION(" + this.params.arguments.description + ")\n");
+    }
+    jcl += this.generateCommonJCLFooter();
 
     return jcl;
   }

@@ -400,6 +400,13 @@ describe("BundleDeployer01", () => {
         parms.arguments.verbose = false;
         await testDeployJCL(parms);
     });
+    it("should support long description", async () => {
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.description = "1234567890123456789012345678901234567890123456789012345678";
+        await testDeployJCL(parms);
+    });
 
     // ** UNDEPLOY TESTS **
     it("should generate undeploy JCL with neither csdgroup nor resgroup", async () => {
@@ -576,6 +583,7 @@ function setCommonParmsForUndeployTests(parms: IHandlerParameters) {
   parms.arguments.name = "12345678";
   parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT";
   parms.arguments.targetstate = "DISCARDED";
+  parms.arguments.description = undefined;
 }
 
 async function testDeployJCL(parms: IHandlerParameters) {

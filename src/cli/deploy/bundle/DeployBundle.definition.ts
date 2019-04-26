@@ -22,6 +22,7 @@ import { JobcardOption } from "../../shared/Jobcard.option";
 import { TimeoutOption } from "../../shared/Timeout.option";
 import { TargetStateOption } from "./options/TargetState.option";
 import { VerboseOption } from "../../shared/Verbose.option";
+import { DescriptionOption } from "./options/Description.option";
 
 
 /**
@@ -38,7 +39,7 @@ export const DeployBundleDefinition: ICommandDefinition = {
     type: "command",
     handler: __dirname + "/DeployBundle.handler",
     options: [ NameOption, BundledirOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption,
-               CicshlqOption, CpsmhlqOption, JobcardOption, TimeoutOption, TargetStateOption, VerboseOption],
+               CicshlqOption, CpsmhlqOption, DescriptionOption, JobcardOption, TimeoutOption, TargetStateOption, VerboseOption],
     profile: { required: ["zosmf"], optional: ["cics-deploy"] },
     examples: [
         {
