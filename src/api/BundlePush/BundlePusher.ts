@@ -271,7 +271,19 @@ export class BundlePusher {
     catch (error) {
       if (error.causeErrors !== undefined)
       {
-        const cause = JSON.parse(error.causeErrors);
+        let cause;
+        if (typeof error.causeErrors !== "object")
+        {
+          try {
+            cause = JSON.parse(error.causeErrors);
+          }
+          catch (error) {
+            // whatever we received here it wasn't JSON. Oh well, never mind.
+          }
+        }
+        else {
+          cause = error.causeErrors;
+        }
 
         // Special case some known errors
         if (cause !== undefined) {

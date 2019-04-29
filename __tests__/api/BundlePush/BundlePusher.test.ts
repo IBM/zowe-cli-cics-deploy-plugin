@@ -200,7 +200,7 @@ describe("BundlePusher01", () => {
         expect(sshSpy).toHaveBeenCalledTimes(1);
         expect(createSpy).toHaveBeenCalledTimes(1);
     });
-    it("should complain if remote target dir can't be found", async () => {
+    it("should complain if remote target dir can't be found (string)", async () => {
         createSpy.mockImplementationOnce(() => {
           const cause = "{ \"category\": 8, \"rc\": -1, \"reason\": 93651005 }";
           const impError: IImperativeError = { msg: "Injected Create error", causeErrors: cause };
@@ -208,6 +208,32 @@ describe("BundlePusher01", () => {
         });
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01",  false,
           "The target directory does not exist, consider creating it by issuing: \nzowe zos-uss issue ssh \"mkdir -p /u/ThisDoesNotExist\"");
+
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should complain if remote target dir can't be found (object)", async () => {
+        createSpy.mockImplementationOnce(() => {
+          const cause = { category: 8, rc: -1, reason: 93651005 };
+          const impError: IImperativeError = { msg: "Injected Create error", causeErrors: cause };
+          throw new ImperativeError(impError);
+        });
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01",  false,
+          "The target directory does not exist, consider creating it by issuing: \nzowe zos-uss issue ssh \"mkdir -p /u/ThisDoesNotExist\"");
+
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should complain if remote target dir fails without cause object", async () => {
+        createSpy.mockImplementationOnce(() => {
+          const cause = "This is a text message cause";
+          const impError: IImperativeError = { msg: "Injected Create error", causeErrors: cause };
+          throw new ImperativeError(impError);
+        });
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01",  false,
+          "A problem occurred attempting to create directory '/u/ThisDoesNotExist/12345678'. Problem is: Injected Create error");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
