@@ -349,7 +349,6 @@ export class BundlePusher {
       // Now check for other common error signifiers
       if (otherFSUMMessages ||
           upperCaseOutputText.indexOf("ERROR ") > -1 ||
-          upperCaseOutputText.indexOf("EDC") > -1 ||
           upperCaseOutputText.indexOf("ERR!") > -1 ) {
 
         // if we've not already logged the output, log it now
