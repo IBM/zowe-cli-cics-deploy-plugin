@@ -26,8 +26,9 @@ import * as path from "path";
 export class BundleDeployer {
 
   private params: IHandlerParameters;
-  private PROGRESS_BAR_INTERVAL = 1500; // milliseconds
-  private PROGRESS_BAR_MAX = 67;
+  private PROGRESS_BAR_INTERVAL = 375;         // milliseconds
+  private PROGRESS_BAR_INCREMENT = 0.25;       // percent
+  private PROGRESS_BAR_MAX = 67;               // percent
   private parmsValidated: boolean = false;
   private hlqsValidated: boolean = false;
   private jobId: string;
@@ -254,9 +255,8 @@ export class BundleDeployer {
   }
 
   private updateProgressBar(action: string) {
-    // Increment the progress by 1%. This will refresh what the user sees
-    // on the console.
-    this.progressBar.percentComplete += 1;
+    // Increment the progress bar. This will refresh what the user sees on the console.
+    this.progressBar.percentComplete += this.PROGRESS_BAR_INCREMENT;
 
     // Have a look at the status message for the progress bar, has it been updated with
     // the jobid yet? If so, parse it out and refresh the message.
