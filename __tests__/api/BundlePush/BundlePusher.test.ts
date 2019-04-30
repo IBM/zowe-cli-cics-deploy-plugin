@@ -357,7 +357,7 @@ describe("BundlePusher01", () => {
     });
     it("should tolerate delete of empty directory", async () => {
         shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
-          stdoutHandler("Injected FSUM9195 empty directory message");
+          stdoutHandler("FSUM9195 cannot unlink entry \"*\": EDC5129I No such file or directory.");
         });
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
