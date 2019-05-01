@@ -14,6 +14,7 @@ import {IImperativeConfig} from "@zowe/imperative";
 
 const MAX_LENGTH = 8;
 const MAX_HLQ_LENGTH = 35;
+const MAX_TARGETDIR_LENGTH = 255;
 
 const config: IImperativeConfig = {
     commandModuleGlobs: ["**/cli/*/*.definition!(.d).*s"],
@@ -105,6 +106,17 @@ const config: IImperativeConfig = {
               },
               type: "string"
             },
+            targetdir: {
+              optionDefinition: {
+                description: "Specifies the target zFS location in which CICS bundles should be created (up to 255 characters).",
+                type: "string",
+                name: "targetdir",
+                aliases: ["td"],
+                stringLengthRange: [1, MAX_TARGETDIR_LENGTH],
+                required: false
+              },
+              type: "string"
+            },
             jobcard: {
               optionDefinition: {
                 description: "Specifies the job card to use with any generated DFHDPLOY JCL.",
@@ -129,6 +141,12 @@ const config: IImperativeConfig = {
             options: "example2 --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --resgroup BUNDGRP1",
             description: "Create a cics-deploy profile called 'example2' to connect to the same CPSM managed group of regions, " +
                          "and identify a BAS resource group BUNDGRP1 in which to store resource definitions"
+          },
+          {
+            options: "example3 --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 " +
+                     "--cpsmhlq CICSTS55.CPSM550 --targetdir /var/cicsts/bundles",
+            description: "Create a cics-deploy profile called 'example3' to connect to the same CPSM managed group of regions, " +
+                         "and identify the default USS directory to which bundles should be uploaded"
           }
         ]
       }

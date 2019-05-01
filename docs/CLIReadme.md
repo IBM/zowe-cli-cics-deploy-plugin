@@ -281,6 +281,11 @@ If a bundle is deployed then a resource is defined in the BAS data repository;
 if a bundle is undeployed then the definition is removed. The --csdgroup and
 --resgroup options are mutually exclusive.
 
+*   `--targetdir`  | `--td` *(string)*
+
+	* Specifies the target zFS location in which CICS bundles should be created (up to
+255 characters).
+
 *   `--overwrite`  | `--ow` *(boolean)*
 
 	* Overwrite the cics-deploy profile when a profile of the same name exists.
@@ -298,6 +303,12 @@ if a bundle is undeployed then the definition is removed. The --csdgroup and
    BUNDGRP1 in which to store resource definitions:
 
 * `          $  zowe profiles create cics-deploy-profile example2 --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --resgroup BUNDGRP1`
+
+   *-  Create a cics-deploy profile called 'example3' to connect
+   to the same CPSM managed group of regions, and identify the default USS
+   directory to which bundles should be uploaded:
+
+* `          $  zowe profiles create cics-deploy-profile example3 --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --targetdir /var/cicsts/bundles`
 
 ## update | upd<a name="module-update"></a>
 Update a  profile.You can update any property present within the profile configuration. The updated profile  will be printed so that you can review the result of the updates.
@@ -351,6 +362,11 @@ datasets can be found in the target environment.
 
 	* Specifies the High Level Qualifier (up to 35 characters) at which the CPSM
 datasets can be found in the target environment.
+
+*   `--targetdir`  | `--td` *(string)*
+
+	* Specifies the target zFS location in which CICS bundles should be created (up to
+255 characters).
 
 *   `--jobcard`  | `--jc` *(string)*
 
