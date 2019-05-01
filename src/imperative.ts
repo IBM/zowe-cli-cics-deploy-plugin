@@ -108,7 +108,7 @@ const config: IImperativeConfig = {
             },
             targetdir: {
               optionDefinition: {
-                description: "Specifies the target zFS location in which CICS bundles should be created (up to 255 characters).",
+                description: "Specifies the target zFS location to which CICS bundles should be uploaded (up to 255 characters).",
                 type: "string",
                 name: "targetdir",
                 aliases: ["td"],

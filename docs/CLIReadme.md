@@ -283,8 +283,8 @@ if a bundle is undeployed then the definition is removed. The --csdgroup and
 
 *   `--targetdir`  | `--td` *(string)*
 
-	* Specifies the target zFS location in which CICS bundles should be created (up to
-255 characters).
+	* Specifies the target zFS location to which CICS bundles should be uploaded (up
+to 255 characters).
 
 *   `--overwrite`  | `--ow` *(boolean)*
 
@@ -365,8 +365,8 @@ datasets can be found in the target environment.
 
 *   `--targetdir`  | `--td` *(string)*
 
-	* Specifies the target zFS location in which CICS bundles should be created (up to
-255 characters).
+	* Specifies the target zFS location to which CICS bundles should be uploaded (up
+to 255 characters).
 
 *   `--jobcard`  | `--jc` *(string)*
 
