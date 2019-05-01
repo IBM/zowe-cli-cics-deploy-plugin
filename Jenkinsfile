@@ -201,11 +201,10 @@ pipeline {
                     timeout(time: 10, unit: 'MINUTES') {
                         echo "Install Zowe CLI globaly"
                         sh "rm -f ~/.npmrc"
-                        sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> ~/.npmrc'
-                        sh "echo registry=$TEST_NPM_REGISTRY >> ~/.npmrc"
-                        sh "echo @brightside:registry=$TEST_NPM_REGISTRY >> ~/.npmrc"
-                        sh "echo @zowe:registry=$TEST_NPM_REGISTRY >> ~/.npmrc"
-                        sh("npm install -g @zowe/cli@cicsdev")
+                        sh("npm set registry https://registry.npmjs.org")
+                        sh("npm set @brightside:registry https://api.bintray.com/npm/ca/brightside/")
+                        sh("npm set @zowe:registry https://api.bintray.com/npm/ca/brightside/")
+                        sh("npm install -g @zowe/cli@latest")
                         sh("zowe --version")
                     }
                 }
