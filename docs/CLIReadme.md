@@ -25,9 +25,9 @@
 # deploy | d | dep<a name="module-deploy"></a>
 Deploy a CICS bundle from zFS to one or more CICS regions within a CICSplex. A BUNDLE resource is installed, ENABLED and made AVAILABLE in the target scope of the CICSplex.
 ## bundle<a name="command-bundle"></a>
-Deploy a CICS bundle from zFS to one or more CICS regions within a CICSplex. The
-DFHDPLOY utility is used to install and make available a BUNDLE resource in the
-target group of CICS regions.
+Deploy a CICS bundle from zFS to one or more CICS regions within a CICSplex\.
+The DFHDPLOY utility is used to install and make available a BUNDLE resource in
+the target group of CICS regions\.
 
 #### Usage
 
@@ -146,10 +146,10 @@ Allowed values: DISABLED, ENABLED, AVAILABLE
 # generate | g | gen<a name="module-generate"></a>
 Generate a CICS bundle and associated metadata files in the current working directory. This allows the application in the current working directory to be deployed to CICS.
 ## bundle<a name="command-bundle"></a>
-Generate a CICS bundle in the working directory. The associated data is
-constructed from a combination of the command-line options and the contents of
-package.json. If package.json exists, no options are required, but if it does
-not exist both --startscript and --nodejsapp are required.
+Generate a CICS bundle in the working directory\. The associated data is
+constructed from a combination of the command\-line options and the contents of
+package\.json\. If package\.json exists, no options are required, but if it does
+not exist both \-\-startscript and \-\-nodejsapp are required\.
 
 #### Usage
 
@@ -223,8 +223,8 @@ Create and manage configuration profiles
 ## create | cre<a name="module-create"></a>
 Create new configuration profiles.
 ### cics-deploy-profile<a name="command-cics-deploy-profile"></a>
-Specifies the target environment for the cics-deploy deploy and undeploy
-actions.
+Specifies the target environment for the cics\-deploy deploy and undeploy
+actions\.
 
 #### Usage
 
@@ -302,8 +302,8 @@ if a bundle is undeployed then the definition is removed. The --csdgroup and
 ## update | upd<a name="module-update"></a>
 Update a  profile.You can update any property present within the profile configuration. The updated profile  will be printed so that you can review the result of the updates.
 ### cics-deploy-profile<a name="command-cics-deploy-profile"></a>
-Specifies the target environment for the cics-deploy deploy and undeploy
-actions.
+Specifies the target environment for the cics\-deploy deploy and undeploy
+actions\.
 
 #### Usage
 
@@ -359,9 +359,9 @@ datasets can be found in the target environment.
 ## delete | rm<a name="module-delete"></a>
 Delete existing profiles.
 ### cics-deploy-profile<a name="command-cics-deploy-profile"></a>
-Delete a cics-deploy profile. You must specify a profile name to be deleted. To
-find a list of available profiles for deletion, issue the profiles list command.
-By default, you will be prompted to confirm the profile removal.
+Delete a cics\-deploy profile\. You must specify a profile name to be deleted\.
+To find a list of available profiles for deletion, issue the profiles list
+command\. By default, you will be prompted to confirm the profile removal\.
 
 #### Usage
 
@@ -391,8 +391,8 @@ be displayed before deletion occurs.
 ## list | ls<a name="module-list"></a>
 List profiles of the type 
 ### cics-deploy-profiles<a name="command-cics-deploy-profiles"></a>
-Specifies the target environment for the cics-deploy deploy and undeploy
-actions.
+Specifies the target environment for the cics\-deploy deploy and undeploy
+actions\.
 
 #### Usage
 
@@ -419,11 +419,11 @@ printed as part of command output.
 ## set-default | set<a name="module-set-default"></a>
 Set which profiles are loaded by default.
 ### cics-deploy-profile<a name="command-cics-deploy-profile"></a>
-The cics-deploy set default-profiles command allows you to set the default
-profiles for this command group. When a cics-deploy command is issued and no
+The cics\-deploy set default\-profiles command allows you to set the default
+profiles for this command group\. When a cics\-deploy command is issued and no
 profile override options are specified, the default profiles for the command
 group are automatically loaded for the command based on the commands profile
-requirements.
+requirements\.
 
 #### Usage
 
@@ -448,7 +448,7 @@ the default will be loaded instead.
 # push | p<a name="module-push"></a>
 Push combines several actions for deploying a bundle to CICS into a single command. It uploads the bundle to z/OS, optionally runs an 'npm install' command on the remote system, then uses DFHDPLOY to install and enable the bundle in a target CICS environment.
 ## bundle<a name="command-bundle"></a>
-Push a CICS bundle from the working directory to a target CICSplex.
+Push a CICS bundle from the working directory to a target CICSplex\.
 
 #### Usage
 
@@ -577,9 +577,9 @@ on the remote system.
 # undeploy | u | udep<a name="module-undeploy"></a>
 Undeploy a CICS bundle from one or more CICS regions within a CICSplex. A BUNDLE resource is made UNAVAILABLE, it is then DISABLED and DISCARDED from the target scope with the CICSplex.
 ## bundle<a name="command-bundle"></a>
-Undeploy a CICS bundle from one or more CICS regions within a CICSplex. The
+Undeploy a CICS bundle from one or more CICS regions within a CICSplex\. The
 DFHDPLOY utility is used to undeploy and remove a BUNDLE resource from the
-target group of CICS regions.
+target group of CICS regions\.
 
 #### Usage
 
