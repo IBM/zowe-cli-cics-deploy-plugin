@@ -124,14 +124,14 @@ describe("BundleDeployer01", () => {
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce((session: any, jcl: string, parms: any) => {
                 parms.task.statusMessage = "Waiting for JOB12345 to enter OUTPUT";
                 parms.task.stageName = TaskStage.IN_PROGRESS;
-                const expectedMsg = "Waiting for JOB12345 to enter OUTPUT (Processing DFHDPLOY DEPLOY action)";
+                const expectedMsg = "Running DFHDPLOY (DEPLOY), job JOB12345";
                 // wait 1.5 seconds
                 return new Promise((resolve, reject) => {
                   setTimeout(() => {
                     // Now check that the status message has been updated by the progress bar processing
                     if (parms.task.statusMessage !== expectedMsg) {
-                      throw new Error("Failed to find the expected message. Got: '" + parms.task.statusMessage + "' expected " +
-                      expectedMsg);
+                      throw new Error("Failed to find the expected message. Got: '" + parms.task.statusMessage + "' expected '" +
+                      expectedMsg + "'");
                     }
                     resolve();
                   }, 1500);

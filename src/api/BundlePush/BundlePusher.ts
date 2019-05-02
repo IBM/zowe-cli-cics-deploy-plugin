@@ -11,7 +11,7 @@
 
 "use strict";
 
-import { IHandlerParameters, AbstractSession, ITaskWithStatus, TaskStage, Logger } from "@zowe/imperative";
+import { IHandlerParameters, AbstractSession, ITaskWithStatus, TaskStage, TaskProgress, Logger } from "@zowe/imperative";
 import { List, ZosmfSession, SshSession, Shell, Upload, IUploadOptions, ZosFilesAttributes, Create } from "@zowe/cli";
 import { BundleDeployer } from "../BundleDeploy/BundleDeployer";
 import { Bundle } from "../BundleContent/Bundle";
@@ -104,6 +104,8 @@ export class BundlePusher {
     // Run DFHDPLOY to install the bundle
     await this.deployBundle(zosMFSession, bd);
 
+    // Complete the progress bar
+    this.progressBar.percentComplete = TaskProgress.ONE_HUNDRED_PERCENT;
     this.endProgressBar();
     return "PUSH operation completed.";
   }
@@ -178,7 +180,7 @@ export class BundlePusher {
 
   private async validateBundleDirExistsAndIsEmpty(zosMFSession: AbstractSession) {
     try {
-      this.updateStatus("Accessing contents of the remote bundle directory");
+      this.updateStatus("Accessing contents of remote bundle directory");
 
       const fileListResponse = await List.fileList(zosMFSession, this.params.arguments.bundledir, {});
 
@@ -223,7 +225,7 @@ export class BundlePusher {
 
   private async undeployExistingBundle(zosMFSession: AbstractSession, bd: BundleDeployer) {
     // End the current progress bar so that UNDEPLOY can create its own
-    this.updateStatus("Undeploying any existing bundle named '" + this.params.arguments.name + "' from CICS");
+    this.updateStatus("Undeploying bundle '" + this.params.arguments.name + "' from CICS");
     this.endProgressBar();
 
     const targetstateLocal = this.params.arguments.targetstate;
@@ -233,7 +235,7 @@ export class BundlePusher {
 
     // Resume the current progress bar
     this.endProgressBar();
-    this.updateStatus("Undeployed existing bundle from CICS");
+    this.updateStatus("Undeploy complete");
     this.startProgressBar();
   }
 
@@ -245,7 +247,7 @@ export class BundlePusher {
     await bd.deployBundle(zosMFSession);
     // Resume the current progress bar
     this.endProgressBar();
-    this.updateStatus("Deployed bundle '" + this.params.arguments.name + "' to CICS");
+    this.updateStatus("Deploy complete");
     this.startProgressBar();
   }
 
@@ -258,7 +260,12 @@ export class BundlePusher {
   }
 
   private async makeBundleDir(zosMFSession: AbstractSession) {
-    this.updateStatus("Making remote bundle directory '" + this.params.arguments.bundledir + "'");
+    if (this.params.arguments.verbose) {
+      this.updateStatus("Making remote bundle directory '" + this.params.arguments.bundledir + "'");
+    }
+    else {
+      this.updateStatus("Making remote bundle directory");
+    }
 
     const WARNING = 4;
     const ALREADY_EXISTS = 19;
@@ -312,12 +319,17 @@ export class BundlePusher {
   }
 
   private async deleteBundleDirContents(sshSession: SshSession) {
-    this.updateStatus("Removing the contents of the remote bundle directory");
+    this.updateStatus("Removing contents of remote bundle directory");
     await this.runSshCommandInRemoteDirectory(sshSession, this.params.arguments.bundledir, "rm -r *");
   }
 
   private async runSingleNpmInstall(sshSession: SshSession, remoteDirectory: string) {
-    this.updateStatus("Running 'npm install' in '" + remoteDirectory + "'");
+    if (this.params.arguments.verbose) {
+      this.updateStatus("Running 'npm install' in '" + remoteDirectory + "'");
+    }
+    else {
+      this.updateStatus("Running 'npm install' in remote directory");
+    }
 
     // Attempt to set the PATH for the default location of Node on z/OS.
     const setNodehomeCmd = "export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\"";
@@ -366,7 +378,7 @@ export class BundlePusher {
   }
 
   private async uploadBundle(zosMFSession: AbstractSession) {
-    this.updateStatus("Uploading the bundle contents to the remote bundle directory");
+    this.updateStatus("Uploading bundle contents to remote directory");
 
     const uploadOptions: IUploadOptions = { recursive: true };
     uploadOptions.attributes = this.findZosAttributes();
@@ -406,9 +418,9 @@ export class BundlePusher {
   }
 
   private updateStatus(status: string) {
-    const PERCENT3 = 3;
-    const MAX_PROGRESS_BAR_MESSAGE = 70;
-    this.progressBar.percentComplete += PERCENT3;
+    const PERCENT5 = 5;
+    const MAX_PROGRESS_BAR_MESSAGE = 60;
+    this.progressBar.percentComplete += PERCENT5;
 
     if (status.length > MAX_PROGRESS_BAR_MESSAGE)
     {
