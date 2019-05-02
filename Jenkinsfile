@@ -61,7 +61,7 @@ def UNIT_RESULTS = "${TEST_RESULTS_FOLDER}/unit"
 /**
  * The name of the master branch
  */
-def MASTER_BRANCH = "master"
+def MASTER_BRANCH = "master-build-fix"
 
 
 /**
@@ -583,11 +583,9 @@ pipeline {
                         sh "rm -f .npmrc"
                         sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
                         sh "echo registry=$TEST_NPM_REGISTRY >> .npmrc"
-                        sh "echo @brightside:registry=https://api.bintray.com/npm/ca/brightside/ >> .npmrc"
-                        sh "echo @brightside:always-auth=false >> .npmrc"
-                        sh "rm -f .npmrc"
-
-
+                        sh "echo @zowe:registry=https://api.bintray.com/npm/ca/brightside/ >> .npmrc"
+                        sh "echo @zowe:always-auth=false >> .npmrc"
+                        
                         script {
                             if (BRANCH_NAME == MASTER_BRANCH) {
                                 echo "publishing next to $TEST_NPM_REGISTRY"
@@ -598,6 +596,8 @@ pipeline {
                                 sh "npm publish --tag latest"
                             }
                         }
+
+                        sh "rm -f .npmrc"
                     }
                 }
             }
