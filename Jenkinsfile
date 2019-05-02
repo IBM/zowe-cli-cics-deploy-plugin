@@ -105,6 +105,10 @@ pipeline {
 
     agent any
 
+    options {
+        skipDefaultCheckout true
+    }
+
     environment {
         // Environment variable for flow control. Indicates if the git source was updated by the pipeline.
         GIT_SOURCE_UPDATED = "false"
@@ -117,12 +121,11 @@ pipeline {
     }
 
     stages {
-        stage("Clean workspace") {
+        stage("Clean workspace and checkout source") {
             steps {
-                timeout(time: 2, unit: 'MINUTES') {
-                    script {
-                        cleanWs()
-                    }
+                timeout(time: 5, unit: 'MINUTES') {
+                    cleanWs()
+                    checkout scm
                 }
             }
         } 
