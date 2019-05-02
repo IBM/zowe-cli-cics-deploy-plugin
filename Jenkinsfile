@@ -197,16 +197,14 @@ pipeline {
                 }
             }
             steps('Install Zowe CLI') {
-                withCredentials([usernamePassword(credentialsId: ARTIFACTORY_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'API_KEY')]) {
-                    timeout(time: 10, unit: 'MINUTES') {
-                        echo "Install Zowe CLI globaly"
-                        sh "rm -f ~/.npmrc"
-                        sh("npm set registry https://registry.npmjs.org")
-                        sh("npm set @brightside:registry https://api.bintray.com/npm/ca/brightside/")
-                        sh("npm set @zowe:registry https://api.bintray.com/npm/ca/brightside/")
-                        sh("npm install -g @zowe/cli@latest")
-                        sh("zowe --version")
-                    }
+                timeout(time: 10, unit: 'MINUTES') {
+                    echo "Install Zowe CLI globaly"
+                    sh "rm -f .npmrc"
+                    sh("npm set registry https://registry.npmjs.org")
+                    sh("npm set @brightside:registry https://api.bintray.com/npm/ca/brightside/")
+                    sh("npm set @zowe:registry https://api.bintray.com/npm/ca/brightside/")
+                    sh("npm install -g @zowe/cli@latest")
+                    sh("zowe --version")
                 }
             }
         }
@@ -587,6 +585,8 @@ pipeline {
                         sh "echo registry=$TEST_NPM_REGISTRY >> .npmrc"
                         sh "echo @brightside:registry=https://api.bintray.com/npm/ca/brightside/ >> .npmrc"
                         sh "echo @brightside:always-auth=false >> .npmrc"
+                        sh "rm -f .npmrc"
+
 
                         script {
                             if (BRANCH_NAME == MASTER_BRANCH) {
