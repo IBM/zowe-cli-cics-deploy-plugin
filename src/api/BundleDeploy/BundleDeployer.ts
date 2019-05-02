@@ -265,7 +265,7 @@ export class BundleDeployer {
       if (statusWords.length >= 2) {
         if (statusWords[2] !== undefined && statusWords[2].indexOf("JOB") === 0) {
            this.jobId = statusWords[2];
-           this.progressBar.statusMessage += " (Processing DFHDPLOY " + action + " action)";
+           this.progressBar.statusMessage = "Running DFHDPLOY (" + action + "), job " + this.jobId;
 
            this.endProgressBar();
            // log the jobid for posterity
