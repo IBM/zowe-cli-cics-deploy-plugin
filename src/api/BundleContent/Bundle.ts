@@ -14,6 +14,7 @@
 import { Manifest } from "./Manifest";
 import { BundlePart, IBundlePartDataType } from "./BundlePart";
 import { NodejsappBundlePart } from "./NodejsappBundlePart";
+import { IHandlerParameters } from "@zowe/imperative";
 
 /**
  * Class to represent a CICS Bundle.
@@ -63,7 +64,9 @@ node_modules -
   private overwrite: boolean;
   private preparedToSave: boolean = false;
   private zosAttribsNeeded: boolean = false;
+  private zosAttribsAlreadyExists: boolean = false;
   private zosAttribsFile: string;
+  private params: IHandlerParameters;
 
   /**
    * Constructor for creating a Bundle.
@@ -71,14 +74,16 @@ node_modules -
    * @param {string} directory - The bundle directory.
    * @param {boolean} merge - Changes to the bundle manifest should be merged into any existing manifest.
    * @param {boolean} overwrite - Changes to the bundle contents should replace any existing contents.
+   * @param {IHandlerParameters} params - The current Imperative handler parameters
    * @throws ImperativeError
    * @memberof Bundle
    */
-  constructor(directory: string, merge: boolean, overwrite: boolean) {
+  constructor(directory: string, merge: boolean, overwrite: boolean, params?: IHandlerParameters) {
     this.merge = merge;
     this.overwrite = overwrite;
+    this.params = params;
     this.bundleDirectory = this.path.normalize(directory);
-    this.manifest = new Manifest(this.bundleDirectory, this.merge, this.overwrite);
+    this.manifest = new Manifest(this.bundleDirectory, this.merge, this.overwrite, params);
     this.preparedToSave = false;
     this.zosAttribsFile = this.path.join(this.bundleDirectory, ".zosattributes");
   }
@@ -196,7 +201,7 @@ node_modules -
   public addDefinition(partData: IBundlePartDataType) {
     // Create a BundlePart
     this.preparedToSave = false;
-    const bp = new BundlePart(this.bundleDirectory, partData, true, undefined, this.overwrite);
+    const bp = new BundlePart(this.bundleDirectory, partData, true, undefined, this.overwrite, this.params);
     this.definedParts.push(bp);
     this.manifest.addDefinition(bp);
   }
@@ -213,7 +218,7 @@ node_modules -
    */
   public addNodejsappDefinition(name: string, startscript: string, port: number) {
     this.preparedToSave = false;
-    const nj = new NodejsappBundlePart(this.bundleDirectory, name, startscript, port, this.overwrite);
+    const nj = new NodejsappBundlePart(this.bundleDirectory, name, startscript, port, this.overwrite, this.params);
     this.manifest.addDefinition(nj);
     this.definedParts.push(nj);
     this.zosAttribsNeeded = true;
@@ -276,7 +281,7 @@ node_modules -
 
   private prepareZosAttribs() {
     if (this.zosAttribsNeeded) {
-      BundlePart.ensureFileSaveable(this.zosAttribsFile, this.overwrite);
+      this.zosAttribsAlreadyExists = BundlePart.alreadyExists(this.zosAttribsFile, this.overwrite);
     }
   }
 
@@ -289,6 +294,13 @@ node_modules -
 
     // Write the zosattributes file
     try {
+      if (this.params !== undefined) {
+        let action = "    create";
+        if (this.zosAttribsAlreadyExists) {
+          action = " overwrite";
+        }
+        this.params.response.console.log(action + " : " + this.path.relative(this.bundleDirectory, this.zosAttribsFile));
+      }
       this.fs.writeFileSync(this.zosAttribsFile, contents, "utf8");
     }
     catch (err) {

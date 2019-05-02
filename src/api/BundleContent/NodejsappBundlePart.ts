@@ -13,6 +13,7 @@
 
 import { BundlePart } from "./BundlePart";
 import { TemplateNodejsappProfile } from "./TemplateNodejsappProfile";
+import { IHandlerParameters } from "@zowe/imperative";
 
 /**
  * Interface to represent the manifest data for a NODEJSAPP BundlePart.
@@ -55,6 +56,8 @@ export class NodejsappBundlePart extends BundlePart {
   private nodejsappProfileLocal: string;
   private partXML: INodejsappType;
   private profile: string;
+  private profileAlreadyExists: boolean;
+  private partXMLAlreadyExists: boolean;
 
   /**
    * Constructor for creating a NodejsappBundlePart.
@@ -64,11 +67,12 @@ export class NodejsappBundlePart extends BundlePart {
    * @param {string} startscript - The path of the start script for the NODEJSAPP.
    * @param {number} port - An optional port number to be added to the profile for the NODEJSAPP.
    * @param {boolean} overwrite - Can existing files be replaced?
+   * @param {IHandlerParameters} params - The current Imperative handler parameters
    * @static
    * @throws ImperativeError
    * @memberof NodejsappBundlePart
    */
-  constructor(directory: string, name: string, startscript: string, port: number, overwrite: boolean) {
+  constructor(directory: string, name: string, startscript: string, port: number, overwrite: boolean, params?: IHandlerParameters) {
     const partData = { name: "",
                        type: "http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP",
                        path: "" };
@@ -88,7 +92,7 @@ export class NodejsappBundlePart extends BundlePart {
     }
 
     partData.path = "nodejsapps/" + partData.name + ".nodejsapp";
-    super(directory, partData, false, "NODEJSAPP", overwrite);
+    super(directory, partData, false, "NODEJSAPP", overwrite, params);
 
     // Now validate the port
     this.validatePort(port);
@@ -99,6 +103,8 @@ export class NodejsappBundlePart extends BundlePart {
     this.nodejsappProfileLocal = "nodejsapps/" + partData.name + ".profile";
     this.overwrite = overwrite;
     this.bundleDirectory = directory;
+    this.profileAlreadyExists = false;
+    this.partXMLAlreadyExists = false;
 
     // Validate that the startscript resolves to something within the current directory
     startscript = this.normalizeAndValidateFileReference(startscript);
@@ -170,11 +176,11 @@ export class NodejsappBundlePart extends BundlePart {
         throw new Error("cics-deploy requires write permission to: " + this.nodejsappsDir);
     }
 
-    // Does the .nodejsapp appear to be saveable?
-    BundlePart.ensureFileSaveable(this.nodejsappFile, this.overwrite);
+   // Does the .nodejsapp appear to be saveable?
+    this.partXMLAlreadyExists = BundlePart.alreadyExists(this.nodejsappFile, this.overwrite);
 
     // Does the .profile appear to be saveable?
-    BundlePart.ensureFileSaveable(this.nodejsappProfile, this.overwrite);
+    this.profileAlreadyExists = BundlePart.alreadyExists(this.nodejsappProfile, this.overwrite);
   }
 
   /**
@@ -187,6 +193,7 @@ export class NodejsappBundlePart extends BundlePart {
     // Does the nodejsapps directory exist? If not, create it.
     if (!BundlePart.fs.existsSync(this.nodejsappsDir)) {
        try {
+         this.logCreation(this.nodejsappsDir, "    create");
          BundlePart.fs.mkdirSync(this.nodejsappsDir);
        }
        catch (err) {
@@ -196,6 +203,11 @@ export class NodejsappBundlePart extends BundlePart {
 
     // Write the .nodejsapp file
     try {
+      let action = "    create";
+      if (this.partXMLAlreadyExists) {
+        action = " overwrite";
+      }
+      this.logCreation(this.nodejsappFile, action);
       BundlePart.fs.writeFileSync(this.nodejsappFile, this.getPartXML(), "utf8");
     }
     catch (err) {
@@ -204,6 +216,11 @@ export class NodejsappBundlePart extends BundlePart {
 
     // Write the .profile file
     try {
+      let action = "    create";
+      if (this.partXMLAlreadyExists) {
+        action = " overwrite";
+      }
+      this.logCreation(this.nodejsappProfile, action);
       BundlePart.fs.writeFileSync(this.nodejsappProfile, this.getProfile(), "utf8");
     }
     catch (err) {

@@ -12,6 +12,7 @@
 "use strict";
 
 import { Manifest } from "./Manifest";
+import { IHandlerParameters } from "@zowe/imperative";
 
 /**
  * Interface to represent the manifest data for a BundlePart.
@@ -42,7 +43,7 @@ export class BundlePart {
    * @throws ImperativeError
    * @memberof BundlePart
    */
-  public static ensureFileSaveable(filename: string, overwrite: boolean): boolean {
+  public static alreadyExists(filename: string, overwrite: boolean): boolean {
     // Does the file already exist?
     if (BundlePart.fs.existsSync(filename)) {
       // Are we allowed to replace it?
@@ -57,9 +58,11 @@ export class BundlePart {
       catch (err) {
         throw new Error("cics-deploy requires write permission to: " + filename);
       }
+
+      return true;
     }
 
-    return true;
+    return false;
   }
 
   /**
@@ -111,6 +114,7 @@ export class BundlePart {
   protected overwrite: boolean;
   private partData: IBundlePartDataType;
   private simpleType = "BundlePart";
+  private params: IHandlerParameters;
 
   /**
    * Constructor for creating a BundlePart.
@@ -118,17 +122,19 @@ export class BundlePart {
    * @param {IBundlePartDataType} partDataLocal - The metadata for the BundlePart.
    * @param {boolean} validatePath - True if the path property should be validated.
    * @param {boolean} overwrite - True if the parts contents are allowed to be changed.
+   * @param {IHandlerParameters} params - The current Imperative handler parameters
    * @static
    * @throws ImperativeError
    * @memberof BundlePart
    */
   constructor(directory: string, partDataLocal: IBundlePartDataType, validatePath: boolean,
-              abbrevType: string, overwrite: boolean) {
+              abbrevType: string, overwrite: boolean, params?: IHandlerParameters) {
     if (abbrevType !== undefined) {
       this.simpleType = abbrevType;
     }
     this.partData = partDataLocal;
     this.overwrite = overwrite;
+    this.params = params;
     this.bundleDirectory = BundlePart.path.normalize(directory);
     this.validateName();
     this.validateType();
@@ -199,6 +205,20 @@ export class BundlePart {
     file = file.replace(new RegExp("\\\\", "g"), "/");
 
     return file;
+  }
+
+  /**
+   * Function to log the modification or creation of a file
+   *
+   * @param {string} file - the name of the file to log
+   * @param {string} action - the action to log
+   * @throws ImperativeError
+   * @memberof BundlePart
+   */
+  protected logCreation(file: string, action: string) {
+    if (this.params !== undefined) {
+      this.params.response.console.log(action + " : " + BundlePart.path.relative(this.bundleDirectory, file));
+    }
   }
 
   private validateName() {

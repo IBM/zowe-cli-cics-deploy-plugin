@@ -12,6 +12,7 @@
 "use strict";
 
 import { BundlePart, IBundlePartDataType } from "./BundlePart";
+import { IHandlerParameters } from "@zowe/imperative";
 
 /**
  * Interface to represent the manifest data for a CICS Bundle.
@@ -57,6 +58,8 @@ export class Manifest {
   private manifestExists: boolean = false;
   private merge: boolean;
   private overwrite: boolean;
+  private params: IHandlerParameters;
+  private manifestAction = "    create";
 
 
   /**
@@ -66,15 +69,17 @@ export class Manifest {
    * @param {string} directory - The bundle directory.
    * @param {boolean} merge - Changes to the bundle manifest should be merged into any existing manifest.
    * @param {boolean} overwrite - Changes to the bundle contents should replace any existing contents.
+   * @param {IHandlerParameters} params - The current Imperative handler parameters
    * @throws ImperativeError
    * @memberof Manifest
    */
-  constructor(directory: string, merge: boolean, overwrite: boolean) {
+  constructor(directory: string, merge: boolean, overwrite: boolean, params?: IHandlerParameters) {
    this.merge = merge;
    this.overwrite = overwrite;
    this.bundleDirectory = this.path.normalize(directory);
    this.metainfDir = this.bundleDirectory + "/META-INF";
    this.manifestFile = this.metainfDir + "/cics.xml";
+   this.params = params;
 
    // If 'merge' is set then attempt to read any existing manifest that may
    // already exist. Subsequent changes will be merged with the existing
@@ -136,6 +141,12 @@ export class Manifest {
       if (this.overwrite === false) {
         throw new Error("A bundle manifest file already exists. Specify --overwrite to replace it, or --merge to merge changes into it.");
       }
+      if (this.merge) {
+        this.manifestAction = "     merge";
+      }
+      else {
+        this.manifestAction = " overwrite";
+      }
 
       // Do we have write permission to the manifest?
       try {
@@ -157,6 +168,7 @@ export class Manifest {
      // Create the META-INF directory if it doesn't already exist
      if (!this.fs.existsSync(this.metainfDir)) {
        try {
+         this.logCreation(this.metainfDir);
          this.fs.mkdirSync(this.metainfDir);
        }
        catch (err) {
@@ -166,6 +178,7 @@ export class Manifest {
 
      // Write the cics.xml manifest
      try {
+       this.logCreation(this.manifestFile, this.manifestAction);
        this.fs.writeFileSync(this.manifestFile, this.getXML(), "utf8");
      }
      catch (err) {
@@ -377,5 +390,14 @@ export class Manifest {
     const text4 = text3.substring(0, maxLength);
 
     return text4;
+  }
+
+  private logCreation(file: string, action?: string) {
+    if (action === undefined) {
+      action = "    create";
+    }
+    if (this.params !== undefined) {
+      this.params.response.console.log(action + " : " + this.path.relative(this.bundleDirectory, file));
+    }
   }
 }

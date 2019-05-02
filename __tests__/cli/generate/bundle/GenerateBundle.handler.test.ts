@@ -40,8 +40,7 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
         },
         console: {
             log: jest.fn((logs) => {
-                expect("" + logs).toContain("CICS Bundle");
-                expect("" + logs).toContain("generated");
+                consoleText += logs.toString();
             }),
             error: jest.fn((errors) => {
                 expect("" + errors).toMatch("NO ERROR MESSAGE IS EXPECTED");
@@ -56,8 +55,12 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     definition: GenerateBundleDefinition.GenerateBundleDefinition,
     fullDefinition: GenerateBundleDefinition.GenerateBundleDefinition,
 };
+let consoleText = "";
 
 describe("bundle Handler", () => {
+    beforeEach(() => {
+        consoleText = "";
+    });
     afterEach(() => {
         jest.restoreAllMocks();
     });
@@ -74,6 +77,8 @@ describe("bundle Handler", () => {
             error = e;
             Imperative.console.error(`Error experienced: ${e.message}`);
         }
+        expect(consoleText).toContain("define : NODEJSAPP \"zowe-cli-cics-deploy-plugin\" with startscript \"lib/index.js\"");
+        expect(consoleText).toContain("CICS Bundle generated with bundleid \"zowe-cli-cics-deploy-plugin\"");
         expect(error).toBeUndefined();
     });
     it("should cope with an empty directory", async () => {
@@ -97,6 +102,7 @@ describe("bundle Handler", () => {
         }
         process.chdir(currentDir);
         expect(error).toBeUndefined();
+        expect(consoleText).toContain("Anonymous CICS Bundle generated");
     });
     it("should process a directory with package.json", async () => {
         DEFAULT_PARAMTERS.arguments.nosave = "true";
@@ -116,5 +122,64 @@ describe("bundle Handler", () => {
         }
         process.chdir(currentDir);
         expect(error).toBeUndefined();
+        expect(consoleText).toContain("define : NODEJSAPP \"testBundleName\" with startscript \"Artefact1\"");
+        expect(consoleText).toContain("CICS Bundle generated with bundleid \"testBundleName\"");
+    });
+    it("should produce the correct messages when overwrite on", async () => {
+        DEFAULT_PARAMTERS.arguments.nosave = "false";
+        jest.spyOn(fs, "writeFileSync").mockReturnValue(true);
+        jest.spyOn(fs, "mkdirSync").mockReturnValue(true);
+
+        const currentDir = process.cwd();
+        process.chdir("__tests__/__resources__/ExampleBundle04");
+
+        let error;
+        try {
+          const handler = new GenerateBundleHandler.default();
+          // The handler should succeed
+          const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
+          await handler.process(params);
+        } catch (e) {
+            error = e;
+            Imperative.console.error(`Error experienced: ${e.message}`);
+        }
+        process.chdir(currentDir);
+        expect(error).toBeUndefined();
+        expect(consoleText).toContain("define : NODEJSAPP \"testBundleName\" with startscript \"Artefact1\"");
+        expect(consoleText).toContain("create : nodejsapps");
+        expect(consoleText).toContain("testBundleName.nodejsapp");
+        expect(consoleText).toContain("testBundleName.profile");
+        expect(consoleText).toContain("create : .zosattributes");
+        expect(consoleText).toContain("overwrite : META-INF");
+        expect(consoleText).toContain("CICS Bundle generated with bundleid \"testBundleName\"");
+    });
+    it("should produce the correct messages when merge on", async () => {
+        DEFAULT_PARAMTERS.arguments.nosave = "false";
+        DEFAULT_PARAMTERS.arguments.merge = "true";
+        jest.spyOn(fs, "writeFileSync").mockReturnValue(true);
+        jest.spyOn(fs, "mkdirSync").mockReturnValue(true);
+
+        const currentDir = process.cwd();
+        process.chdir("__tests__/__resources__/ExampleBundle05");
+
+        let error;
+        try {
+          const handler = new GenerateBundleHandler.default();
+          // The handler should succeed
+          const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
+          await handler.process(params);
+        } catch (e) {
+            error = e;
+            Imperative.console.error(`Error experienced: ${e.message}`);
+        }
+        process.chdir(currentDir);
+        expect(error).toBeUndefined();
+        expect(consoleText).toContain("define : NODEJSAPP \"testBundleName\" with startscript \"Artefact1\"");
+        expect(consoleText).toContain("create : nodejsapps");
+        expect(consoleText).toContain("testBundleName.nodejsapp");
+        expect(consoleText).toContain("testBundleName.profile");
+        expect(consoleText).toContain("overwrite : .zosattributes");
+        expect(consoleText).toContain("merge : META-INF");
+        expect(consoleText).toContain("CICS Bundle generated with bundleid \"testBundleName\"");
     });
 });

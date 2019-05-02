@@ -54,7 +54,7 @@ export class AutoBundler {
     this.bundleDirectory = this.path.normalize(directory);
     this.packageJsonFile = directory + "/package.json";
     this.validateMergeAndOverwrite(params.arguments.merge, params.arguments.overwrite);
-    this.bundle = new Bundle(this.bundleDirectory, this.merge, this.overwrite);
+    this.bundle = new Bundle(this.bundleDirectory, this.merge, this.overwrite, params);
     this.discoverArguments(params);
 
     this.autoDetectWorkdirContent(params);
@@ -95,7 +95,7 @@ export class AutoBundler {
           this.portOverride        !== undefined ) {
         this.bundle.addNodejsappDefinition(this.nodejsappOverride, this.startscriptOverride, this.portOverride);
         try {
-          const msg = 'NODEJSAPP "' + this.nodejsappOverride + '" defined for startscript "' + this.startscriptOverride + '"';
+          const msg = 'define : NODEJSAPP "' + this.nodejsappOverride + '" with startscript "' + this.startscriptOverride + '"';
           params.response.console.log(msg);
 
           // Also log the message for posterity
@@ -175,7 +175,7 @@ export class AutoBundler {
     this.bundle.addNodejsappDefinition(njappname, fullSS, this.portOverride);
     try {
       // Construct an info message to report that the NODEJSAPP has been created
-      const msg = 'NODEJSAPP "' + njappname + '" defined for startscript "' + ss + '"';
+      const msg = '    define : NODEJSAPP "' + njappname + '" with startscript "' + ss + '"';
 
       // log the message to the console for the uesr
       params.response.console.log(msg);
