@@ -43,7 +43,7 @@ export default class GenerateBundleHandler extends BundleParentHandler implement
         msg = "Anonymous CICS Bundle generated";
       }
       else {
-        msg = 'CICS Bundle "' + autobundler.getBundle().getId() + '" generated';
+        msg = 'CICS Bundle generated with bundleid "' + autobundler.getBundle().getId() + '"';
       }
       return msg;
     }
