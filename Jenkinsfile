@@ -119,10 +119,12 @@ pipeline {
     stages {
         stage("Clean workspace") {
             steps {
-                cleanWs
+                timeout(time: 2, unit: 'MINUTES') {
+                    cleanWs
+                }
             }
         } 
-        
+
         /************************************************************************
          * STAGE
          * -----
