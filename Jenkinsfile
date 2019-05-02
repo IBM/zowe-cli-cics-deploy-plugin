@@ -247,7 +247,7 @@ pipeline {
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
                     echo 'Installing Dependencies'
-
+                    sh 'npm config ls'
                     sh 'npm install'
                 }
             }
