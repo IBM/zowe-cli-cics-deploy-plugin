@@ -31,6 +31,7 @@ export class BundlePusher {
   private path = require("path");
   private fs = require("fs");
   private progressBar: ITaskWithStatus;
+  private defaultRemoteNodehomeCmd = "export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\"";
 
   /**
    * Constructor for a BundlePusher.
@@ -90,8 +91,25 @@ export class BundlePusher {
       await this.undeployExistingBundle(zosMFSession, bd);
     }
 
+    // Find all of the package.json files in the Bundle
+    const packageJsonFiles: string[] = [];
+    this.findAllPackageJSONDirs(this.localDirectory, this.params.arguments.bundledir, packageJsonFiles);
+
     // If --overwrite is set then empty the remote directory structure
     if (this.params.arguments.overwrite) {
+     // Run 'npm uninstall' for each package.json file that exists in the bundle.
+     // This is a courtesy to give npm a chance to clean up itself, we have seen
+     // things get installed that are difficult to remove simply by deleting the
+     // directory.
+     try {
+       await this.runAllNpmUninstalls(sshSession, packageJsonFiles);
+     }
+     catch (error) {
+      // Something went wrong, but never mind, we'll destroy the entire directory in
+      // a moment.
+     }
+
+     // Now delete the directory
      await this.deleteBundleDirContents(sshSession);
     }
 
@@ -99,7 +117,7 @@ export class BundlePusher {
     await this.uploadBundle(zosMFSession);
 
     // Run 'npm install' for each package.json file that exists in the bundle
-    await this.runAllNpmInstalls(sshSession);
+    await this.runAllNpmInstalls(sshSession, packageJsonFiles);
 
     // Run DFHDPLOY to install the bundle
     await this.deployBundle(zosMFSession, bd);
@@ -331,9 +349,20 @@ export class BundlePusher {
       this.updateStatus("Running 'npm install' in remote directory");
     }
 
-    // Attempt to set the PATH for the default location of Node on z/OS.
-    const setNodehomeCmd = "export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\"";
-    await this.runSshCommandInRemoteDirectory(sshSession, remoteDirectory, setNodehomeCmd + " && npm install");
+    await this.runSshCommandInRemoteDirectory(sshSession, remoteDirectory, this.defaultRemoteNodehomeCmd + " && npm install");
+  }
+
+  private async runSingleNpmUninstall(sshSession: SshSession, remoteDirectory: string) {
+    if (this.params.arguments.verbose) {
+      this.updateStatus("Running 'npm uninstall *' in '" + remoteDirectory + "'");
+    }
+    else {
+      this.updateStatus("Running 'npm uninstall *' in remote directory");
+    }
+
+    // uninstall each module individually
+    await this.runSshCommandInRemoteDirectory(sshSession, remoteDirectory, this.defaultRemoteNodehomeCmd + " && " +
+                                              "npm uninstall `ls -1 node_modules | tr '/\n' ' '`");
   }
 
   private async runSshCommandInRemoteDirectory(sshSession: SshSession, directory: string, sshCommand: string) {
@@ -471,13 +500,15 @@ export class BundlePusher {
     }
   }
 
-  private async runAllNpmInstalls(sshSession: SshSession) {
-    // Find each directory/sub-directory that has a package.json file
-    const packageJsonFiles: string[] = [];
-    this.findAllPackageJSONDirs(this.localDirectory, this.params.arguments.bundledir, packageJsonFiles);
-
+  private async runAllNpmInstalls(sshSession: SshSession, packageJsonFiles: string[]) {
     for (const remoteDirectory of packageJsonFiles) {
       await this.runSingleNpmInstall(sshSession, remoteDirectory);
+    }
+  }
+
+  private async runAllNpmUninstalls(sshSession: SshSession, packageJsonFiles: string[]) {
+    for (const remoteDirectory of packageJsonFiles) {
+      await this.runSingleNpmUninstall(sshSession, remoteDirectory);
     }
   }
 }
