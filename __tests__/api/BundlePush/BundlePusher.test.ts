@@ -341,6 +341,41 @@ describe("BundlePusher01", () => {
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(1);
     });
+    it("should uninstall node modules", async () => {
+        readdirSpy.mockImplementation((data: string) => {
+          return [ "package.json" ];
+        });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed.");
+
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(3);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(2);
+        expect(readdirSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should cope with error uninstalling node modules", async () => {
+        readdirSpy.mockImplementation((data: string) => {
+          return [ "package.json" ];
+        });
+        shellSpy.mockImplementationOnce(() => { throw new Error( "Injected Shell error from npm uninstall" ); });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed.");
+
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(3);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(2);
+        expect(readdirSpy).toHaveBeenCalledTimes(1);
+    });
     it("should cope with error during delete of existing bundledir contents", async () => {
         shellSpy.mockImplementationOnce(() => { throw new Error( "Injected Shell error" ); });
 
@@ -774,6 +809,7 @@ describe("BundlePusher01", () => {
         expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Accessing contents of remote bundle directory");
         expect(consoleText).toContain("Uploading bundle contents to remote directory");
+        expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied");
         expect(consoleText).toContain("Running 'npm install' in '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Injected stdout shell message");
         expect(consoleText).toContain("Deploying bundle '12345678' to CICS");
@@ -785,6 +821,44 @@ describe("BundlePusher01", () => {
         expect(shellSpy).toHaveBeenCalledTimes(1);
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(1);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(readdirSpy).toHaveBeenCalledTimes(1);
+        expect(lstatSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should run to completion with --verbose and --overwrite", async () => {
+        const parms = getCommonParmsForPushTests();
+        parms.arguments.verbose = true;
+        shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
+          stdoutHandler("Injected stdout shell message");
+        });
+        readdirSpy.mockImplementation((data: string) => {
+          return [ "package.json" ];
+        });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true, "PUSH operation completed.", parms);
+
+        expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
+        expect(consoleText).toContain("Accessing contents of remote bundle directory");
+        expect(consoleText).toContain("Undeploying bundle '12345678' from CICS");
+        expect(consoleText).toContain("Undeploy complete");
+        expect(consoleText).toContain("Running 'npm uninstall *' in '/u/ThisDoesNotExist/12345678'");
+        expect(consoleText).toContain("Removing contents of remote bundle directory");
+        expect(consoleText).toContain("Issuing SSH command 'rm -r *' in remote directory '/u/ThisDoesNotExist/12345678'");
+        expect(consoleText).toContain("Uploading bundle contents to remote directory");
+        expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied");
+        expect(consoleText).toContain("Running 'npm install' in '/u/ThisDoesNotExist/12345678'");
+        expect(consoleText).toContain("Injected stdout shell message");
+        expect(consoleText).toContain("Deploying bundle '12345678' to CICS");
+        expect(consoleText).toContain("Deploy complete");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(3);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(2);
         expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
