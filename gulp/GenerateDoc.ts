@@ -117,8 +117,8 @@ const doc: ITaskFunction = async () => {
     }
 
     markdownContent = mustache.render(markdownContent, {tableOfContents: tableOfContentsText});
-    fs.writeFileSync("docs/CLIReadme.md", markdownContent);
-    gutil.log(gutil.colors.blue("Updated docs/CLIReadme.md with definitions of " + totalCommands + " commands"));
+    fs.writeFileSync("docs-internal/CLIReadme.md", markdownContent);
+    gutil.log(gutil.colors.blue("Updated docs-internal/CLIReadme.md with definitions of " + totalCommands + " commands"));
 
     process.env.FORCE_COLOR = undefined;
 };
