@@ -24,7 +24,7 @@ export const ResgroupOption: ICommandOptionDefinition = {
     stringLengthRange: [1, MAX_LENGTH],
     conflictsWith: [ "csdgroup" ],
     description: "Specifies the BAS resource group (up to 8 characters) for the bundle resource. If a bundle is " +
-                 "deployed then a resource is defined in the BAS data repository; if a bundle is undeployed then the " +
+                 "deployed, a resource is defined in the BAS data repository. If a bundle is undeployed, the " +
                  "definition is removed. The --csdgroup and --resgroup options are " +
                  "mutually exclusive."
 };

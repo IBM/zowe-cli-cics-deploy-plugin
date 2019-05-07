@@ -19,7 +19,7 @@ export const PortOption: ICommandOptionDefinition = {
     name: "port",
     aliases: ["p"],
     type: "string",
-    description: "An optional TCP/IP port number that the Node.js application will expect to use. " +
+    description: "An optional TCP/IP port number that the Node.js application expects to use. " +
                  "If a value is specified, it is stored within the generated NODEJSAPP's profile " +
                  "and the associated value can be referenced programmatically by using the 'PORT' " +
                  "environment variable."
