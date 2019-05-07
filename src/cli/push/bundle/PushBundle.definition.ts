@@ -42,11 +42,11 @@ export const PushBundleDefinition: ICommandDefinition = {
     profile: { required: ["zosmf", "ssh"], optional: ["cics-deploy"] },
     examples: [
         {
-            description: "Push a CICS bundle from the working directory using default cics-deploy, ssh and zosmf profiles",
+            description: "Push a CICS bundle from the working directory by using default cics-deploy, ssh and zosmf profiles",
             options: `--name EXAMPLE --targetdir /u/example/bundles`
         },
         {
-            description: "Push a CICS bundle from the working directory using specific zosmf, ssh & cics-deploy profiles",
+            description: "Push a CICS bundle from the working directory by using specific zosmf, ssh & cics-deploy profiles",
             options: `--name EXAMPLE --targetdir /u/example/bundles --zosmf-profile testplex --cics-deploy-profile devcics --ssh-profile ssh`
         },
         {

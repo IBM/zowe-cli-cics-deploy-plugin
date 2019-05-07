@@ -23,6 +23,6 @@ export const TargetdirOption: ICommandOptionDefinition = {
     type: "string",
     required: true,
     stringLengthRange: [1, MAX_LENGTH],
-    description: "Specifies the target zFS location in which the CICS bundle should be created (up to 255 characters)"
+    description: "Specifies the target zFS location in which the CICS bundle is to be created (up to 255 characters)"
 };
 

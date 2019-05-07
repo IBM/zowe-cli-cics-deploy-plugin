@@ -41,15 +41,15 @@ export const UndeployBundleDefinition: ICommandDefinition = {
     profile: { required: ["zosmf"], optional: ["cics-deploy"] },
     examples: [
         {
-            description: "Undeploy a CICS bundle using the default cics-deploy profile",
+            description: "Undeploy a CICS bundle by using the default cics-deploy profile",
             options: `--name EXAMPLE`
         },
         {
-            description: "Undeploy a CICS bundle, and declare a timeout should the processing take too long",
+            description: "Undeploy a CICS bundle, and declare a timeout if the processing takes too long",
             options: `--name EXAMPLE --timeout 60`
         },
         {
-            description: "Undeploy a CICS bundle from a specific target environment using specific zosmf and cics-deploy profiles",
+            description: "Undeploy a CICS bundle from a specific target environment by using specific zosmf and cics-deploy profiles",
             options: `--name EXAMPLE --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP ` +
                      `--cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --zosmf-profile testplex --cics-deploy-profile devcics`
         }
