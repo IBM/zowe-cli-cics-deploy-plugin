@@ -23,7 +23,7 @@ export const CsdgroupOption: ICommandOptionDefinition = {
     type: "string",
     stringLengthRange: [1, MAX_LENGTH],
     description: "Specifies the CSD group (up to 8 characters) for the bundle resource. If a bundle is " +
-                 "deployed then a definition is added to this group; if a bundle is undeployed then the " +
+                 "deployed, a definition is added to this group. If a bundle is undeployed, then the " +
                  "definition is removed from this group. The definition is added or removed from the CSD of each system " +
                  "that is specified by the --scope option. The --csdgroup and --resgroup options are " +
                  "mutually exclusive."

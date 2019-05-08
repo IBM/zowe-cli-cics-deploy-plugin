@@ -362,7 +362,7 @@ export class BundlePusher {
 
     // uninstall each module individually
     await this.runSshCommandInRemoteDirectory(sshSession, remoteDirectory, this.defaultRemoteNodehomeCmd + " && " +
-                                              "npm uninstall `ls -1 node_modules | tr '/\n' ' '`");
+          "if [ -d \"node_modules\" ] && [ \"$(ls node_modules)\" ]; then npm uninstall `ls -1 node_modules | tr '/\n' ' '`; fi");
   }
 
   private async runSshCommandInRemoteDirectory(sshSession: SshSession, directory: string, sshCommand: string) {
