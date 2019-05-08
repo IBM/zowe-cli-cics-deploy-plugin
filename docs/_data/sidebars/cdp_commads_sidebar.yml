@@ -59,7 +59,7 @@ entries:
     - title: set-default cics-deploy-profile
       external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/CLIReadme.md#set-default--set
       output: web
-
+    
   - title: Commands - CICS deploy
     output: web
     folderitems:
@@ -70,8 +70,7 @@ entries:
       external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/CLIReadme.md#module-push
       output: web
     - title: deploy bundle
-      external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/CLIReadme.md#module-deploy
+      external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs/CLIReadme.md#module-deploy
       output: web
     - title: undeploy bundle
-      external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/CLIReadme.md#module-undeploy
-      output: web
+      external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs/CLIReadme.md#module-undeploy
