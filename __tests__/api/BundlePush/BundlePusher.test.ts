@@ -70,7 +70,7 @@ let createSpy = jest.spyOn(Create, "uss").mockImplementation(() => ({}));
 let listSpy = jest.spyOn(List, "fileList").mockImplementation(() => ({}));
 let membersSpy = jest.spyOn(List, "allMembers").mockImplementation(() => ({}));
 let submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() => ({}));
-let shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementation(() => ({}));
+let shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementation(() => (0));
 let existsSpy = jest.spyOn(fs, "existsSync").mockImplementation(() => ({}));
 let readSpy = jest.spyOn(fs, "readFileSync").mockImplementation(() => ({}));
 let uploadSpy = jest.spyOn(Upload, "dirToUSSDirRecursive").mockImplementation(() => ({}));
@@ -88,7 +88,7 @@ describe("BundlePusher01", () => {
         membersSpy = jest.spyOn(List, "allMembers").mockImplementation(() => ( { val: "DFHDPLOY, EYU9ABSI" }));
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
-        shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementation(() => ({}));
+        shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementation(() => (0));
         existsSpy = jest.spyOn(fs, "existsSync").mockReturnValue(false);
         readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
           if (data.indexOf("cics.xml") > -1) {
@@ -393,6 +393,7 @@ describe("BundlePusher01", () => {
     it("should tolerate delete of empty directory", async () => {
         shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
           stdoutHandler("FSUM9195 cannot unlink entry \"*\": EDC5129I No such file or directory.");
+          return 1;
         });
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
@@ -406,9 +407,48 @@ describe("BundlePusher01", () => {
         expect(membersSpy).toHaveBeenCalledTimes(2);
         expect(submitSpy).toHaveBeenCalledTimes(2);
     });
+    it("should not tolerate non zero return code from ssh command", async () => {
+        shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
+          stdoutHandler("Ssh command exit with non zero status");
+          return 1;
+        });
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", true,
+              "A problem occurred attempting to run 'rm -r *' in remote directory '/u/ThisDoesNotExist/12345678'. " +
+              "Problem is: The output from the remote command implied that an error occurred.");
+
+        expect(consoleText).toContain("Ssh command exit with non zero status");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should not tolerate mixture of FSUM9195 but exit status is not 1", async () => {
+        shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
+          stdoutHandler("Injected FSUM9195 error message");
+          return 127;
+        });
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", true,
+              "A problem occurred attempting to run 'rm -r *' in remote directory '/u/ThisDoesNotExist/12345678'. " +
+              "Problem is: The output from the remote command implied that an error occurred.");
+
+        expect(consoleText).toContain("Injected FSUM9195 error message");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(1);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+    });
     it("should not tolerate mixture of FSUM9195 and other FSUM messages", async () => {
         shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
           stdoutHandler("Injected FSUM9195 and FSUM9196 error message");
+          return 1;
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", true,
@@ -594,6 +634,7 @@ describe("BundlePusher01", () => {
         shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
           if (cmd.indexOf("npm install") > -1) {
             stdoutHandler("Injected stdout error message");
+            return 1;
           }
           else {
             return true;
@@ -626,6 +667,7 @@ describe("BundlePusher01", () => {
         shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
           if (cmd.indexOf("npm install") > -1) {
             stdoutHandler("Injected FSUM7351 not found message");
+            return 1;
           }
           else {
             return true;
@@ -658,6 +700,7 @@ describe("BundlePusher01", () => {
         shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
           if (cmd.indexOf("npm install") > -1) {
             stdoutHandler("Injected npm ERR! Exit status 1 message");
+            return 1;
           }
           else {
             return true;
@@ -725,6 +768,7 @@ describe("BundlePusher01", () => {
         parms.arguments.targetdir = "//u//escapedDirName";
         shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
           stdoutHandler("Injected stdout shell message");
+          return 0;
         });
         readdirSpy.mockImplementation((data: string) => {
           return [ "package.json" ];
@@ -752,6 +796,7 @@ describe("BundlePusher01", () => {
         parms.arguments.targetdir = "//u//escapedDirName";
         shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
           stdoutHandler("Injected stdout shell message for " + dir);
+          return 0;
         });
         readdirSpy.mockImplementation((data: string) => {
           if (data.endsWith("XXXDIRXXX")) {
@@ -799,6 +844,7 @@ describe("BundlePusher01", () => {
         parms.arguments.verbose = true;
         shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
           stdoutHandler("Injected stdout shell message");
+          return 0;
         });
         readdirSpy.mockImplementation((data: string) => {
           return [ "package.json" ];
@@ -832,6 +878,7 @@ describe("BundlePusher01", () => {
         parms.arguments.verbose = true;
         shellSpy.mockImplementation((session: any, cmd: string, dir: string, stdoutHandler: (data: string) => void) => {
           stdoutHandler("Injected stdout shell message");
+          return 0;
         });
         readdirSpy.mockImplementation((data: string) => {
           return [ "package.json" ];
