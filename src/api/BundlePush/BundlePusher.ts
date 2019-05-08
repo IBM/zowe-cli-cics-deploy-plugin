@@ -375,26 +375,24 @@ export class BundlePusher {
       const shell = await Shell.executeSshCwd(sshSession, sshCommand, directory, this.sshOutput.bind(this));
       const upperCaseOutputText = this.sshOutputText.toUpperCase();
 
-      // Did the SSH command work? It's unclear how to tell, but for starters let's look for common
-      // signifiers in the output text. Note that FSUM9195 can imply that we've tried to delete the
+      // Note that FSUM9195 can imply that we've tried to delete the
       // contents of an empty directory - that's not a problem.
-
-      // If there any FSUM messages other than FSUM9195 then that's a problem
-      let otherFSUMMessages = false;
+      // Check if FSUM9195 is the only FSUM error
+      let isOnlyFSUM9195 = false;
       const countFSUM = (upperCaseOutputText.match(/FSUM/g) || []).length;
       const countFSUM9195 = (upperCaseOutputText.match(/FSUM9195/g) || []).length;
-      if (countFSUM > countFSUM9195) {
-        otherFSUMMessages = true;
+      if (countFSUM9195 !== 0 &&
+          countFSUM === countFSUM9195 &&
+          shell === 1) {
+        isOnlyFSUM9195 = true;
       }
 
-      // Now check for other common error signifiers
-      if (otherFSUMMessages ||
-          upperCaseOutputText.indexOf("ERROR ") > -1 ||
-          upperCaseOutputText.indexOf("ERR!") > -1 ) {
-
+      // Now check
+      // A. If exit code is non zero
+      // B. FSUM9195 is not the only FSUM error
+      if (shell !== 0 && !isOnlyFSUM9195) {
         // if we've not already logged the output, log it now
-        if (this.params.arguments.verbose !== true)
-        {
+        if (this.params.arguments.verbose !== true) {
           this.params.response.console.log(Buffer.from(this.sshOutputText));
         }
         throw new Error("The output from the remote command implied that an error occurred.");
