@@ -18,8 +18,7 @@ This profile identifies the z/OSMF server that has access to the directory on z/
 
 For example, to create a z/OSMF profile:
 ```console
-zowe profiles create zosmf-profile myzos --host myzos.example.com --port 3000
-     --user myuserid --password mypassword --reject-unauthorized false --overwrite
+zowe profiles create zosmf-profile myzos --host myzos.example.com --port 3000 --user myuserid --password mypassword --reject-unauthorized false --overwrite
 ```
 For help on using the options:
 ```console
@@ -42,8 +41,7 @@ It is recommended that you use the same user ID and host to connect with SSH as 
 
 For example, to create an SSH profile:
 ```console
-zowe profiles create ssh-profile myzos --host myzos.example.com
-     --user myuserid --password mypassword --overwrite
+zowe profiles create ssh-profile myzos --host myzos.example.com --user myuserid --password mypassword --overwrite
 ```
 For help on using the options:
 ```console
@@ -66,9 +64,7 @@ This profile identifies the CICS environment for deployment. You need to know th
 
 For example to create a cics-deploy profile:
 ```console
-zowe profiles create cics-deploy-profile example --cicsplex PLEX1
-     --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550
-     --scope TESTGRP1 --csdgroup BUNDGRP1 --overwrite
+zowe profiles create cics-deploy-profile example --cicsplex PLEX1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --scope TESTGRP1 --csdgroup BUNDGRP1 --overwrite
 ```
 For help on using the options:
 ```console
