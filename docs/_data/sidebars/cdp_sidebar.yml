@@ -34,6 +34,19 @@ entries:
       url: /cdp-Developer-deploying-Node.js-apps.html
       output: web
 
+  - title: Concepts
+    output: web
+    folderitems:
+    - title: Zowe and the Zowe CLI
+      url: /cdp-zowe-and-cli.html
+      output: web
+    - title: Zowe CLI profiles
+      url: /cdp-zowe-profiles.html
+      output: web
+    - title: Bundles
+      url: /cdp-cics-bundles.html
+      output: web
+
   - title: Troubleshooting
     output: web
     folderitems:
