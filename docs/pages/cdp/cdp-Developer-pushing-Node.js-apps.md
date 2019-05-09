@@ -37,7 +37,9 @@ You also need an existing CICS bundle in the current working directory. For more
 
 The `cics-deploy push bundle` command pushes a bundle from the working directory to a target CICS environment. It requires the use of a z/OSMF profile and an ssh profile to do so, use of a cics-deploy profile is also encouraged (for more information on these dependencies see [Requirements for Push](#push_req)). You can request assistance on using the push command by issuing the following command:
 
-  `zowe cics-deploy push bundle --help`
+   ```console
+   zowe cics-deploy push bundle --help
+   ```
 
 If you have configured default profiles for zosmf, ssh and cics-deploy then only two further items are needed:
 
@@ -46,16 +48,21 @@ If you have configured default profiles for zosmf, ssh and cics-deploy then only
 
 For example, you might issue the following command:
 
-  `zowe cics-deploy push bundle --name EXAMPLE1 --targetdir /u/user01/myBundles`
+   ```console
+   zowe cics-deploy push bundle --name EXAMPLE1 --targetdir /u/user01/myBundles
+   ```
 
 This command causes cics-deploy to attempt to deploy a bundle from the current working directory to the target CICS environment under the name `EXAMPLE1`. If a bundle exists in the target environment with the same name, cics-deploy returns an error. You can instruct cics-deploy to overwrite the existing bundle by adding the --overwrite parameter, for example:
 
-  `zowe cics-deploy push bundle --name EXAMPLE1 --targetdir /u/user01/myBundles --overwrite`
+   ```console
+   zowe cics-deploy push bundle --name EXAMPLE1 --targetdir /u/user01/myBundles --overwrite
+   ```
 
 You can also request verbose messages from cics-deploy by adding the --verbose option, for example:
 
-  `zowe cics-deploy push bundle --name EXAMPLE1 --targetdir /u/user01/myBundles --overwrite --verbose`
-
+   ```console
+   zowe cics-deploy push bundle --name EXAMPLE1 --targetdir /u/user01/myBundles --overwrite --verbose
+   ```
 
 <a name="push_components"></a>
 ### Subcomponents of the push command
@@ -68,4 +75,3 @@ The `cics-deploy push bundle` command consists of several separate actions, each
 4. It deploys a bundle by using `zowe cics-deploy deploy bundle` (See [Deploying a CICS bundle](#deploying)).
 
 Advanced users might prefer to use these subcommands in preference to the `push` command. For example, if the target CICS regions are not CPSM-managed then you might use Zowe to generate and then upload the bundle, and your own scripts to deploy the bundle into a CICS region.
-
