@@ -79,12 +79,14 @@ You can read more about the bundle manifest at [Manifest contents for a CICS bun
 
 ## Undeploying a bundle
 
-
 Undeploying a bundle removes it from a target CICS environment but it does not remove the bundle from zFS. The undeployment action shares the same dependencies as are required for deploying a bundle, and it uses the same z/OSMF and cics-deploy profiles. You need to know the name of the bundle in the target CICS environment. For example, you might issue the following command:
 
-`zowe cics-deploy undeploy bundle --name MYBUND01 --cics-deploy-profile example`
+```console
+zowe cics-deploy undeploy bundle --name MYBUND01 --cics-deploy-profile example
+```
 
 This command attempts to disable and discard a CICS bundle that is named MYBUND01, by using the default z/OSMF configuration and the CICS configuration defined in the example cics-deploy profile. For further information on undeploying bundle, issue the following command:
 
-`zowe cics-deploy undeploy bundle --help`
-
+```console
+zowe cics-deploy undeploy bundle --help
+```
