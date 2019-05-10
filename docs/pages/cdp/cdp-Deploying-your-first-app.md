@@ -23,7 +23,7 @@ toc: false
    npm install
    npm start
    ```
-   The Node.js web server will start and you can browse to http://localhost:3000 to see the running application. Use CTRL+C to stop the Node.js web server.
+   The Node.js web server will start and you can browse to [http://localhost:3000](http://localhost:3000) to see the running application. Use CTRL+C to stop the Node.js web server.
 
 1. Package the Node.js application into a CICS bundle. The port needs to be available for use by the CICS region on z/OS.
 
@@ -34,8 +34,8 @@ toc: false
 1. Deploy the CICS bundle into CICS. Replace the value for `--targetdir` with a directory on z/OS that your user ID has write access to, and the CICS region user ID has read access to. 
 
    ```console
-   zowe cics-deploy push bundle --name myExpressApp --targetdir /u/userid/bundles --overwrite
+   zowe cics-deploy push bundle --name Express --targetdir /u/userid/bundles --overwrite
    ```
 
 ### Results
-The Node.js web server will start and you can browse to http://myzos:3000 to see the running application.
+The Node.js web server will start and you can browse to [http://myzos:3000](http://myzos:3000) to see the running application.

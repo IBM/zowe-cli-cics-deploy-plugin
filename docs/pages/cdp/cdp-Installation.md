@@ -6,6 +6,7 @@ summary: "To install the Zowe CLI and cics-deploy plugin, perform the following 
 sidebar: cdp_sidebar
 permalink: cdp-Installation.html
 folder: cdp
+toc: false
 ---
 
 1. Install [Node.js V8.0](https://nodejs.org/en/download/) or later, and Node Package Manager (npm) V5.0 or later, that are required by Zowe CLI. To verify the versions installed:
