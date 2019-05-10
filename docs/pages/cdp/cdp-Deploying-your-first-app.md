@@ -23,7 +23,7 @@ toc: false
    npm install
    npm start
    ```
-   The Node.js web server will start and you can browse to http://localhost:3000 to see the running application. Use CTRL+C to stop the Node.js web server.
+   The Node.js web server will start and you can browse to [http://localhost:3000](http://localhost:3000) to see the running application. Use CTRL+C to stop the Node.js web server.
 
 1. Package the Node.js application into a CICS bundle. The port needs to be available for use by the CICS region on z/OS.
 
@@ -38,4 +38,4 @@ toc: false
    ```
 
 ### Results
-The Node.js web server will start and you can browse to http://myzos:3000 to see the running application.
+The Node.js web server will start and you can browse to [http://myzos:3000](http://myzos:3000) to see the running application.
