@@ -34,7 +34,7 @@ toc: false
 1. Deploy the CICS bundle into CICS. Replace the value for `--targetdir` with a directory on z/OS that your user ID has write access to, and the CICS region user ID has read access to. 
 
    ```console
-   zowe cics-deploy push bundle --name myExpressApp --targetdir /u/userid/bundles --overwrite
+   zowe cics-deploy push bundle --name Express --targetdir /u/userid/bundles --overwrite
    ```
 
 ### Results
