@@ -12,9 +12,12 @@ folder: cdp
 
 This profile identifies the z/OSMF server that has access to the directory on z/OS into which the CICS bundle will be deployed. You need to know the following from your z/OS system administrator:
 
-* *hostname* of the z/OSMF server.
-* *port number* of the z/OSMF server.
-* *user ID* and *password* to identify yourself to the z/OSMF server.
+| Parameter | Description |
+| --- | --- |
+| host | Hostname of the z/OSMF server. |
+| port | Port number of the z/OSMF server. |
+| user | User ID to identify yourself to the z/OSMF server. |
+| password | Password to identify yourself to the z/OSMF server. |
 
 For example, to create a z/OSMF profile:
 ```console
@@ -33,9 +36,12 @@ zowe zosmf check status
 
 This profile defines the parameters needed to connect. to the remote SSH server. You need to know the following from your z/OS system administrator:
 
-* *hostname* of the SSH server.
-* *port number* of the SSH server. This will default to 22.
-* *user ID* and *password* to identify yourself to the SSH server.
+| Parameter | Description |
+| --- | --- |
+| host | Hostname of the SSH server. |
+| port | Port number of the SSH server. This will default to 22. |
+| user | User ID to identify yourself to the SSH server. |
+| password | Password to identify yourself to the SSH server. |
 
 It is recommended that you use the same user ID and host to connect with SSH as is used in the z/OSMF profile, failure to do so results in undefined behaviour.
 
@@ -56,17 +62,23 @@ zowe zos-uss issue ssh 'uname -a'
 
 This profile identifies the CICS environment for deployment. You need to know the following from your CICS system administrator:
 
-* *CPSM CICSplex name*.
-* *High Level Qualifier* \(HLQ\) for the CICS and CPSM data sets.
-* *CPSM scope* to identify the CICS region or group of regions to deploy your application.
-* Optional - *CICS CSD group name or CPSM BAS resource group name* into which the bundle is defined.
-* Optional - *JCL jobcard* to use when submitting JCL that will run the CICS utility DFHDPLOY.
+| Parameter | Description |
+| --- | --- |
+| cicsplex | CPSM CICSplex name. |
+| cicshlq | High Level Qualifier \(HLQ\) for the CICS data sets. |
+| cpsmhlq | High Level Qualifier \(HLQ\) for the CPSM data sets. |
+| scope | CPSM scope to identify the CICS region or group of regions to deploy your application. |
+| csdgroup | CICS CSD group name or CPSM BAS resource group name into which the bundle is defined. If not specified, BUNDLE resources are defined in CPSM BAS for installation and then removed. |
+| jobcard | JCL jobcard to use when submitting JCL that will run the CICS utility DFHDPLOY. If not specified, a default jobcard will be used. |
+| targetdir | Target zFS location to which CICS bundles should be uploaded. |
 
 For example to create a cics-deploy profile:
 ```console
-zowe profiles create cics-deploy-profile example --cicsplex PLEX1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --scope TESTGRP1 --csdgroup BUNDGRP1 --overwrite
+zowe profiles create cics-deploy-profile example --cicsplex PLEX1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --scope TESTGRP1 --csdgroup BUNDGRP1 --targetdir /var/cicsts/bundles
+--overwrite
 ```
 For help on using the options:
 ```console
 zowe profiles create cics-deploy-profile --help
 ```
+To test the cics-deploy profile, follow the steps in [Deploying your first app](cdp-Deploying-your-first-app).
