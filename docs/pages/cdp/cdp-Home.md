@@ -1,10 +1,10 @@
 ---
-title: Home
+title: Zowe CLI CICS deploy plugin
 tags: [getting_started]
 keywords:
 summary: "The Zowe command line interface (CLI) provides a simple and streamlined way to interact with IBM z/OS. The cics-deploy plugin extends the Zowe CLI to deploy applications developed on a workstation to IBM CICS Transaction Server for z/OS (CICS)."
 sidebar: cdp_sidebar
-permalink: cdp-Home.html
+permalink: index.html
 folder: cdp
 ---
 
