@@ -37,7 +37,7 @@ toc: false
     zowe plugins install .
     ```
 
-4. Verify the the plugin is installed:
+4. Verify the plugin is installed:
 
     ```console
     zowe plugins list
