@@ -9,34 +9,36 @@ folder: cdp
 toc: false
 ---
 
-1. Install [Node.js V8.0](https://nodejs.org/en/download/) or later, and Node Package Manager (npm) V5.0 or later, that are required by Zowe CLI. To verify the versions installed:
+1. Install Node.js V8.0 or later, and Node Package Manager (npm) V5.0 or later, that are required by Zowe CLI. Installers are available from Node.js [Downloads](https://nodejs.org/en/download/).
 
-   ```console
-   node --version
-   npm --version
-   ```
+    To verify the versions installed:
+
+    ```console
+    node --version
+    npm --version
+    ```
 
 2. Install [Zowe CLI](https://zowe.github.io/docs-site/latest/user-guide/cli-installcli.html). For example to install using npm:
 
-   ```console
-   npm install -g zowe-cli
-   ```
+    ```console
+    sudo npm install -g @zowe/cli
+    ```
 
-3. Install the cics-deploy plugin:
+3. Build and install the cics-deploy plugin as described in [Setting up your development environment](https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/tutorials/Setup.md). For example:
 
-   ```console
-   zowe plugins install zowe-cli-cics-deploy-plugin
-   ```
+    ```console
+    mkdir ~/cics-deploy
+    cd ~/cics-deploy
+    rm -Rf *
+    git clone https://github.com/IBM/zowe-cli-cics-deploy-plugin
+    cd zowe-cli-cics-deploy-plugin
+    npm install
+    npm run build
+    zowe plugins install .
+    ```
 
-4. Verify the version of the plugin that is installed:
+4. Verify the plugin is installed:
 
-   ```console
-   zowe plugins list
-   ```
-
-### Update the cics-deploy plugin
-
-To update to the latest version of the plugin:
-```console
-zowe plugins update zowe-cli-cics-deploy-plugin
-```
+    ```console
+    zowe plugins list
+    ```

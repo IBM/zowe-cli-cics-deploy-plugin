@@ -79,7 +79,7 @@ entries:
     - title: generate bundle
       external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/CLIReadme.md#module-generate
       output: web
-    - title: update push bundle
+    - title: push bundle
       external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/CLIReadme.md#module-push
       output: web
     - title: deploy bundle
