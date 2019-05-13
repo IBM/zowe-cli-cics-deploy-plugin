@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1366 768" style="enable-background:new 0 0 1366 768;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#CCFFD9;stroke:#231F20;stroke-width:0.2835;stroke-miterlimit:2.6131;}
+	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;stroke:#231F20;stroke-width:0.2835;stroke-miterlimit:2.6131;}
+	.st2{fill-rule:evenodd;clip-rule:evenodd;fill:#DADADA;stroke:#231F20;stroke-width:0.2835;stroke-miterlimit:2.6131;}
+	.st3{fill-rule:evenodd;clip-rule:evenodd;fill:none;}
+	.st4{font-family:'IBMPlexSans-Italic';}
+	.st5{font-size:24px;}
+	.st6{font-family:'IBMPlexSans';}
+	.st7{fill:#FFFFFF;}
+	.st8{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+	.st9{fill:none;stroke:#000000;stroke-miterlimit:10;}
+	.st10{font-size:18px;}
+	.st11{font-size:22.6407px;}
+	.st12{font-size:16.9805px;}
+	.st13{fill:#272727;}
+</style>
+<rect x="34" y="21" class="st0" width="812" height="547"/>
+<path class="st1" d="M531,354"/>
+<line class="st1" x1="502" y1="354" x2="502" y2="354"/>
+<path class="st1" d="M474.6,361.9"/>
+<path class="st1" d="M474.6,406.4"/>
+<path class="st1" d="M535,323"/>
+<path class="st1" d="M506,323"/>
+<g>
+	<polygon class="st1" points="377.7,73.6 516.8,73.6 580.7,134.9 581,287.2 377.7,287.2 377.7,73.6 	"/>
+	<polygon class="st2" points="516.7,134.9 581,135 516.9,73.6 516.7,134.9 	"/>
+</g>
+<g>
+	<polygon class="st1" points="619.7,71.6 758.8,71.6 822.7,132.9 823,285.2 619.7,285.2 619.7,71.6 	"/>
+	<polygon class="st2" points="758.7,132.9 823,133 758.9,71.6 758.7,132.9 	"/>
+</g>
+<rect x="411" y="156" class="st3" width="189" height="77"/>
+<text transform="matrix(0.9806 0 0 1 411.0005 176.3765)"><tspan x="0" y="0" class="st4 st5">&lt;nodejsapp&gt;</tspan><tspan x="0" y="28.8" class="st6 st5">.nodejsapp</tspan></text>
+<text transform="matrix(1 0 0 1 614 185)"><tspan x="0" y="0" class="st4 st5">&lt;nodejsapp&gt;</tspan><tspan x="140.6" y="0" class="st6 st5">.profile</tspan></text>
+<g>
+	<text transform="matrix(1 0 0 1 382 53)" class="st6 st5">CICS BUNDLE</text>
+	<g>
+		<g>
+			<g>
+				<polygon class="st7" points="338.8,54.2 338.8,24 348.5,24 353.6,28.7 368.8,28.7 368.8,54.2 				"/>
+				<path d="M348.3,24.5l4.9,4.4l0.3,0.3h0.4h14.5v24.5h-28.9V24.5H348.3 M348.7,23.5h-10.3v31.2h30.9V28.2h-15.5L348.7,23.5
+					L348.7,23.5z"/>
+			</g>
+		</g>
+		<g>
+			<polygon points="370.6,54.7 377,32.8 367.7,32.8 367.7,54.7 			"/>
+		</g>
+		<g>
+			<g>
+				<path class="st8" d="M335.5,41.7c-0.8,0-1.5-0.3-2-0.9c-0.5-0.6-0.7-1.4-0.6-2.2c0.2-1.1,1-1.9,2.1-2.1c0.2,0,0.3,0,0.5,0
+					c1,0,1.8,0.5,2.3,1.4l2.4,3v0.9H335.5z"/>
+				<path d="M335.5,37L335.5,37c0.8,0,1.5,0.4,1.9,1.1l0,0.1l0.1,0.1l2.2,2.8v0.2h-2.1h-2.1c-0.6,0-1.2-0.3-1.6-0.8
+					c-0.4-0.5-0.6-1.1-0.5-1.8c0.1-0.8,0.9-1.5,1.7-1.7C335.2,37,335.4,37,335.5,37 M335.5,36c-0.2,0-0.4,0-0.6,0
+					c-1.3,0.2-2.3,1.2-2.5,2.5c-0.3,2,1.2,3.7,3.1,3.7h2.1h3.1v-1.6l-2.4-3C337.7,36.6,336.7,36,335.5,36L335.5,36z"/>
+			</g>
+			<g>
+				<path class="st8" d="M341.2,41.7v-0.9l2.3-2.9c0.5-0.9,1.4-1.5,2.3-1.5c0.2,0,0.3,0,0.5,0c1,0.2,1.9,1,2.1,2.1
+					c0.1,0.8-0.1,1.6-0.6,2.2c-0.5,0.6-1.2,0.9-2,0.9H341.2z"/>
+				<path d="M345.8,37c0.1,0,0.3,0,0.4,0c0.8,0.1,1.5,0.9,1.7,1.7c0.1,0.6-0.1,1.3-0.5,1.8c-0.4,0.5-1,0.8-1.6,0.8h-2.1h-2.1V41
+					l2.2-2.8l0.1-0.1l0-0.1C344.4,37.4,345.1,37,345.8,37 M345.8,36c-1.2,0-2.2,0.7-2.7,1.6l-2.4,3v1.6h3.1h2.1
+					c1.9,0,3.4-1.7,3.1-3.7c-0.2-1.3-1.2-2.3-2.5-2.5C346.2,36,346,36,345.8,36L345.8,36z"/>
+			</g>
+			<g>
+				<g>
+					<path class="st7" d="M340.7,63.5c-6.1,0-11.1-5-11.1-11.2c0-6.2,5-11.2,11.1-11.2s11.1,5,11.1,11.2
+						C351.8,58.5,346.8,63.5,340.7,63.5z"/>
+					<path d="M340.7,41.6c5.8,0,10.6,4.8,10.6,10.7c0,5.9-4.8,10.7-10.6,10.7s-10.6-4.8-10.6-10.7C330.1,46.4,334.8,41.6,340.7,41.6
+						 M340.7,40.6L340.7,40.6c-6.4,0-11.6,5.2-11.6,11.7v0c0,6.5,5.2,11.7,11.6,11.7h0c6.4,0,11.6-5.2,11.6-11.7v0
+						C352.3,45.9,347.1,40.6,340.7,40.6L340.7,40.6z"/>
+				</g>
+				<g>
+					<line class="st9" x1="340.7" y1="41.5" x2="340.7" y2="63.2"/>
+					<line class="st8" x1="340.7" y1="41.5" x2="340.7" y2="63.2"/>
+				</g>
+				<g>
+					<line class="st9" x1="330" y1="52.3" x2="351.3" y2="52.3"/>
+					<line class="st8" x1="330" y1="52.3" x2="351.3" y2="52.3"/>
+				</g>
+			</g>
+		</g>
+	</g>
+</g>
+<rect x="123" y="60" class="st3" width="11" height="3"/>
+<g>
+	<polygon class="st1" points="524.7,315.6 663.8,315.6 727.7,376.9 728,529.2 524.7,529.2 524.7,315.6 	"/>
+	<polygon class="st2" points="664.7,375.9 729,376 664.9,314.6 664.7,375.9 	"/>
+</g>
+<g>
+	<polygon class="st1" points="506.7,324.6 645.8,324.6 709.7,385.9 710,538.2 506.7,538.2 506.7,324.6 	"/>
+	<polygon class="st2" points="645.7,384.9 710,385 645.9,323.6 645.7,384.9 	"/>
+</g>
+<g>
+	<polygon class="st1" points="492.7,336.6 631.8,336.6 695.7,397.9 696,550.2 492.7,550.2 492.7,336.6 	"/>
+	<polygon class="st2" points="631.7,396.9 696,397 631.9,335.6 631.7,396.9 	"/>
+</g>
+<text transform="matrix(0.9989 0 0 1 502 452)" class="st6 st5">Other resources</text>
+<text transform="matrix(1 0 0 1 555 493)" class="st6 st10"> </text>
+<g>
+	<rect x="47" y="178" class="st1" width="276" height="265"/>
+	<g>
+		<polygon class="st1" points="103.7,229.6 235.3,229.6 295.8,287.4 296,431 103.7,431 103.7,229.6 		"/>
+		<polygon class="st2" points="235.2,286.4 296,286.5 235.4,228.6 235.2,286.4 		"/>
+	</g>
+	<text transform="matrix(1.0028 0 0 1 155.0669 341.2388)" class="st6 st11">cics.xml</text>
+	<text transform="matrix(1.0028 0 0 1 106.9644 372.3696)"><tspan x="0" y="0" class="st6 st12">Manifest of the contents</tspan><tspan x="39.9" y="20.4" class="st6 st12">of the bundle </tspan></text>
+	<g>
+		<polygon class="st13" points="94.5,220 103,192.3 90.8,192.3 90.8,220 		"/>
+	</g>
+	<g>
+		<polygon class="st7" points="52.5,219.5 52.5,181 65.4,181 72.2,186.9 92.3,186.9 92.3,219.5 		"/>
+		<path class="st13" d="M65.2,181.5l6.5,5.7l0.3,0.2h0.4h19.4V219H53v-37.5H65.2 M65.6,180.5H52V220h40.8v-33.6H72.4L65.6,180.5
+			L65.6,180.5z"/>
+	</g>
+	<text transform="matrix(1 0 0 1 105.4966 206)" class="st6 st10">/META-INF</text>
+</g>
+<rect x="572" y="409" class="st3" width="5" height="4"/>
+</svg>
