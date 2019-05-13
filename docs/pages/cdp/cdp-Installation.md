@@ -28,8 +28,8 @@ toc: false
 
     ```console
     mkdir ~/cics-deploy
-    rm -Rf *
     cd ~/cics-deploy
+    rm -Rf *
     git clone https://github.com/IBM/zowe-cli-cics-deploy-plugin
     cd zowe-cli-cics-deploy-plugin
     npm install
