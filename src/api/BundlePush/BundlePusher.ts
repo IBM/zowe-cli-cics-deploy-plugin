@@ -338,7 +338,7 @@ export class BundlePusher {
 
   private async deleteBundleDirContents(sshSession: SshSession) {
     this.updateStatus("Removing contents of remote bundle directory");
-    await this.runSshCommandInRemoteDirectory(sshSession, this.params.arguments.bundledir, "rm -r *");
+    await this.runSshCommandInRemoteDirectory(sshSession, this.params.arguments.bundledir, "if [ \"$(ls)\" ]; then rm -r *; fi");
   }
 
   private async runSingleNpmInstall(sshSession: SshSession, remoteDirectory: string) {
