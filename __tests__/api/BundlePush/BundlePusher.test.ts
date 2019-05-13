@@ -380,7 +380,7 @@ describe("BundlePusher01", () => {
         shellSpy.mockImplementationOnce(() => { throw new Error( "Injected Shell error" ); });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", true,
-              "A problem occurred attempting to run 'rm -r *' in remote directory '/u/ThisDoesNotExist/12345678'. Problem is: Injected Shell error");
+              "A problem occurred attempting to run 'if [ \"$(ls)\" ]; then rm -r *; fi' in remote directory '/u/ThisDoesNotExist/12345678'. Problem is: Injected Shell error");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -414,7 +414,7 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", true,
-              "A problem occurred attempting to run 'rm -r *' in remote directory '/u/ThisDoesNotExist/12345678'. " +
+              "A problem occurred attempting to run 'if [ \"$(ls)\" ]; then rm -r *; fi' in remote directory '/u/ThisDoesNotExist/12345678'. " +
               "Problem is: The output from the remote command implied that an error occurred.");
 
         expect(consoleText).toContain("Ssh command exit with non zero status");
@@ -433,7 +433,7 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", true,
-              "A problem occurred attempting to run 'rm -r *' in remote directory '/u/ThisDoesNotExist/12345678'. " +
+              "A problem occurred attempting to run 'if [ \"$(ls)\" ]; then rm -r *; fi' in remote directory '/u/ThisDoesNotExist/12345678'. " +
               "Problem is: The output from the remote command implied that an error occurred.");
 
         expect(consoleText).toContain("Injected FSUM9195 error message");
@@ -452,7 +452,7 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", true,
-              "A problem occurred attempting to run 'rm -r *' in remote directory '/u/ThisDoesNotExist/12345678'. " +
+              "A problem occurred attempting to run 'if [ \"$(ls)\" ]; then rm -r *; fi' in remote directory '/u/ThisDoesNotExist/12345678'. " +
               "Problem is: The output from the remote command implied that an error occurred.");
 
         expect(consoleText).toContain("Injected FSUM9195 and FSUM9196 error message");
@@ -892,7 +892,7 @@ describe("BundlePusher01", () => {
         expect(consoleText).toContain("Undeploy complete");
         expect(consoleText).toContain("Running 'npm uninstall *' in '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Removing contents of remote bundle directory");
-        expect(consoleText).toContain("Issuing SSH command 'rm -r *' in remote directory '/u/ThisDoesNotExist/12345678'");
+        expect(consoleText).toContain("Issuing SSH command 'if [ \"$(ls)\" ]; then rm -r *; fi' in remote directory '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Uploading bundle contents to remote directory");
         expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied");
         expect(consoleText).toContain("Running 'npm install' in '/u/ThisDoesNotExist/12345678'");
