@@ -7,13 +7,13 @@ sidebar: cdp_sidebar
 permalink: cdp-cics-bundles.html
 folder: cdp
 ---
-# CICS Bundles
+In CICS, Node.js applications are deployed as a CICS bundle with their resources.
 
-In CICS, Node.js applications are deployed as a bundle along with their resources.
+A CICS bundle is a directory that contains artifacts and a manifest that describes the bundle and its dependencies. CICS bundles allow you to group and manage resources relating to your Node.js application.
 
 The CICS BUNDLE resource represents the Node.js application to CICS and you can use it to manage the lifecycle of the application.
 
-When the bundle is deployed in CICS, the associated Node.js application runs within the enclave. When the bundle is undeployed, the associated Node.js application is stopped and the bundle is discarded.
+When the bundle is deployed in CICS, the Node.js runtime starts and the associated application runs. When the bundle is undeployed, the Node.js application and runtime are stopped and the bundle is discarded.
 
 ## Contents of a CICS bundle
 
