@@ -3,117 +3,116 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 1366 768" style="enable-background:new 0 0 1366 768;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#CCFFD9;stroke:#231F20;stroke-width:0.2835;stroke-miterlimit:2.6131;}
+	.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#D3D2E0;stroke:#231F20;stroke-width:0.2835;stroke-miterlimit:2.6131;}
 	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;stroke:#231F20;stroke-width:0.2835;stroke-miterlimit:2.6131;}
 	.st2{fill-rule:evenodd;clip-rule:evenodd;fill:#DADADA;stroke:#231F20;stroke-width:0.2835;stroke-miterlimit:2.6131;}
 	.st3{fill-rule:evenodd;clip-rule:evenodd;fill:none;}
 	.st4{font-family:'IBMPlexSans-Italic';}
-	.st5{font-size:24px;}
+	.st5{font-size:15.9707px;}
 	.st6{font-family:'IBMPlexSans';}
 	.st7{fill:#FFFFFF;}
 	.st8{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
 	.st9{fill:none;stroke:#000000;stroke-miterlimit:10;}
-	.st10{font-size:18px;}
-	.st11{font-size:16.9805px;}
+	.st10{font-size:11.9781px;}
+	.st11{font-size:11.2997px;}
 	.st12{fill:#272727;}
 </style>
-<rect x="34" y="21" class="st0" width="812" height="547"/>
-<path class="st1" d="M531,354"/>
-<line class="st1" x1="502" y1="354" x2="502" y2="354"/>
-<path class="st1" d="M474.6,361.9"/>
-<path class="st1" d="M474.6,406.4"/>
-<path class="st1" d="M535,323"/>
-<path class="st1" d="M506,323"/>
+<rect x="34" y="21" class="st0" width="538" height="364"/>
+<path class="st1" d="M363.3,242.6"/>
+<line class="st1" x1="344.1" y1="242.6" x2="344.1" y2="242.6"/>
+<path class="st1" d="M325.9,247.9"/>
+<path class="st1" d="M325.9,277.5"/>
+<path class="st1" d="M365.9,222"/>
+<path class="st1" d="M346.7,222"/>
 <g>
-	<polygon class="st1" points="377.7,73.6 516.8,73.6 580.7,134.9 581,287.2 377.7,287.2 377.7,73.6 	"/>
-	<polygon class="st2" points="516.7,134.9 581,135 516.9,73.6 516.7,134.9 	"/>
+	<polygon class="st1" points="261.7,56 353.9,56 396.2,96.8 396.4,198.1 261.7,198.1 261.7,56 	"/>
+	<polygon class="st2" points="353.8,96.8 396.4,96.9 354,56 353.8,96.8 	"/>
 </g>
 <g>
-	<polygon class="st1" points="619.7,71.6 758.8,71.6 822.7,132.9 823,285.2 619.7,285.2 619.7,71.6 	"/>
-	<polygon class="st2" points="758.7,132.9 823,133 758.9,71.6 758.7,132.9 	"/>
+	<polygon class="st1" points="422,54.7 514.2,54.7 556.6,95.5 556.7,196.8 422,196.8 422,54.7 	"/>
+	<polygon class="st2" points="514.2,95.5 556.7,95.5 514.3,54.7 514.2,95.5 	"/>
 </g>
-<rect x="411" y="156" class="st3" width="189" height="77"/>
-<text transform="matrix(0.9806 0 0 1 411.0005 176.3765)"><tspan x="0" y="0" class="st4 st5">&lt;nodejsapp&gt;</tspan><tspan x="0" y="28.8" class="st6 st5">.nodejsapp</tspan></text>
-<text transform="matrix(1 0 0 1 652 180)"><tspan x="0" y="0" class="st4 st5">&lt;nodejsapp&gt;</tspan><tspan x="0" y="28.8" class="st6 st5">.profile</tspan></text>
+<rect x="283.8" y="110.8" class="st3" width="125.2" height="51.2"/>
+<text transform="matrix(0.9763 0 0 1 283.7861 124.395)"><tspan x="0" y="0" class="st4 st5">&lt;nodejsapp&gt;</tspan><tspan x="0" y="19.2" class="st6 st5">.nodejsapp</tspan></text>
+<text transform="matrix(0.9957 0 0 1 443.4629 126.8062)"><tspan x="0" y="0" class="st4 st5">&lt;nodejsapp&gt;</tspan><tspan x="0" y="19.2" class="st6 st5">.profile</tspan></text>
 <g>
-	<text transform="matrix(1 0 0 1 105 62)" class="st6 st5">CICS BUNDLE</text>
+	<text transform="matrix(0.9957 0 0 1 81.042 48.2832)" class="st6 st5">CICS BUNDLE</text>
 	<g>
 		<g>
 			<g>
-				<polygon class="st7" points="61.8,63.2 61.8,33 71.5,33 76.6,37.7 91.8,37.7 91.8,63.2 				"/>
-				<path d="M71.3,33.5l4.9,4.4l0.3,0.3h0.4h14.5v24.5H62.3V33.5H71.3 M71.7,32.5H61.3v31.2h30.9V37.2H76.8L71.7,32.5L71.7,32.5z"/>
+				<polygon class="st7" points="52.6,48.9 52.6,29.1 58.8,29.1 62.2,32.3 72.1,32.3 72.1,48.9 				"/>
+				<path d="M58.6,29.6l3.1,2.8l0.3,0.3h0.4h9.2v15.6H53.1V29.6H58.6 M58.9,28.6h-6.8v20.7h20.5V31.8H62.4L58.9,28.6L58.9,28.6z"/>
 			</g>
 		</g>
 		<g>
-			<polygon points="93.6,63.7 100,41.8 90.7,41.8 90.7,63.7 			"/>
+			<polygon points="73.5,49.4 77.7,34.9 71.6,34.9 71.6,49.4 			"/>
 		</g>
 		<g>
 			<g>
-				<path class="st8" d="M58.5,50.7c-0.8,0-1.5-0.3-2-0.9c-0.5-0.6-0.7-1.4-0.6-2.2c0.2-1.1,1-1.9,2.1-2.1c0.2,0,0.3,0,0.5,0
-					c1,0,1.8,0.5,2.3,1.4l2.4,3v0.9H58.5z"/>
-				<path d="M58.5,46L58.5,46c0.8,0,1.5,0.4,1.9,1.1l0,0.1l0.1,0.1l2.2,2.8v0.2h-2.1h-2.1c-0.6,0-1.2-0.3-1.6-0.8
-					c-0.4-0.5-0.6-1.1-0.5-1.8c0.1-0.8,0.9-1.5,1.7-1.7C58.2,46,58.4,46,58.5,46 M58.5,45c-0.2,0-0.4,0-0.6,0
-					c-1.3,0.2-2.3,1.2-2.5,2.5c-0.3,2,1.2,3.7,3.1,3.7h2.1h3.1v-1.6l-2.4-3C60.7,45.6,59.7,45,58.5,45L58.5,45z"/>
+				<path class="st8" d="M50.2,40.6c-0.5,0-0.9-0.2-1.2-0.6c-0.3-0.4-0.4-0.8-0.3-1.3c0.1-0.6,0.6-1.1,1.3-1.3c0.1,0,0.2,0,0.3,0
+					c0.6,0,1.1,0.3,1.4,0.8l1.6,2v0.4H50.2z"/>
+				<path d="M50.2,37.9c0.4,0,0.7,0.2,0.9,0.6l0,0.1l0.1,0.1l1.1,1.4h-0.8h-1.4c-0.3,0-0.6-0.1-0.8-0.4c-0.2-0.2-0.3-0.6-0.2-0.9
+					c0.1-0.4,0.4-0.8,0.8-0.9C50.1,37.9,50.2,37.9,50.2,37.9 M50.2,36.9c-0.1,0-0.2,0-0.4,0c-0.8,0.1-1.5,0.8-1.7,1.7
+					c-0.2,1.3,0.8,2.4,2,2.4h1.4h2.1v-1L52,38C51.7,37.4,51,36.9,50.2,36.9L50.2,36.9z"/>
 			</g>
 			<g>
-				<path class="st8" d="M64.2,50.7v-0.9l2.3-2.9c0.5-0.9,1.4-1.5,2.3-1.5c0.2,0,0.3,0,0.5,0c1,0.2,1.9,1,2.1,2.1
-					c0.1,0.8-0.1,1.6-0.6,2.2c-0.5,0.6-1.2,0.9-2,0.9H64.2z"/>
-				<path d="M68.8,46c0.1,0,0.3,0,0.4,0c0.8,0.1,1.5,0.9,1.7,1.7c0.1,0.6-0.1,1.3-0.5,1.8c-0.4,0.5-1,0.8-1.6,0.8h-2.1h-2.1V50
-					l2.2-2.8l0.1-0.1l0-0.1C67.4,46.4,68.1,46,68.8,46 M68.8,45c-1.2,0-2.2,0.7-2.7,1.6l-2.4,3v1.6h3.1h2.1c1.9,0,3.4-1.7,3.1-3.7
-					c-0.2-1.3-1.2-2.3-2.5-2.5C69.2,45,69,45,68.8,45L68.8,45z"/>
+				<path class="st8" d="M54.2,40.6v-0.4l1.5-1.9c0.3-0.6,0.8-0.9,1.4-0.9c0.1,0,0.2,0,0.3,0c0.6,0.1,1.1,0.6,1.3,1.3
+					c0.1,0.5,0,0.9-0.3,1.3c-0.3,0.4-0.7,0.6-1.2,0.6H54.2z"/>
+				<path d="M57.1,37.9c0.1,0,0.1,0,0.2,0c0.4,0.1,0.8,0.4,0.8,0.9c0.1,0.3,0,0.7-0.2,0.9c-0.2,0.2-0.5,0.4-0.8,0.4h-1.4h-0.8
+					l1.1-1.4l0.1-0.1l0-0.1C56.3,38.2,56.7,37.9,57.1,37.9 M57.1,36.9c-0.8,0-1.5,0.4-1.8,1.1l-1.6,2v1h2.1h1.4c1.3,0,2.3-1.1,2-2.4
+					c-0.1-0.8-0.8-1.5-1.7-1.7C57.3,37,57.2,36.9,57.1,36.9L57.1,36.9z"/>
 			</g>
 			<g>
 				<g>
-					<path class="st7" d="M63.7,72.5c-6.1,0-11.1-5-11.1-11.2c0-6.2,5-11.2,11.1-11.2s11.1,5,11.1,11.2
-						C74.8,67.5,69.8,72.5,63.7,72.5z"/>
-					<path d="M63.7,50.6c5.8,0,10.6,4.8,10.6,10.7c0,5.9-4.8,10.7-10.6,10.7c-5.8,0-10.6-4.8-10.6-10.7
-						C53.1,55.4,57.8,50.6,63.7,50.6 M63.7,49.6L63.7,49.6c-6.4,0-11.6,5.2-11.6,11.7v0c0,6.5,5.2,11.7,11.6,11.7h0
-						c6.4,0,11.6-5.2,11.6-11.7v0C75.3,54.9,70.1,49.6,63.7,49.6L63.7,49.6z"/>
+					<ellipse class="st7" cx="53.7" cy="47.8" rx="7.2" ry="7.3"/>
+					<path d="M53.7,41.1c3.7,0,6.7,3,6.7,6.8c0,3.7-3,6.8-6.7,6.8c-3.7,0-6.7-3-6.7-6.8C47,44.1,50,41.1,53.7,41.1 M53.7,40.1
+						L53.7,40.1c-4.2,0-7.7,3.5-7.7,7.8v0c0,4.3,3.4,7.8,7.7,7.8h0c4.2,0,7.7-3.5,7.7-7.8v0C61.3,43.5,57.9,40.1,53.7,40.1
+						L53.7,40.1z"/>
 				</g>
 				<g>
-					<line class="st9" x1="63.7" y1="50.5" x2="63.7" y2="72.2"/>
-					<line class="st8" x1="63.7" y1="50.5" x2="63.7" y2="72.2"/>
+					<line class="st9" x1="53.7" y1="40.6" x2="53.7" y2="55"/>
+					<line class="st8" x1="53.7" y1="40.6" x2="53.7" y2="55"/>
 				</g>
 				<g>
-					<line class="st9" x1="53" y1="61.3" x2="74.3" y2="61.3"/>
-					<line class="st8" x1="53" y1="61.3" x2="74.3" y2="61.3"/>
+					<line class="st9" x1="46.6" y1="47.8" x2="60.7" y2="47.8"/>
+					<line class="st8" x1="46.6" y1="47.8" x2="60.7" y2="47.8"/>
 				</g>
 			</g>
 		</g>
 	</g>
 </g>
-<rect x="123" y="60" class="st3" width="11" height="3"/>
+<rect x="93" y="47" class="st3" width="7.3" height="2"/>
 <g>
-	<polygon class="st1" points="524.7,315.6 663.8,315.6 727.7,376.9 728,529.2 524.7,529.2 524.7,315.6 	"/>
-	<polygon class="st2" points="664.7,375.9 729,376 664.9,314.6 664.7,375.9 	"/>
+	<polygon class="st1" points="359.1,217 451.3,217 493.6,257.8 493.8,359.1 359.1,359.1 359.1,217 	"/>
+	<polygon class="st2" points="451.9,257.2 494.5,257.2 452,216.4 451.9,257.2 	"/>
 </g>
 <g>
-	<polygon class="st1" points="506.7,324.6 645.8,324.6 709.7,385.9 710,538.2 506.7,538.2 506.7,324.6 	"/>
-	<polygon class="st2" points="645.7,384.9 710,385 645.9,323.6 645.7,384.9 	"/>
+	<polygon class="st1" points="347.2,223 439.3,223 481.7,263.8 481.9,365.1 347.2,365.1 347.2,223 	"/>
+	<polygon class="st2" points="439.3,263.2 481.9,263.2 439.5,222.4 439.3,263.2 	"/>
 </g>
 <g>
-	<polygon class="st1" points="492.7,336.6 631.8,336.6 695.7,397.9 696,550.2 492.7,550.2 492.7,336.6 	"/>
-	<polygon class="st2" points="631.7,396.9 696,397 631.9,335.6 631.7,396.9 	"/>
+	<polygon class="st1" points="337.9,231 430.1,231 472.4,271.8 472.6,373.1 337.9,373.1 337.9,231 	"/>
+	<polygon class="st2" points="430,271.1 472.6,271.2 430.2,230.4 430,271.1 	"/>
 </g>
-<text transform="matrix(0.9989 0 0 1 502 452)" class="st6 st5">Other resources</text>
-<text transform="matrix(1 0 0 1 555 493)" class="st6 st10"> </text>
+<text transform="matrix(0.9945 0 0 1 344.0791 307.8081)" class="st6 st5">Other resources</text>
+<text transform="matrix(0.9957 0 0 1 379.1943 335.0913)" class="st6 st10"> </text>
 <g>
-	<rect x="47" y="178" class="st1" width="276" height="265"/>
+	<rect x="42.6" y="125.5" class="st1" width="182.9" height="176.3"/>
 	<g>
-		<polygon class="st1" points="103.7,229.6 235.3,229.6 295.8,287.4 296,431 103.7,431 103.7,229.6 		"/>
-		<polygon class="st2" points="235.2,286.4 296,286.5 235.4,228.6 235.2,286.4 		"/>
+		<polygon class="st1" points="80.2,159.8 167.4,159.8 207.4,198.3 207.6,293.8 80.2,293.8 80.2,159.8 		"/>
+		<polygon class="st2" points="167.3,197.6 207.6,197.7 167.5,159.2 167.3,197.6 		"/>
 	</g>
-	<text transform="matrix(1.0028 0 0 1 155.0669 341.2388)" class="st6 st5">cics.xml</text>
-	<text transform="matrix(1.0028 0 0 1 106.9644 372.3696)"><tspan x="0" y="0" class="st6 st11">Manifest of the contents</tspan><tspan x="39.9" y="20.4" class="st6 st11">of the bundle </tspan></text>
+	<text transform="matrix(0.9985 0 0 1 114.2139 234.1025)" class="st6 st5">cics.xml</text>
+	<text transform="matrix(0.9985 0 0 1 82.3428 254.8179)"><tspan x="0" y="0" class="st6 st11">Manifest of the contents</tspan><tspan x="26.5" y="13.6" class="st6 st11">of the bundle </tspan></text>
 	<g>
-		<polygon class="st12" points="94.5,220 103,192.3 90.8,192.3 90.8,220 		"/>
+		<polygon class="st12" points="74.1,153.4 79.7,135 71.6,135 71.6,153.4 		"/>
 	</g>
 	<g>
-		<polygon class="st7" points="52.5,219.5 52.5,181 65.4,181 72.2,186.9 92.3,186.9 92.3,219.5 		"/>
-		<path class="st12" d="M65.2,181.5l6.5,5.7l0.3,0.2h0.4h19.4V219H53v-37.5H65.2 M65.6,180.5H52V220h40.8v-33.6H72.4L65.6,180.5
-			L65.6,180.5z"/>
+		<polygon class="st7" points="46.4,152.9 46.4,127.6 54.7,127.6 59.3,131.6 72.5,131.6 72.5,152.9 		"/>
+		<path class="st12" d="M54.6,128.1l4.2,3.7l0.3,0.2h0.4H72v20.4h-25v-24.3H54.6 M54.9,127.1h-9v26.3h27v-22.4H59.4L54.9,127.1
+			L54.9,127.1z"/>
 	</g>
-	<text transform="matrix(1 0 0 1 105.4966 206)" class="st6 st10">/META-INF</text>
+	<text transform="matrix(0.9957 0 0 1 81.3706 144.1079)" class="st6 st10">/META-INF</text>
 </g>
-<rect x="572" y="409" class="st3" width="5" height="4"/>
+<rect x="390.5" y="279.2" class="st3" width="3.3" height="2.7"/>
 </svg>
