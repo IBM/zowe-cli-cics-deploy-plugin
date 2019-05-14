@@ -19,7 +19,7 @@ When the bundle is deployed in CICS, the associated Node.js application runs wit
 
 ## What goes in a bundle?
 
-![Contents of a CICS bundle](/docs/images/bundlecontents.png "title")
+{% include image.html file="bundlecontents.png" alt="Contents of a CICS bundle" caption="Contents of a CICS bundle" %}
 
 When you generate a bundle, the following files are created from package.json:  
 
