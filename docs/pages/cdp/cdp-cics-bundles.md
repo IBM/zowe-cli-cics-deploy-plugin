@@ -2,14 +2,12 @@
 title: CICS bundles
 tags: [getting_started, concepts]
 keywords:
-summary: "An overview of CICS bundles"
+summary: "An overview of CICS bundles and their contents"
 sidebar: cdp_sidebar
 permalink: cdp-cics-bundles.html
 folder: cdp
 ---
 # CICS Bundles
-
-## What is a CICS bundle?
 
 In CICS, Node.js applications are deployed as a bundle along with their resources.
 
@@ -17,7 +15,7 @@ The CICS BUNDLE resource represents the Node.js application to CICS and you can 
 
 When the bundle is deployed in CICS, the associated Node.js application runs within the enclave. When the bundle is undeployed, the associated Node.js application is stopped and the bundle is discarded.
 
-## What goes in a bundle?
+## Contents of a CICS bundle
 
 {% include image.html file="bundlecontents.png" alt="Contents of a CICS bundle" caption="Contents of a CICS bundle" %}
 
