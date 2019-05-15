@@ -43,7 +43,7 @@ entries:
     - title: Zowe CLI profiles
       url: /cdp-zowe-profiles.html
       output: web
-    - title: Bundles
+    - title: CICS Bundles
       url: /cdp-cics-bundles.html
       output: web
 

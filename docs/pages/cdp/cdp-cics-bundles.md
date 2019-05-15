@@ -6,6 +6,7 @@ summary: "An overview of CICS bundles and their contents"
 sidebar: cdp_sidebar
 permalink: cdp-cics-bundles.html
 folder: cdp
+toc: false
 ---
 In CICS, Node.js applications are deployed as a CICS bundle with their resources.
 
@@ -17,7 +18,7 @@ When the bundle is deployed in CICS, the Node.js runtime starts and the associat
 
 ## Contents of a CICS bundle
 
-{% include image.html file="bundlecontents.png" alt="Contents of a CICS bundle" caption="Contents of a CICS bundle" %}
+{% include image.html file="CICSbundlecontents.png" alt="Contents of a CICS bundle" caption="Contents of a CICS bundle" %}
 
 When you generate a bundle, the following files are created from package.json:  
 
