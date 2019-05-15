@@ -18,14 +18,14 @@ const MAX_LENGTH = 8;
  *
  */
 export const ResgroupOption: ICommandOptionDefinition = {
-    name: "resgroup",
-    aliases: ["rg"],
+    name: "res-group",
+    aliases: ["rg", "resgroup"],
     type: "string",
     stringLengthRange: [1, MAX_LENGTH],
     conflictsWith: [ "csdgroup" ],
     description: "Specifies the BAS resource group (up to 8 characters) for the bundle resource. If a bundle is " +
                  "deployed, a resource is defined in the BAS data repository. If a bundle is undeployed, the " +
-                 "definition is removed. The --csdgroup and --resgroup options are " +
+                 "definition is removed. The --csd-group and --res-group options are " +
                  "mutually exclusive."
 };
 

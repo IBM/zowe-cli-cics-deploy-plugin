@@ -18,14 +18,14 @@ const MAX_LENGTH = 8;
  *
  */
 export const CsdgroupOption: ICommandOptionDefinition = {
-    name: "csdgroup",
-    aliases: ["cg"],
+    name: "csd-group",
+    aliases: ["cg", "csdgroup"],
     type: "string",
     stringLengthRange: [1, MAX_LENGTH],
     description: "Specifies the CSD group (up to 8 characters) for the bundle resource. If a bundle is " +
                  "deployed, a definition is added to this group. If a bundle is undeployed, then the " +
                  "definition is removed from this group. The definition is added or removed from the CSD of each system " +
-                 "that is specified by the --scope option. The --csdgroup and --resgroup options are " +
+                 "that is specified by the --scope option. The --csd-group and --res-group options are " +
                  "mutually exclusive."
 };
 
