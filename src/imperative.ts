@@ -60,7 +60,7 @@ const config: IImperativeConfig = {
                 description: "Specifies the CSD group (up to 8 characters) for the bundle resource. If a bundle is " +
                              "deployed then a definition is added to this group; if a bundle is undeployed then the " +
                              "definition is removed from this group. The CSD group is changed for each CICS system " +
-                             "that is specified by the --scope option. The --csdgroup and --resgroup options are " +
+                             "that is specified by the --scope option. The --csd-group and --res-group options are " +
                              "mutually exclusive.",
                 type: "string",
                 name: "csd-group",
@@ -73,7 +73,7 @@ const config: IImperativeConfig = {
               optionDefinition: {
                 description: "Specifies the BAS resource group (up to 8 characters) for the bundle resource. If a bundle is " +
                              "deployed then a resource is defined in the BAS data repository; if a bundle is undeployed then the " +
-                             "definition is removed. The --csdgroup and --resgroup options are mutually exclusive.",
+                             "definition is removed. The --csd-group and --res-group options are mutually exclusive.",
                 type: "string",
                 name: "res-group",
                 aliases: ["rg", "resgroup"],
