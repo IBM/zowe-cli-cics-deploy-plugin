@@ -372,7 +372,7 @@ export class BundlePusher {
       }
 
       this.sshOutputText = "";
-      const shell = await Shell.executeSshCwd(sshSession, sshCommand, directory, this.sshOutput.bind(this));
+      const sshReturnCode = await Shell.executeSshCwd(sshSession, sshCommand, directory, this.sshOutput.bind(this));
       const upperCaseOutputText = this.sshOutputText.toUpperCase();
 
       // Note that FSUM9195 can imply that we've tried to delete the
@@ -383,19 +383,19 @@ export class BundlePusher {
       const countFSUM9195 = (upperCaseOutputText.match(/FSUM9195/g) || []).length;
       if (countFSUM9195 !== 0 &&
           countFSUM === countFSUM9195 &&
-          shell === 1) {
+          sshReturnCode === 1) {
         isOnlyFSUM9195 = true;
       }
 
       // Now check
       // A. If exit code is non zero
       // B. FSUM9195 is not the only FSUM error
-      if (shell !== 0 && !isOnlyFSUM9195) {
+      if (sshReturnCode !== 0 && !isOnlyFSUM9195) {
         // if we've not already logged the output, log it now
         if (this.params.arguments.verbose !== true) {
           this.params.response.console.log(Buffer.from(this.sshOutputText));
         }
-        throw new Error("The output from the remote command implied that an error occurred, return code " + shell + ".");
+        throw new Error("The output from the remote command implied that an error occurred, return code " + sshReturnCode + ".");
       }
     }
     catch (error) {

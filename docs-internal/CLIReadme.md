@@ -40,7 +40,7 @@ the target group of CICS regions\.
 	* Specifies the name of the CICS BUNDLE resource (up to 8 characters) to deploy or
 undeploy.
 
-*   `--bundle-directory`  | `--bd` | `--bundledir` *(string)*
+*   `--bundle-directory`  | `--bd` | `--bundledir` | `--bundle-dir` *(string)*
 
 	* Specifies the location of the CICS bundle (up to 255 characters) on zFS.
 
@@ -283,7 +283,7 @@ If a bundle is deployed then a resource is defined in the BAS data repository;
 if a bundle is undeployed then the definition is removed. The --csd-group and
 --res-group options are mutually exclusive.
 
-*   `--target-directory`  | `--td` | `--targetdir` *(string)*
+*   `--target-directory`  | `--td` | `--targetdir` | `--target-dir` *(string)*
 
 	* Specifies the target zFS location to which CICS bundles should be uploaded (up
 to 255 characters).
@@ -365,7 +365,7 @@ datasets can be found in the target environment.
 	* Specifies the High Level Qualifier (up to 35 characters) at which the CPSM
 datasets can be found in the target environment.
 
-*   `--target-directory`  | `--td` | `--targetdir` *(string)*
+*   `--target-directory`  | `--td` | `--targetdir` | `--target-dir` *(string)*
 
 	* Specifies the target zFS location to which CICS bundles should be uploaded (up
 to 255 characters).
@@ -479,7 +479,7 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 	* Specifies the name of the CICS BUNDLE resource (up to 8 characters) to deploy or
 undeploy.
 
-*   `--target-directory`  | `--td` | `--targetdir` *(string)*
+*   `--target-directory`  | `--td` | `--targetdir` | `--target-dir` *(string)*
 
 	* Specifies the target zFS location in which the CICS bundle is to be created (up
 to 255 characters)
