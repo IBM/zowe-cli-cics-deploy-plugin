@@ -65,13 +65,13 @@ cics-deploy --help' command.
 bundle is deployed, a definition is added to this group. If a bundle is
 undeployed, then the definition is removed from this group. The definition is
 added or removed from the CSD of each system that is specified by the --scope
-option. The --csdgroup and --resgroup options are mutually exclusive.
+option. The --csd-group and --res-group options are mutually exclusive.
 
 *   `--res-group`  | `--rg` | `--resgroup` *(string)*
 
 	* Specifies the BAS resource group (up to 8 characters) for the bundle resource.
 If a bundle is deployed, a resource is defined in the BAS data repository. If a
-bundle is undeployed, the definition is removed. The --csdgroup and --resgroup
+bundle is undeployed, the definition is removed. The --csd-group and --res-group
 options are mutually exclusive.
 
 *   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
@@ -149,7 +149,7 @@ Generate a CICS bundle and associated metadata files in the current working dire
 Generate a CICS bundle in the working directory\. The associated data is
 constructed from a combination of the command\-line options and the contents of
 package\.json\. If package\.json exists, no options are required\. If
-package\.json does not exist, both \-\-startscript and \-\-nodejsapp are
+package\.json does not exist, both \-\-start\-script and \-\-nodejsapp are
 required\.
 
 #### Usage
@@ -274,14 +274,14 @@ Default value: //DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 bundle is deployed then a definition is added to this group; if a bundle is
 undeployed then the definition is removed from this group. The CSD group is
 changed for each CICS system that is specified by the --scope option. The
---csdgroup and --resgroup options are mutually exclusive.
+--csd-group and --res-group options are mutually exclusive.
 
 *   `--res-group`  | `--rg` | `--resgroup` *(string)*
 
 	* Specifies the BAS resource group (up to 8 characters) for the bundle resource.
 If a bundle is deployed then a resource is defined in the BAS data repository;
-if a bundle is undeployed then the definition is removed. The --csdgroup and
---resgroup options are mutually exclusive.
+if a bundle is undeployed then the definition is removed. The --csd-group and
+--res-group options are mutually exclusive.
 
 *   `--target-directory`  | `--td` | `--targetdir` *(string)*
 
@@ -346,14 +346,14 @@ to target.
 bundle is deployed then a definition is added to this group; if a bundle is
 undeployed then the definition is removed from this group. The CSD group is
 changed for each CICS system that is specified by the --scope option. The
---csdgroup and --resgroup options are mutually exclusive.
+--csd-group and --res-group options are mutually exclusive.
 
 *   `--res-group`  | `--rg` | `--resgroup` *(string)*
 
 	* Specifies the BAS resource group (up to 8 characters) for the bundle resource.
 If a bundle is deployed then a resource is defined in the BAS data repository;
-if a bundle is undeployed then the definition is removed. The --csdgroup and
---resgroup options are mutually exclusive.
+if a bundle is undeployed then the definition is removed. The --csd-group and
+--res-group options are mutually exclusive.
 
 *   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
 
@@ -505,13 +505,13 @@ cics-deploy --help' command.
 bundle is deployed, a definition is added to this group. If a bundle is
 undeployed, then the definition is removed from this group. The definition is
 added or removed from the CSD of each system that is specified by the --scope
-option. The --csdgroup and --resgroup options are mutually exclusive.
+option. The --csd-group and --res-group options are mutually exclusive.
 
 *   `--res-group`  | `--rg` | `--resgroup` *(string)*
 
 	* Specifies the BAS resource group (up to 8 characters) for the bundle resource.
 If a bundle is deployed, a resource is defined in the BAS data repository. If a
-bundle is undeployed, the definition is removed. The --csdgroup and --resgroup
+bundle is undeployed, the definition is removed. The --csd-group and --res-group
 options are mutually exclusive.
 
 *   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
@@ -631,13 +631,13 @@ cics-deploy --help' command.
 bundle is deployed, a definition is added to this group. If a bundle is
 undeployed, then the definition is removed from this group. The definition is
 added or removed from the CSD of each system that is specified by the --scope
-option. The --csdgroup and --resgroup options are mutually exclusive.
+option. The --csd-group and --res-group options are mutually exclusive.
 
 *   `--res-group`  | `--rg` | `--resgroup` *(string)*
 
 	* Specifies the BAS resource group (up to 8 characters) for the bundle resource.
 If a bundle is deployed, a resource is defined in the BAS data repository. If a
-bundle is undeployed, the definition is removed. The --csdgroup and --resgroup
+bundle is undeployed, the definition is removed. The --csd-group and --res-group
 options are mutually exclusive.
 
 *   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
