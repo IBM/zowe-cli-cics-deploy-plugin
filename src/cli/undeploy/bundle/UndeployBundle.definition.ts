@@ -50,8 +50,8 @@ export const UndeployBundleDefinition: ICommandDefinition = {
         },
         {
             description: "Undeploy a CICS bundle from a specific target environment by using specific zosmf and cics-deploy profiles",
-            options: `--name EXAMPLE --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP ` +
-                     `--cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --zosmf-profile testplex --cics-deploy-profile devcics`
+            options: `--name EXAMPLE --cics-plex TESTPLEX --scope SCOPE --res-group BUNDGRP ` +
+                     `--cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --zosmf-profile testplex --cics-deploy-profile devcics`
         }
     ]
 };

@@ -41,11 +41,11 @@ export const GenerateBundleDefinition: ICommandDefinition = {
         },
         {
             description: "Generate a CICS bundle in the working directory, based on package.json but using a bundle ID of \"mybundle\"",
-            options: `--bundleid mybundle`
+            options: `--bundle-id mybundle`
         },
         {
             description: "Generate a CICS bundle in the working directory in which a package.json does not exist",
-            options: `--bundleid mybundle --nodejsapp myapp --startscript server.js`
+            options: `--bundle-id mybundle --nodejsapp myapp --start-script server.js`
         }
     ]
 };

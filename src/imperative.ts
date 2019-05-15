@@ -63,8 +63,8 @@ const config: IImperativeConfig = {
                              "that is specified by the --scope option. The --csdgroup and --resgroup options are " +
                              "mutually exclusive.",
                 type: "string",
-                name: "csdgroup",
-                aliases: ["cg"],
+                name: "csd-group",
+                aliases: ["cg", "csdgroup"],
                 stringLengthRange: [1, MAX_LENGTH]
               },
               type: "string"
@@ -75,8 +75,8 @@ const config: IImperativeConfig = {
                              "deployed then a resource is defined in the BAS data repository; if a bundle is undeployed then the " +
                              "definition is removed. The --csdgroup and --resgroup options are mutually exclusive.",
                 type: "string",
-                name: "resgroup",
-                aliases: ["rg"],
+                name: "res-group",
+                aliases: ["rg", "resgroup"],
                 stringLengthRange: [1, MAX_LENGTH],
                 conflictsWith: [ "csdgroup" ],
               },
@@ -87,8 +87,8 @@ const config: IImperativeConfig = {
                 description: "Specifies the High Level Qualifier (up to 35 characters) at which the CICS " +
                              "datasets can be found in the target environment.",
                 type: "string",
-                name: "cicshlq",
-                aliases: ["hlq"],
+                name: "cics-hlq",
+                aliases: ["ch", "cicshlq"],
                 stringLengthRange: [1, MAX_HLQ_LENGTH],
                 required: true
               },
@@ -99,8 +99,8 @@ const config: IImperativeConfig = {
                 description: "Specifies the High Level Qualifier (up to 35 characters) at which the CPSM " +
                              "datasets can be found in the target environment.",
                 type: "string",
-                name: "cpsmhlq",
-                aliases: ["cphlq"],
+                name: "cpsm-hlq",
+                aliases: ["cph", "cpsmhlq"],
                 stringLengthRange: [1, MAX_HLQ_LENGTH],
                 required: true
               },
@@ -110,8 +110,8 @@ const config: IImperativeConfig = {
               optionDefinition: {
                 description: "Specifies the target zFS location to which CICS bundles should be uploaded (up to 255 characters).",
                 type: "string",
-                name: "targetdir",
-                aliases: ["td"],
+                name: "target-directory",
+                aliases: ["td", "targetdir"],
                 stringLengthRange: [1, MAX_TARGETDIR_LENGTH],
                 required: false
               },
@@ -121,9 +121,9 @@ const config: IImperativeConfig = {
               optionDefinition: {
                 description: "Specifies the job card to use with any generated DFHDPLOY JCL.",
                 type: "string",
-                name: "jobcard",
+                name: "job-card",
                 defaultValue: "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT",
-                aliases: ["jc"],
+                aliases: ["jc", "jobcard"],
                 required: true
               },
               type: "string"
@@ -133,18 +133,18 @@ const config: IImperativeConfig = {
         },
         createProfileExamples: [
           {
-            options: "example1 --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550",
+            options: "example1 --cicsplex PLEX1 --scope TESTGRP1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550",
             description: "Create a cics-deploy profile called 'example1' to connect to a CPSM managed group of CICS regions " +
                          "within the TESTGRP1 scope of a cicsplex named PLEX1"
           },
           {
-            options: "example2 --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --resgroup BUNDGRP1",
+            options: "example2 --cicsplex PLEX1 --scope TESTGRP1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --res-group BUNDGRP1",
             description: "Create a cics-deploy profile called 'example2' to connect to the same CPSM managed group of regions, " +
                          "and identify a BAS resource group BUNDGRP1 in which to store resource definitions"
           },
           {
-            options: "example3 --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 " +
-                     "--cpsmhlq CICSTS55.CPSM550 --targetdir /var/cicsts/bundles",
+            options: "example3 --cicsplex PLEX1 --scope TESTGRP1 --cics-hlq CICSTS55.CICS720 " +
+                     "--cpsm-hlq CICSTS55.CPSM550 --target-directory /var/cicsts/bundles",
             description: "Create a cics-deploy profile called 'example3' to connect to the same CPSM managed group of regions, " +
                          "and identify the default USS directory to which bundles should be uploaded"
           }

@@ -18,8 +18,8 @@ const MAX_LENGTH = 8;
  *
  */
 export const ResgroupOption: ICommandOptionDefinition = {
-    name: "resgroup",
-    aliases: ["rg"],
+    name: "res-group",
+    aliases: ["rg", "resgroup"],
     type: "string",
     stringLengthRange: [1, MAX_LENGTH],
     conflictsWith: [ "csdgroup" ],
