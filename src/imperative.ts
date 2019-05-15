@@ -32,7 +32,7 @@ const config: IImperativeConfig = {
           title: "The cics-deploy-profile schema",
           description: "Specifies the target environment for the cics-deploy deploy and undeploy actions.",
           properties: {
-            cicsplex: {
+            "cicsplex": {
               optionDefinition: {
                 description: "Specifies the CICSplex (up to 8 characters) to target.",
                 type: "string",
@@ -43,7 +43,7 @@ const config: IImperativeConfig = {
               },
               type: "string"
             },
-            scope: {
+            "scope": {
               optionDefinition: {
                 description: "Specifies the name of the CICS System, or CICS System Group " +
                              "(up to 8 characters) to target.",
@@ -55,7 +55,7 @@ const config: IImperativeConfig = {
               },
               type: "string"
             },
-            csdgroup: {
+            "csd-group": {
               optionDefinition: {
                 description: "Specifies the CSD group (up to 8 characters) for the bundle resource. If a bundle is " +
                              "deployed then a definition is added to this group; if a bundle is undeployed then the " +
@@ -69,7 +69,7 @@ const config: IImperativeConfig = {
               },
               type: "string"
             },
-            resgroup: {
+            "res-group": {
               optionDefinition: {
                 description: "Specifies the BAS resource group (up to 8 characters) for the bundle resource. If a bundle is " +
                              "deployed then a resource is defined in the BAS data repository; if a bundle is undeployed then the " +
@@ -78,11 +78,11 @@ const config: IImperativeConfig = {
                 name: "res-group",
                 aliases: ["rg", "resgroup"],
                 stringLengthRange: [1, MAX_LENGTH],
-                conflictsWith: [ "csdgroup" ],
+                conflictsWith: [ "csd-group" ],
               },
               type: "string"
             },
-            cicshlq: {
+            "cics-hlq": {
               optionDefinition: {
                 description: "Specifies the High Level Qualifier (up to 35 characters) at which the CICS " +
                              "datasets can be found in the target environment.",
@@ -94,7 +94,7 @@ const config: IImperativeConfig = {
               },
               type: "string"
             },
-            cpsmhlq: {
+            "cpsm-hlq": {
               optionDefinition: {
                 description: "Specifies the High Level Qualifier (up to 35 characters) at which the CPSM " +
                              "datasets can be found in the target environment.",
@@ -106,7 +106,7 @@ const config: IImperativeConfig = {
               },
               type: "string"
             },
-            targetdir: {
+            "target-directory": {
               optionDefinition: {
                 description: "Specifies the target zFS location to which CICS bundles should be uploaded (up to 255 characters).",
                 type: "string",
@@ -117,7 +117,7 @@ const config: IImperativeConfig = {
               },
               type: "string"
             },
-            jobcard: {
+            "job-card": {
               optionDefinition: {
                 description: "Specifies the job card to use with any generated DFHDPLOY JCL.",
                 type: "string",
@@ -129,7 +129,7 @@ const config: IImperativeConfig = {
               type: "string"
             }
           },
-          required: ["cicsplex", "scope", "cicshlq", "cpsmhlq", "jobcard"]
+          required: ["cicsplex", "scope", "cics-hlq", "cpsm-hlq", "job-card"]
         },
         createProfileExamples: [
           {
