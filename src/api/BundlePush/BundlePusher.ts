@@ -395,7 +395,7 @@ export class BundlePusher {
         if (this.params.arguments.verbose !== true) {
           this.params.response.console.log(Buffer.from(this.sshOutputText));
         }
-        throw new Error("The output from the remote command implied that an error occurred.");
+        throw new Error("The output from the remote command implied that an error occurred, return code " + shell + ".");
       }
     }
     catch (error) {
