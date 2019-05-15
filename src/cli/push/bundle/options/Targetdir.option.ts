@@ -18,8 +18,8 @@ const MAX_LENGTH = 255;
  *
  */
 export const TargetdirOption: ICommandOptionDefinition = {
-    name: "targetdir",
-    aliases: ["td"],
+    name: "target-directory",
+    aliases: ["td", "targetdir", "target-dir"],
     type: "string",
     required: true,
     stringLengthRange: [1, MAX_LENGTH],
