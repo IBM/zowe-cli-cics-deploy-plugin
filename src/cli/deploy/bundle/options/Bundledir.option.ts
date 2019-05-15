@@ -18,8 +18,8 @@ const MAX_LENGTH = 255;
  *
  */
 export const BundledirOption: ICommandOptionDefinition = {
-    name: "bundledir",
-    aliases: ["bd"],
+    name: "bundle-directory",
+    aliases: ["bd", "bundledir", "bundle-dir"],
     type: "string",
     required: true,
     stringLengthRange: [1, MAX_LENGTH],

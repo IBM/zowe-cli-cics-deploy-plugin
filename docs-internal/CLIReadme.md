@@ -43,7 +43,7 @@ the target group of CICS regions\.
 	* Specifies the name of the CICS BUNDLE resource (up to 8 characters) to deploy or
       undeploy\.
 
-*   `--bundledir`  | `--bd` *(string)*
+*   `--bundle-directory`  | `--bd` | `--bundledir` | `--bundle-dir` *(string)*
 
 	* Specifies the location of the CICS bundle (up to 255 characters) on zFS\.
 
@@ -62,28 +62,28 @@ the target group of CICS regions\.
       option\. For help on creating a profile issue the 'zowe profiles create
       cics\-deploy \-\-help' command\.
 
-*   `--csdgroup`  | `--cg` *(string)*
+*   `--csd-group`  | `--cg` | `--csdgroup` *(string)*
 
 	* Specifies the CSD group (up to 8 characters) for the bundle resource\. If a
       bundle is deployed, a definition is added to this group\. If a bundle is
       undeployed, then the definition is removed from this group\. The definition is
       added or removed from the CSD of each system that is specified by the \-\-scope
-      option\. The \-\-csdgroup and \-\-resgroup options are mutually exclusive\.
+      option\. The \-\-csd\-group and \-\-res\-group options are mutually exclusive\.
 
-*   `--resgroup`  | `--rg` *(string)*
+*   `--res-group`  | `--rg` | `--resgroup` *(string)*
 
 	* Specifies the BAS resource group (up to 8 characters) for the bundle resource\.
       If a bundle is deployed, a resource is defined in the BAS data repository\. If a
-      bundle is undeployed, the definition is removed\. The \-\-csdgroup and
-      \-\-resgroup options are mutually exclusive\.
+      bundle is undeployed, the definition is removed\. The \-\-csd\-group and
+      \-\-res\-group options are mutually exclusive\.
 
-*   `--cicshlq`  | `--hlq` *(string)*
+*   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CICS
       datasets can be found in the target environment\. Use this parameter if you have
       not set the \-\-cics\-deploy\-profile option\.
 
-*   `--cpsmhlq`  | `--cphlq` *(string)*
+*   `--cpsm-hlq`  | `--cph` | `--cpsmhlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CPSM
       datasets can be found in the target environment\. Use this parameter if you have
@@ -94,7 +94,7 @@ the target group of CICS regions\.
 	* An optional value that specifies a description of the bundle definition (up to
       58 characters)\.
 
-*   `--jobcard`  | `--jc` *(string)*
+*   `--job-card`  | `--jc` | `--jobcard` *(string)*
 
 	* Specifies the job card to use with any generated DFHDPLOY JCL\. Use this
       parameter if you need to tailor the job card and you have not set the
@@ -108,7 +108,7 @@ the target group of CICS regions\.
 	* An optional numerical value that specifies the maximum amount of time in seconds
       (1 \- 1800 inclusive) for the DFHDPLOY command to complete\.
 
-*   `--targetstate`  | `--ts` *(string)*
+*   `--target-state`  | `--ts` | `--targetstate` *(string)*
 
 	* Specifies the target state for the deployed bundle\.
 
@@ -134,17 +134,17 @@ the target group of CICS regions\.
 *  Deploy a CICS bundle with a specific name and location to a
 default set of target regions:
 
-      * `$  zowe cics-deploy deploy bundle --name EXAMPLE --bundledir /u/example/bundleDir`
+      * `$  zowe cics-deploy deploy bundle --name EXAMPLE --bundle-directory /u/example/bundleDir`
 
 *  Deploy a CICS bundle, but declare a timeout if the
 processing takes too long:
 
-      * `$  zowe cics-deploy deploy bundle --name EXAMPLE --bundledir /u/example/bundleDir --timeout 60`
+      * `$  zowe cics-deploy deploy bundle --name EXAMPLE --bundle-directory /u/example/bundleDir --timeout 60`
 
 *  Deploy a CICS bundle to a specific target environment by
 using specific zosmf & cics-deploy profiles:
 
-      * `$  zowe cics-deploy deploy bundle --name EXAMPLE --bundledir /u/example/bundleDir --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --zosmf-profile testplex --cics-deploy-profile devcics`
+      * `$  zowe cics-deploy deploy bundle --name EXAMPLE --bundle-directory /u/example/bundleDir --cicsplex TESTPLEX --scope SCOPE --res-group BUNDGRP --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --zosmf-profile testplex --cics-deploy-profile devcics`
 
 ## generate | g | gen<a name="module-generate"></a>
 Generate a CICS bundle and associated metadata files in the current working directory. This allows the application in the current working directory to be deployed to CICS.
@@ -152,7 +152,7 @@ Generate a CICS bundle and associated metadata files in the current working dire
 Generate a CICS bundle in the working directory\. The associated data is
 constructed from a combination of the command\-line options and the contents of
 package\.json\. If package\.json exists, no options are required\. If
-package\.json does not exist, both \-\-startscript and \-\-nodejsapp are
+package\.json does not exist, both \-\-start\-script and \-\-nodejsapp are
 required\.
 
 #### Usage
@@ -161,7 +161,7 @@ required\.
 
 #### Options
 
-*   `--bundleid`  | `-b` | `--id` | `--bid` *(string)*
+*   `--bundle-id`  | `-b` | `--id` | `--bundleid` *(string)*
 
 	* The ID for the generated CICS bundle, up to 64 characters\. If no value is
       specified, a default value is created from the 'name' property in the
@@ -169,7 +169,7 @@ required\.
       it is truncated\. If it contains characters that are not supported by CICS, each
       character is replaced by an X\.
 
-*   `--bundleversion`  | `--bv` | `--bundlever` *(string)*
+*   `--bundle-version`  | `--bv` | `--bundleversion` *(string)*
 
 	* The major\.minor\.micro version number for the generated CICS bundle\. If no
       value is specified, a default value of 1\.0\.0 is used\.
@@ -182,7 +182,7 @@ required\.
       is truncated\. If it contains characters that are not supported by CICS, each
       character is replaced by an X\.
 
-*   `--startscript`  | `-s` | `--ss` *(string)*
+*   `--start-script`  | `-s` | `--ss` | `--startscript` *(string)*
 
 	* Up to 255 character path to the Node\.js start script that runs when the
       associated bundle is enabled in CICS\. If a value is not specified, a default
@@ -216,12 +216,12 @@ information from package.json:
 *  Generate a CICS bundle in the working directory, based on
 package.json but using a bundle ID of "mybundle":
 
-      * `$  zowe cics-deploy generate bundle --bundleid mybundle`
+      * `$  zowe cics-deploy generate bundle --bundle-id mybundle`
 
 *  Generate a CICS bundle in the working directory in which a
 package.json does not exist:
 
-      * `$  zowe cics-deploy generate bundle --bundleid mybundle --nodejsapp myapp --startscript server.js`
+      * `$  zowe cics-deploy generate bundle --bundle-id mybundle --nodejsapp myapp --start-script server.js`
 
 ## push | p<a name="module-push"></a>
 Push combines several actions for deploying a bundle to CICS into a single command. It uploads the bundle to z/OS, optionally runs an 'npm install' command on the remote system, then uses DFHDPLOY to install and enable the bundle in a target CICS environment.
@@ -239,7 +239,7 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 	* Specifies the name of the CICS BUNDLE resource (up to 8 characters) to deploy or
       undeploy\.
 
-*   `--targetdir`  | `--td` *(string)*
+*   `--target-directory`  | `--td` | `--targetdir` | `--target-dir` *(string)*
 
 	* Specifies the target zFS location in which the CICS bundle is to be created (up
       to 255 characters)
@@ -259,28 +259,28 @@ Push a CICS bundle from the working directory to a target CICSplex\.
       option\. For help on creating a profile issue the 'zowe profiles create
       cics\-deploy \-\-help' command\.
 
-*   `--csdgroup`  | `--cg` *(string)*
+*   `--csd-group`  | `--cg` | `--csdgroup` *(string)*
 
 	* Specifies the CSD group (up to 8 characters) for the bundle resource\. If a
       bundle is deployed, a definition is added to this group\. If a bundle is
       undeployed, then the definition is removed from this group\. The definition is
       added or removed from the CSD of each system that is specified by the \-\-scope
-      option\. The \-\-csdgroup and \-\-resgroup options are mutually exclusive\.
+      option\. The \-\-csd\-group and \-\-res\-group options are mutually exclusive\.
 
-*   `--resgroup`  | `--rg` *(string)*
+*   `--res-group`  | `--rg` | `--resgroup` *(string)*
 
 	* Specifies the BAS resource group (up to 8 characters) for the bundle resource\.
       If a bundle is deployed, a resource is defined in the BAS data repository\. If a
-      bundle is undeployed, the definition is removed\. The \-\-csdgroup and
-      \-\-resgroup options are mutually exclusive\.
+      bundle is undeployed, the definition is removed\. The \-\-csd\-group and
+      \-\-res\-group options are mutually exclusive\.
 
-*   `--cicshlq`  | `--hlq` *(string)*
+*   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CICS
       datasets can be found in the target environment\. Use this parameter if you have
       not set the \-\-cics\-deploy\-profile option\.
 
-*   `--cpsmhlq`  | `--cphlq` *(string)*
+*   `--cpsm-hlq`  | `--cph` | `--cpsmhlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CPSM
       datasets can be found in the target environment\. Use this parameter if you have
@@ -291,7 +291,7 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 	* An optional value that specifies a description of the bundle definition (up to
       58 characters)\.
 
-*   `--jobcard`  | `--jc` *(string)*
+*   `--job-card`  | `--jc` | `--jobcard` *(string)*
 
 	* Specifies the job card to use with any generated DFHDPLOY JCL\. Use this
       parameter if you need to tailor the job card and you have not set the
@@ -305,7 +305,7 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 	* An optional numerical value that specifies the maximum amount of time in seconds
       (1 \- 1800 inclusive) for the DFHDPLOY command to complete\.
 
-*   `--targetstate`  | `--ts` *(string)*
+*   `--target-state`  | `--ts` | `--targetstate` *(string)*
 
 	* Specifies the target state for the deployed bundle\.
 
@@ -340,17 +340,17 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 *  Push a CICS bundle from the working directory by using
 default cics-deploy, ssh and zosmf profiles:
 
-      * `$  zowe cics-deploy push bundle --name EXAMPLE --targetdir /u/example/bundles`
+      * `$  zowe cics-deploy push bundle --name EXAMPLE --target-directory /u/example/bundles`
 
 *  Push a CICS bundle from the working directory by using
 specific zosmf, ssh & cics-deploy profiles:
 
-      * `$  zowe cics-deploy push bundle --name EXAMPLE --targetdir /u/example/bundles --zosmf-profile testplex --cics-deploy-profile devcics --ssh-profile ssh`
+      * `$  zowe cics-deploy push bundle --name EXAMPLE --target-directory /u/example/bundles --zosmf-profile testplex --cics-deploy-profile devcics --ssh-profile ssh`
 
 *  Push a CICS bundle from the working directory replacing any
 bundle of the same name that is already deployed:
 
-      * `$  zowe cics-deploy push bundle --name EXAMPLE --targetdir /u/example/bundles --overwrite`
+      * `$  zowe cics-deploy push bundle --name EXAMPLE --target-directory /u/example/bundles --overwrite`
 
 ## undeploy | u | udep<a name="module-undeploy"></a>
 Undeploy a CICS bundle from one or more CICS regions within a CICSplex. A BUNDLE resource is made UNAVAILABLE, it is then DISABLED and DISCARDED from the target scope with the CICSplex.
@@ -385,34 +385,34 @@ target group of CICS regions\.
       option\. For help on creating a profile issue the 'zowe profiles create
       cics\-deploy \-\-help' command\.
 
-*   `--csdgroup`  | `--cg` *(string)*
+*   `--csd-group`  | `--cg` | `--csdgroup` *(string)*
 
 	* Specifies the CSD group (up to 8 characters) for the bundle resource\. If a
       bundle is deployed, a definition is added to this group\. If a bundle is
       undeployed, then the definition is removed from this group\. The definition is
       added or removed from the CSD of each system that is specified by the \-\-scope
-      option\. The \-\-csdgroup and \-\-resgroup options are mutually exclusive\.
+      option\. The \-\-csd\-group and \-\-res\-group options are mutually exclusive\.
 
-*   `--resgroup`  | `--rg` *(string)*
+*   `--res-group`  | `--rg` | `--resgroup` *(string)*
 
 	* Specifies the BAS resource group (up to 8 characters) for the bundle resource\.
       If a bundle is deployed, a resource is defined in the BAS data repository\. If a
-      bundle is undeployed, the definition is removed\. The \-\-csdgroup and
-      \-\-resgroup options are mutually exclusive\.
+      bundle is undeployed, the definition is removed\. The \-\-csd\-group and
+      \-\-res\-group options are mutually exclusive\.
 
-*   `--cicshlq`  | `--hlq` *(string)*
+*   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CICS
       datasets can be found in the target environment\. Use this parameter if you have
       not set the \-\-cics\-deploy\-profile option\.
 
-*   `--cpsmhlq`  | `--cphlq` *(string)*
+*   `--cpsm-hlq`  | `--cph` | `--cpsmhlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CPSM
       datasets can be found in the target environment\. Use this parameter if you have
       not set the \-\-cics\-deploy\-profile option\.
 
-*   `--jobcard`  | `--jc` *(string)*
+*   `--job-card`  | `--jc` | `--jobcard` *(string)*
 
 	* Specifies the job card to use with any generated DFHDPLOY JCL\. Use this
       parameter if you need to tailor the job card and you have not set the
@@ -426,7 +426,7 @@ target group of CICS regions\.
 	* An optional numerical value that specifies the maximum amount of time in seconds
       (1 \- 1800 inclusive) for the DFHDPLOY command to complete\.
 
-*   `--targetstate`  | `--ts` *(string)*
+*   `--target-state`  | `--ts` | `--targetstate` *(string)*
 
 	* Specifies the target state for the undeployed bundle\.
 
@@ -462,7 +462,7 @@ processing takes too long:
 *  Undeploy a CICS bundle from a specific target environment by
 using specific zosmf and cics-deploy profiles:
 
-      * `$  zowe cics-deploy undeploy bundle --name EXAMPLE --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --zosmf-profile testplex --cics-deploy-profile devcics`
+      * `$  zowe cics-deploy undeploy bundle --name EXAMPLE --cics-plex TESTPLEX --scope SCOPE --res-group BUNDGRP --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --zosmf-profile testplex --cics-deploy-profile devcics`
 
 # profiles<a name="module-profiles"></a>
 Create and manage configuration profiles
@@ -495,17 +495,17 @@ actions\.
 	* Specifies the name of the CICS System, or CICS System Group (up to 8 characters)
       to target\.
 
-*   `--cicshlq`  | `--hlq` *(string)*
+*   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
 
 	* Specifies the High Level Qualifier (up to 35 characters) at which the CICS
       datasets can be found in the target environment\.
 
-*   `--cpsmhlq`  | `--cphlq` *(string)*
+*   `--cpsm-hlq`  | `--cph` | `--cpsmhlq` *(string)*
 
 	* Specifies the High Level Qualifier (up to 35 characters) at which the CPSM
       datasets can be found in the target environment\.
 
-*   `--jobcard`  | `--jc` *(string)*
+*   `--job-card`  | `--jc` | `--jobcard` *(string)*
 
 	* Specifies the job card to use with any generated DFHDPLOY JCL\.
 
@@ -513,22 +513,22 @@ actions\.
 
 #### Options
 
-*   `--csdgroup`  | `--cg` *(string)*
+*   `--csd-group`  | `--cg` | `--csdgroup` *(string)*
 
 	* Specifies the CSD group (up to 8 characters) for the bundle resource\. If a
       bundle is deployed then a definition is added to this group; if a bundle is
       undeployed then the definition is removed from this group\. The CSD group is
       changed for each CICS system that is specified by the \-\-scope option\. The
-      \-\-csdgroup and \-\-resgroup options are mutually exclusive\.
+      \-\-csd\-group and \-\-res\-group options are mutually exclusive\.
 
-*   `--resgroup`  | `--rg` *(string)*
+*   `--res-group`  | `--rg` | `--resgroup` *(string)*
 
 	* Specifies the BAS resource group (up to 8 characters) for the bundle resource\.
       If a bundle is deployed then a resource is defined in the BAS data repository;
-      if a bundle is undeployed then the definition is removed\. The \-\-csdgroup and
-      \-\-resgroup options are mutually exclusive\.
+      if a bundle is undeployed then the definition is removed\. The \-\-csd\-group
+      and \-\-res\-group options are mutually exclusive\.
 
-*   `--targetdir`  | `--td` *(string)*
+*   `--target-directory`  | `--td` | `--targetdir` | `--target-dir` *(string)*
 
 	* Specifies the target zFS location to which CICS bundles should be uploaded (up
       to 255 characters)\.
@@ -543,19 +543,19 @@ actions\.
 a CPSM managed group of CICS regions within the TESTGRP1 scope of a cicsplex
 named PLEX1:
 
-      * `$  zowe profiles create cics-deploy-profile example1 --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550`
+      * `$  zowe profiles create cics-deploy-profile example1 --cicsplex PLEX1 --scope TESTGRP1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550`
 
 *  Create a cics-deploy profile called 'example2' to connect to
 the same CPSM managed group of regions, and identify a BAS resource group
 BUNDGRP1 in which to store resource definitions:
 
-      * `$  zowe profiles create cics-deploy-profile example2 --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --resgroup BUNDGRP1`
+      * `$  zowe profiles create cics-deploy-profile example2 --cicsplex PLEX1 --scope TESTGRP1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --res-group BUNDGRP1`
 
 *  Create a cics-deploy profile called 'example3' to connect to
 the same CPSM managed group of regions, and identify the default USS directory
 to which bundles should be uploaded:
 
-      * `$  zowe profiles create cics-deploy-profile example3 --cicsplex PLEX1 --scope TESTGRP1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --targetdir /var/cicsts/bundles`
+      * `$  zowe profiles create cics-deploy-profile example3 --cicsplex PLEX1 --scope TESTGRP1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --target-directory /var/cicsts/bundles`
 
 ## update | upd<a name="module-update"></a>
 Update a  profile.You can update any property present within the profile configuration. The updated profile  will be printed so that you can review the result of the updates.
@@ -586,37 +586,37 @@ actions\.
 	* Specifies the name of the CICS System, or CICS System Group (up to 8 characters)
       to target\.
 
-*   `--csdgroup`  | `--cg` *(string)*
+*   `--csd-group`  | `--cg` | `--csdgroup` *(string)*
 
 	* Specifies the CSD group (up to 8 characters) for the bundle resource\. If a
       bundle is deployed then a definition is added to this group; if a bundle is
       undeployed then the definition is removed from this group\. The CSD group is
       changed for each CICS system that is specified by the \-\-scope option\. The
-      \-\-csdgroup and \-\-resgroup options are mutually exclusive\.
+      \-\-csd\-group and \-\-res\-group options are mutually exclusive\.
 
-*   `--resgroup`  | `--rg` *(string)*
+*   `--res-group`  | `--rg` | `--resgroup` *(string)*
 
 	* Specifies the BAS resource group (up to 8 characters) for the bundle resource\.
       If a bundle is deployed then a resource is defined in the BAS data repository;
-      if a bundle is undeployed then the definition is removed\. The \-\-csdgroup and
-      \-\-resgroup options are mutually exclusive\.
+      if a bundle is undeployed then the definition is removed\. The \-\-csd\-group
+      and \-\-res\-group options are mutually exclusive\.
 
-*   `--cicshlq`  | `--hlq` *(string)*
+*   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
 
 	* Specifies the High Level Qualifier (up to 35 characters) at which the CICS
       datasets can be found in the target environment\.
 
-*   `--cpsmhlq`  | `--cphlq` *(string)*
+*   `--cpsm-hlq`  | `--cph` | `--cpsmhlq` *(string)*
 
 	* Specifies the High Level Qualifier (up to 35 characters) at which the CPSM
       datasets can be found in the target environment\.
 
-*   `--targetdir`  | `--td` *(string)*
+*   `--target-directory`  | `--td` | `--targetdir` | `--target-dir` *(string)*
 
 	* Specifies the target zFS location to which CICS bundles should be uploaded (up
       to 255 characters)\.
 
-*   `--jobcard`  | `--jc` *(string)*
+*   `--job-card`  | `--jc` | `--jobcard` *(string)*
 
 	* Specifies the job card to use with any generated DFHDPLOY JCL\.
 

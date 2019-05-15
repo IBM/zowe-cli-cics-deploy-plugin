@@ -44,16 +44,16 @@ export const DeployBundleDefinition: ICommandDefinition = {
     examples: [
         {
             description: "Deploy a CICS bundle with a specific name and location to a default set of target regions",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir`
+            options: `--name EXAMPLE --bundle-directory /u/example/bundleDir`
         },
         {
             description: "Deploy a CICS bundle, but declare a timeout if the processing takes too long",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir --timeout 60`
+            options: `--name EXAMPLE --bundle-directory /u/example/bundleDir --timeout 60`
         },
         {
             description: "Deploy a CICS bundle to a specific target environment by using specific zosmf & cics-deploy profiles",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP ` +
-                     `--cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --zosmf-profile testplex --cics-deploy-profile devcics`
+            options: `--name EXAMPLE --bundle-directory /u/example/bundleDir --cicsplex TESTPLEX --scope SCOPE --res-group BUNDGRP ` +
+                     `--cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --zosmf-profile testplex --cics-deploy-profile devcics`
         }
     ]
 };

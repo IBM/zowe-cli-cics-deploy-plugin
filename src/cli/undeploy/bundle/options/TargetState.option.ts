@@ -16,8 +16,8 @@ import { ICommandOptionDefinition } from "@zowe/imperative";
  *
  */
 export const TargetStateOption: ICommandOptionDefinition = {
-    name: "targetstate",
-    aliases: ["ts"],
+    name: "target-state",
+    aliases: ["ts", "targetstate"],
     type: "string",
     required: false,
     defaultValue: "DISCARDED",
