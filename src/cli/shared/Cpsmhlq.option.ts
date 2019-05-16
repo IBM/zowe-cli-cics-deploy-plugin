@@ -18,8 +18,8 @@ const MAX_LENGTH = 35;
  *
  */
 export const CpsmhlqOption: ICommandOptionDefinition = {
-    name: "cpsmhlq",
-    aliases: ["cphlq"],
+    name: "cpsm-hlq",
+    aliases: ["cph", "cpsmhlq"],
     type: "string",
     required: false,
     stringLengthRange: [1, MAX_LENGTH],
