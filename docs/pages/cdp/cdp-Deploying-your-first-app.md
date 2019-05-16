@@ -27,7 +27,7 @@ toc: false
 
    The Node.js application will start. You can call the application from a browser using URL [http://localhost:3000/](http://localhost:3000/), and press CTRL+C to stop it.
 
-4. Package the Node.js application into a CICS bundle.
+4. Package the Node.js application into a [CICS bundle](cdp-cics-bundles).
 
     Make sure you are in the root directory of the application. Replace the value for `--port` with one that is available for use by the CICS region on z/OS.
 
@@ -35,7 +35,7 @@ toc: false
     zowe cics-deploy generate bundle --port 3000 --overwrite
    ```
 
-    The output will show the directories and files created to form a CICS bundle:
+    The output will show the directories and files created to form a CICS bundle. For example:
 
     ```console
     define : NODEJSAPP "myexpressapp" with startscript "./bin/www"
@@ -48,7 +48,11 @@ toc: false
     CICS Bundle generated with bundleid "myexpressapp"
     ```
 
-5. Deploy the CICS bundle into CICS.
+5. Update the CICS Node.js application profile if your application requires environment variables to be set.
+
+    Edit the `.profile` file created in step 4, for example `nodejsapps/myexpressapp.profile`.
+
+6. Deploy the CICS bundle into CICS.
 
     Replace the value for `--name` with the name of the BUNDLE resource to be created in CICS.
 
@@ -56,13 +60,13 @@ toc: false
     zowe cics-deploy push bundle --name Express --overwrite
     ```
 
-    A progress bar is shown and updated as the CICS bundle is deployed and the application is started. This can take a few minutes. If there are errors, retry with the `--verbose` option for more detailed output.
+    A progress bar is shown with status messages as the CICS bundle is deployed and the application is started. This can take a few minutes. If there are errors, retry with the `--verbose` option for more detailed output.
 
 6. Test the Node.js application.
 
     You can call the application from a browser using URL [http://myzos:3000/](http://myzos:3000/), replacing _myzos_ with the host name of the z/OS system, and _3000_ with the port specified in step 4.
 
-    You can make changes to the application and redeploy it by repeating step 5.
+    You can make changes to the application and redeploy it by repeating step 6.
 
 ### Results
 
