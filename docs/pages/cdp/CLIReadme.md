@@ -1,28 +1,12 @@
-# Zowe CLI cics-deploy plugin command reference
-
-### Table of Contents
-* [cics-deploy](#module-cics-deploy)
-	* [deploy | d | dep](#module-deploy)
-		* [bundle](#command-bundle)
-	* [generate | g | gen](#module-generate)
-		* [bundle](#command-bundle)
-	* [push | p](#module-push)
-		* [bundle](#command-bundle)
-	* [undeploy | u | udep](#module-undeploy)
-		* [bundle](#command-bundle)
-* [profiles](#module-profiles)
-	* [create | cre](#module-create)
-		* [cics-deploy-profile](#command-cics-deploy-profile)
-	* [update | upd](#module-update)
-		* [cics-deploy-profile](#command-cics-deploy-profile)
-	* [delete | rm](#module-delete)
-		* [cics-deploy-profile](#command-cics-deploy-profile)
-	* [list | ls](#module-list)
-		* [cics-deploy-profiles](#command-cics-deploy-profiles)
-	* [set-default | set](#module-set-default)
-		* [cics-deploy-profile](#command-cics-deploy-profile)
-
-
+---
+title: Zowe CLI cics-deploy plugin command reference
+keywords:
+summary: "This section contains syntax reference information for the Zowe CLI CICS deploy plugin"
+sidebar: cdp_sidebar
+permalink: cdp-CLIReadMe.html
+folder: cdp
+toc: true
+---
 # cics-deploy<a name="module-cics-deploy"></a>
 Generate and deploy IBM CICS bundle resources
 ## deploy | d | dep<a name="module-deploy"></a>

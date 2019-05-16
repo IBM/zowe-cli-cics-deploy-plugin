@@ -24,6 +24,16 @@ const DISPLAY_NAME = "Zowe CLI";
 
 const BINARY_NAME = "zowe";
 
+const JEKYLL_FRONTMATTER = `---
+title: Zowe CLI cics-deploy plugin command reference
+keywords:
+summary: "This section contains syntax reference information for the Zowe CLI CICS deploy plugin"
+sidebar: cdp_sidebar
+permalink: cdp-CLIReadMe.html
+folder: cdp
+toc: true
+---\n`
+
 const doc: ITaskFunction = async () => {
     process.env.FORCE_COLOR = "0";
 
@@ -41,10 +51,12 @@ const doc: ITaskFunction = async () => {
     clearRequire.all(); // in case the code has changed, reload any code
 
     let totalCommands = 0;
-    let markdownContent = "# Zowe CLI cics-deploy plugin command reference\n\n";
+    //let markdownContent = "# Zowe CLI cics-deploy plugin command reference\n\n";
+    let markdownContent = '';
 
-    markdownContent += "{{tableOfContents}}\n\n";
+    //markdownContent += "{{tableOfContents}}\n\n";
     let tableOfContentsText = "### Table of Contents\n";
+    //let tableOfContentsText = '';
 
     const tabIndent = "\t";
     let oldCommandName = "";
@@ -70,8 +82,9 @@ const doc: ITaskFunction = async () => {
     getGroupHelp(profilesGroup);
 
     markdownContent = mustache.render(markdownContent, {tableOfContents: tableOfContentsText});
-    fs.writeFileSync("docs-internal/CLIReadme.md", markdownContent);
-    gutil.log(gutil.colors.blue("Updated docs-internal/CLIReadme.md with definitions of " + totalCommands + " commands"));
+
+    fs.writeFileSync("docs/pages/cdp/CLIReadme.md", JEKYLL_FRONTMATTER + markdownContent);
+    gutil.log(gutil.colors.blue("Updated docs/pages/CLIReadme.md with definitions of " + totalCommands + " commands"));
 
     process.env.FORCE_COLOR = undefined;
 
@@ -103,7 +116,7 @@ const doc: ITaskFunction = async () => {
         }
 
         const anchorTag = "module-" + definition.name;
-        tableOfContentsText += util.format("%s* [%s](#%s)\n", tabIndent.repeat(indentLevel), commandNameSummary, anchorTag);
+        tableOfContentsText += util.format("%s* [%s](#%s)", tabIndent.repeat(indentLevel), commandNameSummary, anchorTag);
 
         markdownContent += util.format("#%s %s<a name=\"%s\"></a>\n", "#".repeat(indentLevel), commandNameSummary, anchorTag);
         markdownContent += definition.description ? definition.description.trim() + "\n" : "";
@@ -121,7 +134,7 @@ const doc: ITaskFunction = async () => {
                 childNameSummary += " (experimental)";
             }
 
-            tableOfContentsText += util.format("%s* [%s](#%s)\n", tabIndent.repeat(indentLevel + 1), childNameSummary, childAnchorTag);
+            tableOfContentsText += util.format("%s* [%s](#%s)", tabIndent.repeat(indentLevel + 1), childNameSummary, childAnchorTag);
             markdownContent += util.format("##%s %s<a name=\"%s\"></a>\n", "#".repeat(indentLevel), childNameSummary, childAnchorTag);
 
             const helpGen = new DefaultHelpGenerator({
