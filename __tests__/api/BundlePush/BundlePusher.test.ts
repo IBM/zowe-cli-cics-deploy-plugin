@@ -415,7 +415,7 @@ describe("BundlePusher01", () => {
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", true,
               "A problem occurred attempting to run 'if [ \"$(ls)\" ]; then rm -r *; fi' in remote directory '/u/ThisDoesNotExist/12345678'. " +
-              "Problem is: The output from the remote command implied that an error occurred.");
+              "Problem is: The output from the remote command implied that an error occurred, return code 1.");
 
         expect(consoleText).toContain("Ssh command exit with non zero status");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -434,7 +434,7 @@ describe("BundlePusher01", () => {
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", true,
               "A problem occurred attempting to run 'if [ \"$(ls)\" ]; then rm -r *; fi' in remote directory '/u/ThisDoesNotExist/12345678'. " +
-              "Problem is: The output from the remote command implied that an error occurred.");
+              "Problem is: The output from the remote command implied that an error occurred, return code 127");
 
         expect(consoleText).toContain("Injected FSUM9195 error message");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -453,7 +453,7 @@ describe("BundlePusher01", () => {
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", true,
               "A problem occurred attempting to run 'if [ \"$(ls)\" ]; then rm -r *; fi' in remote directory '/u/ThisDoesNotExist/12345678'. " +
-              "Problem is: The output from the remote command implied that an error occurred.");
+              "Problem is: The output from the remote command implied that an error occurred, return code 1.");
 
         expect(consoleText).toContain("Injected FSUM9195 and FSUM9196 error message");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -647,7 +647,7 @@ describe("BundlePusher01", () => {
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
               "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\" " +
               "&& npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
-              "Problem is: The output from the remote command implied that an error occurred.");
+              "Problem is: The output from the remote command implied that an error occurred, return code 1.");
 
         expect(consoleText).toContain("Injected stdout error message");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -680,7 +680,7 @@ describe("BundlePusher01", () => {
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
               "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\" " +
               "&& npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
-              "Problem is: The output from the remote command implied that an error occurred.");
+              "Problem is: The output from the remote command implied that an error occurred, return code 1.");
 
         expect(consoleText).toContain("Injected FSUM7351 not found message");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -713,7 +713,7 @@ describe("BundlePusher01", () => {
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
               "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\" " +
               "&& npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
-              "Problem is: The output from the remote command implied that an error occurred.");
+              "Problem is: The output from the remote command implied that an error occurred, return code 1.");
 
         expect(consoleText).toContain("Injected npm ERR! Exit status 1 message");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
