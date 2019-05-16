@@ -216,6 +216,8 @@ pipeline {
                     sh("npm set registry https://registry.npmjs.org")
                     //sh("npm set @brightside:registry https://api.bintray.com/npm/ca/brightside/")
                     //sh("npm set @zowe:registry https://api.bintray.com/npm/ca/brightside/")
+                    sh("npm set @zowe:registry https://registry.npmjs.org")
+
                     sh("npm install -g @zowe/cli@latest")
                     sh("zowe --version")
                 }
