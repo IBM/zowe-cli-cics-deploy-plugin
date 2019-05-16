@@ -18,8 +18,8 @@ const MAX_LENGTH = 35;
  *
  */
 export const CicshlqOption: ICommandOptionDefinition = {
-    name: "cicshlq",
-    aliases: ["hlq"],
+    name: "cics-hlq",
+    aliases: ["ch", "cicshlq"],
     type: "string",
     required: false,
     stringLengthRange: [1, MAX_LENGTH],
