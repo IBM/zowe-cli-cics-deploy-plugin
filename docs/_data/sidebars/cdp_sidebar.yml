@@ -27,11 +27,8 @@ entries:
     - title: Deploying your first app
       url: /cdp-Deploying-your-first-app.html
       output: web
-    - title: Developer pushing Node.js apps
-      url: /cdp-Developer-pushing-Node.js-apps.html
-      output: web
-    - title: Developer deploying Node.js apps
-      url: /cdp-Developer-deploying-Node.js-apps.html
+    - title: Deploying using individual actions
+      url: /cdp-Deploying-using-individual-actions.html
       output: web
 
   - title: Concepts
