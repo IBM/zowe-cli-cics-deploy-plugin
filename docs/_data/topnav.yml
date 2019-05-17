@@ -5,5 +5,5 @@ topnav:
   items:
     - title: GitHub
       external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin
-    #- title: News
-    #  url: /news
+    - title: Change log
+      external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/CHANGELOG.md

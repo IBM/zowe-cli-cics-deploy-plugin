@@ -16,9 +16,6 @@ company_name: IBM
 github_editme_path: 
 # if you're using Github, provide the basepath to the branch you've created for reviews, following the sample here. if not, leave this value blank.
 
-path_to_generated_docs: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/
-# Location of the CLIReadme.md file that's generated when docs are built
-
 # gitlab_editme_path: tomjoht/documentation-theme-jekyll/tree/master
 # if you're using GitLab, provide the basepath to the branch you've created for reviews, following the sample here. if not, leave this value blank.
 

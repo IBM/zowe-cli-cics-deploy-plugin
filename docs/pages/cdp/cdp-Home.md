@@ -2,19 +2,21 @@
 title: Zowe CLI CICS deploy plugin
 tags: [getting_started]
 keywords:
-summary: "The Zowe command line interface (CLI) provides a simple and streamlined way to interact with IBM z/OS. The cics-deploy plugin extends the Zowe CLI to deploy applications developed on a workstation to IBM CICS Transaction Server for z/OS (CICS)."
+summary: "The Zowe command line interface (CLI) provides a simple and streamlined way to interact with IBM z/OS. The cics-deploy plugin extends the Zowe CLI to deploy Node.js applications developed on a workstation to IBM CICS Transaction Server for z/OS (CICS)."
 sidebar: cdp_sidebar
 permalink: index.html
 folder: cdp
 ---
 
-It aims to provide an experience for developers and CI/CD automation pipelines similar to deploying to a cloud platform when deploying to CICS.
+It provides a Node.js CICS deployment workflow for developers and CI/CD automation pipelines similar to that experienced when deploying Node.js applications to the cloud.
 
-The plug-in provides the following commands:
-* [zowe cics-deploy generate bundle]({{ site.path_to_generated_docs }}CLIReadme.md#module-generate) - Generate a CICS bundle in the working directory. Typically used by developers to package their existing application as a CICS bundle.
+Before you start, and especially if you are not familiar with the world of z/OS, Zowe and CICS, it's a good idea to read about some of the key concepts, which include [Zowe](cdp-zowe-and-cli), [Zowe CLI profiles](cdp-zowe-profiles) and [CICS bundles](cdp-cics-bundles). If you're keen to get going quickly, you can jump right in and follow along with our tutorial on [Deploying your first app](cdp-Deploying-your-first-app).
 
-* [zowe cics-deploy push bundle]({{ site.path_to_generated_docs }}CLIReadme.md#module-push) - Firstly undeploy the previous version of the CICS bundle from CICS incase it had been previously deployed. Then copy the bundle from the working directory to a z/OS directory, and run npm to install dependencies for each Node.js application in the bundle. Finally deploy the bundle to one or more CICS regions within a CICSplex. Typically used by developers to deploy applications in CICS ready for testing.
+When everything has been [installed](cdp-Installation) and [you've created the Zowe CLI profiles](cdp-Create-Zowe-CLI-profiles), you can deploy a Node.js application from your workstation to CICS in two steps:
 
-* [zowe cics-deploy deploy bundle]({{ site.path_to_generated_docs }}CLIReadme.md#module-deploy) - Deploy a CICS bundle that is in a z/OS directory to one more CICS regions within a CICSplex. The DFHDPLOY utility is used to define the BUNDLE resource in a CICS system definition (CSD) file or CPSM Business Application Services (BAS) file, then install and enable the resource in the target CICS regions. Typically used by developers and CI-CD pipelines that require more precise control when deploying applications to CICS, for example to install the bundle in subsets of CICS regions in a cluster in a manner that maintains the availability of the application for clients.
+1. Use the [zowe cics-deploy generate bundle](cdp-CLIReadMe#generate--g--gen) command to generate some metadata and artifacts that help the target CICS system understand your application.
+1. Use the [zowe cics-deploy push bundle](cdp-CLIReadMe#push--p) command to push the generated bundle to one or more regions within a CICSplex, enabling and deploying it as an executing application. 
 
-* [zowe cics-deploy undeploy bundle]({{ site.path_to_generated_docs }}CLIReadme.md#module-undeploy) - Undeploy a CICS bundle from one or more CICS regions within a CICSplex. The DFHDPLOY utility is used to disable then discard the BUNDLE resource from the target CICS regions, then the resource is deleted from a CICS CSD or CPSM BAS file. Typically used by developers and CI-CD pipelines that require more precise control when undeploying applications to CICS.
+Should you need it, and if you understand a little more about CICS, further commands like [zowe cics-deploy deploy bundle](cdp-CLIReadMe#deploy--d--dep) and [zowe cics-deploy undeploy bundle](cdp-CLIReadMe#undeploy--u--udep) offer you finer-grained control of the process - for example, to enable you to install a bundle in subsets of CICS regions in a cluster in such a way as to maintain an application's availability for clients.
+
+If you hit any speed bumps on your journey, check out our [Troubleshooting](cdp-Troubleshooting-General) pages.

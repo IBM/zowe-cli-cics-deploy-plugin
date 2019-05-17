@@ -36,7 +36,7 @@ $(document).ready(function () {
         $(this).attr('id', currentId);
 
         //trigger
-        var clipButton = '<button class="btn btn-primary btn-xs" data-clipboard-target="#' + currentId + '"><i class="fa fa-copy"></i></button>';
+        var clipButton = '<div class="clipboardbutton"><button class="btn btn-primary btn-xs" data-clipboard-target="#' + currentId + '"><i class="fa fa-copy"></i></button></div>';
         $(this).after(clipButton);
     });
 

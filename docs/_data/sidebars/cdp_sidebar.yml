@@ -40,7 +40,7 @@ entries:
     - title: Zowe CLI profiles
       url: /cdp-zowe-profiles.html
       output: web
-    - title: Bundles
+    - title: CICS Bundles
       url: /cdp-cics-bundles.html
       output: web
 
@@ -55,33 +55,33 @@ entries:
     output: web
     folderitems:
     - title: create cics-deploy-profile
-      external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/CLIReadme.md#create--cre
+      url: cdp-CLIReadMe#create--cre
       output: web
     - title: update cics-deploy-profile
-      external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/CLIReadme.md#update--upd
+      url: cdp-CLIReadMe#update--upd
       output: web
     - title: delete cics-deploy-profile
-      external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/CLIReadme.md#delete--rm
+      url: cdp-CLIReadMe#delete--rm
       output: web
     - title: list cics-deploy-profile
-      external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/CLIReadme.md#list--ls
+      url: cdp-CLIReadMe#list--ls
       output: web
     - title: set-default cics-deploy-profile
-      external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/CLIReadme.md#set-default--set
+      url: cdp-CLIReadMe#set-default--set
       output: web
 
   - title: Commands - CICS deploy
     output: web
     folderitems:
     - title: generate bundle
-      external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/CLIReadme.md#module-generate
+      url: cdp-CLIReadMe#generate--g--gen
       output: web
     - title: push bundle
-      external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/CLIReadme.md#module-push
+      url: cdp-CLIReadMe#push--p
       output: web
     - title: deploy bundle
-      external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/CLIReadme.md#module-deploy
+      url: cdp-CLIReadMe#deploy--d--dep
       output: web
     - title: undeploy bundle
-      external_url: https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/CLIReadme.md#module-undeploy
+      url: cdp-CLIReadMe#undeploy--u--udep
       output: web
