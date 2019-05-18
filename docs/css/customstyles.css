@@ -960,6 +960,10 @@ a.no_icon:after
     margin-bottom: 10px;
 }
 
+.clipboardbutton {
+    display: block;
+    margin-left: 97%;
+}
 /* algolia search */
 
 .search {
