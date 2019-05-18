@@ -31,7 +31,7 @@ zowe zosmf check status --zosmf-profile myprofile
 ```
 Zowe CLI profiles really come into their own when you decide to deploy your Node.js application(s) using `push bundle`. Using three profiles, you might issue:
 ```
-zowe push bundle --name EXAMPLE --targetdir /u/example/bundles --zosmf-profile testplex --cics-deploy-profile devcics --ssh-profile ssh
+zowe push bundle --name EXAMPLE --target-directory /u/example/bundles --zosmf-profile testplex --cics-deploy-profile devcics --ssh-profile ssh
 ```
 This is a much more economical and concise command-line than if were it necessary to enumerate all of the individual arguments from all of the profiles.
 
@@ -50,7 +50,7 @@ When you create a Zowe CLI profile, a representation is written to an operating-
 </ul>
   <div class="tab-content">
 <div role="tabpanel" class="tab-pane active" id="windows">
-<p>On Windows, Zowe CLI profiles are written by default to <tt>C:\Users\&lt;Your user name&gt;\.zowe\profiles</tt></p>
+<p>On Windows, Zowe CLI profiles are written by default to <tt>%userprofile%\.zowe\profiles</tt></p>
 </div>
 
 <div role="tabpanel" class="tab-pane" id="linux">
