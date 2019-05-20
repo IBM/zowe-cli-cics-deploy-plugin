@@ -605,7 +605,7 @@ pipeline {
                             if (BRANCH_NAME == MASTER_BRANCH) {
                                 echo "publishing next to $TEST_NPM_REGISTRY"
                                 sh "npm publish --tag next"
-b                            else {
+                            else {
                                 echo "publishing latest to $TEST_NPM_REGISTRY"
                                 sh "npm publish --tag latest"
                             }
