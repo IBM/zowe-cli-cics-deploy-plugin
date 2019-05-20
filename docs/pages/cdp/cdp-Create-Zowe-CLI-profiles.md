@@ -77,17 +77,17 @@ This profile identifies the CICS environment for deployment. You need to know th
 | Option | Description |
 | --- | --- |
 | cicsplex | CPSM CICSplex name. |
-| cicshlq | High Level Qualifier \(HLQ\) for the CICS data sets. |
-| cpsmhlq | High Level Qualifier \(HLQ\) for the CPSM data sets. |
+| cics-hlq | High Level Qualifier \(HLQ\) for the CICS data sets. |
+| cpsm-hlq | High Level Qualifier \(HLQ\) for the CPSM data sets. |
 | scope | CPSM scope to identify the CICS region or group of regions to deploy your application. |
-| resgroup or basgroup | CICS CSD group name or BAS resource group name into which the bundle is defined. If not specified, BUNDLE resources are defined in CPSM BAS for installation and then removed. |
-| jobcard | JCL jobcard to use when submitting JCL that will run the CICS utility DFHDPLOY. If not specified, a default jobcard will be used. |
-| targetdir | Target directory on z/OS to which CICS bundles should be uploaded. |
+| csd-group or res-group | CICS CSD group name or CPSM BAS resource group name into which the bundle is defined. If not specified, BUNDLE resources are defined in CPSM BAS for installation and then removed. |
+| job-card | JCL jobcard to use when submitting JCL that will run the CICS utility DFHDPLOY. If not specified, a default job card will be used. |
+| target-directory | Target directory on z/OS to which CICS bundles should be uploaded. |
 
 For example to create a cics-deploy profile:
 
 ```console
-zowe profiles create cics-deploy-profile example --cicsplex PLEX1 --cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --scope TESTGRP1 --csdgroup BUNDGRP1 --targetdir /var/cicsts/bundles --overwrite
+zowe profiles create cics-deploy-profile example --cicsplex PLEX1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --scope TESTGRP1 --csd-group BUNDGRP1 --target-directory /var/cicsts/bundles --overwrite
 ```
 
 For help on using the options:
