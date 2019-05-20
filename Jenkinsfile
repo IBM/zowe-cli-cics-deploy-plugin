@@ -605,8 +605,7 @@ pipeline {
                             if (BRANCH_NAME == MASTER_BRANCH) {
                                 echo "publishing next to $TEST_NPM_REGISTRY"
                                 sh "npm publish --tag next"
-                            }
-                            else {
+b                            else {
                                 echo "publishing latest to $TEST_NPM_REGISTRY"
                                 sh "npm publish --tag latest"
                             }
@@ -621,7 +620,7 @@ pipeline {
     }
     post {
         failure {
-            slackSend (channel: '@matthew.wilson', message: 'Build failed ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)', tokenCredentialId: 'slack-cics-node-dev')
+            slackSend (channel: '@matthew.wilson', message: "Build failed ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
         }
     }
 }
