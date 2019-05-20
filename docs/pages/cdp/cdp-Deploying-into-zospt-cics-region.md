@@ -15,7 +15,7 @@ The [z/OS Provisioning Toolkit](https://developer.ibm.com/mainframe/products/zos
 
 A z/OS PT image contains the configuration and files necessary to provision the CICS region. This is typically prepared by the CICS system programmer for use by many developers. The configuration should include:
 
-| zosptfile&nbsp;entry&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Usage |
+| zosptfile&nbsp;entry&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Usage |
 | --- | -- |
 | `FROM cics_55` | Build a CICS TS V5.5 region |
 | `ENV DFH_NODE_HOME=` | Specify the directory for IBM SDK for Node.js - z/OS |
@@ -49,7 +49,7 @@ zospt build $ZOSPTIMAGE -t cics_55_nodejs
 
 1. Update your user `.profile` file on z/OS.
 
-   Update your path to include the directory containing the `zospt` command, and add the following environment variables as described in [Configuring z/OS Provisioning Toolkit](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/zospt-configuring.html):
+   Add the path to the `zospt` command to your PATH, and add the following environment variables as described in [Configuring z/OS Provisioning Toolkit](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/zospt-configuring.html):
 
    ```properties
    export zospt_domain=
