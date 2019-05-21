@@ -30,6 +30,9 @@ entries:
     - title: Deploying using individual actions
       url: /cdp-Deploying-using-individual-actions.html
       output: web
+    - title: Deploying into z/OS PT CICS region
+      url: /cdp-Deploying-into-zospt-cics-region.html
+      output: web
 
   - title: Concepts
     output: web
