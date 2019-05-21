@@ -17,11 +17,11 @@ A z/OS PT image contains the configuration and files necessary to provision the 
 
 | zosptfile&nbsp;entry&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Usage |
 | --- | -- |
-| `FROM cics_55` | Provision a CICS TS V5.5 region |
-| `ENV DFH_CICS_TYPE=MAS` | The CICS region should be managed by CPSM |
-| `ENV DFH_CICSPLEX=` | The name of the CICSplex |
-| `ENV DFH_NODE_HOME=` | The directory for IBM SDK for Node.js - z/OS |
-| `COPY bundles bundles` | Create an empty bundles directory in the provisioned file system to contain CICS bundles |
+| `FROM cics_55` | Provision a CICS TS V5.5 region. |
+| `ENV DFH_CICS_TYPE=MAS` | The CICS region should be managed by CPSM. |
+| `ENV DFH_CICSPLEX=` | The name of the CICSplex. |
+| `ENV DFH_NODE_HOME=` | The installation directory for IBM SDK for Node.js - z/OS. |
+| `COPY bundles bundles` | Create an empty bundles directory in the provisioned file system to contain CICS bundles. |
 
 For example, to create the z/OS PT image source directory and configuration file, and build it ready for developers to provision CICS regions:
 
@@ -76,7 +76,9 @@ zospt build $ZOSPTIMAGE -t cics_55_nodejs
     "DFH_REGION_ZFS_DIRECTORY": "/u/cicprov/mnt/CICPY000",
     ```
 
-4. Update your Zowe cics-deploy profile options `--scope` to be the value from DFH_REGION_APPLID and `--bundle-directory` to be a bundles subdirectory of DFH_REGION_ZFS_DIRECTORY. For example:
+4. Update your Zowe cics-deploy profile options.
+
+   Update `--scope` to be the value from DFH_REGION_APPLID, and `--bundle-directory` to be a bundles subdirectory of DFH_REGION_ZFS_DIRECTORY. For example:
 
    ```console
    zowe profiles update cics-deploy cics --scope CICPY000 --bundle-directory /u/cicprov/mnt/CICPY000/bundles
@@ -90,7 +92,7 @@ zospt build $ZOSPTIMAGE -t cics_55_nodejs
 
 ### Stop your CICS region
 
-The CICS region and the applications running in it can be stopped if you are not going to be using it for a while by using command:
+The CICS region and the applications running in it can be stopped if you are not going to be using them for a while by using command:
 
 ```console
 zowe zos-uss issue ssh "zospt stop my_cics_region"
