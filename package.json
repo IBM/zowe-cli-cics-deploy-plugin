@@ -34,8 +34,8 @@
     "xml2json": "^0.11.2"
   },
   "devDependencies": {
-    "@zowe/cli": "^5.3.0-alpha.201904291733",
-    "@zowe/imperative": "^4.1.2-alpha.201905061426",
+    "@zowe/cli": "^5.5.0",
+    "@zowe/imperative": "^4.1.2",
     "@types/fs-extra": "^5.0.5",
     "@types/jest": "^22.2.3",
     "@types/node": "^8.0.28",
@@ -66,8 +66,8 @@
     "uuid": "^3.3.2"
   },
   "peerDependencies": {
-    "@zowe/cli": "^3.2.0",
-    "@zowe/imperative": "^3.0.0"
+    "@zowe/cli": "^5.5.0",
+    "@zowe/imperative": "^4.1.2"
   },
   "jest": {
     "modulePathIgnorePatterns": [
