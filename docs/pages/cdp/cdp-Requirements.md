@@ -1,5 +1,5 @@
 ---
-title: Requirements
+title: Requirements on z/OS
 tags: [getting_started, requirements]
 keywords:
 summary: "The cics-deploy plugin is dependent on several servers and facilities that need to be set up on z/OS."
