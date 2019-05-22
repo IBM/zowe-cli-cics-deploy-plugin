@@ -6,7 +6,7 @@ summary: "The following steps take you through the individual actions to deploy 
 sidebar: cdp_sidebar
 permalink: cdp-Deploying-using-individual-actions.html
 folder: cdp
-toc: false
+toc: true
 ---
 
 The `zowe cics-deploy push bundle` command performs a set of actions to deploy applications to CICS, as can be seen in [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app). The main actions include:

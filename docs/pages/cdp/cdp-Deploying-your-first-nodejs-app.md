@@ -27,7 +27,9 @@ toc: false
 
 4. Package the Node.js application into a [CICS bundle](cdp-cics-bundles).
 
-    Make sure you are in the root directory of the application. Replace the value for the `--port` option with one that is available for use by the CICS region on z/OS.
+    Make sure you are in the root directory of the application.
+
+    Replace the value for the `--port` option with one that is available for use by the CICS region on z/OS. This sets the PORT environment variable in the generated `.profile` file. Additional variables can be set by editing this file.
 
    ```console
     zowe cics-deploy generate bundle --port 3000 --overwrite
@@ -43,14 +45,9 @@ toc: false
     create : .zosattributes
     create : META-INF
     create : META-INF/cics.xml
-    CICS Bundle generated with bundleid "myexpressapp"
-    </pre>
+    CICS Bundle generated with bundleid "myexpressapp"</pre>
 
-5. Update the CICS Node.js application profile if your application requires environment variables to be set.
-
-    Edit the `.profile` file created in step 4, for example `nodejsapps/myexpressapp.profile` to add the environment varaiables.
-
-6. Deploy the CICS bundle into CICS.
+5. Deploy the CICS bundle into CICS.
 
     Replace the value for `--name` with the name of the BUNDLE resource to be created in CICS.
 
@@ -64,10 +61,10 @@ toc: false
 
     You can call the application from a browser using URL [http://myzos:3000/](http://myzos:3000/), replacing _myzos_ with the host name of the z/OS system, and _3000_ with the port specified in step 4.
 
-    You can make changes to the application and redeploy it by repeating step 6.
+    If you make changes to the application you can redeploy it by repeating step 5.
 
 ### Results
 
 The Node.js application is packaged into a CICS bundle on the workstation, uploaded to a directory on z/OS, and is running in CICS.
 
-{% include tip.html content="[Best practice for developing Node.js applications](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0/applications/developing/node/best-practice.html) provides guidance on using environment variables and graceful application termination." %}
+{% include tip.html content="[Best practice for developing Node.js applications](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0/applications/developing/node/best-practice.html) provides guidance on setting and using environment variables and graceful application termination." %}
