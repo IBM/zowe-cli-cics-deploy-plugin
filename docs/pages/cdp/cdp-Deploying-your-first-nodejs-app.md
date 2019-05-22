@@ -55,13 +55,13 @@ CICS TS V5.5 introduced support to run Node.js application and is required by th
 
 5. Deploy the CICS bundle into CICS.
 
-    Replace the value for `--name` with the name of the BUNDLE resource to be created in CICS.
-
     ```console
     zowe cics-deploy push bundle --name Express --overwrite
     ```
 
-    A progress bar is shown with status messages as the CICS bundle is deployed and the application is started. This can take a few minutes. If there are errors, retry with the `--verbose` option for more detailed output.
+    A progress bar is shown with status messages as the CICS bundle is deployed and the application is started. This can take a few minutes. If there are errors, retry with the `--verbose` option for more detailed output, or refer to [Troubleshooting](cdp-Troubleshooting-General).
+
+    This will result in a CICS BUNDLE resource named `Express` to be created, installed and enabled in CICS. If the BUNDLE `Express` was ready defined or installed in CICS, it will be undeployed first. As the BUNDLE is enabled, the Node.js application is started.
 
 6. Test the Node.js application.
 
