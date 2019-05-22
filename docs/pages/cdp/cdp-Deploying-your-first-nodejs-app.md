@@ -1,10 +1,10 @@
 ---
-title: Deploying your first app
+title: Deploying your first Node.js app
 tags: [getting_started]
 keywords:
-summary: "The following steps take you through deploying your first Node.js application to CICS."
+summary: "The following steps take you through deploying your first Node.js application to CICS using the Express Application Generator."
 sidebar: cdp_sidebar
-permalink: cdp-Deploying-your-first-app.html
+permalink: cdp-Deploying-your-first-nodejs-app.html
 folder: cdp
 toc: false
 ---
@@ -13,9 +13,7 @@ toc: false
 
 2. Create Zowe CLI profiles for z/OSMF, SSH, and cics-deploy by following the steps in [Create Zowe CLI profiles](cdp-Create-Zowe-CLI-profiles).
 
-3. Create a Node.js application.
-
-   For example, to create a Node.js application using the [Express Application Generator](https://expressjs.com/en/starter/generator.html):
+3. Create a Node.js application using the [Express Application Generator](https://expressjs.com/en/starter/generator.html):
 
    ```console
    npm install -g express-generator
@@ -29,7 +27,7 @@ toc: false
 
 4. Package the Node.js application into a [CICS bundle](cdp-cics-bundles).
 
-    Make sure you are in the root directory of the application. Replace the value for `--port` with one that is available for use by the CICS region on z/OS.
+    Make sure you are in the root directory of the application. Replace the value for the `--port` option with one that is available for use by the CICS region on z/OS.
 
    ```console
     zowe cics-deploy generate bundle --port 3000 --overwrite
@@ -37,7 +35,7 @@ toc: false
 
     The output will show the directories and files created to form a CICS bundle. For example:
 
-    ```console
+    <pre class="messageText">
     define : NODEJSAPP "myexpressapp" with startscript "./bin/www"
     create : nodejsapps
     create : nodejsapps/myexpressapp.nodejsapp
@@ -46,11 +44,11 @@ toc: false
     create : META-INF
     create : META-INF/cics.xml
     CICS Bundle generated with bundleid "myexpressapp"
-    ```
+    </pre>
 
 5. Update the CICS Node.js application profile if your application requires environment variables to be set.
 
-    Edit the `.profile` file created in step 4, for example `nodejsapps/myexpressapp.profile`.
+    Edit the `.profile` file created in step 4, for example `nodejsapps/myexpressapp.profile` to add the environment varaiables.
 
 6. Deploy the CICS bundle into CICS.
 
@@ -71,3 +69,5 @@ toc: false
 ### Results
 
 The Node.js application is packaged into a CICS bundle on the workstation, uploaded to a directory on z/OS, and is running in CICS.
+
+{% include tip.html content="[Best practice for developing Node.js applications](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0/applications/developing/node/best-practice.html) provides guidance on using environment variables and graceful application termination." %}

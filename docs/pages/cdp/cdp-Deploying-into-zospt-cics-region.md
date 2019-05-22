@@ -84,7 +84,7 @@ zospt build $ZOSPTIMAGE -t cics_55_nodejs
    zowe profiles update cics-deploy cics --scope CICPY000 --bundle-directory /u/cicprov/mnt/CICPY000/bundles
    ```
 
-4. Deploy your Node.js application to the CICS region using the steps in [Deploying your first app](cdp-Deploying-your-first-app). For example:
+4. Deploy your Node.js application to the CICS region using the steps in [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app). For example:
 
    ```console
    zowe cics-deploy push bundle --name Express --overwrite

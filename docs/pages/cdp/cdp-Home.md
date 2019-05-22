@@ -10,7 +10,7 @@ folder: cdp
 
 It provides a Node.js CICS deployment workflow for developers and CI/CD automation pipelines similar to that experienced when deploying Node.js applications to the cloud.
 
-Before you start, and especially if you are not familiar with the world of z/OS, Zowe and CICS, it's a good idea to read about some of the key concepts, which include [Zowe](cdp-zowe-and-cli), [Zowe CLI profiles](cdp-zowe-profiles) and [CICS bundles](cdp-cics-bundles). If you're keen to get going quickly, you can jump right in and follow along with our tutorial on [Deploying your first app](cdp-Deploying-your-first-app).
+Before you start, and especially if you are not familiar with the world of z/OS, Zowe and CICS, it's a good idea to read about some of the key concepts, which include [Zowe](cdp-zowe-and-cli), [Zowe CLI profiles](cdp-zowe-profiles) and [CICS bundles](cdp-cics-bundles). If you're keen to get going quickly, you can jump right in and follow along with our tutorial on [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app).
 
 When everything has been [installed](cdp-Installation) and [you've created the Zowe CLI profiles](cdp-Create-Zowe-CLI-profiles), you can deploy a Node.js application from your workstation to CICS in two steps:
 

@@ -24,8 +24,8 @@ entries:
   - title: Tutorials
     output: web
     folderitems:
-    - title: Deploying your first app
-      url: /cdp-Deploying-your-first-app.html
+    - title: Deploying your first Node.js app
+      url: /cdp-Deploying-your-first-nodejs-app.html
       output: web
     - title: Deploying using individual actions
       url: /cdp-Deploying-using-individual-actions.html

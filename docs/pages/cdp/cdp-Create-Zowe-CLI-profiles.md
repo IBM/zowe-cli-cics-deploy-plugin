@@ -96,4 +96,4 @@ For help on using the options:
 zowe profiles create cics-deploy-profile --help
 ```
 
-To test the cics-deploy profile, follow the steps in [Deploying your first app](cdp-Deploying-your-first-app).
+To test the cics-deploy profile, follow the steps in [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app).
