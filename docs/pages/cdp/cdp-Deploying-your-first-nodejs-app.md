@@ -6,8 +6,14 @@ summary: "The following steps take you through deploying your first Node.js appl
 sidebar: cdp_sidebar
 permalink: cdp-Deploying-your-first-nodejs-app.html
 folder: cdp
-toc: false
+toc: true
 ---
+
+### Before you begin
+
+A CICS TS V5.5 region is required on z/OS to deploy this application. If you do not have a CICS region, use the steps in [Deploying into z/OS PT CICS region](cdp-Deploying-into-zospt-cics-region) to provision a CICS region.
+
+### Procedure
 
 1. Install the Zowe CLI and cics-deploy plugin by following the steps in [Installation](cdp-Installation).
 
@@ -29,7 +35,7 @@ toc: false
 
     Make sure you are in the root directory of the application.
 
-    Replace the value for the `--port` option with one that is available for use by the CICS region on z/OS. This sets the PORT environment variable in the generated `.profile` file. Additional variables can be set by editing this file.
+    Replace the value for `--port` with one that is available for use by the CICS region on z/OS. This sets the PORT environment variable in the generated `.profile` file. Additional variables can be set by editing this file.
 
    ```console
     zowe cics-deploy generate bundle --port 3000 --overwrite
