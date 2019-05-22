@@ -11,7 +11,7 @@ toc: true
 
 ### Before you begin
 
-A CICS TS V5.5 region is required on z/OS to deploy this application. If you do not have a CICS region, use the steps in [Deploying into z/OS PT CICS region](cdp-Deploying-into-zospt-cics-region) to provision a CICS region.
+CICS TS V5.5 introduced support to run Node.js application and is required by this tutorial. If you do not have a CICS TS V5.5 region, use the steps in [Provision a CICS region using z/OS PT](cdp-Provision-a-CICS-region-using-zospt) to provision one, or speak to your CICS system administrator.
 
 ### Procedure
 

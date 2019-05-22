@@ -1,10 +1,10 @@
 ---
-title: Provision a CICS region using z/OS PT and deploy a Node.js application
+title: Provision a CICS region using z/OS PT
 tags: [getting_started]
 keywords:
-summary: "The following steps take you through provisioning a CICS region using the z/OS Provisioning Toolkit, then creating and deploying an application to the CICS region."
+summary: "The following steps take you through preparing a z/OS Provisioning Toolkit image for CICS, provisioning a CICS region using the image, and then starting, stopping and deprovisioning it."
 sidebar: cdp_sidebar
-permalink: cdp-Deploying-into-zospt-cics-region.html
+permalink: cdp-Provision-a-CICS-region-using-zospt.html
 folder: cdp
 toc: true
 ---
@@ -84,11 +84,7 @@ zospt build $ZOSPTIMAGE -t cics_55_nodejs
    zowe profiles update cics-deploy cics --scope CICPY000 --bundle-directory /u/cicprov/mnt/CICPY000/bundles
    ```
 
-4. Deploy your Node.js application to the CICS region using the steps in [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app). For example:
-
-   ```console
-   zowe cics-deploy push bundle --name Express --overwrite
-   ```
+You are now ready to deploy applications to the provisioned CICS region. You can try this out by following the steps in [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app).
 
 ### Stop your CICS region
 
