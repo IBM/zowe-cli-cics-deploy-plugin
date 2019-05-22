@@ -61,7 +61,7 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
 
     A progress bar is shown with status messages as the CICS bundle is deployed and the application is started. This can take a few minutes. If there are errors, retry with the `--verbose` option for more detailed output, or refer to [Troubleshooting](cdp-Troubleshooting-General).
 
-    This will result in a CICS BUNDLE resource named `Express` to be created, installed and enabled in CICS. If the BUNDLE `Express` was ready defined or installed in CICS, it will be undeployed first. As the BUNDLE is enabled, the Node.js application is started.
+    This results in a CICS BUNDLE resource named `Express` to be created, installed and enabled in CICS. If the BUNDLE `Express` was already defined or installed in CICS, it is undeployed first. As the BUNDLE is enabled, the Node.js application is started.
 
 6. Test the Node.js application.
 
