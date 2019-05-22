@@ -1,6 +1,6 @@
 ---
 title: Provision a CICS region using z/OS PT
-tags: [getting_started]
+tags: [tutorial]
 keywords:
 summary: "The following steps take you through preparing a z/OS Provisioning Toolkit image for CICS, provisioning a CICS region using the image, and then starting, stopping and deprovisioning it."
 sidebar: cdp_sidebar

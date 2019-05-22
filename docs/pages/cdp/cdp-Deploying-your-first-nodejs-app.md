@@ -1,6 +1,6 @@
 ---
 title: Deploying your first Node.js app
-tags: [getting_started]
+tags: [tutorial]
 keywords:
 summary: "The following steps take you through deploying your first Node.js application to CICS using the Express Application Generator."
 sidebar: cdp_sidebar

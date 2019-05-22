@@ -43,7 +43,7 @@ entries:
     - title: Zowe CLI profiles
       url: /cdp-zowe-profiles.html
       output: web
-    - title: CICS Bundles
+    - title: CICS bundles
       url: /cdp-cics-bundles.html
       output: web
 
@@ -73,7 +73,7 @@ entries:
       url: cdp-CLIReadMe#set-default--set
       output: web
 
-  - title: Commands - CICS deploy
+  - title: Commands - zowe cics-deploy
     output: web
     folderitems:
     - title: generate bundle

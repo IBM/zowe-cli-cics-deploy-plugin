@@ -1,6 +1,6 @@
 ---
 title: Deploying using individual actions
-tags: [getting_started]
+tags: [tutorial]
 keywords:
 summary: "The following steps take you through the individual actions to deploy a Node.js application in CICS."
 sidebar: cdp_sidebar
