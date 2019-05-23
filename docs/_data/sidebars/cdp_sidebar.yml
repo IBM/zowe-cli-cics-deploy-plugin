@@ -24,11 +24,14 @@ entries:
   - title: Tutorials
     output: web
     folderitems:
-    - title: Deploying your first app
-      url: /cdp-Deploying-your-first-app.html
+    - title: Deploying your first Node.js app
+      url: /cdp-Deploying-your-first-nodejs-app.html
       output: web
     - title: Deploying using individual actions
       url: /cdp-Deploying-using-individual-actions.html
+      output: web
+    - title: Provision a CICS region using z/OS PT
+      url: /cdp-Provision-a-CICS-region-using-zospt.html
       output: web
 
   - title: Concepts
@@ -40,7 +43,7 @@ entries:
     - title: Zowe CLI profiles
       url: /cdp-zowe-profiles.html
       output: web
-    - title: CICS Bundles
+    - title: CICS bundles
       url: /cdp-cics-bundles.html
       output: web
 
@@ -73,7 +76,7 @@ entries:
       url: cdp-CLIReadMe#set-default--set
       output: web
 
-  - title: Commands - CICS deploy
+  - title: Commands - zowe cics-deploy
     output: web
     folderitems:
     - title: generate bundle
