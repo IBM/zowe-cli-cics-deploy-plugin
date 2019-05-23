@@ -53,6 +53,9 @@ entries:
     - title: Log and trace files
       url: /cdp-Troubleshooting-General.html
       output: web
+    - title: Potential problems
+      url: /cdp-Troubleshooting-Symptoms.html
+      output: web
 
   - title: Commands - zowe profiles
     output: web
