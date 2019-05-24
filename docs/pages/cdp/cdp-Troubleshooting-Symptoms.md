@@ -1,5 +1,5 @@
 ---
-title: Possible problems and their resolution
+title: Possible problems and their resolutions
 tags: [troubleshooting]
 keywords:
 summary: "This section describes sets of problem symptoms, their possible causes and suggested solutions."
@@ -8,7 +8,7 @@ permalink: cdp-Troubleshooting-Symptoms.html
 folder: cdp
 ---
 
-{% include important.html content="To definitively diagnose a problem based on the suggested symptoms, you will need to refer to one or more [system logs and traces](cdp-Troubleshooting-General) particularly the STDERR Node.js log and the file assigned the MSGUSR DD name in the relevant CICS DFHDPLOY job. Depending on your familiarity with z/OS and CICS, and your system privileges, you may need to consult a CICS Systems Programmer to get to the bottom of certain problems." %}
+{% include important.html content="To definitively diagnose a problem based on the suggested symptoms, you might need to refer to one or more [system logs and traces](cdp-Troubleshooting-General) particularly the STDERR Node.js log and the file assigned the MSGUSR DD name in the relevant CICS DFHDPLOY job. Depending on your familiarity with z/OS and CICS, and your system privileges, you may also need to consult a CICS Systems Programmer to get to the bottom of certain problems." %}
 
 ## Deployment errors
 
@@ -42,10 +42,64 @@ folder: cdp
 
   * Ask your CICS Systems Programmer to check that the CMAS for the current CICSPlex is alive and that CPSM is working properly.
 
+### Command error: ... validation of - -cicshlq dataset failed: z/OSMF REST API Error
+*Possible cause*: The profile setting for `--cicshlq` is incorrect.
 
+*Representative output*:
+<pre class="messageText">
+A failure occurred during CICS bundle deployment.
+Reason = Validation of --cicshlq dataset failed: z/OSMF REST API Error:
+Rest API failure with HTTP(S) status 404
+category: 4
+rc:       8
+reason:   0
+message:  LMINIT error
+details:
+  - ISRZ002 Data set not cataloged - 'ANT.CICS.TS.DEV.INTEGRAT.SDFHLOAD' was not found in catalog.
+</pre>
+
+*Suggested action*: 
+Check that your `--cicshlq` profile setting matches the value configured for CICS high-level qualifiers in your CICS region. 
+
+### BUNDLE ... cannot be deployed
+*Possible cause*: The `cics.xml` file is malformed.
+
+*Representative output*:
+<pre class="messageText">
+15:56:17.411714 :  DFHRL2300E BUNDLE(CICSJS02) cannot be deployed. The reason for the failure could not be determined.
+15:56:17.419308 :  DFHRL2055I Errors have occurred, processing terminated.
+15:56:17.424650 :  DFHRL2014I Disconnecting from CICSPLEX(CAPLEX).
+...
+DFHRL0107 I 05/17/2019 15:56:15 CALMAS1 CICSUSER The CICS resource lifecycle manager has started to create the BUNDLE resource      
+           CICSJS02.                                                                                                                
+DFHPI1007 05/17/2019 15:56:15 CALMAS1 COIE 00672 XML to data transformation failed because of incorrect input                       
+           (MISSING_CLOSE_TAG_CHAR manifest) for BUNDLE CICSJS02.                                                                   
+DFHRL0113 E 05/17/2019 15:56:15 CALMAS1 COIE The CICS resource lifecycle manager failed to create the BUNDLE resource CICSJS02      
+           because CICS failed to parse the manifest /u/&lt;your user id>/pushtest2/CICSJSON_1.0.0/META-INF/cics.xml specified in the bundle   
+           root directory. The manifest is not valid.                                                                               
+</pre>
+
+*Suggested action*: 
+Check that your `cics.xml` is well-formed.
 
 ## General errors
+### Syntax error: Invalid value length for option
+*Possible cause*: The length of the option you provided in a command was either too long or two short.
 
-TBC 
+*Representative output*:
+<pre class="messageText">
+Syntax Error:
+Invalid value length for option:
+--csdgroup
+
+You specified a string of length 9:
+NODETESTS
+
+The length must be between 1 and 8 (inclusive)
+</pre>
+
+*Suggested action*: 
+Review the error output text and reissue the original command having corrected the name of the option so that its length falls within acceptable limits. 
+
 
 
