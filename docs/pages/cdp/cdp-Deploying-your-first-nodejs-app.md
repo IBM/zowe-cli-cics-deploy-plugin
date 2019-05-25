@@ -29,7 +29,7 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
    npm start
    ```
 
-   The Node.js application will start. You can call the application from a browser using URL [http://localhost:3000/](http://localhost:3000/), and press CTRL+C to stop it.
+   The Node.js application will start. You can call the application from a browser using URL [http://localhost:3000/](http://localhost:3000/). To stop the application in the console press CTRL+C.
 
 4. Package the Node.js application into a [CICS bundle](cdp-cics-bundles).
 
@@ -41,7 +41,7 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
     zowe cics-deploy generate bundle --port 3000 --overwrite
    ```
 
-    The output will show the directories and files created to form a CICS bundle. For example:
+    The output will indicates the directories and files created to form a CICS bundle. For example:
 
     <pre class="messageText">
     define : NODEJSAPP "myexpressapp" with startscript "./bin/www"
@@ -61,7 +61,7 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
 
     A progress bar is shown with status messages as the CICS bundle is deployed and the application is started. This can take a few minutes. If there are errors, retry with the `--verbose` option for more detailed output, or refer to [Troubleshooting](cdp-Troubleshooting-General).
 
-    This results in a CICS BUNDLE resource named `Express` to be created, installed and enabled in CICS. If the BUNDLE `Express` was already defined or installed in CICS, it is undeployed first. As the BUNDLE is enabled, the Node.js application is started.
+    This results in a CICS BUNDLE resource named `Express` being defined, installed and enabled in CICS. If the BUNDLE `Express` was already defined or installed in CICS, it is undeployed first. As the BUNDLE is enabled, the Node.js application is started.
 
 6. Test the Node.js application.
 
@@ -73,4 +73,4 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
 
 The Node.js application is packaged into a CICS bundle on the workstation, uploaded to a directory on z/OS, and is running in CICS.
 
-{% include tip.html content="[Best practice for developing Node.js applications](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0/applications/developing/node/best-practice.html) provides guidance on setting and using environment variables and graceful application termination." %}
+{% include tip.html content="When writing your own application, follow the guidance in [Best practice for developing Node.js applications](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0/applications/developing/node/best-practice.html) to use environment variables and enable the application to terminate gracefully." %}
