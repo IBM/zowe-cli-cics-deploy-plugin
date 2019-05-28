@@ -29,7 +29,9 @@ export const GenerateBundleDefinition: ICommandDefinition = {
     description: "Generate a CICS bundle in the working directory. " +
                  "The associated data is constructed from a combination of the " +
                  "command-line options and the contents of package.json. If package.json exists, " +
-                 "no options are required. If package.json does not exist, both --start-script and --nodejsapp are required.",
+                 "no options are required. If package.json does not exist, both --start-script and --nodejsapp are required.\n",
+                 "Once generated, you can change some or all of these files yourself by using the --overwrite parameter to replace " + 
+                 "existing files or the --merge parameter to merge new resources into the existing CICS bundle.",
     type: "command",
     handler: __dirname + "/GenerateBundle.handler",
     options: [ BundleidOption, BundleversionOption, NodejsappOption, StartscriptOption, PortOption,
