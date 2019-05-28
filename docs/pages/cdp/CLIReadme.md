@@ -321,6 +321,10 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 
 	* The name of a (cics\-deploy) profile to load for this command execution\.
 
+*   `--cics-profile`  | `--cics-p` *(string)*
+
+	* The name of a (cics) profile to load for this command execution\.
+
 ### Examples
 
 *  Push a CICS bundle from the working directory by using

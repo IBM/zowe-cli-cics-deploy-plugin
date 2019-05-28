@@ -36,6 +36,7 @@
   "devDependencies": {
     "@zowe/cli": "^5.5.0",
     "@zowe/imperative": "^4.1.2",
+    "@zowe/cics": "^2.0.1",
     "@types/fs-extra": "^5.0.5",
     "@types/jest": "^22.2.3",
     "@types/node": "^8.0.28",
@@ -67,6 +68,7 @@
   },
   "peerDependencies": {
     "@zowe/cli": "^5.5.0",
+    "@zowe/cics": "^2.0.1",
     "@zowe/imperative": "^4.1.2"
   },
   "jest": {

@@ -33,6 +33,7 @@ export class BundleDeployer {
   private hlqsValidated: boolean = false;
   private jobId: string;
   private progressBar: ITaskWithStatus;
+  private jobOutput: string = "";
 
   /**
    * Constructor for a BundleDeployer.
@@ -122,6 +123,16 @@ export class BundleDeployer {
       ParmValidator.validateUndeploy(this.params);
       this.parmsValidated = true;
     }
+  }
+
+  /**
+   * Retrieves the output from the most recently completed DFHDPLOY JCL job.
+   * @returns {string}
+   * @throws ImperativeError
+   * @memberof BundleDeployer
+   */
+  public getJobOutput() {
+    return this.jobOutput;
   }
 
   private wrapLongLineForJCL(lineOfText: string): string {
@@ -296,6 +307,7 @@ export class BundleDeployer {
                          stageName: TaskStage.IN_PROGRESS };
     this.startProgressBar();
     this.jobId = "UNKNOWN";
+    this.jobOutput = "";
 
     // Refresh the progress bar by 1% every second or so up to a max of 67%.
     // SubmitJobs will initialise it to 30% and set it to 70% when it
@@ -331,6 +343,7 @@ export class BundleDeployer {
           const logger = Logger.getAppLogger();
           logger.debug(file.data);
         }
+        this.jobOutput = file.data;
 
         // Finish the progress bar
         this.progressBar.statusMessage = "Completed DFHDPLOY";
