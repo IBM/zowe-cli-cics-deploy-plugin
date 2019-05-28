@@ -43,7 +43,7 @@ There are several ways to run shell commands and scripts on z/OS, such as SSH, b
 For example, to remove the target directory:
 
 ```console
-zowe zos-uss issue ssh "rm -Rv *" --cwd "/var/cicsts/bundles/myexpressapp_1.0.0" && echo RC=$?
+zowe zos-uss issue ssh "rm -Rv *" --cwd "/var/cicsts/bundles/myexpressapp_1.0.0" || echo "RC=$?"
 ```
 
 {% include tip.html content="You can run several commands in one request using the syntax described in [sh — Invoke a shell](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.bpxa500/sh.htm)." %}
@@ -76,7 +76,7 @@ node_modules -
 Then upload the CICS bundle to z/OS:
 
 ```console
-zowe zos-files upload dir-to-uss ~/myExpressApp/ /var/cicsts/bundles/myexpressapp_1.0.0 --recursive --attributes ~/myExpressApp/.zosattributes
+zowe zos-files upload dir-to-uss ~/myExpressApp/ "/var/cicsts/bundles/myexpressapp_1.0.0" --recursive --attributes ~/myExpressApp/.zosattributes
 ```
 
 ### Resolve Node.js application dependencies on z/OS
@@ -92,11 +92,11 @@ zowe zos-uss issue ssh "npm install" --cwd "/var/cicsts/bundles/myexpressapp_1.0
 Deploying a CICS bundle defines a CICS bundle resource (BUNDLE), then installs it, and finally enables it. When the CICS bundle is enabled, the Node.js application is started. For example:
 
 ```console
-zowe cics-deploy deploy bundle --name Express --bundle-directory /var/cicsts/bundles/myexpressapp_1.0.0
+zowe cics-deploy deploy bundle --name Express --bundle-directory "/var/cicsts/bundles/myexpressapp_1.0.0"
 ```
 
 Alternatively, to define and install the BUNDLE but not enable it:
 
 ```console
-zowe cics-deploy deploy bundle --name Express --bundle-directory /var/cicsts/bundles/myexpressapp_1.0.0 --target-state disabled
+zowe cics-deploy deploy bundle --name Express --bundle-directory "/var/cicsts/bundles/myexpressapp_1.0.0" --target-state disabled
 ```
