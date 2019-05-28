@@ -11,7 +11,7 @@
 
 "use strict";
 
-import { IHandlerParameters, AbstractSession, ITaskWithStatus, TaskStage, TaskProgress, Logger } from "@zowe/imperative";
+import { IHandlerParameters, AbstractSession, ITaskWithStatus, TaskStage, TaskProgress, Logger, IProfile } from "@zowe/imperative";
 import { List, ZosmfSession, SshSession, Shell, Upload, IUploadOptions, ZosFilesAttributes, Create } from "@zowe/cli";
 import { BundleDeployer } from "../BundleDeploy/BundleDeployer";
 import { Bundle } from "../BundleContent/Bundle";
@@ -69,10 +69,15 @@ export class BundlePusher {
                                         "_" + bundle.getVersion();
     }
 
+    // Get the profiles
+    const zosMFProfile = this.getProfile("zosmf");
+    const sshProfile = this.getProfile("ssh");
+    this.validateProfiles(zosMFProfile, sshProfile);
+
     // Create a zOSMF session
-    const zosMFSession = await this.createZosMFSession();
+    const zosMFSession = await this.createZosMFSession(zosMFProfile);
     // Create an SSH session
-    const sshSession = await this.createSshSession();
+    const sshSession = await this.createSshSession(sshProfile);
 
     // Start a progress bar (but only in non-verbose mode)
     this.progressBar = { percentComplete: 0,
@@ -176,23 +181,43 @@ export class BundlePusher {
     }
   }
 
-  private async createZosMFSession(): Promise<AbstractSession> {
-    // Create a zosMF session
-    const zosmfProfile = this.params.profiles.get("zosmf");
+  private getProfile(type: string): IProfile {
+    const profile =  this.params.profiles.get(type);
 
-    if (zosmfProfile === undefined) {
-      throw new Error("No zosmf profile found");
+    if (profile === undefined) {
+      throw new Error("No " + type + " profile found");
     }
+
+    return profile;
+  }
+
+  private issueWarning(msg: string) {
+    const warningMsg = "WARNING: " + msg + "\n";
+    this.endProgressBar();
+    this.params.response.console.log(Buffer.from(warningMsg));
+    if (this.params.arguments.silent === undefined) {
+      const logger = Logger.getAppLogger();
+      logger.warn(warningMsg);
+    }
+    this.startProgressBar();
+  }
+
+  private validateProfiles(zosmfProfile: IProfile, sshProfile: IProfile) {
+    // Do they share the same host name?
+    if (zosmfProfile.host !== sshProfile.host) {
+      this.issueWarning("ssh profile --host value '" + sshProfile.host + "' does not match zosmf value '" + zosmfProfile.host + "'.");
+    }
+    // Do they share the same user name?
+    if (zosmfProfile.user !== sshProfile.user) {
+      this.issueWarning("ssh profile --user value '" + sshProfile.user + "' does not match zosmf value '" + zosmfProfile.user + "'.");
+    }
+  }
+
+  private async createZosMFSession(zosmfProfile: IProfile): Promise<AbstractSession> {
     return ZosmfSession.createBasicZosmfSession(zosmfProfile);
   }
 
-  private async createSshSession(): Promise<SshSession> {
-    // Create an SSH session
-    const sshProfile = this.params.profiles.get("ssh");
-
-    if (sshProfile === undefined) {
-      throw new Error("No ssh profile found");
-    }
+  private async createSshSession(sshProfile: IProfile): Promise<SshSession> {
     return SshSession.createBasicSshSession(sshProfile);
   }
 
@@ -433,14 +458,7 @@ export class BundlePusher {
     }
 
     // A project specific .zosattributes has not been found, so use a default
-    const warningMsg = "WARNING: No .zosAttributes file found in the bundle directory, default values will be applied.";
-    this.endProgressBar();
-    this.params.response.console.log(Buffer.from(warningMsg));
-    if (this.params.arguments.silent === undefined) {
-      const logger = Logger.getAppLogger();
-      logger.warn(warningMsg);
-    }
-    this.startProgressBar();
+    this.issueWarning("No .zosAttributes file found in the bundle directory, default values will be applied.");
     return new ZosFilesAttributes(Bundle.getTemplateZosAttributesFile());
   }
 
@@ -468,13 +486,13 @@ export class BundlePusher {
   }
 
   private startProgressBar() {
-    if (this.params.arguments.verbose !== true) {
+    if (this.params.arguments.verbose !== true && this.progressBar !== undefined) {
       this.params.response.progress.startBar({task: this.progressBar});
     }
   }
 
   private endProgressBar() {
-    if (this.params.arguments.verbose !== true) {
+    if (this.params.arguments.verbose !== true && this.progressBar !== undefined) {
       this.params.response.progress.endBar();
     }
   }
