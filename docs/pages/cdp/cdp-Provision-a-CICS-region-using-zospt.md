@@ -9,18 +9,18 @@ folder: cdp
 toc: true
 ---
 
-The [z/OS Provisioning Toolkit](https://developer.ibm.com/mainframe/products/zospt/) (z/OS PT) provides a command line utility to provision CICS regions and other development environment on z/OS. This tutorial requires z/OS PT version 1.1.5 or above to be installed.
+The [z/OS Provisioning Toolkit](https://developer.ibm.com/mainframe/products/zospt/) (z/OS PT) provides a command line utility and z/OSMF workflows to provision CICS regions and other development environments on z/OS. This tutorial requires z/OS PT version 1.1.5 or above to be installed.
 
 ### Prepare a z/OS PT image
 
-A z/OS PT image contains the configuration and files necessary to provision the CICS region. This is typically prepared by the CICS system administrator for use by many developers. The [configuration properties](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/cics/zospt-cics-properties.html) for the CICS image should include:
+A z/OS PT image contains the configuration and files necessary to provision a CICS region. This is typically prepared by the CICS system administrator. The CICS image should include the following properties. Other properties are available to customise the CICS region to your requirements - see [Configuration properties for CICS images](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/cics/zospt-cics-properties.html).
 
 | zosptfile&nbsp;entry&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Usage |
 | --- | -- |
-| `FROM cics_55` | Provision a CICS TS V5.5 region. |
+| `FROM cics_55` | Provision a CICS TS V5.5 region. Required to support Node.js applications. |
 | `ENV DFH_CICS_TYPE=MAS` | The CICS region should be managed by CPSM. |
 | `ENV DFH_CICSPLEX=` | The name of the CICSplex. |
-| `ENV DFH_NODE_HOME=` | The installation directory for IBM SDK for Node.js - z/OS. |
+| `ENV DFH_NODE_HOME=` | The installation directory for IBM SDK for Node.js - z/OS. Required to support Node.js applications. |
 | `COPY bundles bundles` | Create an empty bundles directory in the provisioned file system to contain CICS bundles. |
 
 For example, to create the z/OS PT image source directory and configuration file, and build it ready for developers to provision CICS regions:
@@ -71,12 +71,11 @@ zospt build $ZOSPTIMAGE -t cics_55_nodejs
 
    The output is in JSON format and includes values for the CICS region application ID, and the z/OS directory within which your CICS bundles can be uploaded. For example:
 
-   ```json
+   <pre class="messageText">
     "DFH_REGION_APPLID": "CICPY000",
-    "DFH_REGION_ZFS_DIRECTORY": "/u/cicprov/mnt/CICPY000",
-    ```
+    "DFH_REGION_ZFS_DIRECTORY": "/u/cicprov/mnt/CICPY000",</pre>
 
-4. Update your Zowe cics-deploy profile options.
+4. Update your Zowe CLI cics-deploy profile options.
 
    Update `--scope` to be the value from DFH_REGION_APPLID, and `--bundle-directory` to be a bundles subdirectory of DFH_REGION_ZFS_DIRECTORY. For example:
 
@@ -104,7 +103,7 @@ zowe zos-uss issue ssh "zospt start my_cics_region"
 
 ### Deprovision your CICS region
 
-The CICS region can be stopped and removed using the following command. This will remove the z/OS directory used to upload your CICS bundles:
+The CICS region can be stopped and removed using the following commands. This will remove the z/OS directory used to upload your CICS bundles:
 
 ```console
 zowe zos-uss issue ssh "zospt stop my_cics_region"
