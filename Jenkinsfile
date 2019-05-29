@@ -619,8 +619,11 @@ pipeline {
         
     }
     post {
-        failure {
-            slackSend (channel: '@matthew.wilson', message: "Build failed ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
+        unsuccessful {
+            slackSend (channel: '@matthew.wilson', message: "${env.JOB_NAME} ${env.BUILD_NUMBER} - ${currentBuild.result} (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
+        }
+        fixed {
+            slackSend (channel: '@matthew.wilson', message: "${env.JOB_NAME} ${env.BUILD_NUMBER} - Back to normal (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
         }
     }
 }
