@@ -644,24 +644,58 @@ export class BundlePusher {
   private async gatherNodejsDiagnosticsFromCics(cicsSession: AbstractSession): Promise<boolean> {
     // Issue a CMCI get to the target CICSplex
     try {
-      const data: IResourceParms = { name: "CICSNodejsapp",
-                                     criteria: "BUNDLE=" + this.params.arguments.name,
-                                     regionName: this.params.arguments.scope,
-                                     cicsPlex: this.params.arguments.cicsplex };
-      const cmciResponse = await getResource(cicsSession, data);
-      const outputRecord = cmciResponse.response.records.cicsnodejsapp;
-      if (outputRecord === undefined) {
-        throw new Error("CICSNodejsapp output record not found.");
+      // First process each Region in the Scope
+      this.updateStatus("Querying Regions in Scope over CMCI");
+      const regionData: IResourceParms = { name: "CICSRegion",
+                                           regionName: this.params.arguments.scope,
+                                           cicsPlex: this.params.arguments.cicsplex };
+      const cmciRegionResponse = await getResource(cicsSession, regionData);
+      if (cmciRegionResponse === undefined ||
+          cmciRegionResponse.response === undefined ||
+          cmciRegionResponse.response.records === undefined ||
+          cmciRegionResponse.response.records.cicsregion === undefined) {
+        throw new Error("CICSRegion CMCI output record not found.");
       }
+      const outputRegionRecords = cmciRegionResponse.response.records.cicsregion;
+      let msg = "CICS Regions in Scope '" + this.params.arguments.scope + "' of CICSplex '" + this.params.arguments.cicsplex + "':\n";
+      this.issueMessage(msg);
 
       // We may have an array of records if there was more than one NODEJSAPP in the bundle
-      if (Array.isArray(outputRecord)) {
-        for (const record of outputRecord) {
+      if (Array.isArray(outputRegionRecords)) {
+        for (const record of outputRegionRecords) {
+          this.reportRegionData(record);
+        }
+      }
+      else {
+        this.reportRegionData(outputRegionRecords);
+      }
+
+      // Next process each NODEJSAPP in the Scope
+      this.updateStatus("Querying NODEJSAPP resources over CMCI");
+      const nodejsData: IResourceParms = { name: "CICSNodejsapp",
+                                           criteria: "BUNDLE=" + this.params.arguments.name,
+                                           regionName: this.params.arguments.scope,
+                                           cicsPlex: this.params.arguments.cicsplex };
+      const cmciNodejsResponse = await getResource(cicsSession, nodejsData);
+      if (cmciNodejsResponse === undefined ||
+          cmciNodejsResponse.response === undefined ||
+          cmciNodejsResponse.response.records === undefined ||
+          cmciNodejsResponse.response.records.cicsnodejsapp === undefined) {
+        throw new Error("CICSNodejsapp CMCI output record not found.");
+      }
+      const outputNodejsRecords = cmciNodejsResponse.response.records.cicsnodejsapp;
+
+      msg = "\nNODEJSAPP resources for Bundle '" + this.params.arguments.name + "' in Scope '" + this.params.arguments.scope + "':\n";
+      this.issueMessage(msg);
+
+      // We may have an array of records if there was more than one NODEJSAPP in the bundle
+      if (Array.isArray(outputNodejsRecords)) {
+        for (const record of outputNodejsRecords) {
           this.reportNODEJSAPPData(record);
         }
       }
       else {
-        this.reportNODEJSAPPData(outputRecord);
+        this.reportNODEJSAPPData(outputNodejsRecords);
       }
     }
     catch (error) {
@@ -669,6 +703,16 @@ export class BundlePusher {
     }
 
     return true;
+  }
+
+  private reportRegionData(outputRecord: any) {
+    const MAX_LENGTH = 8;
+    const applid = outputRecord.applid.padEnd(MAX_LENGTH, " ");
+    const jobid = outputRecord.jobid.padEnd(MAX_LENGTH, " ");
+    const jobname = outputRecord.jobname.padEnd(MAX_LENGTH, " ");
+
+    const msg = "   Applid: " + applid + "   jobname: " + jobname + "   jobid: " + jobid + "\n";
+    this.issueMessage(msg);
   }
 
   private reportNODEJSAPPData(outputRecord: any) {
