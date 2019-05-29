@@ -15,6 +15,7 @@ import {IImperativeConfig} from "@zowe/imperative";
 const MAX_LENGTH = 8;
 const MAX_HLQ_LENGTH = 35;
 const MAX_TARGETDIR_LENGTH = 255;
+
 const config: IImperativeConfig = {
     commandModuleGlobs: ["**/cli/*/*.definition!(.d).*s"],
     pluginHealthCheck: __dirname + "/healthCheck.handler",
