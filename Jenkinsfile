@@ -18,6 +18,12 @@
  */
 def RELEASE_BRANCHES = ["master"]
 
+/** 
+ * Branches to send notifcations for
+*/
+def NOTIFY_BRANCHES = ["slacknotify","master"]
+
+
 /**
  * The following flags are switches to control which stages of the pipeline to be run.  This is helpful when 
  * testing a specific stage of the pipeline.
@@ -620,10 +626,18 @@ pipeline {
     }
     post {
         unsuccessful {
-            slackSend (channel: '#cics-node-dev', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} completed - ${currentBuild.result} (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
+            script {
+                if (NOTIFY_BRANCHES.contains(BRANCH_NAME)) {
+                    slackSend (channel: '#cics-node-dev', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} completed - ${currentBuild.result} (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
+                }
+            }
         }
         fixed {
-            slackSend (channel: '#cics-node-dev', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} completed - Back to normal (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
+            script {
+                if (NOTIFY_BRANCHES.contains(BRANCH_NAME)) {
+                    slackSend (channel: '#cics-node-dev', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} completed - Back to normal (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
+                }
+            }
         }
     }
 }
