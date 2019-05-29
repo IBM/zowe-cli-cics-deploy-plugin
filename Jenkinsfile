@@ -21,7 +21,7 @@ def RELEASE_BRANCHES = ["master"]
 /** 
  * Branches to send notifcations for
 */
-def NOTIFY_BRANCHES = ["slacknotify","master"]
+def NOTIFY_BRANCHES = ["master"]
 
 
 /**
