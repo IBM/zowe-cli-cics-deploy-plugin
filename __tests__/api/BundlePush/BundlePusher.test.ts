@@ -24,6 +24,12 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     },
     profiles: {
         get: (type: string) => {
+            if (type === "zosmf") {
+              return zosmfProfile;
+            }
+            if (type === "ssh") {
+              return sshProfile;
+            }
             return {};
         }
     } as any,
@@ -60,6 +66,8 @@ const IS_NOT_DIRECTORY: any = {
   isDirectory: jest.fn((directory) => (false))
 };
 let consoleText = "";
+let zosmfProfile = {};
+let sshProfile = {};
 
 // Initialise xml2json before mocking anything
 const parser = require("xml2json");
@@ -99,6 +107,8 @@ describe("BundlePusher01", () => {
         readdirSpy = jest.spyOn(fs, "readdirSync").mockImplementation(() => ([]));
         lstatSpy = jest.spyOn(fs, "lstatSync").mockImplementation(() => ( IS_NOT_DIRECTORY ));
         consoleText = "";
+        zosmfProfile = {};
+        sshProfile = {};
     });
     afterEach(() => {
         jest.restoreAllMocks();
@@ -190,6 +200,38 @@ describe("BundlePusher01", () => {
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should complain with mismatching zOSMF and SSH profile host names", async () => {
+        zosmfProfile = { host: "wibble" };
+        sshProfile = { host: "wobble" };
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed.");
+        expect(consoleText).toContain("WARNING: ssh profile --host value 'wobble' does not match zosmf value 'wibble'.");
+    });
+    it("should not complain with matching zOSMF and SSH profile host names", async () => {
+        zosmfProfile = { host: "wibble" };
+        sshProfile = { host: "wibble" };
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed.");
+        expect(consoleText).not.toContain("WARNING: ssh profile");
+    });
+    it("should complain with mismatching zOSMF and SSH profile user names", async () => {
+        zosmfProfile = { host: "wibble", user: "fred" };
+        sshProfile = { host: "wibble", user: "joe" };
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed.");
+        expect(consoleText).toContain("WARNING: ssh profile --user value 'joe' does not match zosmf value 'fred'.");
+    });
+    it("should not complain with matching zOSMF and SSH profile user names", async () => {
+        zosmfProfile = { host: "wibble", user: "fred" };
+        sshProfile = { host: "wibble", user: "fred" };
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed.");
+        expect(consoleText).not.toContain("WARNING: ssh profile");
     });
     it("should complain if remote bundle dir mkdir fails", async () => {
         createSpy.mockImplementationOnce(() => { throw new Error( "Injected Create error" ); });

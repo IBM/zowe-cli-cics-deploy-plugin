@@ -26,7 +26,7 @@ $(document).ready(function () {
      * Modified to use a fontawesome icon.
      */
     // get all <pre> elements
-    var allCodeBlocksElements = $("pre");
+    var allCodeBlocksElements = $("pre:not(.messageText)");
 
     allCodeBlocksElements.each(function (i) {
         // add different id for each code block
