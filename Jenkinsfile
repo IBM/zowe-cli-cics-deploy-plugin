@@ -542,9 +542,6 @@ pipeline {
                     expression {
                         return BRANCH_NAME == MASTER_BRANCH
                     }
-                    expression {
-                        return GIT_COMMIT =! GIT_PREVIOUS_SUCCESSFUL_COMMIT
-                    }
                 }
             }
             steps {
@@ -595,9 +592,6 @@ pipeline {
                     }
                     expression {
                        return BRANCH_NAME == MASTER_BRANCH
-                    }
-                    expression {
-                        return GIT_COMMIT =! GIT_PREVIOUS_SUCCESSFUL_COMMIT
                     }
                 }
             }
