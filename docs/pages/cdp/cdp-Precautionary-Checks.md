@@ -8,6 +8,6 @@ permalink: cdp-Precautionary-Checks.html
 folder: cdp
 ---
 
-* CICS must be authorised to read the bundle directory `META-INF`.
+* CICS must be authorized to read the bundle directory `META-INF`.
 * The port specified by the `--port` argument of the `cics-deploy generate bundle` command *must* be free on the z/OS machine before you attempt to deploy an application. 
-* If you set a `WORK_DIR` in `nodejsapps/<your application name>.profile`, it must be *writeable* by CICS.
+* If you set a `WORK_DIR` in the CICS Node.js application profile, such as `nodejsapps/<your application name>.profile`, it must be *writeable* by CICS.

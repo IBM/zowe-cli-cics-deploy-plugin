@@ -8,7 +8,7 @@ permalink: cdp-Troubleshooting-Symptoms.html
 folder: cdp
 ---
 
-{% include important.html content="To definitively diagnose a problem based on the suggested symptoms, you might need to refer to one or more [system logs and traces](cdp-Troubleshooting-General) particularly the STDERR Node.js log and the file assigned the MSGUSR DD name in the relevant CICS DFHDPLOY job. Depending on your familiarity with z/OS and CICS, and your system privileges, you may also need to consult a CICS Systems Programmer to get to the bottom of certain problems." %}
+{% include important.html content="To definitively diagnose a problem based on the suggested symptoms, you might need to refer to one or more [system logs and traces](cdp-Troubleshooting-General) particularly the STDERR Node.js log and the file assigned the MSGUSR DD name in the relevant CICS DFHDPLOY job. Depending on your familiarity with z/OS and CICS, and your system privileges, you may also need to consult a CICS systems administrator to get to the bottom of certain problems." %}
 
 ## Deployment errors
 
@@ -80,7 +80,7 @@ DFHRL0113 E 05/17/2019 15:56:15 CALMAS1 COIE The CICS resource lifecycle manager
 </pre>
 
 *Suggested action*: 
-Check that your `cics.xml` is well-formed.
+Check that your `cics.xml` file is well-formed.
 
 ## General errors
 ### Syntax error: Invalid value length for option
