@@ -218,7 +218,7 @@ pipeline {
                     //sh("npm set @zowe:registry https://api.bintray.com/npm/ca/brightside/")
                     sh("npm set @zowe:registry https://registry.npmjs.org")
 
-                    sh("npm install -g @zowe/cli@latest")
+                    sh("npm install -g @zowe/cli@daily")
                     sh("zowe --version")
                 }
             }
@@ -536,6 +536,9 @@ pipeline {
                     expression {
                         return BRANCH_NAME == MASTER_BRANCH
                     }
+                    expression {
+                        return GIT_COMMIT =! GIT_PREVIOUS_SUCCESSFUL_COMMIT
+                    }
                 }
             }
             steps {
@@ -586,6 +589,9 @@ pipeline {
                     }
                     expression {
                        return BRANCH_NAME == MASTER_BRANCH
+                    }
+                    expression {
+                        return GIT_COMMIT =! GIT_PREVIOUS_SUCCESSFUL_COMMIT
                     }
                 }
             }
