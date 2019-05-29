@@ -537,7 +537,7 @@ pipeline {
                         return BRANCH_NAME == MASTER_BRANCH
                     }
                     expression {
-                        return GIT_COMMIT =! GIT_PREVIOUS_SUCCESSFUL_COMMIT
+                        return env.GIT_COMMIT =! env.GIT_PREVIOUS_SUCCESSFUL_COMMIT
                     }
                 }
             }
