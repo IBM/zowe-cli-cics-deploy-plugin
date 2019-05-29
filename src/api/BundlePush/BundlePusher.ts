@@ -367,8 +367,12 @@ export class BundlePusher {
     }
     this.startProgressBar();
 
-    // Generate additional output for Node.js
-    await this.outputNodejsDiagnostics(cicsSession, dfhdployOutput);
+    // Collect general information about the regions in the CICSplex scope
+    const diagnosticsWorking = await this.outputGeneralDiagnostics(cicsSession);
+    if (diagnosticsWorking) {
+      // Generate additional diagnostic output for Node.js
+      await this.outputNodejsSpecificDiagnostics(cicsSession, dfhdployOutput);
+    }
 
     // Now rethrow the original error, if there was one.
     if (deployError !== undefined) {
@@ -610,16 +614,35 @@ export class BundlePusher {
     }
   }
 
-  private async outputNodejsDiagnostics(cicsSession: AbstractSession, dfhdployOutput: string) {
+  private async outputGeneralDiagnostics(cicsSession: AbstractSession): Promise<boolean> {
+    let scopeFound = false;
+    try {
+      if (cicsSession !== undefined) {
+        // Attempt to gather additional Node.js specific information from CICS
+        this.updateStatus("Gathering Scope information");
+        scopeFound = await this.gatherGeneralDiagnosticsFromCics(cicsSession);
+      }
+    }
+    catch (diagnosticsError) {
+      // Something went wrong generating scope info. Don't trouble the user
+      // with what might be an exotic error message (e.g. hex dump of an entire HTML page),
+      // just log the failure.
+      if (this.params.arguments.silent === undefined) {
+        const logger = Logger.getAppLogger();
+        logger.debug(diagnosticsError.message);
+      }
+    }
+    return scopeFound;
+  }
+
+  private async outputNodejsSpecificDiagnostics(cicsSession: AbstractSession, dfhdployOutput: string) {
     // Did the Bundle contents include a NODEJSAPP?
     if (dfhdployOutput.indexOf("http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP") > -1) {
       let diagnosticsIssued = false;
       try {
-        if (cicsSession !== undefined) {
-          // Attempt to gather additional Node.js specific information from CICS
-          this.updateStatus("Gathering Node.js diagnostics");
-          diagnosticsIssued = await this.gatherNodejsDiagnosticsFromCics(cicsSession);
-        }
+        // Attempt to gather additional Node.js specific information from CICS
+        this.updateStatus("Gathering Node.js diagnostics");
+        diagnosticsIssued = await this.gatherNodejsDiagnosticsFromCics(cicsSession);
       }
       catch (diagnosticsError) {
         // Something went wrong generating diagnostic info. Don't trouble the user
@@ -631,7 +654,7 @@ export class BundlePusher {
         }
       }
 
-      // If we don't have a cics profile or if we do but the diagnostics collection failed, issue a message.
+      // We must have a cics profile in order to have got this far, so suggest a command that can be run to figure out more.
       if (diagnosticsIssued === false) {
         const msg = "For further information on the state of your NODEJSAPP resources, consider running the following command:\n\n" +
               "zowe cics get resource CICSNodejsapp --region-name " + this.params.arguments.scope +
@@ -641,10 +664,9 @@ export class BundlePusher {
     }
   }
 
-  private async gatherNodejsDiagnosticsFromCics(cicsSession: AbstractSession): Promise<boolean> {
+  private async gatherGeneralDiagnosticsFromCics(cicsSession: AbstractSession): Promise<boolean> {
     // Issue a CMCI get to the target CICSplex
     try {
-      // First process each Region in the Scope
       this.updateStatus("Querying Regions in Scope over CMCI");
       const regionData: IResourceParms = { name: "CICSRegion",
                                            regionName: this.params.arguments.scope,
@@ -657,10 +679,10 @@ export class BundlePusher {
         throw new Error("CICSRegion CMCI output record not found.");
       }
       const outputRegionRecords = cmciRegionResponse.response.records.cicsregion;
-      let msg = "CICS Regions in Scope '" + this.params.arguments.scope + "' of CICSplex '" + this.params.arguments.cicsplex + "':\n";
+      const msg = "CICS Regions in Scope '" + this.params.arguments.scope + "' of CICSplex '" + this.params.arguments.cicsplex + "':\n";
       this.issueMessage(msg);
 
-      // We may have an array of records if there was more than one NODEJSAPP in the bundle
+      // We may have an array of records if there was more than one Region in the scope
       if (Array.isArray(outputRegionRecords)) {
         for (const record of outputRegionRecords) {
           this.reportRegionData(record);
@@ -669,8 +691,18 @@ export class BundlePusher {
       else {
         this.reportRegionData(outputRegionRecords);
       }
+    }
+    catch (error) {
+      throw new Error("Failure collecting diagnostics for Bundle " + this.params.arguments.name + ": " + error.message);
+    }
 
-      // Next process each NODEJSAPP in the Scope
+    return true;
+  }
+
+  private async gatherNodejsDiagnosticsFromCics(cicsSession: AbstractSession): Promise<boolean> {
+    // Issue a CMCI get to the target CICSplex
+    try {
+      // Process each NODEJSAPP in the Scope
       this.updateStatus("Querying NODEJSAPP resources over CMCI");
       const nodejsData: IResourceParms = { name: "CICSNodejsapp",
                                            criteria: "BUNDLE=" + this.params.arguments.name,
@@ -685,7 +717,7 @@ export class BundlePusher {
       }
       const outputNodejsRecords = cmciNodejsResponse.response.records.cicsnodejsapp;
 
-      msg = "\nNODEJSAPP resources for Bundle '" + this.params.arguments.name + "' in Scope '" + this.params.arguments.scope + "':\n";
+      const msg = "\nNODEJSAPP resources for Bundle '" + this.params.arguments.name + "' in Scope '" + this.params.arguments.scope + "':\n";
       this.issueMessage(msg);
 
       // We may have an array of records if there was more than one NODEJSAPP in the bundle
