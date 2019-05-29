@@ -87,7 +87,7 @@ This profile identifies the CICS environment for deployment. You need to know th
 For example to create a cics-deploy profile:
 
 ```console
-zowe profiles create cics-deploy-profile example --cicsplex PLEX1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --scope TESTGRP1 --csd-group BUNDGRP1 --target-directory /var/cicsts/bundles --overwrite
+zowe profiles create cics-deploy-profile cics --cicsplex PLEX1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --scope TESTGRP1 --csd-group BUNDGRP1 --target-directory /var/cicsts/bundles --overwrite
 ```
 
 For help on using the options:
@@ -96,4 +96,4 @@ For help on using the options:
 zowe profiles create cics-deploy-profile --help
 ```
 
-To test the cics-deploy profile, follow the steps in [Deploying your first app](cdp-Deploying-your-first-app).
+To test the cics-deploy profile, follow the steps in [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app).

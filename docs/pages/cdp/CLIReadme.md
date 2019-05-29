@@ -90,7 +90,8 @@ the target group of CICS regions\.
 *   `--timeout`  | `--to` *(number)*
 
 	* An optional numerical value that specifies the maximum amount of time in seconds
-      (1 \- 1800 inclusive) for the DFHDPLOY command to complete\.
+      (1 \- 1800 inclusive) for the DFHDPLOY command to complete\. If not specified
+      DFHDPLOY will use its default of 300 seconds\.
 
 *   `--target-state`  | `--ts` | `--targetstate` *(string)*
 
@@ -287,7 +288,8 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 *   `--timeout`  | `--to` *(number)*
 
 	* An optional numerical value that specifies the maximum amount of time in seconds
-      (1 \- 1800 inclusive) for the DFHDPLOY command to complete\.
+      (1 \- 1800 inclusive) for the DFHDPLOY command to complete\. If not specified
+      DFHDPLOY will use its default of 300 seconds\.
 
 *   `--target-state`  | `--ts` | `--targetstate` *(string)*
 
@@ -408,7 +410,8 @@ target group of CICS regions\.
 *   `--timeout`  | `--to` *(number)*
 
 	* An optional numerical value that specifies the maximum amount of time in seconds
-      (1 \- 1800 inclusive) for the DFHDPLOY command to complete\.
+      (1 \- 1800 inclusive) for the DFHDPLOY command to complete\. If not specified
+      DFHDPLOY will use its default of 300 seconds\.
 
 *   `--target-state`  | `--ts` | `--targetstate` *(string)*
 
