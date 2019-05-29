@@ -620,10 +620,10 @@ pipeline {
     }
     post {
         unsuccessful {
-            slackSend (channel: '@matthew.wilson', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} completed - ${currentBuild.result} (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
+            slackSend (channel: '#cics-node-dev', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} completed - ${currentBuild.result} (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
         }
         fixed {
-            slackSend (channel: '@matthew.wilson', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} completed - Back to normal (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
+            slackSend (channel: '#cics-node-dev', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} completed - Back to normal (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
         }
     }
 }
