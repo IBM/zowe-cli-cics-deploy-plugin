@@ -1043,8 +1043,8 @@ describe("BundlePusher01", () => {
         zosmfProfile = { host: "wibble", user: "user" };
         sshProfile = { host: "wibble", user: "user" };
         cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678" };
-        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
-          if (nodejsData.name === "CICSRegion") {
+        cmciSpy.mockImplementation((cicsSession: any, regionData: cmci.IResourceParms) => {
+          if (regionData.name === "CICSRegion") {
             return { response: {
                 records: {
                   cicsregion: {
@@ -1113,8 +1113,8 @@ describe("BundlePusher01", () => {
         cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2055I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
-        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
-          if (nodejsData.name === "CICSRegion") {
+        cmciSpy.mockImplementation((cicsSession: any, regionData: cmci.IResourceParms) => {
+          if (regionData.name === "CICSRegion") {
             return { response: {
                 records: {
                   cicsregion: {
