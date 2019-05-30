@@ -6,61 +6,66 @@ entries:
   folders:
 
   - title: Getting Started
+    url: index.html
     output: web
     folderitems:
     - title: Home
-      url: /index.html
+      url: index.html
       output: web
     - title: Requirements on z/OS
-      url: /cdp-Requirements.html
+      url: cdp-Requirements.html
       output: web
     - title: Installation
-      url: /cdp-Installation.html
+      url: cdp-Installation.html
       output: web
     - title: Create Zowe CLI profiles
-      url: /cdp-Create-Zowe-CLI-profiles.html
+      url: cdp-Create-Zowe-CLI-profiles.html
       output: web
 
   - title: Tutorials
+    url: cdp-Deploying-your-first-nodejs-app.html
     output: web
     folderitems:
     - title: Deploying your first Node.js app
-      url: /cdp-Deploying-your-first-nodejs-app.html
+      url: cdp-Deploying-your-first-nodejs-app.html
       output: web
     - title: Deploying using individual actions
-      url: /cdp-Deploying-using-individual-actions.html
+      url: cdp-Deploying-using-individual-actions.html
       output: web
     - title: Provision a CICS region with z/OS PT
-      url: /cdp-Provision-a-CICS-region-using-zospt.html
+      url: cdp-Provision-a-CICS-region-using-zospt.html
       output: web
 
   - title: Concepts
+    url: cdp-zowe-and-cli.html
     output: web
     folderitems:
     - title: Zowe and the Zowe CLI
-      url: /cdp-zowe-and-cli.html
+      url: cdp-zowe-and-cli.html
       output: web
     - title: Zowe CLI profiles
-      url: /cdp-zowe-profiles.html
+      url: cdp-zowe-profiles.html
       output: web
     - title: CICS bundles
-      url: /cdp-cics-bundles.html
+      url: cdp-cics-bundles.html
       output: web
 
   - title: Troubleshooting
+    url: cdp-Troubleshooting-General.html
     output: web
     folderitems:
     - title: Log and trace files
-      url: /cdp-Troubleshooting-General.html
+      url: cdp-Troubleshooting-General.html
       output: web
     - title: Precautionary checks
-      url: /cdp-Precautionary-Checks.html
+      url: cdp-Precautionary-Checks.html
       output: web
     - title: Potential problems
-      url: /cdp-Troubleshooting-Symptoms.html
+      url: cdp-Troubleshooting-Symptoms.html
       output: web
 
   - title: Commands - zowe profiles
+    url: cdp-CLIReadMe#create--cre
     output: web
     folderitems:
     - title: create cics-deploy-profile
@@ -80,6 +85,7 @@ entries:
       output: web
 
   - title: Commands - zowe cics-deploy
+    url: cdp-CLIReadMe#generate--g--gen
     output: web
     folderitems:
     - title: generate bundle
