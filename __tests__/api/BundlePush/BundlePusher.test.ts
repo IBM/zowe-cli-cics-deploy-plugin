@@ -1043,7 +1043,7 @@ describe("BundlePusher01", () => {
         zosmfProfile = { host: "wibble", user: "user" };
         sshProfile = { host: "wibble", user: "user" };
         cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678" };
-        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
+        cmciSpy.mockImplementation((cicsSession: any, regionData: cmci.IResourceParms) => {
           if (nodejsData.name === "CICSRegion") {
             return { response: {
                 records: {
