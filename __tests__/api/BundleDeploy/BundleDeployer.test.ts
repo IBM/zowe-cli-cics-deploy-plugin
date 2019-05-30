@@ -124,7 +124,7 @@ describe("BundleDeployer01", () => {
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce((session: any, jcl: string, parms: any) => {
                 parms.task.statusMessage = "Waiting for JOB12345 to enter OUTPUT";
                 parms.task.stageName = TaskStage.IN_PROGRESS;
-                const expectedMsg = "Running DFHDPLOY (DEPLOY), job JOB12345";
+                const expectedMsg = "Running DFHDPLOY (DEPLOY), jobid JOB12345";
                 // wait 1.5 seconds
                 return new Promise((resolve, reject) => {
                   setTimeout(() => {
