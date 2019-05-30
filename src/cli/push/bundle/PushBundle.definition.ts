@@ -39,7 +39,7 @@ export const PushBundleDefinition: ICommandDefinition = {
     options: [ NameOption, TargetdirOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption,
                CicshlqOption, CpsmhlqOption, DescriptionOption, JobcardOption, TimeoutOption, TargetStateOption,
                VerboseOption, OverwriteOption ],
-    profile: { required: ["zosmf", "ssh"], optional: ["cics-deploy"] },
+    profile: { required: ["zosmf", "ssh"], optional: ["cics-deploy", "cics"] },
     examples: [
         {
             description: "Push a CICS bundle from the working directory by using default cics-deploy, ssh and zosmf profiles",

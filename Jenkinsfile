@@ -18,6 +18,12 @@
  */
 def RELEASE_BRANCHES = ["master"]
 
+/** 
+ * Branches to send notifcations for
+*/
+def NOTIFY_BRANCHES = ["master"]
+
+
 /**
  * The following flags are switches to control which stages of the pipeline to be run.  This is helpful when 
  * testing a specific stage of the pipeline.
@@ -218,7 +224,7 @@ pipeline {
                     //sh("npm set @zowe:registry https://api.bintray.com/npm/ca/brightside/")
                     sh("npm set @zowe:registry https://registry.npmjs.org")
 
-                    sh("npm install -g @zowe/cli@latest")
+                    sh("npm install -g @zowe/cli@daily")
                     sh("zowe --version")
                 }
             }
@@ -605,8 +611,7 @@ pipeline {
                             if (BRANCH_NAME == MASTER_BRANCH) {
                                 echo "publishing next to $TEST_NPM_REGISTRY"
                                 sh "npm publish --tag next"
-                            }
-                            else {
+                            } else {
                                 echo "publishing latest to $TEST_NPM_REGISTRY"
                                 sh "npm publish --tag latest"
                             }
@@ -614,6 +619,23 @@ pipeline {
 
                         sh "rm -f .npmrc"
                     }
+                }
+            }
+        }
+        
+    }
+    post {
+        unsuccessful {
+            script {
+                if (NOTIFY_BRANCHES.contains(BRANCH_NAME)) {
+                    slackSend (channel: '#cics-node-dev', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} completed - ${currentBuild.result} (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
+                }
+            }
+        }
+        fixed {
+            script {
+                if (NOTIFY_BRANCHES.contains(BRANCH_NAME)) {
+                    slackSend (channel: '#cics-node-dev', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} completed - Back to normal (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
                 }
             }
         }
