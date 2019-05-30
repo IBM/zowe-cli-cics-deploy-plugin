@@ -1113,7 +1113,7 @@ describe("BundlePusher01", () => {
         cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2055I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
-        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
+        cmciSpy.mockImplementation((cicsSession: any, regionData: cmci.IResourceParms) => {
           if (nodejsData.name === "CICSRegion") {
             return { response: {
                 records: {
