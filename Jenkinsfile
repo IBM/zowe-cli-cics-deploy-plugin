@@ -69,12 +69,6 @@ def UNIT_RESULTS = "${TEST_RESULTS_FOLDER}/unit"
  */
 def MASTER_BRANCH = "master"
 
-
-/**
- * A command to be run that gets the current revision pulled down
- */
-def GIT_REVISION_LOOKUP = 'git log -n 1 --pretty=format:%h'
-
 /**
  * Variables to check any new commit since the previous successful commit
  */
@@ -175,12 +169,6 @@ pipeline {
             steps {
                 timeout(time: 2, unit: 'MINUTES') {
                     script {
-                        // We need to keep track of the current commit revision. This is to prevent the condition where
-                        // the build starts on master and another branch gets merged to master prior to version bump
-                        // commit taking place. If left unhandled, the version bump could be done on latest master branch
-                        // code which would already be ahead of this build.
-                        BUILD_REVISION = sh returnStdout: true, script: GIT_REVISION_LOOKUP
-
                         // This checks for the [ci skip] text. If found, the status code is 0
                         def result = sh returnStatus: true, script: 'git log -1 | grep \'.*\\[ci skip\\].*\''
                         if (result == 0) {
