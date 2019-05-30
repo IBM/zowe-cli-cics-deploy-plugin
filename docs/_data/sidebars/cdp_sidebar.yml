@@ -6,6 +6,7 @@ entries:
   folders:
 
   - title: Getting Started
+    url: /index.html
     output: web
     folderitems:
     - title: Home
@@ -22,6 +23,7 @@ entries:
       output: web
 
   - title: Tutorials
+    url: /cdp-Deploying-your-first-nodejs-app.html
     output: web
     folderitems:
     - title: Deploying your first Node.js app
@@ -35,6 +37,7 @@ entries:
       output: web
 
   - title: Concepts
+    url: /cdp-zowe-and-cli.html
     output: web
     folderitems:
     - title: Zowe and the Zowe CLI
@@ -48,6 +51,7 @@ entries:
       output: web
 
   - title: Troubleshooting
+    url: /cdp-Troubleshooting-General.html
     output: web
     folderitems:
     - title: Log and trace files
@@ -58,6 +62,7 @@ entries:
       output: web
 
   - title: Commands - zowe profiles
+    url: cdp-CLIReadMe#create--cre
     output: web
     folderitems:
     - title: create cics-deploy-profile
@@ -77,6 +82,7 @@ entries:
       output: web
 
   - title: Commands - zowe cics-deploy
+    url: cdp-CLIReadMe#generate--g--gen
     output: web
     folderitems:
     - title: generate bundle
