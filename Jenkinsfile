@@ -93,8 +93,8 @@ def ARTIFACTORY_CREDENTIALS_ID = "c8e3aa62-5eef-4e6b-8a3f-aa1006a7ef01"
 def opts = []
 
 // Setup a schedule to run build periodically
-// Run a build some time between 12:00AM and 8:59AM
-def CRON_STRING = BRANCH_NAME == MASTER_BRANCH ? "H H(0-8) * * *" : ""
+// Run a build at 2.00AM everyday
+def CRON_STRING = BRANCH_NAME == MASTER_BRANCH ? "H 2 * * *" : ""
 
 if (RELEASE_BRANCHES.contains(BRANCH_NAME)) {
     // Only keep 20 builds
