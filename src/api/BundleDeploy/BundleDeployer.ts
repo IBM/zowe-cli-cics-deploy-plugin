@@ -276,7 +276,7 @@ export class BundleDeployer {
       if (statusWords.length >= 2) {
         if (statusWords[2] !== undefined && statusWords[2].indexOf("JOB") === 0) {
            this.jobId = statusWords[2];
-           this.progressBar.statusMessage = "Running DFHDPLOY (" + action + "), job " + this.jobId;
+           this.progressBar.statusMessage = "Running DFHDPLOY (" + action + "), jobid " + this.jobId;
 
            this.endProgressBar();
            // log the jobid for posterity
@@ -323,7 +323,7 @@ export class BundleDeployer {
     }
     catch (error) {
       this.progressBar.stageName = TaskStage.FAILED;
-      throw new Error("Failure occurred submitting DFHDPLOY JCL for JOBID " + this.jobId + ": '" + error.message +
+      throw new Error("Failure occurred submitting DFHDPLOY JCL for jobid " + this.jobId + ": '" + error.message +
                       "'. Most recent status update: '" + this.progressBar.statusMessage + "'.");
     }
 
@@ -334,7 +334,7 @@ export class BundleDeployer {
 
         if (file.data === undefined || file.data.length === 0) {
           this.progressBar.stageName = TaskStage.FAILED;
-          throw new Error("DFHDPLOY did not generate any output for JOBID " + this.jobId +
+          throw new Error("DFHDPLOY did not generate any output for jobid " + this.jobId +
             ". Most recent status update: '" + this.progressBar.statusMessage + "'.");
         }
 
@@ -354,7 +354,7 @@ export class BundleDeployer {
           this.progressBar.stageName = TaskStage.FAILED;
           // log the error output to the console
           this.params.response.console.log(file.data);
-          throw new Error("DFHDPLOY stopped processing for JOBID " + this.jobId + " due to an error.");
+          throw new Error("DFHDPLOY stopped processing for jobid " + this.jobId + " due to an error.");
         }
         if (file.data.indexOf("DFHRL2043I") > -1) {
           this.progressBar.stageName = TaskStage.COMPLETE;
@@ -382,7 +382,7 @@ export class BundleDeployer {
         this.progressBar.stageName = TaskStage.FAILED;
         // log the error output to the console
         this.params.response.console.log(file.data);
-        throw new Error("DFHDPLOY command completed for JOBID " + this.jobId + ", but status cannot be determined.");
+        throw new Error("DFHDPLOY command completed for jobid " + this.jobId + ", but status cannot be determined.");
       }
     }
 
@@ -392,12 +392,12 @@ export class BundleDeployer {
         this.progressBar.stageName = TaskStage.FAILED;
         // log the error output to the console
         this.params.response.console.log(file.data);
-        throw new Error("DFHDPLOY command completed in error for JOBID " + this.jobId + " without generating SYSTSPRT output.");
+        throw new Error("DFHDPLOY command completed in error for jobid " + this.jobId + " without generating SYSTSPRT output.");
       }
     }
 
     this.progressBar.stageName = TaskStage.FAILED;
-    throw new Error("SYSTSPRT and JESMSGLG output from DFHDPLOY not found for JOBID " + this.jobId +
+    throw new Error("SYSTSPRT and JESMSGLG output from DFHDPLOY not found for jobid " + this.jobId +
                     ". Most recent status update: '" + this.progressBar.statusMessage + "'.");
   }
 
