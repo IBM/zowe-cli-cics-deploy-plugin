@@ -32,6 +32,7 @@ export class BundleDeployer {
   private hlqsValidated: boolean = false;
   private jobId: string;
   private progressBar: ITaskWithStatus;
+  private useResponseProgressBar = true;
 
   /**
    * Constructor for a BundleDeployer.
@@ -41,6 +42,9 @@ export class BundleDeployer {
    */
   constructor(params: IHandlerParameters) {
     this.params = params;
+    this.progressBar = { percentComplete: 0,
+                         stageName: TaskStage.NOT_STARTED,
+                         statusMessage: ""};
   }
 
   /**
@@ -50,7 +54,7 @@ export class BundleDeployer {
    * @throws ImperativeError
    * @memberof BundleDeployer
    */
-  public async deployBundle(session?: AbstractSession): Promise<string> {
+  public async deployBundle(session?: AbstractSession, task?: ITaskWithStatus): Promise<string> {
 
     // Validate that the parms are valid for Deploy
     this.validateDeployParms();
@@ -67,7 +71,7 @@ export class BundleDeployer {
     const jcl = this.getDeployJCL();
 
     // Submit it
-    return this.submitJCL(jcl, "DEPLOY", session);
+    return this.submitJCL(jcl, "DEPLOY", session, task);
   }
 
   /**
@@ -77,7 +81,7 @@ export class BundleDeployer {
    * @throws ImperativeError
    * @memberof BundleDeployer
    */
-  public async undeployBundle(session?: AbstractSession): Promise<string> {
+  public async undeployBundle(session?: AbstractSession, task?: ITaskWithStatus): Promise<string> {
 
     // Validate that the parms are valid for Undeploy
     this.validateUndeployParms();
@@ -94,7 +98,7 @@ export class BundleDeployer {
     const jcl = this.getUndeployJCL();
 
     // Submit it
-    return this.submitJCL(jcl, "UNDEPLOY", session);
+    return this.submitJCL(jcl, "UNDEPLOY", session, task);
   }
 
   /**
@@ -257,7 +261,7 @@ export class BundleDeployer {
 
     // Have a look at the status message for the progress bar, has it been updated with
     // the jobid yet? If so, parse it out and refresh the message.
-    if (this.jobId === "UNKNOWN") {
+    if (this.jobId === "UNKNOWN" && this.progressBar.statusMessage) {
       const statusWords = this.progressBar.statusMessage.split(" ");
       if (statusWords.length >= 2) {
         if (statusWords[2] !== undefined && statusWords[2].indexOf("JOB") === 0) {
@@ -286,11 +290,17 @@ export class BundleDeployer {
     }
   }
 
-  private async submitJCL(jcl: string, action: string, session: any): Promise<string> {
+  private async submitJCL(jcl: string, action: string, session: any, task?: ITaskWithStatus): Promise<string> {
     let spoolOutput: any;
-    this.progressBar = { percentComplete: TaskProgress.TEN_PERCENT,
-                         statusMessage: "Submitting DFHDPLOY JCL for the " + action + " action",
-                         stageName: TaskStage.IN_PROGRESS };
+    if (task) {
+        this.progressBar = task;
+        this.useResponseProgressBar = false;
+    }
+
+    this.progressBar.percentComplete = TaskProgress.TEN_PERCENT;
+    this.progressBar.statusMessage = "Submitting DFHDPLOY JCL for the " + action + " action";
+    this.progressBar.stageName = TaskStage.IN_PROGRESS;
+
     this.startProgressBar();
     this.jobId = "UNKNOWN";
 
@@ -386,13 +396,13 @@ export class BundleDeployer {
   }
 
   private startProgressBar() {
-    if (this.params.arguments.verbose !== true) {
+    if (this.params.arguments.verbose !== true && this.useResponseProgressBar === true) {
       this.params.response.progress.startBar({task: this.progressBar});
     }
   }
 
   private endProgressBar() {
-    if (this.params.arguments.verbose !== true) {
+    if (this.params.arguments.verbose !== true && this.useResponseProgressBar === true) {
       this.params.response.progress.endBar();
     }
   }

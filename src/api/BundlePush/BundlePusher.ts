@@ -11,10 +11,11 @@
 
 "use strict";
 
-import { IHandlerParameters, AbstractSession, ITaskWithStatus, TaskStage, Logger } from "@zowe/imperative";
+import { IHandlerParameters, AbstractSession, ITaskWithStatus, TaskStage, Logger, TaskProgress } from "@zowe/imperative";
 import { List, ZosmfSession, SshSession, Shell, Upload, IUploadOptions, ZosFilesAttributes, Create } from "@zowe/cli";
 import { BundleDeployer } from "../BundleDeploy/BundleDeployer";
 import { Bundle } from "../BundleContent/Bundle";
+import { SubtaskWithStatus } from "./SubtaskWithStatus";
 
 
 /**
@@ -221,32 +222,23 @@ export class BundlePusher {
   }
 
   private async undeployExistingBundle(zosMFSession: AbstractSession, bd: BundleDeployer) {
-    // End the current progress bar so that UNDEPLOY can create its own
     this.updateStatus("Undeploying any existing bundle from CICS");
-    this.endProgressBar();
-
 
     const targetstateLocal = this.params.arguments.targetstate;
     this.params.arguments.targetstate = "DISCARDED";
-    await bd.undeployBundle(zosMFSession);
+    const subtask = new SubtaskWithStatus(this.progressBar, TaskProgress.THIRTY_PERCENT);
+    await bd.undeployBundle(zosMFSession, subtask);
     this.params.arguments.targetstate = targetstateLocal;
 
     // Resume the current progress bar
-    this.endProgressBar();
     this.updateStatus("Undeployed existing bundle from CICS");
-    this.startProgressBar();
   }
 
   private async deployBundle(zosMFSession: AbstractSession, bd: BundleDeployer) {
-    // End the current progress bar so that DEPLOY can create its own
     this.updateStatus("Deploying the bundle to CICS");
-    this.endProgressBar();
-
-    await bd.deployBundle(zosMFSession);
-    // Resume the current progress bar
-    this.endProgressBar();
+    const subtask = new SubtaskWithStatus(this.progressBar, TaskProgress.THIRTY_PERCENT);
+    await bd.deployBundle(zosMFSession, subtask);
     this.updateStatus("Deployed existing bundle to CICS");
-    this.startProgressBar();
   }
 
   private sshOutput(data: string) {
@@ -312,6 +304,7 @@ export class BundlePusher {
     // architected .profile within the USSCONFIG structure.
     const setNodehomeCmd = "export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\"";
     await this.runSshCommandInRemoteDirectory(sshSession, this.params.arguments.bundledir, setNodehomeCmd + " && npm install");
+    this.updateStatus("npm install complete", TaskProgress.TWENTY_PERCENT);
   }
 
   private async runSshCommandInRemoteDirectory(sshSession: SshSession, directory: string, sshCommand: string) {
@@ -357,6 +350,7 @@ export class BundlePusher {
 
     const uploadOptions: IUploadOptions = { recursive: true };
     uploadOptions.attributes = this.findZosAttributes();
+    uploadOptions.task = new SubtaskWithStatus(this.progressBar, TaskProgress.TEN_PERCENT);
 
     try {
       await Upload.dirToUSSDirRecursive(zosMFSession, this.localDirectory, this.params.arguments.bundledir, uploadOptions);
@@ -392,9 +386,8 @@ export class BundlePusher {
     return new ZosFilesAttributes(Bundle.getTemplateZosAttributesFile());
   }
 
-  private updateStatus(status: string) {
-    const PERCENT3 = 3;
-    this.progressBar.percentComplete += PERCENT3;
+  private updateStatus(status: string, percentageIncrease = 3) {
+    this.progressBar.percentComplete += percentageIncrease;
     this.progressBar.statusMessage = status;
 
     if (this.params.arguments.verbose) {

@@ -13,7 +13,7 @@ import { BundleDeployer } from "../../../src/api/BundleDeploy/BundleDeployer";
 import { IHandlerParameters, TaskStage } from "@zowe/imperative";
 import * as DeployBundleDefinition from "../../../src/cli/deploy/bundle/DeployBundle.definition";
 import * as fse from "fs-extra";
-import { ZosmfSession, SubmitJobs, List } from "@zowe/cli";
+import { ZosmfSession, SubmitJobs, List, explainProvisionedInstanceExtended } from "@zowe/cli";
 
 
 const DEFAULT_PARAMTERS: IHandlerParameters = {
@@ -69,6 +69,9 @@ describe("BundleDeployer01", () => {
     });
     afterEach(() => {
         jest.restoreAllMocks();
+        (DEFAULT_PARAMTERS.response.progress.startBar as jest.Mock).mockReset();
+        (DEFAULT_PARAMTERS.response.progress.endBar as jest.Mock).mockReset();
+
     });
     it("should complain with missing zOSMF profile for deploy", async () => {
         createSpy.mockImplementationOnce(() => { throw new Error( "Injected Create error" ); });
@@ -498,6 +501,24 @@ describe("BundleDeployer01", () => {
         parms.arguments.resgroup = "12345678";
         parms.arguments.verbose = false;
         await testUndeployJCL(parms);
+    });
+
+    it("should use task passed as parameter on deploy", async () => {
+        submitSpy.mockImplementationOnce(() => [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.csdgroup = "12345678";
+
+        const bd = new BundleDeployer(parms);
+        const task = { percentComplete: 0, stageName: TaskStage.NOT_STARTED, statusMessage: ""};
+        const response = await bd.deployBundle(undefined, task);
+        expect(task.stageName).toEqual(TaskStage.COMPLETE);
+        expect(task.statusMessage).toEqual("Completed DFHDPLOY");
+        expect(parms.response.progress.startBar).toHaveBeenCalledTimes(0);
+        expect(parms.response.progress.endBar).toHaveBeenCalledTimes(0);
+
     });
 });
 
