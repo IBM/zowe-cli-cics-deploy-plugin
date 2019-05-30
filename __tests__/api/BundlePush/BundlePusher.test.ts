@@ -1114,7 +1114,7 @@ describe("BundlePusher01", () => {
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2055I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
         cmciSpy.mockImplementation((cicsSession: any, regionData: cmci.IResourceParms) => {
-          if (nodejsData.name === "CICSRegion") {
+          if (regionData.name === "CICSRegion") {
             return { response: {
                 records: {
                   cicsregion: {
