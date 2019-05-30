@@ -216,7 +216,7 @@ export class BundlePusher {
       this.issueWarning("ssh profile --host value '" + sshProfile.host + "' does not match zosmf value '" + zosmfProfile.host + "'.");
     }
     // Do the required profiles share the same user name?
-    if (zosmfProfile.user !== sshProfile.user) {
+    if (zosmfProfile.user.toUpperCase() !== sshProfile.user.toUpperCase()) {
       this.issueWarning("ssh profile --user value '" + sshProfile.user + "' does not match zosmf value '" + zosmfProfile.user + "'.");
     }
 
@@ -225,12 +225,12 @@ export class BundlePusher {
       if (zosmfProfile.host !== cicsProfile.host) {
         this.issueWarning("cics profile --host value '" + cicsProfile.host + "' does not match zosmf value '" + zosmfProfile.host + "'.");
       }
-      if (zosmfProfile.user !== cicsProfile.user) {
+      if (zosmfProfile.user.toUpperCase() !== cicsProfile.user.toUpperCase()) {
         this.issueWarning("cics profile --user value '" + cicsProfile.user + "' does not match zosmf value '" + zosmfProfile.user + "'.");
       }
 
       // Do the cics-plexes match?
-      if (this.params.arguments.cicsplex !== cicsProfile.cicsPlex) {
+      if (cicsProfile.cicsPlex !== undefined && this.params.arguments.cicsplex !== cicsProfile.cicsPlex) {
         this.issueWarning("cics profile --cics-plex value '" + cicsProfile.cicsPlex +
           "' does not match --cicsplex value '" + this.params.arguments.cicsplex + "'.");
       }

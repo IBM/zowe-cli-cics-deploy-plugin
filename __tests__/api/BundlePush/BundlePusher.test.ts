@@ -114,8 +114,8 @@ describe("BundlePusher01", () => {
         lstatSpy = jest.spyOn(fs, "lstatSync").mockImplementation(() => ( IS_NOT_DIRECTORY ));
         cmciSpy = jest.spyOn(cmci, "getResource").mockImplementation(() => ({ response: { records: {} } }));
         consoleText = "";
-        zosmfProfile = {};
-        sshProfile = {};
+        zosmfProfile = { host: "testhost", user: "testuser" };
+        sshProfile = { host: "testhost", user: "testuser" };
         cicsProfile = undefined;
     });
     afterEach(() => {
@@ -210,29 +210,27 @@ describe("BundlePusher01", () => {
         expect(sshSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain with mismatching zOSMF and SSH profile host names", async () => {
-        zosmfProfile = { host: "wibble" };
-        sshProfile = { host: "wobble" };
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wobble", user: "user" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed.");
         expect(consoleText).toContain("WARNING: ssh profile --host value 'wobble' does not match zosmf value 'wibble'.");
     });
     it("should not complain with matching zOSMF and SSH profile host names", async () => {
-        zosmfProfile = { host: "wibble" };
-        sshProfile = { host: "wibble" };
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wibble", user: "user" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed.");
         expect(consoleText).not.toContain("WARNING: ssh profile");
     });
     it("should complain with mismatching zOSMF and CICS profile host names", async () => {
-        zosmfProfile = { host: "wibble" };
-        sshProfile = { host: "wibble" };
-        cicsProfile = { host: "wobble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
+        cicsProfile = { host: "wibble", user: "testuser", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed.");
-        expect(consoleText).toContain("WARNING: cics profile --host value 'wobble' does not match zosmf value 'wibble'.");
+        expect(consoleText).toContain("WARNING: cics profile --host value 'wibble' does not match zosmf value 'testhost'.");
     });
     it("should not complain with matching zOSMF and CICS profile host names", async () => {
         zosmfProfile = { host: "wibble", user: "user" };
@@ -254,6 +252,14 @@ describe("BundlePusher01", () => {
     it("should not complain with matching zOSMF and SSH profile user names", async () => {
         zosmfProfile = { host: "wibble", user: "fred" };
         sshProfile = { host: "wibble", user: "fred" };
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed.");
+        expect(consoleText).not.toContain("WARNING: ssh profile");
+    });
+    it("should not complain with matching zOSMF and SSH profile user names - case", async () => {
+        zosmfProfile = { host: "wibble", user: "fred" };
+        sshProfile = { host: "wibble", user: "FRED" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed.");
