@@ -32,7 +32,7 @@ entries:
     - title: Deploying using individual actions
       url: /cdp-Deploying-using-individual-actions.html
       output: web
-    - title: Provision a CICS region using z/OS PT
+    - title: Provision a CICS region with z/OS PT
       url: /cdp-Provision-a-CICS-region-using-zospt.html
       output: web
 
@@ -56,6 +56,9 @@ entries:
     folderitems:
     - title: Log and trace files
       url: /cdp-Troubleshooting-General.html
+      output: web
+    - title: Precautionary checks
+      url: /cdp-Precautionary-Checks.html
       output: web
     - title: Potential problems
       url: /cdp-Troubleshooting-Symptoms.html
