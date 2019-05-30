@@ -819,7 +819,7 @@ describe("BundlePusher01", () => {
         submitSpy.mockImplementationOnce(() => { throw new Error("Injected deploy error"); });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "Failure occurred submitting DFHDPLOY JCL for JOBID UNKNOWN: 'Injected deploy error'. " +
+              "Failure occurred submitting DFHDPLOY JCL for jobid UNKNOWN: 'Injected deploy error'. " +
               "Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'.");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -1133,7 +1133,7 @@ describe("BundlePusher01", () => {
         parms.arguments.verbose = true;
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "DFHDPLOY stopped processing for JOBID UNKNOWN due to an error.", parms);
+              "DFHDPLOY stopped processing for jobid UNKNOWN due to an error.", parms);
 
         expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Accessing contents of remote bundle directory");
