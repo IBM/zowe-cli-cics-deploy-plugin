@@ -62,7 +62,7 @@ def UNIT_RESULTS = "${TEST_RESULTS_FOLDER}/unit"
 /**
  * The location of the system test results
  */
- def SYSTEM_RESULTS = "${TEST_RESULTS_FOLDER}/system"
+def SYSTEM_RESULTS = "${TEST_RESULTS_FOLDER}/system"
 
 /**
  * The name of the master branch
@@ -92,6 +92,10 @@ def ARTIFACTORY_CREDENTIALS_ID = "c8e3aa62-5eef-4e6b-8a3f-aa1006a7ef01"
 // much impossible to have conditional options based on the branch :/
 def opts = []
 
+// Setup a schedule to run build periodically
+// Run a build at 2.00AM everyday
+def CRON_STRING = BRANCH_NAME == MASTER_BRANCH ? "H 2 * * *" : ""
+
 if (RELEASE_BRANCHES.contains(BRANCH_NAME)) {
     // Only keep 20 builds
     opts.push(buildDiscarder(logRotator(numToKeepStr: '20')))
@@ -113,6 +117,10 @@ pipeline {
 
     options {
         skipDefaultCheckout true
+    }
+
+    triggers {
+        cron(CRON_STRING)
     }
 
     environment {
