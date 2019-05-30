@@ -20,10 +20,10 @@ export const NodejsappOption: ICommandOptionDefinition = {
     aliases: ["n", "nj", "nja"],
     type: "string",
     description: "The ID of the generated CICS NODEJSAPP resource, up to 32 characters.  If no value is " +
-                 "specified then a default value is created from the " +
+                 "specified, a default value is created from the " +
                  "'name' property in package.json, or the bundleid option if specified. " +
-                 "If the value is too long it will be truncated. If it contains characters " +
-                 "not supported by CICS, each one will be replaced by an X."
+                 "If the value is too long it is truncated. If it contains characters " +
+                 "that are not supported by CICS, each character is replaced by an X."
 
 };
 

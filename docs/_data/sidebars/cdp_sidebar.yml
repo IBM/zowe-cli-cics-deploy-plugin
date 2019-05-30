@@ -1,0 +1,102 @@
+# This is your sidebar TOC. The sidebar code loops through sections here and provides the appropriate formatting.
+
+entries:
+- title: Sidebar
+  levels: one
+  folders:
+
+  - title: Getting Started
+    url: index.html
+    output: web
+    folderitems:
+    - title: Home
+      url: index.html
+      output: web
+    - title: Requirements on z/OS
+      url: cdp-Requirements.html
+      output: web
+    - title: Installation
+      url: cdp-Installation.html
+      output: web
+    - title: Create Zowe CLI profiles
+      url: cdp-Create-Zowe-CLI-profiles.html
+      output: web
+
+  - title: Tutorials
+    url: cdp-Deploying-your-first-nodejs-app.html
+    output: web
+    folderitems:
+    - title: Deploying your first Node.js app
+      url: cdp-Deploying-your-first-nodejs-app.html
+      output: web
+    - title: Deploying using individual actions
+      url: cdp-Deploying-using-individual-actions.html
+      output: web
+    - title: Provision a CICS region with z/OS PT
+      url: cdp-Provision-a-CICS-region-using-zospt.html
+      output: web
+
+  - title: Concepts
+    url: cdp-zowe-and-cli.html
+    output: web
+    folderitems:
+    - title: Zowe and the Zowe CLI
+      url: cdp-zowe-and-cli.html
+      output: web
+    - title: Zowe CLI profiles
+      url: cdp-zowe-profiles.html
+      output: web
+    - title: CICS bundles
+      url: cdp-cics-bundles.html
+      output: web
+
+  - title: Troubleshooting
+    url: cdp-Troubleshooting-General.html
+    output: web
+    folderitems:
+    - title: Log and trace files
+      url: cdp-Troubleshooting-General.html
+      output: web
+    - title: Precautionary checks
+      url: cdp-Precautionary-Checks.html
+      output: web
+    - title: Potential problems
+      url: cdp-Troubleshooting-Symptoms.html
+      output: web
+
+  - title: Commands - zowe profiles
+    url: cdp-CLIReadMe#create--cre
+    output: web
+    folderitems:
+    - title: create cics-deploy-profile
+      url: cdp-CLIReadMe#create--cre
+      output: web
+    - title: update cics-deploy-profile
+      url: cdp-CLIReadMe#update--upd
+      output: web
+    - title: delete cics-deploy-profile
+      url: cdp-CLIReadMe#delete--rm
+      output: web
+    - title: list cics-deploy-profile
+      url: cdp-CLIReadMe#list--ls
+      output: web
+    - title: set-default cics-deploy-profile
+      url: cdp-CLIReadMe#set-default--set
+      output: web
+
+  - title: Commands - zowe cics-deploy
+    url: cdp-CLIReadMe#generate--g--gen
+    output: web
+    folderitems:
+    - title: generate bundle
+      url: cdp-CLIReadMe#generate--g--gen
+      output: web
+    - title: push bundle
+      url: cdp-CLIReadMe#push--p
+      output: web
+    - title: deploy bundle
+      url: cdp-CLIReadMe#deploy--d--dep
+      output: web
+    - title: undeploy bundle
+      url: cdp-CLIReadMe#undeploy--u--udep
+      output: web

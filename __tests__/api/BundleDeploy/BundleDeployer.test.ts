@@ -127,14 +127,14 @@ describe("BundleDeployer01", () => {
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce((session: any, jcl: string, parms: any) => {
                 parms.task.statusMessage = "Waiting for JOB12345 to enter OUTPUT";
                 parms.task.stageName = TaskStage.IN_PROGRESS;
-                const expectedMsg = "Waiting for JOB12345 to enter OUTPUT (Processing DFHDPLOY DEPLOY action)";
+                const expectedMsg = "Running DFHDPLOY (DEPLOY), job JOB12345";
                 // wait 1.5 seconds
                 return new Promise((resolve, reject) => {
                   setTimeout(() => {
                     // Now check that the status message has been updated by the progress bar processing
                     if (parms.task.statusMessage !== expectedMsg) {
-                      throw new Error("Failed to find the expected message. Got: '" + parms.task.statusMessage + "' expected " +
-                      expectedMsg);
+                      throw new Error("Failed to find the expected message. Got: '" + parms.task.statusMessage + "' expected '" +
+                      expectedMsg + "'");
                     }
                     resolve();
                   }, 1500);
@@ -403,6 +403,13 @@ describe("BundleDeployer01", () => {
         parms.arguments.verbose = false;
         await testDeployJCL(parms);
     });
+    it("should support long description", async () => {
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.description = "1234567890123456789012345678901234567890123456789012345678";
+        await testDeployJCL(parms);
+    });
 
     // ** UNDEPLOY TESTS **
     it("should generate undeploy JCL with neither csdgroup nor resgroup", async () => {
@@ -597,6 +604,7 @@ function setCommonParmsForUndeployTests(parms: IHandlerParameters) {
   parms.arguments.name = "12345678";
   parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT";
   parms.arguments.targetstate = "DISCARDED";
+  parms.arguments.description = undefined;
 }
 
 async function testDeployJCL(parms: IHandlerParameters) {

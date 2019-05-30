@@ -22,6 +22,7 @@ import { JobcardOption } from "../../shared/Jobcard.option";
 import { TimeoutOption } from "../../shared/Timeout.option";
 import { TargetStateOption } from "./options/TargetState.option";
 import { VerboseOption } from "../../shared/Verbose.option";
+import { DescriptionOption } from "./options/Description.option";
 
 
 /**
@@ -38,21 +39,21 @@ export const DeployBundleDefinition: ICommandDefinition = {
     type: "command",
     handler: __dirname + "/DeployBundle.handler",
     options: [ NameOption, BundledirOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption,
-               CicshlqOption, CpsmhlqOption, JobcardOption, TimeoutOption, TargetStateOption, VerboseOption],
+               CicshlqOption, CpsmhlqOption, DescriptionOption, JobcardOption, TimeoutOption, TargetStateOption, VerboseOption],
     profile: { required: ["zosmf"], optional: ["cics-deploy"] },
     examples: [
         {
             description: "Deploy a CICS bundle with a specific name and location to a default set of target regions",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir`
+            options: `--name EXAMPLE --bundle-directory /u/example/bundleDir`
         },
         {
-            description: "Deploy a CICS bundle, but declare a timeout should the processing take too long",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir --timeout 60`
+            description: "Deploy a CICS bundle, but declare a timeout if the processing takes too long",
+            options: `--name EXAMPLE --bundle-directory /u/example/bundleDir --timeout 60`
         },
         {
-            description: "Deploy a CICS bundle to a specific target environment using specific zosmf & cics-deploy profiles",
-            options: `--name EXAMPLE --bundledir /u/example/bundleDir --cicsplex TESTPLEX --scope SCOPE --resgroup BUNDGRP ` +
-                     `--cicshlq CICSTS55.CICS720 --cpsmhlq CICSTS55.CPSM550 --zosmf-profile testplex --cics-deploy-profile devcics`
+            description: "Deploy a CICS bundle to a specific target environment by using specific zosmf & cics-deploy profiles",
+            options: `--name EXAMPLE --bundle-directory /u/example/bundleDir --cicsplex TESTPLEX --scope SCOPE --res-group BUNDGRP ` +
+                     `--cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --zosmf-profile testplex --cics-deploy-profile devcics`
         }
     ]
 };

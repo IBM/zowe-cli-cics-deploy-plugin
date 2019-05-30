@@ -16,10 +16,10 @@ import { ICommandOptionDefinition } from "@zowe/imperative";
  *
  */
 export const BundleversionOption: ICommandOptionDefinition = {
-    name: "bundleversion",
-    aliases: ["bv", "bundlever"],
+    name: "bundle-version",
+    aliases: ["bv", "bundleversion"],
     type: "string",
-    description: "The major.minor.micro version number for the generated CICS Bundle. If no value is " +
-                 "specified then a default value of 1.0.0 is used."
+    description: "The major.minor.micro version number for the generated CICS bundle. If no value is " +
+                 "specified, a default value of 1.0.0 is used."
 };
 

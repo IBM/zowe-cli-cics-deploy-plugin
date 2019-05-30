@@ -16,12 +16,12 @@ import { ICommandOptionDefinition } from "@zowe/imperative";
  *
  */
 export const StartscriptOption: ICommandOptionDefinition = {
-    name: "startscript",
-    aliases: ["s", "ss"],
+    name: "start-script",
+    aliases: ["s", "ss", "startscript"],
     type: "string",
-    description: "Up to 255 character path to the Node.js start script that should run when " +
+    description: "Up to 255 character path to the Node.js start script that runs when " +
                  "the associated bundle is enabled in CICS. If a value is not " +
-                 "specified then a default value is created from either the 'scripts.start' property " +
+                 "specified, a default value is created from either the 'scripts.start' property " +
                  "of the package.json file in the current working directory, or from the 'main' property."
 };
 

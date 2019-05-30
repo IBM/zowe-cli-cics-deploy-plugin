@@ -18,11 +18,11 @@ const MAX_LENGTH = 255;
  *
  */
 export const TargetdirOption: ICommandOptionDefinition = {
-    name: "targetdir",
-    aliases: ["td"],
+    name: "target-directory",
+    aliases: ["td", "targetdir", "target-dir"],
     type: "string",
     required: true,
     stringLengthRange: [1, MAX_LENGTH],
-    description: "Specifies the target zFS location in which the CICS bundle should be created (up to 255 characters)"
+    description: "Specifies the target zFS location in which the CICS bundle is to be created (up to 255 characters)"
 };
 

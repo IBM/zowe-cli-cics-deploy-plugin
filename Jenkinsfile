@@ -18,6 +18,12 @@
  */
 def RELEASE_BRANCHES = ["master"]
 
+/** 
+ * Branches to send notifcations for
+*/
+def NOTIFY_BRANCHES = ["master"]
+
+
 /**
  * The following flags are switches to control which stages of the pipeline to be run.  This is helpful when 
  * testing a specific stage of the pipeline.
@@ -63,11 +69,11 @@ def UNIT_RESULTS = "${TEST_RESULTS_FOLDER}/unit"
  */
 def MASTER_BRANCH = "master"
 
-
 /**
- * A command to be run that gets the current revision pulled down
+ * Variables to check any new commit since the previous successful commit
  */
-def GIT_REVISION_LOOKUP = 'git log -n 1 --pretty=format:%h'
+def GIT_COMMIT = "null"
+def GIT_PREVIOUS_SUCCESSFUL_COMMIT = "null"
 
 /**
  * This is the product name used by the build machine to store information about
@@ -105,6 +111,10 @@ pipeline {
 
     agent any
 
+    options {
+        skipDefaultCheckout true
+    }
+
     environment {
         // Environment variable for flow control. Indicates if the git source was updated by the pipeline.
         GIT_SOURCE_UPDATED = "false"
@@ -117,6 +127,20 @@ pipeline {
     }
 
     stages {
+        stage("Clean workspace and checkout source") {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    script {
+                        cleanWs()
+                        scmInfo = checkout scm
+
+                        GIT_COMMIT = scmInfo.GIT_COMMIT
+                        GIT_PREVIOUS_SUCCESSFUL_COMMIT = scmInfo.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+                    }
+                }
+            }
+        } 
+
         /************************************************************************
          * STAGE
          * -----
@@ -145,12 +169,6 @@ pipeline {
             steps {
                 timeout(time: 2, unit: 'MINUTES') {
                     script {
-                        // We need to keep track of the current commit revision. This is to prevent the condition where
-                        // the build starts on master and another branch gets merged to master prior to version bump
-                        // commit taking place. If left unhandled, the version bump could be done on latest master branch
-                        // code which would already be ahead of this build.
-                        BUILD_REVISION = sh returnStdout: true, script: GIT_REVISION_LOOKUP
-
                         // This checks for the [ci skip] text. If found, the status code is 0
                         def result = sh returnStatus: true, script: 'git log -1 | grep \'.*\\[ci skip\\].*\''
                         if (result == 0) {
@@ -197,17 +215,16 @@ pipeline {
                 }
             }
             steps('Install Zowe CLI') {
-                withCredentials([usernamePassword(credentialsId: ARTIFACTORY_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'API_KEY')]) {
-                    timeout(time: 10, unit: 'MINUTES') {
-                        echo "Install Zowe CLI globaly"
-                        sh "rm -f ~/.npmrc"
-                        sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> ~/.npmrc'
-                        sh "echo registry=$TEST_NPM_REGISTRY >> ~/.npmrc"
-                        sh "echo @brightside:registry=$TEST_NPM_REGISTRY >> ~/.npmrc"
-                        sh "echo @zowe:registry=$TEST_NPM_REGISTRY >> ~/.npmrc"
-                        sh("npm install -g @zowe/cli@cicsdev")
-                        sh("zowe --version")
-                    }
+                timeout(time: 10, unit: 'MINUTES') {
+                    echo "Install Zowe CLI globaly"
+                    sh "rm -f .npmrc"
+                    sh("npm set registry https://registry.npmjs.org")
+                    //sh("npm set @brightside:registry https://api.bintray.com/npm/ca/brightside/")
+                    //sh("npm set @zowe:registry https://api.bintray.com/npm/ca/brightside/")
+                    sh("npm set @zowe:registry https://registry.npmjs.org")
+
+                    sh("npm install -g @zowe/cli@daily")
+                    sh("zowe --version")
                 }
             }
         }
@@ -248,7 +265,7 @@ pipeline {
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
                     echo 'Installing Dependencies'
-
+                    sh 'npm config ls'
                     sh 'npm install'
                 }
             }
@@ -524,6 +541,9 @@ pipeline {
                     expression {
                         return BRANCH_NAME == MASTER_BRANCH
                     }
+                    expression {
+                        return GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT
+                    }
                 }
             }
             steps {
@@ -573,7 +593,10 @@ pipeline {
                         return PIPELINE_CONTROL.deploy
                     }
                     expression {
-                       return BRANCH_NAME == MASTER_BRANCH
+                        return BRANCH_NAME == MASTER_BRANCH
+                    }
+                    expression {
+                        return GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT
                     }
                 }
             }
@@ -586,20 +609,37 @@ pipeline {
                         sh "rm -f .npmrc"
                         sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
                         sh "echo registry=$TEST_NPM_REGISTRY >> .npmrc"
-                        sh "echo @brightside:registry=https://api.bintray.com/npm/ca/brightside/ >> .npmrc"
-                        sh "echo @brightside:always-auth=false >> .npmrc"
-
+                        sh "echo @zowe:registry=https://registry.npmjs.org >> .npmrc"
+                        sh "echo @zowe:always-auth=false >> .npmrc"
+                        
                         script {
                             if (BRANCH_NAME == MASTER_BRANCH) {
                                 echo "publishing next to $TEST_NPM_REGISTRY"
                                 sh "npm publish --tag next"
-                            }
-                            else {
+                            } else {
                                 echo "publishing latest to $TEST_NPM_REGISTRY"
                                 sh "npm publish --tag latest"
                             }
                         }
+
+                        sh "rm -f .npmrc"
                     }
+                }
+            }
+        }
+    }
+    post {
+        unsuccessful {
+            script {
+                if (NOTIFY_BRANCHES.contains(BRANCH_NAME)) {
+                    slackSend (channel: '#cics-node-dev', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} completed - ${currentBuild.result} (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
+                }
+            }
+        }
+        fixed {
+            script {
+                if (NOTIFY_BRANCHES.contains(BRANCH_NAME)) {
+                    slackSend (channel: '#cics-node-dev', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} completed - Back to normal (<${env.BUILD_URL}|Open>)", tokenCredentialId: 'slack-cics-node-dev')
                 }
             }
         }

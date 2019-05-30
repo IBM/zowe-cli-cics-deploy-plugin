@@ -25,6 +25,7 @@ export class ParmValidator {
     ParmValidator.validateScope(params);
     ParmValidator.validateCsdgroup(params);
     ParmValidator.validateResgroup(params);
+    ParmValidator.validateDescription(params);
     ParmValidator.validateTimeout(params);
     ParmValidator.validateCicshlq(params);
     ParmValidator.validateCpsmhlq(params);
@@ -395,6 +396,26 @@ export class ParmValidator {
 
     if (typeof params.arguments.verbose !== "boolean") {
       throw new Error("--verbose parameter is not boolean");
+    }
+  }
+
+  private static validateDescription(params: IHandlerParameters) {
+    // description is optional
+    if (params.arguments.description === undefined) {
+      return;
+    }
+
+    if (typeof params.arguments.description !== "string") {
+      throw new Error("--description parameter is not a string");
+    }
+
+    const MAX_LEN = 58;
+    if (params.arguments.description.length > MAX_LEN) {
+      throw new Error("--description parameter is too long");
+    }
+
+    if (params.arguments.description === "") {
+      throw new Error("--description parameter is empty");
     }
   }
 

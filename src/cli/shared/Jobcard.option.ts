@@ -16,8 +16,8 @@ import { ICommandOptionDefinition } from "@zowe/imperative";
  *
  */
 export const JobcardOption: ICommandOptionDefinition = {
-    name: "jobcard",
-    aliases: ["jc"],
+    name: "job-card",
+    aliases: ["jc", "jobcard"],
     type: "string",
     description: "Specifies the job card to use with any generated DFHDPLOY JCL. Use this parameter " +
                  "if you need to tailor the job card and you have not set the --cics-deploy-profile " +

@@ -26,13 +26,15 @@ import * as path from "path";
 export class BundleDeployer {
 
   private params: IHandlerParameters;
-  private PROGRESS_BAR_INTERVAL = 1500; // milliseconds
-  private PROGRESS_BAR_MAX = 67;
+  private PROGRESS_BAR_INTERVAL = 375;         // milliseconds
+  private PROGRESS_BAR_INCREMENT = 0.25;       // percent
+  private PROGRESS_BAR_MAX = 67;               // percent
   private parmsValidated: boolean = false;
   private hlqsValidated: boolean = false;
   private jobId: string;
   private progressBar: ITaskWithStatus;
   private useResponseProgressBar = true;
+  private jobOutput: string = "";
 
   /**
    * Constructor for a BundleDeployer.
@@ -127,6 +129,16 @@ export class BundleDeployer {
     }
   }
 
+  /**
+   * Retrieves the output from the most recently completed DFHDPLOY JCL job.
+   * @returns {string}
+   * @throws ImperativeError
+   * @memberof BundleDeployer
+   */
+  public getJobOutput() {
+    return this.jobOutput;
+  }
+
   private wrapLongLineForJCL(lineOfText: string): string {
     const MAX_LINE_LEN = 71;
 
@@ -150,10 +162,13 @@ export class BundleDeployer {
     // Get rid of any extra slashes which may be needed on git-bash to avoid path munging
     const bundledir = path.posix.normalize(this.params.arguments.bundledir);
 
-    const jcl = this.generateCommonJCLHeader() +
+    let jcl = this.generateCommonJCLHeader() +
       this.wrapLongLineForJCL("DEPLOY BUNDLE(" + this.params.arguments.name + ")\n") +
-      this.wrapLongLineForJCL("       BUNDLEDIR(" + bundledir + ")\n") +
-      this.generateCommonJCLFooter();
+      this.wrapLongLineForJCL("       BUNDLEDIR(" + bundledir + ")\n");
+    if (this.params.arguments.description !== undefined) {
+      jcl += this.wrapLongLineForJCL("       DESCRIPTION(" + this.params.arguments.description + ")\n");
+    }
+    jcl += this.generateCommonJCLFooter();
 
     return jcl;
   }
@@ -255,9 +270,8 @@ export class BundleDeployer {
   }
 
   private updateProgressBar(action: string) {
-    // Increment the progress by 1%. This will refresh what the user sees
-    // on the console.
-    this.progressBar.percentComplete += 1;
+    // Increment the progress bar. This will refresh what the user sees on the console.
+    this.progressBar.percentComplete += this.PROGRESS_BAR_INCREMENT;
 
     // Have a look at the status message for the progress bar, has it been updated with
     // the jobid yet? If so, parse it out and refresh the message.
@@ -266,7 +280,7 @@ export class BundleDeployer {
       if (statusWords.length >= 2) {
         if (statusWords[2] !== undefined && statusWords[2].indexOf("JOB") === 0) {
            this.jobId = statusWords[2];
-           this.progressBar.statusMessage += " (Processing DFHDPLOY " + action + " action)";
+           this.progressBar.statusMessage = "Running DFHDPLOY (" + action + "), job " + this.jobId;
 
            this.endProgressBar();
            // log the jobid for posterity
@@ -303,6 +317,7 @@ export class BundleDeployer {
 
     this.startProgressBar();
     this.jobId = "UNKNOWN";
+    this.jobOutput = "";
 
     // Refresh the progress bar by 1% every second or so up to a max of 67%.
     // SubmitJobs will initialise it to 30% and set it to 70% when it
@@ -338,6 +353,7 @@ export class BundleDeployer {
           const logger = Logger.getAppLogger();
           logger.debug(file.data);
         }
+        this.jobOutput = file.data;
 
         // Finish the progress bar
         this.progressBar.statusMessage = "Completed DFHDPLOY";

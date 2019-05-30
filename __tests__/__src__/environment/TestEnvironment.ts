@@ -51,8 +51,6 @@ export class TestEnvironment {
         // Get a unique test data area
         const testDirectory: string = TestEnvironment.createUniqueTestDataDir(params.testName);
 
-        const systemProps = TestEnvironment.loadSystemTestProperties(undefined, testDirectory);
-
         // set the env variables to be used for executing
         // scripts in the test environment
         const env: { [key: string]: string } = {};
@@ -60,7 +58,7 @@ export class TestEnvironment {
 
         const result: ITestEnvironment = {
             workingDir: testDirectory,
-            systemTestProperties: systemProps,
+            systemTestProperties: null,
             env
         };
 
@@ -149,7 +147,7 @@ export class TestEnvironment {
     private static async installPlugin(testEnvironment: ITestEnvironment) {
         let installScript: string = TemporaryScripts.SHEBANG;
         installScript += TemporaryScripts.ZOWE_BIN + " plugins install ../../../../\n"; // install plugin from root of project
-        installScript += TemporaryScripts.ZOWE_BIN + " plugins validate @brightside/zowe-cli-cics-deploy-plugin\n";
+        installScript += TemporaryScripts.ZOWE_BIN + " plugins validate zowe-cli-cics-deploy-plugin\n";
         installScript += TemporaryScripts.ZOWE_BIN + " cdep --help\n"; // check that the plugin help is available
         const scriptPath = testEnvironment.workingDir + "/install_plugin.sh";
         IO.writeFile(scriptPath, Buffer.from(installScript));
@@ -158,7 +156,7 @@ export class TestEnvironment {
 
         if (output.status !== 0) {
             throw new ImperativeError({
-                msg: "Install of '@brightside/zowe-cli-cics-deploy-plugin' plugin failed! You should delete the script: \n'" + scriptPath + "' " +
+                msg: "Install of 'zowe-cli-cics-deploy-plugin' plugin failed! You should delete the script: \n'" + scriptPath + "' " +
                     "after reviewing it to check for possible errors.\n Output of the plugin install command:\n" + output.stderr.toString() +
                     output.stdout.toString()
             });

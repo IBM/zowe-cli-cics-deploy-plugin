@@ -29,7 +29,7 @@ export const GenerateBundleDefinition: ICommandDefinition = {
     description: "Generate a CICS bundle in the working directory. " +
                  "The associated data is constructed from a combination of the " +
                  "command-line options and the contents of package.json. If package.json exists, " +
-                 "no options are required, but if it does not exist both --startscript and --nodejsapp are required.",
+                 "no options are required. If package.json does not exist, both --start-script and --nodejsapp are required.",
     type: "command",
     handler: __dirname + "/GenerateBundle.handler",
     options: [ BundleidOption, BundleversionOption, NodejsappOption, StartscriptOption, PortOption,
@@ -41,11 +41,11 @@ export const GenerateBundleDefinition: ICommandDefinition = {
         },
         {
             description: "Generate a CICS bundle in the working directory, based on package.json but using a bundle ID of \"mybundle\"",
-            options: `--bundleid mybundle`
+            options: `--bundle-id mybundle`
         },
         {
-            description: "Generate a CICS bundle in the working directory in which there is no package.json",
-            options: `--bundleid mybundle --nodejsapp myapp --startscript server.js`
+            description: "Generate a CICS bundle in the working directory in which a package.json does not exist",
+            options: `--bundle-id mybundle --nodejsapp myapp --start-script server.js`
         }
     ]
 };

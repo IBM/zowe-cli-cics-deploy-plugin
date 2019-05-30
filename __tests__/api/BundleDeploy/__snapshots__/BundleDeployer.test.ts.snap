@@ -371,7 +371,7 @@ UNDEPLOY BUNDLE(12345678)
 
 exports[`BundleDeployer01 should handle failure during submitjobs processing 1`] = `"Failure occurred submitting DFHDPLOY JCL for JOBID UNKNOWN: 'Injected Submit error'. Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'."`;
 
-exports[`BundleDeployer01 should include the JOBID in an error 1`] = `"Failure occurred submitting DFHDPLOY JCL for JOBID JOB12345: 'Injected submit error'. Most recent status update: 'Waiting for JOB12345 to enter OUTPUT (Processing DFHDPLOY DEPLOY action)'."`;
+exports[`BundleDeployer01 should include the JOBID in an error 1`] = `"Failure occurred submitting DFHDPLOY JCL for JOBID JOB12345: 'Injected submit error'. Most recent status update: 'Running DFHDPLOY (DEPLOY), job JOB12345'."`;
 
 exports[`BundleDeployer01 should support long bundledir 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
@@ -392,6 +392,26 @@ DEPLOY BUNDLE(12345678)
        SCOPE(12345678)
        STATE(ENABLED)
        RESGROUP(12345678);
+/*
+"
+`;
+
+exports[`BundleDeployer01 should support long description 1`] = `
+"//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
+//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
+//STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
+//         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
+//SYSTSPRT DD SYSOUT=*
+//SYSIN    DD *
+*
+SET CICSPLEX(12345678);
+*
+DEPLOY BUNDLE(12345678)
+       BUNDLEDIR(1234567890)
+       DESCRIPTION(1234567890123456789012345678901234567890123456789012
+        345678)
+       SCOPE(12345678)
+       STATE(ENABLED)
 /*
 "
 `;
