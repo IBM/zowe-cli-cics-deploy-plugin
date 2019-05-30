@@ -69,11 +69,11 @@ def UNIT_RESULTS = "${TEST_RESULTS_FOLDER}/unit"
  */
 def MASTER_BRANCH = "master"
 
-
 /**
- * A command to be run that gets the current revision pulled down
+ * Variables to check any new commit since the previous successful commit
  */
-def GIT_REVISION_LOOKUP = 'git log -n 1 --pretty=format:%h'
+def GIT_COMMIT = "null"
+def GIT_PREVIOUS_SUCCESSFUL_COMMIT = "null"
 
 /**
  * This is the product name used by the build machine to store information about
@@ -130,8 +130,13 @@ pipeline {
         stage("Clean workspace and checkout source") {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
-                    cleanWs()
-                    checkout scm
+                    script {
+                        cleanWs()
+                        scmInfo = checkout scm
+
+                        GIT_COMMIT = scmInfo.GIT_COMMIT
+                        GIT_PREVIOUS_SUCCESSFUL_COMMIT = scmInfo.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+                    }
                 }
             }
         } 
@@ -164,12 +169,6 @@ pipeline {
             steps {
                 timeout(time: 2, unit: 'MINUTES') {
                     script {
-                        // We need to keep track of the current commit revision. This is to prevent the condition where
-                        // the build starts on master and another branch gets merged to master prior to version bump
-                        // commit taking place. If left unhandled, the version bump could be done on latest master branch
-                        // code which would already be ahead of this build.
-                        BUILD_REVISION = sh returnStdout: true, script: GIT_REVISION_LOOKUP
-
                         // This checks for the [ci skip] text. If found, the status code is 0
                         def result = sh returnStatus: true, script: 'git log -1 | grep \'.*\\[ci skip\\].*\''
                         if (result == 0) {
@@ -542,6 +541,9 @@ pipeline {
                     expression {
                         return BRANCH_NAME == MASTER_BRANCH
                     }
+                    expression {
+                        return GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT
+                    }
                 }
             }
             steps {
@@ -591,7 +593,10 @@ pipeline {
                         return PIPELINE_CONTROL.deploy
                     }
                     expression {
-                       return BRANCH_NAME == MASTER_BRANCH
+                        return BRANCH_NAME == MASTER_BRANCH
+                    }
+                    expression {
+                        return GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT
                     }
                 }
             }
@@ -622,7 +627,6 @@ pipeline {
                 }
             }
         }
-        
     }
     post {
         unsuccessful {
