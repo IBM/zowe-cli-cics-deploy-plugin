@@ -700,7 +700,6 @@ export class BundlePusher {
   }
 
   private async gatherNodejsDiagnosticsFromCics(cicsSession: AbstractSession): Promise<boolean> {
-    // Issue a CMCI get to the target CICSplex
     try {
       // Process each NODEJSAPP in the Scope
       this.updateStatus("Querying NODEJSAPP resources over CMCI");
