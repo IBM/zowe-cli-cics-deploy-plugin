@@ -129,7 +129,7 @@ export class BundlePusher {
     await this.runAllNpmInstalls(sshSession, packageJsonFiles);
 
     // Run DFHDPLOY to install the bundle
-    await this.deployBundle(zosMFSession, bd, cicsSession);
+    await this.deployBundle(zosMFSession, bd, cicsSession, bundle);
 
     // Complete the progress bar
     this.progressBar.percentComplete = TaskProgress.ONE_HUNDRED_PERCENT;
@@ -340,7 +340,7 @@ export class BundlePusher {
     this.startProgressBar();
   }
 
-  private async deployBundle(zosMFSession: AbstractSession, bd: BundleDeployer, cicsSession: AbstractSession) {
+  private async deployBundle(zosMFSession: AbstractSession, bd: BundleDeployer, cicsSession: AbstractSession, bundle: Bundle) {
     // End the current progress bar so that DEPLOY can create its own
     this.updateStatus("Deploying bundle '" + this.params.arguments.name + "' to CICS");
     this.endProgressBar();
@@ -369,9 +369,9 @@ export class BundlePusher {
 
     // Collect general information about the regions in the CICSplex scope
     const diagnosticsWorking = await this.outputGeneralDiagnostics(cicsSession);
-    if (diagnosticsWorking) {
+    if (diagnosticsWorking && bundle.containsDefinitionsOfType("http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP")) {
       // Generate additional diagnostic output for Node.js
-      await this.outputNodejsSpecificDiagnostics(cicsSession, dfhdployOutput);
+      await this.outputNodejsSpecificDiagnostics(cicsSession);
     }
 
     // Now rethrow the original error, if there was one.
@@ -635,32 +635,29 @@ export class BundlePusher {
     return scopeFound;
   }
 
-  private async outputNodejsSpecificDiagnostics(cicsSession: AbstractSession, dfhdployOutput: string) {
-    // Did the Bundle contents include a NODEJSAPP?
-    if (dfhdployOutput.indexOf("http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP") > -1) {
-      let diagnosticsIssued = false;
-      try {
-        // Attempt to gather additional Node.js specific information from CICS
-        this.updateStatus("Gathering Node.js diagnostics");
-        diagnosticsIssued = await this.gatherNodejsDiagnosticsFromCics(cicsSession);
+  private async outputNodejsSpecificDiagnostics(cicsSession: AbstractSession) {
+    let diagnosticsIssued = false;
+    try {
+      // Attempt to gather additional Node.js specific information from CICS
+      this.updateStatus("Gathering Node.js diagnostics");
+      diagnosticsIssued = await this.gatherNodejsDiagnosticsFromCics(cicsSession);
+    }
+    catch (diagnosticsError) {
+      // Something went wrong generating diagnostic info. Don't trouble the user
+      // with what might be an exotic error message (e.g. hex dump of an entire HTML page),
+      // just log the failure.
+      if (this.params.arguments.silent === undefined) {
+        const logger = Logger.getAppLogger();
+        logger.debug(diagnosticsError.message);
       }
-      catch (diagnosticsError) {
-        // Something went wrong generating diagnostic info. Don't trouble the user
-        // with what might be an exotic error message (e.g. hex dump of an entire HTML page),
-        // just log the failure.
-        if (this.params.arguments.silent === undefined) {
-          const logger = Logger.getAppLogger();
-          logger.debug(diagnosticsError.message);
-        }
-      }
+    }
 
-      // We must have a cics profile in order to have got this far, so suggest a command that can be run to figure out more.
-      if (diagnosticsIssued === false) {
-        const msg = "For further information on the state of your NODEJSAPP resources, consider running the following command:\n\n" +
-              "zowe cics get resource CICSNodejsapp --region-name " + this.params.arguments.scope +
-              " --criteria \"BUNDLE=" + this.params.arguments.name + "\" --cics-plex " + this.params.arguments.cicsplex + "\n";
-        this.issueMessage(msg);
-      }
+    // We must have a cics profile in order to have got this far, so suggest a command that can be run to figure out more.
+    if (diagnosticsIssued === false) {
+      const msg = "For further information on the state of your NODEJSAPP resources, consider running the following command:\n\n" +
+            "zowe cics get resource CICSNodejsapp --region-name " + this.params.arguments.scope +
+            " --criteria \"BUNDLE=" + this.params.arguments.name + "\" --cics-plex " + this.params.arguments.cicsplex + "\n";
+      this.issueMessage(msg);
     }
   }
 
