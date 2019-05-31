@@ -114,8 +114,8 @@ describe("BundlePusher01", () => {
         lstatSpy = jest.spyOn(fs, "lstatSync").mockImplementation(() => ( IS_NOT_DIRECTORY ));
         cmciSpy = jest.spyOn(cmci, "getResource").mockImplementation(() => ({ response: { records: {} } }));
         consoleText = "";
-        zosmfProfile = {};
-        sshProfile = {};
+        zosmfProfile = { host: "testhost", user: "testuser" };
+        sshProfile = { host: "testhost", user: "testuser" };
         cicsProfile = undefined;
     });
     afterEach(() => {
@@ -210,29 +210,27 @@ describe("BundlePusher01", () => {
         expect(sshSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain with mismatching zOSMF and SSH profile host names", async () => {
-        zosmfProfile = { host: "wibble" };
-        sshProfile = { host: "wobble" };
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wobble", user: "user" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed.");
         expect(consoleText).toContain("WARNING: ssh profile --host value 'wobble' does not match zosmf value 'wibble'.");
     });
     it("should not complain with matching zOSMF and SSH profile host names", async () => {
-        zosmfProfile = { host: "wibble" };
-        sshProfile = { host: "wibble" };
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wibble", user: "user" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed.");
         expect(consoleText).not.toContain("WARNING: ssh profile");
     });
     it("should complain with mismatching zOSMF and CICS profile host names", async () => {
-        zosmfProfile = { host: "wibble" };
-        sshProfile = { host: "wibble" };
-        cicsProfile = { host: "wobble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
+        cicsProfile = { host: "wibble", user: "testuser", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed.");
-        expect(consoleText).toContain("WARNING: cics profile --host value 'wobble' does not match zosmf value 'wibble'.");
+        expect(consoleText).toContain("WARNING: cics profile --host value 'wibble' does not match zosmf value 'testhost'.");
     });
     it("should not complain with matching zOSMF and CICS profile host names", async () => {
         zosmfProfile = { host: "wibble", user: "user" };
@@ -254,6 +252,14 @@ describe("BundlePusher01", () => {
     it("should not complain with matching zOSMF and SSH profile user names", async () => {
         zosmfProfile = { host: "wibble", user: "fred" };
         sshProfile = { host: "wibble", user: "fred" };
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed.");
+        expect(consoleText).not.toContain("WARNING: ssh profile");
+    });
+    it("should not complain with matching zOSMF and SSH profile user names - case", async () => {
+        zosmfProfile = { host: "wibble", user: "fred" };
+        sshProfile = { host: "wibble", user: "FRED" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed.");
@@ -819,7 +825,7 @@ describe("BundlePusher01", () => {
         submitSpy.mockImplementationOnce(() => { throw new Error("Injected deploy error"); });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "Failure occurred submitting DFHDPLOY JCL for JOBID UNKNOWN: 'Injected deploy error'. " +
+              "Failure occurred submitting DFHDPLOY JCL for jobid UNKNOWN: 'Injected deploy error'. " +
               "Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'.");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -1043,6 +1049,13 @@ describe("BundlePusher01", () => {
         zosmfProfile = { host: "wibble", user: "user" };
         sshProfile = { host: "wibble", user: "user" };
         cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678" };
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
+                   "<define name=\"test\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/WIBBLE\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "</manifest>";
+          }
+        });
         cmciSpy.mockImplementation((cicsSession: any, regionData: cmci.IResourceParms) => {
           if (regionData.name === "CICSRegion") {
             return { response: {
@@ -1112,7 +1125,14 @@ describe("BundlePusher01", () => {
         sshProfile = { host: "wibble", user: "user" };
         cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
-                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2055I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2055I"}] );
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
+                   "<define name=\"test\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "</manifest>";
+          }
+        });
         cmciSpy.mockImplementation((cicsSession: any, regionData: cmci.IResourceParms) => {
           if (regionData.name === "CICSRegion") {
             return { response: {
@@ -1133,7 +1153,7 @@ describe("BundlePusher01", () => {
         parms.arguments.verbose = true;
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "DFHDPLOY stopped processing for JOBID UNKNOWN due to an error.", parms);
+              "DFHDPLOY stopped processing for jobid UNKNOWN due to an error.", parms);
 
         expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Accessing contents of remote bundle directory");
@@ -1186,7 +1206,14 @@ describe("BundlePusher01", () => {
         sshProfile = { host: "wibble", user: "user" };
         cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
-                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
+                   "<define name=\"test\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "</manifest>";
+          }
+        });
         cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
           if (nodejsData.name === "CICSNodejsapp") {
             throw new Error("Injected CMCI GET error");
@@ -1226,7 +1253,14 @@ describe("BundlePusher01", () => {
         sshProfile = { host: "wibble", user: "user" };
         cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
-                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
+                   "<define name=\"test\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "</manifest>";
+          }
+        });
         cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
           if (nodejsData.name === "CICSNodejsapp") {
             return {};
@@ -1266,7 +1300,14 @@ describe("BundlePusher01", () => {
         sshProfile = { host: "wibble", user: "user" };
         cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
-                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
+                   "<define name=\"name\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "</manifest>";
+          }
+        });
         cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
           if (nodejsData.name === "CICSNodejsapp") {
             return { response: {
@@ -1318,7 +1359,14 @@ describe("BundlePusher01", () => {
         sshProfile = { host: "wibble", user: "user" };
         cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
-                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
+                   "<define name=\"name\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "</manifest>";
+          }
+        });
         cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
           if (nodejsData.name === "CICSNodejsapp") {
             return { response: {
@@ -1370,7 +1418,15 @@ describe("BundlePusher01", () => {
         sshProfile = { host: "wibble", user: "user" };
         cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
-                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
+                   "<define name=\"name\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "<define name=\"name2\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "</manifest>";
+          }
+        });
         cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
           if (nodejsData.name === "CICSNodejsapp") {
             return { response: {

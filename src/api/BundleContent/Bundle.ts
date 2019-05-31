@@ -127,6 +127,17 @@ node_modules -
   }
 
   /**
+   * Determines whether the Bundle contains any resources of the specified type
+   * @param {string} resource - The resource to query
+   * @returns {boolean}
+   * @throws ImperativeError
+   * @memberof Bundle
+   */
+  public containsDefinitionsOfType(resourceType: string): boolean {
+    return this.manifest.containsDefinitionsOfType(resourceType);
+  }
+
+  /**
    * Returns the Bundle's identity (id) value.
    * @returns {string}
    * @throws ImperativeError
