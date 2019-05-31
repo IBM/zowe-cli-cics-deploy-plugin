@@ -16,6 +16,7 @@ import { List, ZosmfSession, SshSession, Shell, Upload, IUploadOptions, ZosFiles
 import { getResource, IResourceParms } from "@zowe/cics";
 import { BundleDeployer } from "../BundleDeploy/BundleDeployer";
 import { Bundle } from "../BundleContent/Bundle";
+import { SubtaskWithStatus } from "./SubtaskWithStatus";
 
 
 /**
@@ -327,11 +328,11 @@ export class BundlePusher {
   private async undeployExistingBundle(zosMFSession: AbstractSession, bd: BundleDeployer) {
     // End the current progress bar so that UNDEPLOY can create its own
     this.updateStatus("Undeploying bundle '" + this.params.arguments.name + "' from CICS");
-    this.endProgressBar();
 
     const targetstateLocal = this.params.arguments.targetstate;
     this.params.arguments.targetstate = "DISCARDED";
-    await bd.undeployBundle(zosMFSession);
+    const subtask = new SubtaskWithStatus(this.progressBar, TaskProgress.THIRTY_PERCENT);
+    await bd.undeployBundle(zosMFSession, subtask);
     this.params.arguments.targetstate = targetstateLocal;
 
     // Resume the current progress bar
@@ -343,12 +344,12 @@ export class BundlePusher {
   private async deployBundle(zosMFSession: AbstractSession, bd: BundleDeployer, cicsSession: AbstractSession, bundle: Bundle) {
     // End the current progress bar so that DEPLOY can create its own
     this.updateStatus("Deploying bundle '" + this.params.arguments.name + "' to CICS");
-    this.endProgressBar();
+    const subtask = new SubtaskWithStatus(this.progressBar, TaskProgress.THIRTY_PERCENT);
 
     let deployError: Error;
     let dfhdployOutput = "";
     try {
-      await bd.deployBundle(zosMFSession);
+      await bd.deployBundle(zosMFSession, subtask);
     }
     catch (error) {
       // temporarily ignore the error as we might want to generate additional resource
@@ -520,6 +521,7 @@ export class BundlePusher {
 
     const uploadOptions: IUploadOptions = { recursive: true };
     uploadOptions.attributes = this.findZosAttributes();
+    uploadOptions.task = new SubtaskWithStatus(this.progressBar, TaskProgress.TEN_PERCENT);
 
     try {
       await Upload.dirToUSSDirRecursive(zosMFSession, this.localDirectory, this.params.arguments.bundledir, uploadOptions);
@@ -548,10 +550,9 @@ export class BundlePusher {
     return new ZosFilesAttributes(Bundle.getTemplateZosAttributesFile());
   }
 
-  private updateStatus(status: string) {
-    const PERCENT5 = 5;
+  private updateStatus(status: string, percentageIncrease = 3) {
     const MAX_PROGRESS_BAR_MESSAGE = 60;
-    this.progressBar.percentComplete += PERCENT5;
+    this.progressBar.percentComplete += percentageIncrease;
 
     if (status.length > MAX_PROGRESS_BAR_MESSAGE)
     {
