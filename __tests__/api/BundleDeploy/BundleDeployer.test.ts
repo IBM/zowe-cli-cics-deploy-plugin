@@ -10,9 +10,9 @@
 */
 
 import { BundleDeployer } from "../../../src/api/BundleDeploy/BundleDeployer";
-import { IHandlerParameters, TaskStage } from "@zowe/imperative";
+import { IHandlerParameters, TaskStage } from "@brightside/imperative";
 import * as DeployBundleDefinition from "../../../src/cli/deploy/bundle/DeployBundle.definition";
-import { ZosmfSession, SubmitJobs, List } from "@zowe/cli";
+import { ZosmfSession, SubmitJobs, List } from "@brightside/core";
 
 
 const DEFAULT_PARAMTERS: IHandlerParameters = {

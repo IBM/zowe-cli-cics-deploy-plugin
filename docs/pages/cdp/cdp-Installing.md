@@ -21,7 +21,7 @@ toc: false
 2. Install [Zowe CLI](https://zowe.github.io/docs-site/latest/user-guide/cli-installcli.html). For example, to install using npm:
 
     ```console
-    npm install -g @zowe/cli@latest
+    sudo npm install -g @brightside/core
     ```
 
 3. Build and install the cics-deploy plug-in as described in [Setting up your development environment](https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/tutorials/Setup.md). For example:

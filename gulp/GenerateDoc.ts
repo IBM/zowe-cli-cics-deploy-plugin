@@ -12,7 +12,7 @@
 
 import { ITaskFunction } from "./GulpHelpers";
 import * as util from "util";
-import { DefaultHelpGenerator, Imperative, ImperativeConfig, ICommandDefinition } from "@zowe/imperative";
+import { DefaultHelpGenerator, Imperative, ImperativeConfig, ICommandDefinition } from "@brightside/imperative";
 
 const gutil = require("gulp-util");
 const fs = require("fs");

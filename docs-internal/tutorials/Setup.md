@@ -7,7 +7,7 @@ You'll need to install the @latest branch of Zowe CLI to develop for the cics-de
 
 ```
 npm config set @zowe:registry https://api.bintray.com/npm/ca/brightside
-npm install -g @zowe/cli@latest
+npm install -g @brightside/core@latest
 ```
 
 ## Initial setup 

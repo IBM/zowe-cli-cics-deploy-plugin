@@ -10,7 +10,7 @@
 */
 
 import { AutoBundler } from "../../../src/api/BundleContent/AutoBundler";
-import { IHandlerParameters } from "@zowe/imperative";
+import { IHandlerParameters } from "@brightside/imperative";
 import * as GenerateBundleDefinition from "../../../src/cli/generate/bundle/GenerateBundle.definition";
 import * as fse from "fs-extra";
 

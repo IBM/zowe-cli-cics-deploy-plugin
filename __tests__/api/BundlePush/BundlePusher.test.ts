@@ -10,12 +10,12 @@
 */
 
 import { BundlePusher } from "../../../src/api/BundlePush/BundlePusher";
-import { IHandlerParameters, ImperativeError, IImperativeError, IProfile, Session } from "@zowe/imperative";
+import { IHandlerParameters, ImperativeError, IImperativeError, IProfile, Session } from "@brightside/imperative";
 import * as cmci from "@zowe/cics";
 import * as PushBundleDefinition from "../../../src/cli/push/bundle/PushBundle.definition";
 import * as fse from "fs-extra";
 import * as fs from "fs";
-import { ZosmfSession, SshSession, SubmitJobs, Shell, List, Upload, Create } from "@zowe/cli";
+import { ZosmfSession, SshSession, SubmitJobs, Shell, List, Upload, Create } from "@brightside/core";
 
 const DEFAULT_PARAMTERS: IHandlerParameters = {
     arguments: {

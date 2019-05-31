@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandDefinition } from "@zowe/imperative";
+import { ICommandDefinition } from "@brightside/imperative";
 import { PushBundleDefinition } from "./bundle/PushBundle.definition";
 /**
  * Imperative command to "push" a Bundle, etc.
