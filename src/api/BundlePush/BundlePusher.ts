@@ -328,7 +328,6 @@ export class BundlePusher {
   private async undeployExistingBundle(zosMFSession: AbstractSession, bd: BundleDeployer) {
     // End the current progress bar so that UNDEPLOY can create its own
     this.updateStatus("Undeploying bundle '" + this.params.arguments.name + "' from CICS");
-    this.endProgressBar();
 
     const targetstateLocal = this.params.arguments.targetstate;
     this.params.arguments.targetstate = "DISCARDED";
@@ -350,7 +349,7 @@ export class BundlePusher {
     let deployError: Error;
     let dfhdployOutput = "";
     try {
-      await bd.deployBundle(zosMFSession,subtask);
+      await bd.deployBundle(zosMFSession, subtask);
     }
     catch (error) {
       // temporarily ignore the error as we might want to generate additional resource

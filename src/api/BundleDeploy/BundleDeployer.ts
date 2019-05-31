@@ -271,7 +271,7 @@ export class BundleDeployer {
 
   private updateProgressBar(action: string) {
     // Increment the progress bar. This will refresh what the user sees on the console.
-    this.progressBar.percentComplete += this.PROGRESS_BAR_INCREMENT;
+    this.progressBar.percentComplete = this.progressBar.percentComplete + this.PROGRESS_BAR_INCREMENT;
 
     // Have a look at the status message for the progress bar, has it been updated with
     // the jobid yet? If so, parse it out and refresh the message.

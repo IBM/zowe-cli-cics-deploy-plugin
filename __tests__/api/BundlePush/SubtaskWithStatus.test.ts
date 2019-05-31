@@ -76,4 +76,26 @@ describe("SubtaskWithStatus", () => {
         subTask.percentComplete = 50;
         expect(subTask.percentComplete).toEqual(50);
     });
+
+    it("should allow really small increments", () => {
+        const subTask = new SubtaskWithStatus(parentTask, 40);
+        subTask.percentComplete = 50;
+        for (let i = 0; i < 40; i++) {
+            subTask.percentComplete += 0.25;
+        }
+        expect(parentTask.percentComplete).toBeCloseTo(24);
+
+    });
+
+    it("should return subtask stage", () => {
+        const subTask = new SubtaskWithStatus(parentTask, 40);
+        subTask.stageName = TaskStage.IN_PROGRESS;
+        expect(subTask.stageName).toEqual(TaskStage.IN_PROGRESS);
+    });
+
+    it("should return subtask status message", () => {
+        const subTask = new SubtaskWithStatus(parentTask, 40);
+        subTask.statusMessage = "Status";
+        expect(subTask.statusMessage).toEqual("Status");
+    });
 });

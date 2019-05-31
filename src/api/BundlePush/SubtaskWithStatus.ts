@@ -1,4 +1,4 @@
-import { ITaskWithStatus, TaskProgress, TaskStage, ImperativeExpect, ImperativeError} from "@zowe/imperative";
+import { ITaskWithStatus, TaskProgress, TaskStage, ImperativeExpect, ImperativeError, Logger} from "@zowe/imperative";
 
 
 export class SubtaskWithStatus {
@@ -20,10 +20,18 @@ export class SubtaskWithStatus {
         this.parent.statusMessage = statusMessage;
     }
 
+    public get statusMessage() {
+        return this.parent.statusMessage;
+    }
+
     public set stageName(stageName: TaskStage) {
         if (stageName !== TaskStage.COMPLETE && stageName !== TaskStage.NOT_STARTED) {
             this.parent.stageName = stageName;
         }
+    }
+
+    public get stageName() {
+        return this.parent.stageName;
     }
 
     public set percentComplete(percentComplete: number) {
