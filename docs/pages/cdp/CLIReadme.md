@@ -189,7 +189,7 @@ required\.
 *   `--merge`  | `--me` *(boolean)*
 
 	* Enable or disable the ability to merge new resources into an existing CICS
-      bundle manifest\.
+      bundle manifest\.Requires \-\-overwrite to be specified\.
 
 ### Examples
 
