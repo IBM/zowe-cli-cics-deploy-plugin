@@ -214,7 +214,7 @@ describe("BundlePusher01", () => {
         sshProfile = { host: "wobble", user: "user" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
         expect(consoleText).toContain("WARNING: ssh profile --host value 'wobble' does not match zosmf value 'wibble'.");
     });
     it("should not complain with matching zOSMF and SSH profile host names", async () => {
@@ -222,14 +222,14 @@ describe("BundlePusher01", () => {
         sshProfile = { host: "wibble", user: "user" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
         expect(consoleText).not.toContain("WARNING: ssh profile");
     });
     it("should complain with mismatching zOSMF and CICS profile host names", async () => {
         cicsProfile = { host: "wibble", user: "testuser", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
         expect(consoleText).toContain("WARNING: cics profile --host value 'wibble' does not match zosmf value 'testhost'.");
     });
     it("should not complain with matching zOSMF and CICS profile host names", async () => {
@@ -238,7 +238,7 @@ describe("BundlePusher01", () => {
         cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
         expect(consoleText).not.toContain("WARNING: cics profile");
     });
     it("should complain with mismatching zOSMF and SSH profile user names", async () => {
@@ -246,7 +246,7 @@ describe("BundlePusher01", () => {
         sshProfile = { host: "wibble", user: "joe" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
         expect(consoleText).toContain("WARNING: ssh profile --user value 'joe' does not match zosmf value 'fred'.");
     });
     it("should not complain with matching zOSMF and SSH profile user names", async () => {
@@ -254,7 +254,7 @@ describe("BundlePusher01", () => {
         sshProfile = { host: "wibble", user: "fred" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
         expect(consoleText).not.toContain("WARNING: ssh profile");
     });
     it("should not complain with matching zOSMF and SSH profile user names - case", async () => {
@@ -262,7 +262,7 @@ describe("BundlePusher01", () => {
         sshProfile = { host: "wibble", user: "FRED" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
         expect(consoleText).not.toContain("WARNING: ssh profile");
     });
     it("should complain with mismatching zOSMF and CICS profile user names", async () => {
@@ -271,7 +271,7 @@ describe("BundlePusher01", () => {
         cicsProfile = { host: "wibble", user: "joe", password: "thisIsntReal", cicsPlex: "12345678" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
         expect(consoleText).toContain("WARNING: cics profile --user value 'joe' does not match zosmf value 'fred'.");
     });
     it("should complain with mismatching cics-deploy and CICS plex names", async () => {
@@ -280,7 +280,7 @@ describe("BundlePusher01", () => {
         cicsProfile = { host: "wibble", user: "fred", password: "thisIsntReal", cicsPlex: "wibble", regionName: "12345678" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
         expect(consoleText).toContain("WARNING: cics profile --cics-plex value 'wibble' does not match --cicsplex value '12345678'.");
     });
     it("should complain if remote bundle dir mkdir fails", async () => {
@@ -351,7 +351,7 @@ describe("BundlePusher01", () => {
           throw new ImperativeError(impError);
         });
         await runPushTest("__tests__/__resources__/ExampleBundle01",  false,
-              "PUSH operation completed.");
+              "PUSH operation completed");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -439,7 +439,7 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -457,7 +457,7 @@ describe("BundlePusher01", () => {
         shellSpy.mockImplementationOnce(() => { throw new Error( "Injected Shell error from npm uninstall" ); });
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -489,7 +489,7 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -600,7 +600,7 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
 
         expect(consoleText).not.toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied.");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -615,7 +615,7 @@ describe("BundlePusher01", () => {
     });
     it("should use a default zosattribs file", async () => {
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
 
         expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied.");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -841,7 +841,7 @@ describe("BundlePusher01", () => {
     });
     it("should run to completion", async () => {
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.");
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -866,7 +866,7 @@ describe("BundlePusher01", () => {
           return [ "package.json" ];
         });
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.", parms);
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed", parms);
 
         expect(consoleText).toContain("Making remote bundle directory '/u/escapedDirName/12345678'");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -913,7 +913,7 @@ describe("BundlePusher01", () => {
           return IS_NOT_DIRECTORY;
         });
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.", parms);
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed", parms);
 
         expect(consoleText).toContain("Running 'npm install' in '/u/escapedDirName/12345678/XXXDIRXXX'");
         expect(consoleText).toContain("Running 'npm install' in '/u/escapedDirName/12345678/XXXDIRXXX/ZZZDIRZZZ'");
@@ -942,7 +942,7 @@ describe("BundlePusher01", () => {
           return [ "package.json" ];
         });
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.", parms);
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed", parms);
 
         expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Accessing contents of remote bundle directory");
@@ -977,7 +977,7 @@ describe("BundlePusher01", () => {
           return [ "package.json" ];
         });
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", true, "PUSH operation completed.", parms);
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true, "PUSH operation completed", parms);
 
         expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Accessing contents of remote bundle directory");
@@ -1010,7 +1010,7 @@ describe("BundlePusher01", () => {
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.");
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -1031,7 +1031,7 @@ describe("BundlePusher01", () => {
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.");
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -1072,9 +1072,9 @@ describe("BundlePusher01", () => {
           }
         });
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.");
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
-        expect(consoleText).toContain("CICS Regions in Scope '12345678' of CICSplex '12345678':");
+        expect(consoleText).toContain("Regions in scope '12345678' of CICSplex '12345678':");
         expect(consoleText).toContain("Applid: ABCDEFG    jobname: MYCICS     jobid: JOB12345");
         expect(consoleText).not.toContain("NODEJSAPP");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -1098,7 +1098,7 @@ describe("BundlePusher01", () => {
         const parms = getCommonParmsForPushTests();
         parms.arguments.verbose = true;
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.", parms);
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed", parms);
 
         expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Accessing contents of remote bundle directory");
@@ -1106,8 +1106,8 @@ describe("BundlePusher01", () => {
         expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied");
         expect(consoleText).toContain("Deploying bundle '12345678' to CICS");
         expect(consoleText).toContain("Deploy complete");
-        expect(consoleText).toContain("Gathering Scope information");
-        expect(consoleText).toContain("Querying Regions in Scope over CMCI");
+        expect(consoleText).toContain("Gathering scope information");
+        expect(consoleText).toContain("Querying regions in scope over CMCI");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);
@@ -1161,9 +1161,9 @@ describe("BundlePusher01", () => {
         expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied");
         expect(consoleText).toContain("Deploying bundle '12345678' to CICS");
         expect(consoleText).toContain("Deploy ended with errors");
-        expect(consoleText).toContain("Gathering Scope information");
-        expect(consoleText).toContain("Querying Regions in Scope over CMCI");
-        expect(consoleText).toContain("CICS Regions in Scope '12345678' of CICSplex '12345678':");
+        expect(consoleText).toContain("Gathering scope information");
+        expect(consoleText).toContain("Querying regions in scope over CMCI");
+        expect(consoleText).toContain("Regions in scope '12345678' of CICSplex '12345678':");
         expect(consoleText).toContain("Applid: ABCDEFG    jobname: MYCICS     jobid: JOB12345");
         expect(consoleText).toContain("Querying NODEJSAPP resources over CMCI");
         expect(consoleText).toContain("zowe cics get resource CICSNodejsapp --region-name 12345678 --criteria \"BUNDLE=12345678\" --cics-plex 12345678");
@@ -1187,7 +1187,7 @@ describe("BundlePusher01", () => {
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
         cmciSpy.mockImplementationOnce(() => { throw new Error("Injected CMCI GET error"); });
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.");
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -1233,7 +1233,7 @@ describe("BundlePusher01", () => {
           }
         });
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.");
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
         expect(consoleText).toContain("zowe cics get resource CICSNodejsapp --region-name 12345678 --criteria \"BUNDLE=12345678\" --cics-plex 12345678");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -1280,7 +1280,7 @@ describe("BundlePusher01", () => {
           }
         });
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.");
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
         expect(consoleText).toContain("zowe cics get resource CICSNodejsapp --region-name 12345678 --criteria \"BUNDLE=12345678\" --cics-plex 12345678");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -1334,12 +1334,12 @@ describe("BundlePusher01", () => {
           }
         });
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.");
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
-        expect(consoleText).toContain("CICS Regions in Scope '12345678' of CICSplex '12345678':");
+        expect(consoleText).toContain("Regions in scope '12345678' of CICSplex '12345678':");
         expect(consoleText).toContain("Applid: ABCDEFG    jobname: MYCICS     jobid: JOB12345");
-        expect(consoleText).toContain("NODEJSAPP resources for Bundle '12345678' in Scope '12345678':");
-        expect(consoleText).toContain("CICS NODEJSAPP resource 'name' is in 'ENABLED' state in region '1' with process id '22'");
+        expect(consoleText).toContain("NODEJSAPP resources for bundle '12345678' in scope '12345678':");
+        expect(consoleText).toContain("NODEJSAPP resource 'name' is in 'ENABLED' state in region '1' with process id '22'");
         expect(consoleText).toContain("stdout: /tmp/stdout");
         expect(consoleText).toContain("stderr: /tmp/stderr");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -1393,12 +1393,12 @@ describe("BundlePusher01", () => {
           }
         });
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.");
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
-        expect(consoleText).toContain("CICS Regions in Scope '12345678' of CICSplex '12345678':");
+        expect(consoleText).toContain("Regions in scope '12345678' of CICSplex '12345678':");
         expect(consoleText).toContain("Applid: ABCD       jobname: MYCICS     jobid: JOB12345");
-        expect(consoleText).toContain("NODEJSAPP resources for Bundle '12345678' in Scope '12345678':");
-        expect(consoleText).toContain("CICS NODEJSAPP resource 'name' is in 'DISABLED' state in region '1' with process id '0'.");
+        expect(consoleText).toContain("NODEJSAPP resources for bundle '12345678' in scope '12345678':");
+        expect(consoleText).toContain("NODEJSAPP resource 'name' is in 'DISABLED' state in region '1' with process id '0'.");
         expect(consoleText).toContain("stdout: <not available>");
         expect(consoleText).toContain("stderr: <not available>");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -1463,16 +1463,16 @@ describe("BundlePusher01", () => {
           }
         });
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.");
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
-        expect(consoleText).toContain("CICS Regions in Scope '12345678' of CICSplex '12345678':");
+        expect(consoleText).toContain("Regions in scope '12345678' of CICSplex '12345678':");
         expect(consoleText).toContain("Applid: ABCD       jobname: MYCICS     jobid: JOB12345");
         expect(consoleText).toContain("Applid: EFGHIHJK   jobname: MYCICS2    jobid: JOB54321");
-        expect(consoleText).toContain("NODEJSAPP resources for Bundle '12345678' in Scope '12345678':");
-        expect(consoleText).toContain("CICS NODEJSAPP resource 'name' is in 'ENABLED' state in region '1' with process id '22'.");
+        expect(consoleText).toContain("NODEJSAPP resources for bundle '12345678' in scope '12345678':");
+        expect(consoleText).toContain("NODEJSAPP resource 'name' is in 'ENABLED' state in region '1' with process id '22'.");
         expect(consoleText).toContain("stdout: /tmp/stdout");
         expect(consoleText).toContain("stderr: /tmp/stderr");
-        expect(consoleText).toContain("CICS NODEJSAPP resource 'name2' is in 'ENABLED' state in region '1' with process id '33'.");
+        expect(consoleText).toContain("NODEJSAPP resource 'name2' is in 'ENABLED' state in region '1' with process id '33'.");
         expect(consoleText).toContain("stdout: /tmp/name2out");
         expect(consoleText).toContain("stderr: /tmp/name2err");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);

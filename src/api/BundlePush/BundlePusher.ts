@@ -138,7 +138,7 @@ export class BundlePusher {
     this.endProgressBar();
 
     this.issueMessage(deployMessages);
-    return "PUSH operation completed.";
+    return "PUSH operation completed";
   }
 
   private validateParameters() {
@@ -628,7 +628,7 @@ export class BundlePusher {
     try {
       if (cicsSession !== undefined) {
         // Attempt to gather additional Node.js specific information from CICS
-        this.updateStatus("Gathering Scope information");
+        this.updateStatus("Gathering scope information");
         msgBuffer = await this.gatherGeneralDiagnosticsFromCics(cicsSession);
       }
     }
@@ -674,7 +674,7 @@ export class BundlePusher {
   private async gatherGeneralDiagnosticsFromCics(cicsSession: AbstractSession): Promise<string> {
     // Issue a CMCI get to the target CICSplex
     try {
-      this.updateStatus("Querying Regions in Scope over CMCI");
+      this.updateStatus("Querying regions in scope over CMCI");
       const regionData: IResourceParms = { name: "CICSRegion",
                                            regionName: this.params.arguments.scope,
                                            cicsPlex: this.params.arguments.cicsplex };
@@ -686,7 +686,7 @@ export class BundlePusher {
         throw new Error("CICSRegion CMCI output record not found.");
       }
       const outputRegionRecords = cmciRegionResponse.response.records.cicsregion;
-      let msgBuffer = "CICS Regions in Scope '" + this.params.arguments.scope + "' of CICSplex '" + this.params.arguments.cicsplex + "':\n";
+      let msgBuffer = "Regions in scope '" + this.params.arguments.scope + "' of CICSplex '" + this.params.arguments.cicsplex + "':\n";
 
       // We may have an array of records if there was more than one Region in the scope
       if (Array.isArray(outputRegionRecords)) {
@@ -721,7 +721,7 @@ export class BundlePusher {
       }
       const outputNodejsRecords = cmciNodejsResponse.response.records.cicsnodejsapp;
 
-      let msgBuffer = "\nNODEJSAPP resources for Bundle '" + this.params.arguments.name + "' in Scope '" + this.params.arguments.scope + "':\n";
+      let msgBuffer = "\nNODEJSAPP resources for bundle '" + this.params.arguments.name + "' in scope '" + this.params.arguments.scope + "':\n";
 
       // We may have an array of records if there was more than one NODEJSAPP in the bundle
       if (Array.isArray(outputNodejsRecords)) {
@@ -763,7 +763,7 @@ export class BundlePusher {
       stderr = "<not available>";
     }
 
-    return msgBuffer + "CICS NODEJSAPP resource '" + name + "' is in '" + enablestatus + "' state in region '" +
+    return msgBuffer + "NODEJSAPP resource '" + name + "' is in '" + enablestatus + "' state in region '" +
            region + "' with process id '" + pid + "'.\n" +
            "  stdout: " + stdout + "\n" +
            "  stderr: " + stderr + "\n";
