@@ -14,17 +14,6 @@
 //System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "")
 
 /**
- * Release branches
- */
-def RELEASE_BRANCHES = ["master"]
-
-/** 
- * Branches to send notifcations for
-*/
-def NOTIFY_BRANCHES = ["master"]
-
-
-/**
  * The following flags are switches to control which stages of the pipeline to be run.  This is helpful when 
  * testing a specific stage of the pipeline.
  */
@@ -70,6 +59,22 @@ def SYSTEM_RESULTS = "${TEST_RESULTS_FOLDER}/system"
 def MASTER_BRANCH = "master"
 
 /**
+ * The name of the dev branch
+ */
+def DEV_BRANCH = "dev"
+
+/**
+ * Release branches
+ */
+def RELEASE_BRANCHES = [MASTER_BRANCH, DEV_BRANCH]
+
+/** 
+ * Branches to send notifcations for
+*/
+def NOTIFY_BRANCHES = [MASTER_BRANCH, DEV_BRANCH]
+
+
+/**
  * Variables to check any new commit since the previous successful commit
  */
 def GIT_COMMIT = "null"
@@ -94,7 +99,7 @@ def opts = []
 
 // Setup a schedule to run build periodically
 // Run a build at 2.00AM everyday
-def CRON_STRING = BRANCH_NAME == MASTER_BRANCH ? "H 2 * * *" : ""
+def CRON_STRING = RELEASE_BRANCHES.contains(BRANCH_NAME) ? "H 2 * * *" : ""
 
 if (RELEASE_BRANCHES.contains(BRANCH_NAME)) {
     // Only keep 20 builds
@@ -547,7 +552,7 @@ pipeline {
                         return PIPELINE_CONTROL.deploy
                     }
                     expression {
-                        return BRANCH_NAME == MASTER_BRANCH
+                        return RELEASE_BRANCHES.contains(BRANCH_NAME)
                     }
                     expression {
                         return GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT
@@ -601,7 +606,7 @@ pipeline {
                         return PIPELINE_CONTROL.deploy
                     }
                     expression {
-                        return BRANCH_NAME == MASTER_BRANCH
+                        return RELEASE_BRANCHES.contains(BRANCH_NAME)
                     }
                     expression {
                         return GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT
@@ -622,6 +627,9 @@ pipeline {
                         
                         script {
                             if (BRANCH_NAME == MASTER_BRANCH) {
+                                echo "publishing next to $TEST_NPM_REGISTRY"
+                                sh "npm publish --tag alpha"
+                            } else if (BRANCH_NAME == DEV_BRANCH) {
                                 echo "publishing next to $TEST_NPM_REGISTRY"
                                 sh "npm publish --tag next"
                             } else {
