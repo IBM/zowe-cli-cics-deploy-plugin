@@ -97,3 +97,34 @@ zowe profiles create cics-deploy-profile --help
 ```
 
 To test the cics-deploy profile, follow the steps in [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app).
+
+### Step 4: Create a CICS profile
+
+This profile identifies the connection to the CICS Web User Interface (WUI) server to query application resources. You need to know the following from your CICS system administrator:
+
+| Option | Description |
+| --- | --- |
+| cics-plex | CPSM CICSplex name. This will typically be set to the same as cicsplex in the cics-deploy profile. |
+| host | Host name of the CICS WUI server. |
+| port | Port number of the CICS WUI server. |
+| user | User ID to identify yourself to the CICS WUI server . |
+| password | Password to identify yourself to the CICS WUI server. |
+| protocol | Protocol HTTP or HTTPS to use to connect to the CICS WUI server. |
+
+For example, to create an SSH profile:
+
+```console
+zowe profiles create cics-profile cics --cics-plex PLEX1 --host myzos.example.com --port 1490 --user myuserid --password mypassword --protocol https --overwrite
+```
+
+For help on using the options:
+
+```console
+zowe profiles create cics-profile --help
+```
+
+To test the connection to the CICS WUI server using the profile:
+
+```console
+zowe cics get resource CICSRegion
+```
