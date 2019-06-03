@@ -8,7 +8,7 @@ permalink: cdp-Create-Zowe-CLI-profiles.html
 folder: cdp
 ---
 
-### Step 1: Create a z/OSMF profile
+### Create a z/OSMF profile
 
 This profile defines the parameters needed to connect to the z/OSMF server on z/OS. You need to know the following from your z/OS system administrator:
 
@@ -39,7 +39,7 @@ To test the connection to the z/OSMF server using the profile:
 zowe zosmf check status
 ```
 
-### Step 2: Create an SSH profile
+### Create an SSH profile
 
 This profile defines the parameters needed to connect to the SSH server on z/OS. You need to know the following from your z/OS system administrator:
 
@@ -70,7 +70,7 @@ To test the connection to the SSH server using the profile:
 zowe zos-uss issue ssh 'uname -a'
 ```
 
-### Step 3: Create a cics-deploy profile
+### Create a cics-deploy profile
 
 This profile identifies the CICS environment for deployment. You need to know the following from your CICS system administrator:
 
@@ -98,23 +98,23 @@ zowe profiles create cics-deploy-profile --help
 
 To test the cics-deploy profile, follow the steps in [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app).
 
-### Step 4: Create a CICS profile
+### Create a CICS profile
 
 This profile identifies the connection to the CICS Web User Interface (WUI) server to query application resources. You need to know the following from your CICS system administrator:
 
 | Option | Description |
 | --- | --- |
 | cics-plex | CPSM CICSplex name. This will typically be set to the same as cicsplex in the cics-deploy profile. |
+| protocol | HTTP or HTTPS to use to connect to the CICS WUI server. |
 | host | Host name of the CICS WUI server. |
 | port | Port number of the CICS WUI server. |
 | user | User ID to identify yourself to the CICS WUI server . |
 | password | Password to identify yourself to the CICS WUI server. |
-| protocol | Protocol HTTP or HTTPS to use to connect to the CICS WUI server. |
 
 For example, to create an SSH profile:
 
 ```console
-zowe profiles create cics-profile cics --cics-plex PLEX1 --host myzos.example.com --port 1490 --user myuserid --password mypassword --protocol https --overwrite
+zowe profiles create cics-profile cics --cics-plex PLEX1 --protocol https --host myzos.example.com --port 1490 --user myuserid --password mypassword --overwrite
 ```
 
 For help on using the options:
