@@ -130,14 +130,9 @@ export class BundlePusher {
     // Run 'npm install' for each package.json file that exists in the bundle
     await this.runAllNpmInstalls(sshSession, packageJsonFiles);
 
-    // Run DFHDPLOY to install the bundle
-    const deployMessages = await this.deployBundle(zosMFSession, bd, cicsSession, bundle);
+    // Run DFHDPLOY to install the bundle (note that this will end the progress bar)
+    await this.deployBundle(zosMFSession, bd, cicsSession, bundle);
 
-    // Complete the progress bar
-    this.progressBar.percentComplete = TaskProgress.ONE_HUNDRED_PERCENT;
-    this.endProgressBar();
-
-    this.issueMessage(deployMessages);
     return "PUSH operation completed";
   }
 
@@ -205,13 +200,11 @@ export class BundlePusher {
   }
 
   private issueMessage(msg: string) {
-    this.endProgressBar();
     this.params.response.console.log(Buffer.from(msg));
     if (this.params.arguments.silent === undefined) {
       const logger = Logger.getAppLogger();
       logger.warn(msg);
     }
-    this.startProgressBar();
   }
 
   private validateProfiles(zosmfProfile: IProfile, sshProfile: IProfile, cicsProfile: IProfile) {
@@ -345,7 +338,7 @@ export class BundlePusher {
   }
 
   private async deployBundle(zosMFSession: AbstractSession, bd: BundleDeployer,
-                             cicsSession: AbstractSession, bundle: Bundle): Promise<string> {
+                             cicsSession: AbstractSession, bundle: Bundle) {
     // End the current progress bar so that DEPLOY can create its own
     this.updateStatus("Deploying bundle '" + this.params.arguments.name + "' to CICS");
     const subtask = new SubtaskWithStatus(this.progressBar, TaskProgress.THIRTY_PERCENT);
@@ -362,7 +355,8 @@ export class BundlePusher {
     }
     dfhdployOutput = bd.getJobOutput();
 
-    // Resume the current progress bar
+    // End the main progress bar
+    this.progressBar.percentComplete = TaskProgress.ONE_HUNDRED_PERCENT;
     this.endProgressBar();
     if (deployError === undefined) {
       this.updateStatus("Deploy complete");
@@ -370,7 +364,6 @@ export class BundlePusher {
     else {
       this.updateStatus("Deploy ended with errors");
     }
-    this.startProgressBar();
 
     // Collect general information about the regions in the CICSplex scope
     let deployMessages = await this.generateGeneralDiagnostics(cicsSession);
@@ -379,14 +372,13 @@ export class BundlePusher {
       deployMessages += await this.generateNodejsSpecificDiagnostics(cicsSession);
     }
 
+    // Report any console messages now
+    this.issueMessage(deployMessages);
+
     // Now rethrow the original error, if there was one.
     if (deployError !== undefined) {
-      // If we're going to throw an error then report any messages now
-      this.issueMessage(deployMessages);
       throw deployError;
     }
-
-    return deployMessages;
   }
 
   private sshOutput(data: string) {
@@ -756,10 +748,10 @@ export class BundlePusher {
     let stdout = outputRecord.stdout;
     let stderr = outputRecord.stderr;
 
-    if (stdout === "") {
+    if (stdout === undefined || stdout.trim() === "") {
       stdout = "<not available>";
     }
-    if (stderr === "") {
+    if (stderr === undefined || stderr.trim() === "") {
       stderr = "<not available>";
     }
 
