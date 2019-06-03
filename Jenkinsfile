@@ -628,7 +628,7 @@ pipeline {
                         script {
                             if (BRANCH_NAME == MASTER_BRANCH) {
                                 echo "publishing next to $TEST_NPM_REGISTRY"
-                                sh "npm publish --tag next"
+                                sh "npm publish --tag alpha"
                             } else if (BRANCH_NAME == DEV_BRANCH) {
                                 echo "publishing next to $TEST_NPM_REGISTRY"
                                 sh "npm publish --tag next"
