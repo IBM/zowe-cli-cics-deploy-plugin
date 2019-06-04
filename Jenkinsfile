@@ -96,8 +96,6 @@ def opts = []
 // Run a build at 2.00AM everyday
 def CRON_STRING = BRANCH_NAME == MASTER_BRANCH ? "H 2 * * *" : ""
 
-echo BRANCH_NAME
-
 if (RELEASE_BRANCHES.contains(BRANCH_NAME)) {
     // Only keep 20 builds
     opts.push(buildDiscarder(logRotator(numToKeepStr: '20')))
