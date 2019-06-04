@@ -178,6 +178,7 @@ pipeline {
                 timeout(time: 2, unit: 'MINUTES') {
                     script {
                         // This checks for the [ci skip] text. If found, the status code is 0
+                        sh 'git log -1'
                         def result = sh returnStatus: true, script: 'git log -1 | grep \'.*\\[ci skip\\].*\''
                         if (result == 0) {
                             echo '"ci skip" spotted in the git commit. Aborting.'
