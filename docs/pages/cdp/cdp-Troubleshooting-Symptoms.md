@@ -101,5 +101,4 @@ The length must be between 1 and 8 (inclusive)
 *Suggested action*: 
 Review the error output text and reissue the original command having corrected the name of the option so that its length falls within acceptable limits. 
 
-
-
+{% include note.html content="For further troubleshooting steps, see [Troubleshooting Node.js applications](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.5.0/troubleshooting/node/node-troubleshooting.html). %}
