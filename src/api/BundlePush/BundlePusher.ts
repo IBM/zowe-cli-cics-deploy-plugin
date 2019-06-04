@@ -209,21 +209,45 @@ export class BundlePusher {
 
   private validateProfiles(zosmfProfile: IProfile, sshProfile: IProfile, cicsProfile: IProfile) {
     // Do the required profiles share the same host name?
+    let sameHostAndUser = true;
     if (zosmfProfile.host !== sshProfile.host) {
+      sameHostAndUser = false;
       this.issueWarning("ssh profile --host value '" + sshProfile.host + "' does not match zosmf value '" + zosmfProfile.host + "'.");
     }
+
     // Do the required profiles share the same user name?
     if (zosmfProfile.user.toUpperCase() !== sshProfile.user.toUpperCase()) {
+      sameHostAndUser = false;
       this.issueWarning("ssh profile --user value '" + sshProfile.user + "' does not match zosmf value '" + zosmfProfile.user + "'.");
+    }
+
+    // If the zoSMF user and host are the same then validate that the passwords are the same too.
+    // It's possible, especially over a password change, that one profile may have been updated
+    // and not the other. Attemps to use the wrong password could result in the account being revoked.
+    if (sameHostAndUser) {
+      if (sshProfile.password !== undefined) {
+        if (zosmfProfile.password !== sshProfile.password) {
+          throw new Error("Incompatible security credentials exist in the zosmf and ssh profiles.");
+        }
+      }
     }
 
     // Is the optional CICS profile compatible?
     if (cicsProfile !== undefined) {
+      sameHostAndUser = true;
       if (zosmfProfile.host !== cicsProfile.host) {
+        sameHostAndUser = false;
         this.issueWarning("cics profile --host value '" + cicsProfile.host + "' does not match zosmf value '" + zosmfProfile.host + "'.");
       }
       if (zosmfProfile.user.toUpperCase() !== cicsProfile.user.toUpperCase()) {
+        sameHostAndUser = false;
         this.issueWarning("cics profile --user value '" + cicsProfile.user + "' does not match zosmf value '" + zosmfProfile.user + "'.");
+      }
+
+      if (sameHostAndUser) {
+        if (zosmfProfile.password !== cicsProfile.password) {
+          throw new Error("Incompatible security credentials exist in the zosmf and cics profiles.");
+        }
       }
 
       // Do the cics-plexes match?
