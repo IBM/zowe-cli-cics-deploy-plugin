@@ -15,11 +15,11 @@ entries:
     - title: Requirements on z/OS
       url: cdp-Requirements.html
       output: web
-    - title: Installation
-      url: cdp-Installation.html
+    - title: Installing
+      url: cdp-Installing.html
       output: web
-    - title: Create Zowe CLI profiles
-      url: cdp-Create-Zowe-CLI-profiles.html
+    - title: Creating Zowe CLI profiles
+      url: cdp-Creating-Zowe-CLI-profiles.html
       output: web
 
   - title: Tutorials
@@ -32,8 +32,8 @@ entries:
     - title: Deploying using individual actions
       url: cdp-Deploying-using-individual-actions.html
       output: web
-    - title: Provision a CICS region with z/OS PT
-      url: cdp-Provision-a-CICS-region-using-zospt.html
+    - title: Provisioning a CICS region with z/OS PT
+      url: cdp-Provisioning-a-CICS-region-using-zospt.html
       output: web
 
   - title: Concepts
