@@ -23,4 +23,6 @@ The [z/OS Secure SHell daemon (sshd)](https://www.ibm.com/support/knowledgecente
 
 The [DFHDPLOY](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0/applications/deploying/dfhdploy_overview.html) utility is provided with IBM CICS Transaction Server (CICS) and is required to run the [`zowe cics-deploy push bundle`](cdp-CLIReadMe#push--p), [`zowe cics-deploy deploy bundle`](cdp-CLIReadMe#deploy--d--dep), and [`zowe cics-deploy undeploy bundle`](cdp-CLIReadMe#undeploy--u--udep) commands. These commands start DFHDPLOY with a script to perform deploy and undeploy operations.
 
-CICSPlex System Manager \(CPSM\) is provided with CICS and is required to run the DFHDPLOY utility. CPSM should be connected to the CICS regions into which the application is being installed.
+### CICSPlex System Manager
+
+CICSPlex System Manager \(CPSM\) is provided with CICS and is required to run the DFHDPLOY utility, and for the [`zowe cics-deploy push bundle`](cdp-CLIReadMe#push--p) to query application resources. CPSM should be connected to the CICS regions into which the application is being installed.
