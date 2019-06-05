@@ -35,7 +35,7 @@ zowe push bundle --name EXAMPLE --target-directory /u/example/bundles --zosmf-pr
 ```
 This is a much more economical and concise command-line than if were it necessary to enumerate all of the individual arguments from all of the profiles.
 
-As suggested above, to deploy a Node.js application from your workstation to one or more CICS regions, you will need to set up a minimum of three Zowe CLI profiles (optionally more if you wish to, say, deploy to multiple hosts) - you can read how to do it in detail [here](cdp-Create-Zowe-CLI-profiles).
+As suggested above, to deploy a Node.js application from your workstation to one or more CICS regions, you will need to set up a minimum of three Zowe CLI profiles (optionally more if you wish to, say, deploy to multiple hosts) - you can read how to do it in detail [here](cdp-Creating-Zowe-CLI-profiles).
 
 {% include tip.html content="For each profile type, the first profile you create becomes the default for that type. In many cases, you don't even have to type in the name of a specific profile if you know that the default profile will serve your needs." %}
 
