@@ -11,6 +11,7 @@
 
 import { BundlePusher } from "../../../src/api/BundlePush/BundlePusher";
 import { IHandlerParameters, ImperativeError, IImperativeError } from "@zowe/imperative";
+import * as cmci from "@zowe/cics";
 import * as PushBundleDefinition from "../../../src/cli/push/bundle/PushBundle.definition";
 import * as fse from "fs-extra";
 import * as fs from "fs";
@@ -29,6 +30,9 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
             }
             if (type === "ssh") {
               return sshProfile;
+            }
+            if (type === "cics") {
+              return cicsProfile;
             }
             return {};
         }
@@ -68,6 +72,7 @@ const IS_NOT_DIRECTORY: any = {
 let consoleText = "";
 let zosmfProfile = {};
 let sshProfile = {};
+let cicsProfile = {};
 
 // Initialise xml2json before mocking anything
 const parser = require("xml2json");
@@ -84,6 +89,7 @@ let readSpy = jest.spyOn(fs, "readFileSync").mockImplementation(() => ({}));
 let uploadSpy = jest.spyOn(Upload, "dirToUSSDirRecursive").mockImplementation(() => ({}));
 let readdirSpy = jest.spyOn(fs, "readdirSync").mockImplementation(() => ({}));
 let lstatSpy = jest.spyOn(fs, "lstatSync").mockImplementation(() => ({}));
+let cmciSpy = jest.spyOn(cmci, "getResource").mockImplementation(() => ({}));
 
 describe("BundlePusher01", () => {
 
@@ -106,9 +112,11 @@ describe("BundlePusher01", () => {
         uploadSpy = jest.spyOn(Upload, "dirToUSSDirRecursive").mockImplementation(() => ({}));
         readdirSpy = jest.spyOn(fs, "readdirSync").mockImplementation(() => ([]));
         lstatSpy = jest.spyOn(fs, "lstatSync").mockImplementation(() => ( IS_NOT_DIRECTORY ));
+        cmciSpy = jest.spyOn(cmci, "getResource").mockImplementation(() => ({ response: { records: {} } }));
         consoleText = "";
-        zosmfProfile = {};
-        sshProfile = {};
+        zosmfProfile = { host: "testhost", user: "testuser" };
+        sshProfile = { host: "testhost", user: "testuser" };
+        cicsProfile = undefined;
     });
     afterEach(() => {
         jest.restoreAllMocks();
@@ -202,27 +210,43 @@ describe("BundlePusher01", () => {
         expect(sshSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain with mismatching zOSMF and SSH profile host names", async () => {
-        zosmfProfile = { host: "wibble" };
-        sshProfile = { host: "wobble" };
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wobble", user: "user" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
         expect(consoleText).toContain("WARNING: ssh profile --host value 'wobble' does not match zosmf value 'wibble'.");
     });
     it("should not complain with matching zOSMF and SSH profile host names", async () => {
-        zosmfProfile = { host: "wibble" };
-        sshProfile = { host: "wibble" };
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wibble", user: "user" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
         expect(consoleText).not.toContain("WARNING: ssh profile");
+    });
+    it("should complain with mismatching zOSMF and CICS profile host names", async () => {
+        cicsProfile = { host: "wibble", user: "testuser", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed");
+        expect(consoleText).toContain("WARNING: cics profile --host value 'wibble' does not match zosmf value 'testhost'.");
+    });
+    it("should not complain with matching zOSMF and CICS profile host names", async () => {
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wibble", user: "user" };
+        cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed");
+        expect(consoleText).not.toContain("WARNING: cics profile");
     });
     it("should complain with mismatching zOSMF and SSH profile user names", async () => {
         zosmfProfile = { host: "wibble", user: "fred" };
         sshProfile = { host: "wibble", user: "joe" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
         expect(consoleText).toContain("WARNING: ssh profile --user value 'joe' does not match zosmf value 'fred'.");
     });
     it("should not complain with matching zOSMF and SSH profile user names", async () => {
@@ -230,8 +254,34 @@ describe("BundlePusher01", () => {
         sshProfile = { host: "wibble", user: "fred" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
         expect(consoleText).not.toContain("WARNING: ssh profile");
+    });
+    it("should not complain with matching zOSMF and SSH profile user names - case", async () => {
+        zosmfProfile = { host: "wibble", user: "fred" };
+        sshProfile = { host: "wibble", user: "FRED" };
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed");
+        expect(consoleText).not.toContain("WARNING: ssh profile");
+    });
+    it("should complain with mismatching zOSMF and CICS profile user names", async () => {
+        zosmfProfile = { host: "wibble", user: "fred" };
+        sshProfile = { host: "wibble", user: "fred" };
+        cicsProfile = { host: "wibble", user: "joe", password: "thisIsntReal", cicsPlex: "12345678" };
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed");
+        expect(consoleText).toContain("WARNING: cics profile --user value 'joe' does not match zosmf value 'fred'.");
+    });
+    it("should complain with mismatching cics-deploy and CICS plex names", async () => {
+        zosmfProfile = { host: "wibble", user: "fred" };
+        sshProfile = { host: "wibble", user: "fred" };
+        cicsProfile = { host: "wibble", user: "fred", password: "thisIsntReal", cicsPlex: "wibble", regionName: "12345678" };
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed");
+        expect(consoleText).toContain("WARNING: cics profile --cics-plex value 'wibble' does not match --cicsplex value '12345678'.");
     });
     it("should complain if remote bundle dir mkdir fails", async () => {
         createSpy.mockImplementationOnce(() => { throw new Error( "Injected Create error" ); });
@@ -301,7 +351,7 @@ describe("BundlePusher01", () => {
           throw new ImperativeError(impError);
         });
         await runPushTest("__tests__/__resources__/ExampleBundle01",  false,
-              "PUSH operation completed.");
+              "PUSH operation completed");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -389,7 +439,7 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -407,7 +457,7 @@ describe("BundlePusher01", () => {
         shellSpy.mockImplementationOnce(() => { throw new Error( "Injected Shell error from npm uninstall" ); });
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -439,7 +489,7 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -550,7 +600,7 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
 
         expect(consoleText).not.toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied.");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -565,7 +615,7 @@ describe("BundlePusher01", () => {
     });
     it("should use a default zosattribs file", async () => {
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
-              "PUSH operation completed.");
+              "PUSH operation completed");
 
         expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied.");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -775,7 +825,7 @@ describe("BundlePusher01", () => {
         submitSpy.mockImplementationOnce(() => { throw new Error("Injected deploy error"); });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "Failure occurred submitting DFHDPLOY JCL for JOBID UNKNOWN: 'Injected deploy error'. " +
+              "Failure occurred submitting DFHDPLOY JCL for jobid UNKNOWN: 'Injected deploy error'. " +
               "Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'.");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -791,7 +841,7 @@ describe("BundlePusher01", () => {
     });
     it("should run to completion", async () => {
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.");
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -816,7 +866,7 @@ describe("BundlePusher01", () => {
           return [ "package.json" ];
         });
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.", parms);
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed", parms);
 
         expect(consoleText).toContain("Making remote bundle directory '/u/escapedDirName/12345678'");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -863,7 +913,7 @@ describe("BundlePusher01", () => {
           return IS_NOT_DIRECTORY;
         });
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.", parms);
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed", parms);
 
         expect(consoleText).toContain("Running 'npm install' in '/u/escapedDirName/12345678/XXXDIRXXX'");
         expect(consoleText).toContain("Running 'npm install' in '/u/escapedDirName/12345678/XXXDIRXXX/ZZZDIRZZZ'");
@@ -892,7 +942,7 @@ describe("BundlePusher01", () => {
           return [ "package.json" ];
         });
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed.", parms);
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed", parms);
 
         expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Accessing contents of remote bundle directory");
@@ -914,6 +964,7 @@ describe("BundlePusher01", () => {
         expect(uploadSpy).toHaveBeenCalledTimes(1);
         expect(readdirSpy).toHaveBeenCalledTimes(1);
         expect(lstatSpy).toHaveBeenCalledTimes(1);
+        expect(cmciSpy).toHaveBeenCalledTimes(0);
     });
     it("should run to completion with --verbose and --overwrite", async () => {
         const parms = getCommonParmsForPushTests();
@@ -926,7 +977,7 @@ describe("BundlePusher01", () => {
           return [ "package.json" ];
         });
 
-        await runPushTest("__tests__/__resources__/ExampleBundle01", true, "PUSH operation completed.", parms);
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true, "PUSH operation completed", parms);
 
         expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Accessing contents of remote bundle directory");
@@ -953,6 +1004,488 @@ describe("BundlePusher01", () => {
         expect(uploadSpy).toHaveBeenCalledTimes(1);
         expect(readdirSpy).toHaveBeenCalledTimes(1);
         expect(lstatSpy).toHaveBeenCalledTimes(1);
+        expect(cmciSpy).toHaveBeenCalledTimes(0);
+    });
+    it("should cope with a NODEJSAPP in the bundle but no CICS profile specified", async () => {
+        submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
+
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(cmciSpy).toHaveBeenCalledTimes(0);
+    });
+    it("should cope with a NODEJSAPP in the bundle with a CICS profile specified", async () => {
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wibble", user: "user" };
+        cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal" };
+        submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
+
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(cmciSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should query scope even with no NODEJSAPPs", async () => {
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wibble", user: "user" };
+        cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678" };
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
+                   "<define name=\"test\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/WIBBLE\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "</manifest>";
+          }
+        });
+        cmciSpy.mockImplementation((cicsSession: any, regionData: cmci.IResourceParms) => {
+          if (regionData.name === "CICSRegion") {
+            return { response: {
+                records: {
+                  cicsregion: {
+                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS"
+                  }
+                }
+              }
+            };
+          }
+          else {
+            return {};
+          }
+        });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
+
+        expect(consoleText).toContain("Regions in scope '12345678' of CICSplex '12345678':");
+        expect(consoleText).toContain("Applid: ABCDEFG    jobname: MYCICS     jobid: JOB12345");
+        expect(consoleText).not.toContain("NODEJSAPP");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(cmciSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should cope with a NODEJSAPP in the bundle with a CICS profile specified and --verbose", async () => {
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wibble", user: "user" };
+        cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal" };
+        submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
+        const parms = getCommonParmsForPushTests();
+        parms.arguments.verbose = true;
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed", parms);
+
+        expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
+        expect(consoleText).toContain("Accessing contents of remote bundle directory");
+        expect(consoleText).toContain("Uploading bundle contents to remote directory");
+        expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied");
+        expect(consoleText).toContain("Deploying bundle '12345678' to CICS");
+        expect(consoleText).toContain("Deploy complete");
+        expect(consoleText).toContain("Gathering scope information");
+        expect(consoleText).toContain("Querying regions in scope over CMCI");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(cmciSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should generate diagnostics even if deploy fails", async () => {
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wibble", user: "user" };
+        cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal" };
+        submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2055I"}] );
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
+                   "<define name=\"test\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "</manifest>";
+          }
+        });
+        cmciSpy.mockImplementation((cicsSession: any, regionData: cmci.IResourceParms) => {
+          if (regionData.name === "CICSRegion") {
+            return { response: {
+                records: {
+                  cicsregion: {
+                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS"
+                  }
+                }
+              }
+            };
+          }
+          else {
+            return {};
+          }
+        });
+
+        const parms = getCommonParmsForPushTests();
+        parms.arguments.verbose = true;
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
+              "DFHDPLOY stopped processing for jobid UNKNOWN due to an error.", parms);
+
+        expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
+        expect(consoleText).toContain("Accessing contents of remote bundle directory");
+        expect(consoleText).toContain("Uploading bundle contents to remote directory");
+        expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied");
+        expect(consoleText).toContain("Deploying bundle '12345678' to CICS");
+        expect(consoleText).toContain("Deploy ended with errors");
+        expect(consoleText).toContain("Gathering scope information");
+        expect(consoleText).toContain("Querying regions in scope over CMCI");
+        expect(consoleText).toContain("Regions in scope '12345678' of CICSplex '12345678':");
+        expect(consoleText).toContain("Applid: ABCDEFG    jobname: MYCICS     jobid: JOB12345");
+        expect(consoleText).toContain("Querying NODEJSAPP resources over CMCI");
+        expect(consoleText).toContain("zowe cics get resource CICSNodejsapp --region-name 12345678 --criteria \"BUNDLE=12345678\" --cics-plex 12345678");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(cmciSpy).toHaveBeenCalledTimes(2);
+    });
+    it("should tolerate a Node.js diagnostics generation failure - region", async () => {
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wibble", user: "user" };
+        cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
+        submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
+        cmciSpy.mockImplementationOnce(() => { throw new Error("Injected CMCI GET error"); });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
+
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(cmciSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should tolerate a Node.js diagnostics generation failure - nodejsapp", async () => {
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wibble", user: "user" };
+        cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
+        submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
+                   "<define name=\"test\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "</manifest>";
+          }
+        });
+        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
+          if (nodejsData.name === "CICSNodejsapp") {
+            throw new Error("Injected CMCI GET error");
+          }
+          else if (nodejsData.name === "CICSRegion") {
+            return { response: {
+                records: {
+                  cicsregion: {
+                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS"
+                  }
+                }
+              }
+            };
+          }
+          else {
+            return {};
+          }
+        });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
+
+        expect(consoleText).toContain("zowe cics get resource CICSNodejsapp --region-name 12345678 --criteria \"BUNDLE=12345678\" --cics-plex 12345678");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(cmciSpy).toHaveBeenCalledTimes(2);
+    });
+    it("should tolerate a Node.js diagnostics generation failure - nodejsapp empty", async () => {
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wibble", user: "user" };
+        cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
+        submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
+                   "<define name=\"test\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "</manifest>";
+          }
+        });
+        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
+          if (nodejsData.name === "CICSNodejsapp") {
+            return {};
+          }
+          else if (nodejsData.name === "CICSRegion") {
+            return { response: {
+                records: {
+                  cicsregion: {
+                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS"
+                  }
+                }
+              }
+            };
+          }
+          else {
+            return {};
+          }
+        });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
+
+        expect(consoleText).toContain("zowe cics get resource CICSNodejsapp --region-name 12345678 --criteria \"BUNDLE=12345678\" --cics-plex 12345678");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(cmciSpy).toHaveBeenCalledTimes(2);
+    });
+    it("should generate Node.js diagnostics for 1 enabled NODEJSAPP", async () => {
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wibble", user: "user" };
+        cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
+        submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
+                   "<define name=\"name\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "</manifest>";
+          }
+        });
+        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
+          if (nodejsData.name === "CICSNodejsapp") {
+            return { response: {
+                records: {
+                  cicsnodejsapp: {
+                    name: "name", pid: "22", enablestatus: "ENABLED", stderr: "/tmp/stderr", stdout: "/tmp/stdout", eyu_cicsname: "1"
+                  }
+                }
+              }
+            };
+          }
+          else if (nodejsData.name === "CICSRegion") {
+            return { response: {
+                records: {
+                  cicsregion: {
+                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS"
+                  }
+                }
+              }
+            };
+          }
+          else {
+            return {};
+          }
+        });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
+
+        expect(consoleText).toContain("Regions in scope '12345678' of CICSplex '12345678':");
+        expect(consoleText).toContain("Applid: ABCDEFG    jobname: MYCICS     jobid: JOB12345");
+        expect(consoleText).toContain("NODEJSAPP resources for bundle '12345678' in scope '12345678':");
+        expect(consoleText).toContain("NODEJSAPP resource 'name' is in 'ENABLED' state in region '1' with process id '22'");
+        expect(consoleText).toContain("stdout: /tmp/stdout");
+        expect(consoleText).toContain("stderr: /tmp/stderr");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(cmciSpy).toHaveBeenCalledTimes(2);
+    });
+    it("should generate Node.js diagnostics for 1 disabled NODEJSAPP", async () => {
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wibble", user: "user" };
+        cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
+        submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
+                   "<define name=\"name\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "</manifest>";
+          }
+        });
+        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
+          if (nodejsData.name === "CICSNodejsapp") {
+            return { response: {
+                records: {
+                  cicsnodejsapp: {
+                    name: "name", pid: "0", enablestatus: "DISABLED", stderr: "", stdout: "", eyu_cicsname: "1"
+                  }
+                }
+              }
+            };
+          }
+          else if (nodejsData.name === "CICSRegion") {
+            return { response: {
+                records: {
+                  cicsregion: {
+                    applid: "ABCD", jobid: "JOB12345", jobname: "MYCICS"
+                  }
+                }
+              }
+            };
+          }
+          else {
+            return {};
+          }
+        });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
+
+        expect(consoleText).toContain("Regions in scope '12345678' of CICSplex '12345678':");
+        expect(consoleText).toContain("Applid: ABCD       jobname: MYCICS     jobid: JOB12345");
+        expect(consoleText).toContain("NODEJSAPP resources for bundle '12345678' in scope '12345678':");
+        expect(consoleText).toContain("NODEJSAPP resource 'name' is in 'DISABLED' state in region '1' with process id '0'.");
+        expect(consoleText).toContain("stdout: <not available>");
+        expect(consoleText).toContain("stderr: <not available>");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(cmciSpy).toHaveBeenCalledTimes(2);
+    });
+    it("should generate Node.js diagnostics for 2 NODEJSAPPs", async () => {
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wibble", user: "user" };
+        cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
+        submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+          if (data.indexOf("cics.xml") > -1) {
+            return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
+                   "<define name=\"name\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "<define name=\"name2\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                   "</manifest>";
+          }
+        });
+        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
+          if (nodejsData.name === "CICSNodejsapp") {
+            return { response: {
+                records: {
+                  cicsnodejsapp: [
+                    {
+                      name: "name", pid: "22", enablestatus: "ENABLED", stderr: "/tmp/stderr", stdout: "/tmp/stdout", eyu_cicsname: "1"
+                    },
+                    {
+                      name: "name2", pid: "33", enablestatus: "ENABLED", stderr: "/tmp/name2err", stdout: "/tmp/name2out", eyu_cicsname: "1"
+                    }
+                  ]
+                }
+              }
+            };
+          }
+          else if (nodejsData.name === "CICSRegion") {
+            return { response: {
+                records: {
+                  cicsregion: [
+                    {
+                      applid: "ABCD", jobid: "JOB12345", jobname: "MYCICS"
+                    },
+                    {
+                      applid: "EFGHIHJK", jobid: "JOB54321", jobname: "MYCICS2"
+                    },
+                  ]
+                }
+              }
+            };
+          }
+          else {
+            return {};
+          }
+        });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
+
+        expect(consoleText).toContain("Regions in scope '12345678' of CICSplex '12345678':");
+        expect(consoleText).toContain("Applid: ABCD       jobname: MYCICS     jobid: JOB12345");
+        expect(consoleText).toContain("Applid: EFGHIHJK   jobname: MYCICS2    jobid: JOB54321");
+        expect(consoleText).toContain("NODEJSAPP resources for bundle '12345678' in scope '12345678':");
+        expect(consoleText).toContain("NODEJSAPP resource 'name' is in 'ENABLED' state in region '1' with process id '22'.");
+        expect(consoleText).toContain("stdout: /tmp/stdout");
+        expect(consoleText).toContain("stderr: /tmp/stderr");
+        expect(consoleText).toContain("NODEJSAPP resource 'name2' is in 'ENABLED' state in region '1' with process id '33'.");
+        expect(consoleText).toContain("stdout: /tmp/name2out");
+        expect(consoleText).toContain("stderr: /tmp/name2err");
+        expect(zosMFSpy).toHaveBeenCalledTimes(1);
+        expect(sshSpy).toHaveBeenCalledTimes(1);
+        expect(listSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(shellSpy).toHaveBeenCalledTimes(0);
+        expect(membersSpy).toHaveBeenCalledTimes(2);
+        expect(submitSpy).toHaveBeenCalledTimes(1);
+        expect(existsSpy).toHaveBeenCalledTimes(1);
+        expect(readSpy).toHaveBeenCalledTimes(1);
+        expect(uploadSpy).toHaveBeenCalledTimes(1);
+        expect(cmciSpy).toHaveBeenCalledTimes(2);
     });
 });
 

@@ -316,18 +316,8 @@ export class Manifest {
 
     const definition = bundlePart.getPartData();
 
-    // Create the array of definitions if it doesn't already exist
-    if (this.manifestAsJson.manifest.define === undefined) {
-      this.manifestAsJson.manifest.define = [];
-    }
-
-    // If what already exists is an object (as may happen when appending
-    // to an existing XML manifest with only one entry) convert it to an array;
-    if (Array.isArray(this.manifestAsJson.manifest.define) === false) {
-      const obj = this.manifestAsJson.manifest.define as any;
-      this.manifestAsJson.manifest.define = [];
-      this.manifestAsJson.manifest.define.push(obj as IBundlePartDataType);
-    }
+    // Ensure that the definitions array is usable
+    this.prepareDefinitionsArray();
 
     // Search the array for a definition with the same name and
     // type as the one we're trying to add, if found then update
@@ -345,6 +335,47 @@ export class Manifest {
     // If we've not replaced an existing item in the list, add
     // the new item to the end.
     this.manifestAsJson.manifest.define.push(definition);
+  }
+
+  /**
+   * Does the bundle contain any resource definitions of the
+   * specified type?
+   *
+   * @param {String} resourceType - the resource type
+   * @throws ImperativeError
+   * @memberof Manifest
+   */
+  public containsDefinitionsOfType(resourceType: string): boolean {
+
+    // Ensure that the definitions array is usable
+    this.prepareDefinitionsArray();
+
+    // Search the array for a definition with the nominated type
+    let i: number;
+    for (i = 0; i < this.manifestAsJson.manifest.define.length; i++) {
+      const candidate = this.manifestAsJson.manifest.define[i];
+      if (candidate.type === resourceType) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+
+  private prepareDefinitionsArray() {
+    // Create the array of definitions if it doesn't already exist
+    if (this.manifestAsJson.manifest.define === undefined) {
+      this.manifestAsJson.manifest.define = [];
+    }
+
+    // If what already exists is an object (as may happen when appending
+    // to an existing XML manifest with only one entry) convert it to an array;
+    if (Array.isArray(this.manifestAsJson.manifest.define) === false) {
+      const obj = this.manifestAsJson.manifest.define as any;
+      this.manifestAsJson.manifest.define = [];
+      this.manifestAsJson.manifest.define.push(obj as IBundlePartDataType);
+    }
   }
 
   // Read an existing manifest file into an object

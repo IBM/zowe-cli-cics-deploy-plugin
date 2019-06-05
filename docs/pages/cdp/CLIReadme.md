@@ -189,7 +189,7 @@ required\.
 *   `--merge`  | `--me` *(boolean)*
 
 	* Enable or disable the ability to merge new resources into an existing CICS
-      bundle manifest\.
+      bundle manifest\.Requires \-\-overwrite to be specified\.
 
 ### Examples
 
@@ -320,6 +320,10 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 *   `--cics-deploy-profile`  | `--cics-deploy-p` *(string)*
 
 	* The name of a (cics\-deploy) profile to load for this command execution\.
+
+*   `--cics-profile`  | `--cics-p` *(string)*
+
+	* The name of a (cics) profile to load for this command execution\.
 
 ### Examples
 

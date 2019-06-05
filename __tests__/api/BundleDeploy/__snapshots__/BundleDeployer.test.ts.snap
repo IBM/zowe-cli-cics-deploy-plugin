@@ -2,9 +2,9 @@
 
 exports[`BundleDeployer01 should complain if DFHDPLOY ends with an error 1`] = `"DFHRL2055I"`;
 
-exports[`BundleDeployer01 should complain if DFHDPLOY ends with an error 2`] = `"DFHDPLOY stopped processing for JOBID UNKNOWN due to an error."`;
+exports[`BundleDeployer01 should complain if DFHDPLOY ends with an error 2`] = `"DFHDPLOY stopped processing for jobid UNKNOWN due to an error."`;
 
-exports[`BundleDeployer01 should complain if SYSTSPRT not found 1`] = `"SYSTSPRT and JESMSGLG output from DFHDPLOY not found for JOBID UNKNOWN. Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'."`;
+exports[`BundleDeployer01 should complain if SYSTSPRT not found 1`] = `"SYSTSPRT and JESMSGLG output from DFHDPLOY not found for jobid UNKNOWN. Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'."`;
 
 exports[`BundleDeployer01 should complain if cicshlq not found 1`] = `"Validation of --cicshlq dataset failed: Injected CICSHLQ error"`;
 
@@ -16,7 +16,7 @@ exports[`BundleDeployer01 should complain if cpsmhlq not found2 1`] = `"EYU9ABSI
 
 exports[`BundleDeployer01 should complain if status can't be determined 1`] = `" "`;
 
-exports[`BundleDeployer01 should complain if status can't be determined 2`] = `"DFHDPLOY command completed for JOBID UNKNOWN, but status cannot be determined."`;
+exports[`BundleDeployer01 should complain if status can't be determined 2`] = `"DFHDPLOY command completed for jobid UNKNOWN, but status cannot be determined."`;
 
 exports[`BundleDeployer01 should complain with missing zOSMF profile for deploy 1`] = `"Injected Create error"`;
 
@@ -32,7 +32,7 @@ exports[`BundleDeployer01 should fail with overlong jobcard 1`] = `"--jobcard pa
 
 exports[`BundleDeployer01 should failover to JESMSGLG if SYSTSPRT not found 1`] = `"undefined"`;
 
-exports[`BundleDeployer01 should failover to JESMSGLG if SYSTSPRT not found 2`] = `"DFHDPLOY command completed in error for JOBID UNKNOWN without generating SYSTSPRT output."`;
+exports[`BundleDeployer01 should failover to JESMSGLG if SYSTSPRT not found 2`] = `"DFHDPLOY command completed in error for jobid UNKNOWN without generating SYSTSPRT output."`;
 
 exports[`BundleDeployer01 should generate deploy JCL for AVAILABLE 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
@@ -369,9 +369,9 @@ UNDEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should handle failure during submitjobs processing 1`] = `"Failure occurred submitting DFHDPLOY JCL for JOBID UNKNOWN: 'Injected Submit error'. Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'."`;
+exports[`BundleDeployer01 should handle failure during submitjobs processing 1`] = `"Failure occurred submitting DFHDPLOY JCL for jobid UNKNOWN: 'Injected Submit error'. Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'."`;
 
-exports[`BundleDeployer01 should include the JOBID in an error 1`] = `"Failure occurred submitting DFHDPLOY JCL for JOBID JOB12345: 'Injected submit error'. Most recent status update: 'Running DFHDPLOY (DEPLOY), job JOB12345'."`;
+exports[`BundleDeployer01 should include the JOBID in an error 1`] = `"Failure occurred submitting DFHDPLOY JCL for jobid JOB12345: 'Injected submit error'. Most recent status update: 'Running DFHDPLOY (DEPLOY), jobid JOB12345'."`;
 
 exports[`BundleDeployer01 should support long bundledir 1`] = `
 "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
@@ -594,7 +594,7 @@ DEPLOY BUNDLE(12345678)
 "
 `;
 
-exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 1`] = `"DFHDPLOY did not generate any output for JOBID UNKNOWN. Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'."`;
+exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 1`] = `"DFHDPLOY did not generate any output for jobid UNKNOWN. Most recent status update: 'Submitting DFHDPLOY JCL for the DEPLOY action'."`;
 
 exports[`BundleDeployer01 should undeploy successfully 1`] = `"Bundle undeployment successful."`;
 
