@@ -1,4 +1,5 @@
 body {
+    font-family: 'IBM Plex Sans', sans-serif;
     font-size:15px;
 }
 
@@ -429,7 +430,7 @@ ul#mysidebar {
 }
 
 span.projectTitle {
-    font-family: Helvetica;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-weight: bold;
 }
 
