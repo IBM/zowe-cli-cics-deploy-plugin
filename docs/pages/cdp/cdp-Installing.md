@@ -2,7 +2,7 @@
 title: Installing
 tags: [getting_started]
 keywords:
-summary: "To install the Zowe CLI and cics-deploy plugin, perform the following steps. For clarity, these components are installed on your local workstation, not on z/OS."
+summary: "To install the Zowe CLI and cics-deploy plug-in, perform the following steps. For clarity, these components are installed on your local workstation, not on z/OS."
 sidebar: cdp_sidebar
 permalink: cdp-Installing.html
 folder: cdp
@@ -18,13 +18,13 @@ toc: false
     npm --version
     ```
 
-2. Install [Zowe CLI](https://zowe.github.io/docs-site/latest/user-guide/cli-installcli.html). For example to install using npm:
+2. Install [Zowe CLI](https://zowe.github.io/docs-site/latest/user-guide/cli-installcli.html). For example, to install using npm:
 
     ```console
     sudo npm install -g @zowe/cli
     ```
 
-3. Build and install the cics-deploy plugin as described in [Setting up your development environment](https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/tutorials/Setup.md). For example:
+3. Build and install the cics-deploy plug-in as described in [Setting up your development environment](https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/tutorials/Setup.md). For example:
 
     ```console
     mkdir ~/cics-deploy
@@ -37,7 +37,7 @@ toc: false
     zowe plugins install .
     ```
 
-4. Verify the plugin is installed:
+4. Verify the plug-in is installed:
 
     ```console
     zowe plugins list
