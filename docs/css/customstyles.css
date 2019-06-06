@@ -3,6 +3,14 @@ body {
     font-size:15px;
 }
 
+pre {
+    font-family: 'IBM Plex Mono', 'Courier New', Courier, monospace;
+}
+
+code {
+    font-family: 'IBM Plex Mono', 'Courier New', Courier, monospace;
+}
+
 .bs-callout {
     padding: 20px;
     margin: 20px 0;
@@ -821,7 +829,7 @@ a.accordion-toggle {
 
 span.red {
     color: red;
-    font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+    font-family: 'IBM Plex Mono', Monaco, Menlo, Consolas, "Courier New", monospace;
 }
 
 h3.codeExplanation {
