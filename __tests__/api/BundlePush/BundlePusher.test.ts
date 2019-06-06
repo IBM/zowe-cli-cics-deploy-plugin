@@ -74,9 +74,6 @@ let zosmfProfile = {};
 let sshProfile = {};
 let cicsProfile = {};
 
-// Initialise xml2json before mocking anything
-const parser = require("xml2json");
-
 let zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementation(() => ({}));
 let sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementation(() => ({}));
 let createSpy = jest.spyOn(Create, "uss").mockImplementation(() => ({}));

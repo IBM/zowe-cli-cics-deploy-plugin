@@ -11,17 +11,13 @@
 
 import { Bundle } from "../../../src/api/BundleContent/Bundle";
 import * as fs from "fs";
-
+import * as parser from "fast-xml-parser";
 
 // Note, the following tests mock the file-system. Snapshot based tests are unlikely to
 // work as the jest implementation will itself need to interact with the filesystem.
 describe("MockedFilesystemTests", () => {
     afterEach(() => {
       jest.restoreAllMocks();
-    });
-    beforeAll(() => {
-      // Allow xml2json to initialise itself before we start messing with the filesystem below it.
-      const parser = require("xml2json");
     });
 
     it("should tolerate META-INF directory not existing", () => {
@@ -552,7 +548,7 @@ describe("MockedFilesystemTests", () => {
 
     it("should complain if exceptions are thrown during manifest parsing", () => {
 
-      jest.spyOn(JSON, "parse").mockImplementationOnce(() => { throw new Error("Wibble"); });
+      jest.spyOn(parser, "parse").mockImplementationOnce(() => { throw new Error("Wibble"); });
 
       let err: Error;
       try {

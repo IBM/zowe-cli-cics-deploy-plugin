@@ -14,6 +14,10 @@
 import { BundlePart, IBundlePartDataType } from "./BundlePart";
 import { IHandlerParameters } from "@zowe/imperative";
 
+import * as parser from "fast-xml-parser";
+
+const serialiser = new parser.j2xParser({ignoreAttributes: false, attributeNamePrefix: ""});
+
 /**
  * Interface to represent the manifest data for a CICS Bundle.
  *
@@ -221,8 +225,7 @@ export class Manifest {
    * @memberof Manifest
    */
   public getXML(): string {
-    const parser = require("xml2json");
-    return parser.toXml(JSON.stringify(this.manifestAsJson)) + "\n";
+    return serialiser.parse(this.manifestAsJson) + "\n";
   }
 
   /**
@@ -385,19 +388,16 @@ export class Manifest {
 
     try {
       // Reading the file worked, so convert the contents into a JSON Object
-      const parser = require("xml2json");
-      this.manifestAsJson = JSON.parse( parser.toJson( xmltext, { reversible: true } ) );
+      this.manifestAsJson = parser.parse(xmltext, {ignoreAttributes: false, attributeNamePrefix: "", trimValues: true});
     }
     catch (exception)
     {
       throw new Error("Parsing error occurred reading a CICS manifest file: " + exception.message);
     }
 
-    // Note, the XML parser has no support for namespaces.
-    // If the manifest is namespace prefixed then it wont be found. Yuck.
     // Validate that the manifest we've read is usable.
     if (this.manifestAsJson.manifest === undefined) {
-      throw new Error("Existing CICS Manifest file found with unparsable content.");
+      throw new Error("Existing CICS Manifest file found with unparsable content: " + JSON.stringify(this.manifestAsJson));
     }
 
     // Now check the namespace
