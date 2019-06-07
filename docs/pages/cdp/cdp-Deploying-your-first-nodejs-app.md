@@ -11,13 +11,13 @@ toc: true
 
 ### Before you begin
 
-CICS TS V5.5 introduced support to run Node.js applications and is required by this tutorial. If you do not have a CICS TS V5.5 region, use the steps in [Provision a CICS region using z/OS PT](cdp-Provision-a-CICS-region-using-zospt) to provision one, or speak to your CICS system administrator.
+CICS TS V5.5 introduced support to run Node.js applications and is required by this tutorial. If you do not have a CICS TS V5.5 region, use the steps in [Provisioning a CICS region using z/OS PT](cdp-Provisioning-a-CICS-region-using-zospt) to provision one, or speak to your CICS system administrator.
 
 ### Procedure
 
-1. Install the Zowe CLI and cics-deploy plugin by following the steps in [Installation](cdp-Installation).
+1. Install the Zowe CLI and cics-deploy plug-in by following the steps in [Installing](cdp-Installing).
 
-2. Create Zowe CLI profiles for z/OSMF, SSH, and cics-deploy by following the steps in [Create Zowe CLI profiles](cdp-Create-Zowe-CLI-profiles).
+2. Create Zowe CLI profiles for z/OSMF, SSH, cics-deploy and CICS by following the steps in [Creating Zowe CLI profiles](cdp-Creating-Zowe-CLI-profiles).
 
 3. Create a Node.js application using the [Express Application Generator](https://expressjs.com/en/starter/generator.html):
 
@@ -29,11 +29,11 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
    npm start
    ```
 
-   The Node.js application will start. You can call the application from a browser using URL [http://localhost:3000/](http://localhost:3000/). To stop the application in the console press CTRL+C.
+   The Node.js application will start. You can call the application from a browser by using URL [http://localhost:3000/](http://localhost:3000/). To stop the application in the console press CTRL+C.
 
 4. Package the Node.js application into a [CICS bundle](cdp-cics-bundles).
 
-    Make sure you are in the root directory of the application.
+    Make sure that you are in the root directory of the application.
 
     Replace the value for `--port` with one that is available for use by the CICS region on z/OS. This sets the PORT environment variable in the generated `.profile` file. Additional variables can be set by editing this file.
 
@@ -41,7 +41,7 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
     zowe cics-deploy generate bundle --port 3000 --overwrite
    ```
 
-    The output will indicates the directories and files created to form a CICS bundle. For example:
+    The output indicates the directories and files that are created to form a CICS bundle. For example:
 
     <pre class="messageText">
     define : NODEJSAPP "myexpressapp" with startscript "./bin/www"
@@ -61,13 +61,13 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
 
     A progress bar is shown with status messages as the CICS bundle is deployed and the application is started. This can take a few minutes. If there are errors, retry with the `--verbose` option for more detailed output, or refer to [Troubleshooting](cdp-Troubleshooting-General).
 
-    This results in a CICS BUNDLE resource named `Express` being defined, installed and enabled in CICS. If the BUNDLE `Express` was already defined or installed in CICS, it is undeployed first. As the BUNDLE is enabled, the Node.js application is started.
+    This results in a CICS BUNDLE resource named `Express` being defined, installed, and enabled in CICS. If the BUNDLE `Express` was already defined or installed in CICS, it is undeployed first. As the BUNDLE is enabled, the Node.js application is started.
 
 6. Test the Node.js application.
 
-    You can call the application from a browser using URL [http://myzos:3000/](http://myzos:3000/), replacing _myzos_ with the host name of the z/OS system, and _3000_ with the port specified in step 4.
+    You can call the application from a browser by using URL [http://myzos:3000/](http://myzos:3000/), replacing _myzos_ with the host name of the z/OS system, and _3000_ with the port specified in step 4.
 
-    If you make changes to the application you can redeploy it by repeating step 5.
+    If you make changes to the application, you can redeploy it by repeating step 5.
 
 ### Results
 
