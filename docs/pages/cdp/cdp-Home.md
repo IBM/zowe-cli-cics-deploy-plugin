@@ -12,7 +12,7 @@ It provides a CICS deployment workflow for developers and CI/CD automation pipel
 
 Before you start, and especially if you are not familiar with the world of z/OS, Zowe and CICS, it's a good idea to read about some of the key concepts, which include [Zowe](cdp-zowe-and-cli), [Zowe CLI profiles](cdp-zowe-profiles) and [CICS bundles](cdp-cics-bundles). If you're keen to get going quickly, you can jump right in and follow along with our tutorial on [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app).
 
-When everything is [installed](cdp-Installation) and you have [created the Zowe CLI profiles](cdp-Create-Zowe-CLI-profiles), you can deploy an application from your workstation to CICS in two steps:
+When everything is [installed](cdp-Installing) and you have [created the Zowe CLI profiles](cdp-Creating-Zowe-CLI-profiles), you can deploy an application from your workstation to CICS in two steps:
 
 1. Use the [zowe cics-deploy generate bundle](cdp-CLIReadMe#generate--g--gen) command to generate some metadata and artifacts that help the target CICS system understand your application.
 

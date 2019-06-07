@@ -1,10 +1,10 @@
 ---
-title: Create Zowe CLI profiles
+title: Creating Zowe CLI profiles
 tags: [getting_started, concepts]
 keywords:
 summary: "Zowe profiles let you store configuration details so you don't have to repeat them every time you use a Zowe CLI command."
 sidebar: cdp_sidebar
-permalink: cdp-Create-Zowe-CLI-profiles.html
+permalink: cdp-Creating-Zowe-CLI-profiles.html
 folder: cdp
 ---
 
