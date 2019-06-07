@@ -52,9 +52,9 @@ Files typically written to `WORK_DIR` include:
 
 They can all be useful when identifying the cause of an error, especially STDERR.
 
-### JES job logs
-DFHDPLOY is a CICS utility which provides a set of commands that you can use to deploy, undeploy and set the state of CICS bundles. When you deploy or undeploy a Node.js application to or from CICS, a batch DFHDPLOY job is initiated on z/OS.
+{% include tip.html content="The `cics-deploy push` command outputs the full paths of STDOUT and STDERR after a deployment." %}
 
-If you are familiar with the z/OS environment, you can often find some useful diagnostics by accessing z/OS file assigned to the MSGUSR DD name for the deploy/undeploy job associated with your CICS region. If you are not so fluent with the world of z/OS, you may need to discuss your needs with one of your organization's CICS system administrators.
+### JES job logs
+If you are familiar with the z/OS environment, you can often find some useful diagnostics by accessing the JES job log associated with the CICS region you deployed to.  The `cics-deploy push` command outputs the job IDs for all the CICS regions in the scope after a deployment.  The MSGUSR, SYSPRINT, SYSOUT and JESMSGLG spool files can all provide useful information.   If you are not so fluent with the world of z/OS, you may need to discuss your needs with one of your organization's CICS system administrators.
 
 {% include note.html content="If you use [Visual Studio Code](https://code.visualstudio.com/) as your editor, there is a [Zowe extension](https://marketplace.visualstudio.com/items?itemName=Zowe.vscode-extension-for-zowe) that enables you to interact with USS files and examine JES job logs from your local workstation." %}
