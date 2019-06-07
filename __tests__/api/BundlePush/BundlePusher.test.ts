@@ -10,7 +10,7 @@
 */
 
 import { BundlePusher } from "../../../src/api/BundlePush/BundlePusher";
-import { IHandlerParameters, ImperativeError, IImperativeError } from "@zowe/imperative";
+import { IHandlerParameters, ImperativeError, IImperativeError, IProfile } from "@zowe/imperative";
 import * as cmci from "@zowe/cics";
 import * as PushBundleDefinition from "../../../src/cli/push/bundle/PushBundle.definition";
 import * as fse from "fs-extra";
@@ -111,7 +111,7 @@ describe("BundlePusher01", () => {
         lstatSpy = jest.spyOn(fs, "lstatSync").mockImplementation(() => ( IS_NOT_DIRECTORY ));
         cmciSpy = jest.spyOn(cmci, "getResource").mockImplementation(() => ({ response: { records: {} } }));
         consoleText = "";
-        zosmfProfile = { host: "wibble", user: "user", password: "thisIsntReal" };
+        zosmfProfile = { host: "wibble", user: "user", password: "thisIsntReal", port: 443, rejectUnauthorized: true };
         sshProfile = { host: "wibble", user: "user", password: "thisIsntReal" };
         cicsProfile = undefined;
     });
@@ -199,6 +199,58 @@ describe("BundlePusher01", () => {
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
     });
+    it("should implement --zosmf-* overrides" , async () => {
+        zosmfProfile = { host: "wibble", user: "user" };
+        sshProfile = { host: "wibble", user: "user" };
+        const parms = getCommonParmsForPushTests();
+        parms.arguments.zh = "overrideHost";
+        parms.arguments.zp = 123;
+        parms.arguments.zu = "overrideUser";
+        parms.arguments.zpw = "overridePassword";
+        parms.arguments.zru = false;
+        parms.arguments.zbp = "overrideBasePath";
+        zosMFSpy.mockImplementationOnce((profile: IProfile) => {
+          expect(profile.host).toMatch("overrideHost");
+          expect(profile.port).toEqual(123);
+          expect(profile.user).toMatch("overrideUser");
+          expect(profile.password).toMatch("overridePassword");
+          expect(profile.rejectUnauthorized).toEqual(false);
+          expect(profile.basePath).toMatch("overrideBasePath");
+        });
+
+        await runPushTest("__tests__/__resources__/ExampleBundle01", true,
+              "PUSH operation completed", parms);
+    });
+    it("should complain if zosmf-host notset" , async () => {
+        zosmfProfile = undefined;
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
+                                   "Required parameter --zosmf-host is not set.");
+    });
+    it("should complain if zosmf-port notset" , async () => {
+        zosmfProfile = { host: "wibble" };
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
+                                   "Required parameter --zosmf-port is not set.");
+    });
+    it("should complain if zosmf-user notset" , async () => {
+        zosmfProfile = { host: "wibble", port: 443 };
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
+                                   "Required parameter --zosmf-user is not set.");
+    });
+    it("should complain if zosmf-password notset" , async () => {
+        zosmfProfile = { host: "wibble", port: 443, user: "user" };
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
+                                   "Required parameter --zosmf-password is not set.");
+    });
+    it("should complain if zosmf-reject-unauthorized notset" , async () => {
+        zosmfProfile = { host: "wibble", port: 443, user: "user", password: "thisIsntReal" };
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
+                                   "Required parameter --zosmf-reject-unauthorized is not set.");
+    });
     it("should complain with missing SSH profile for push", async () => {
         sshSpy.mockImplementationOnce(() => { throw new Error( "Injected SSH Create error" ); });
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01",  false, "Injected SSH Create error");
@@ -207,7 +259,6 @@ describe("BundlePusher01", () => {
         expect(sshSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain with mismatching zOSMF and SSH profile host names", async () => {
-        zosmfProfile = { host: "wibble", user: "user" };
         sshProfile = { host: "wobble", user: "user" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
@@ -215,7 +266,6 @@ describe("BundlePusher01", () => {
         expect(consoleText).toContain("WARNING: ssh profile --host value 'wobble' does not match zosmf value 'wibble'.");
     });
     it("should not complain with matching zOSMF and SSH profile host names", async () => {
-        zosmfProfile = { host: "wibble", user: "user" };
         sshProfile = { host: "wibble", user: "user" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
@@ -237,67 +287,59 @@ describe("BundlePusher01", () => {
         expect(consoleText).not.toContain("WARNING: cics profile");
     });
     it("should complain with mismatching zOSMF and SSH profile user names", async () => {
-        zosmfProfile = { host: "wibble", user: "fred" };
         sshProfile = { host: "wibble", user: "joe" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed");
-        expect(consoleText).toContain("WARNING: ssh profile --user value 'joe' does not match zosmf value 'fred'.");
+        expect(consoleText).toContain("WARNING: ssh profile --user value 'joe' does not match zosmf value 'user'.");
     });
     it("should not complain with matching zOSMF and SSH profile user names", async () => {
-        zosmfProfile = { host: "wibble", user: "fred" };
-        sshProfile = { host: "wibble", user: "fred" };
+        sshProfile = { host: "wibble", user: "user" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed");
         expect(consoleText).not.toContain("WARNING: ssh profile");
     });
     it("should not complain with matching zOSMF and SSH profile user names - case", async () => {
-        zosmfProfile = { host: "wibble", user: "fred" };
-        sshProfile = { host: "wibble", user: "FRED" };
+        sshProfile = { host: "wibble", user: "USER" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed");
         expect(consoleText).not.toContain("WARNING: ssh profile");
     });
     it("should complain with mismatching zOSMF and CICS profile user names", async () => {
-        zosmfProfile = { host: "wibble", user: "fred" };
         sshProfile = { host: "wibble", user: "fred" };
         cicsProfile = { host: "wibble", user: "joe", password: "thisIsntReal", cicsPlex: "12345678" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed");
-        expect(consoleText).toContain("WARNING: cics profile --user value 'joe' does not match zosmf value 'fred'.");
+        expect(consoleText).toContain("WARNING: cics profile --user value 'joe' does not match zosmf value 'user'.");
     });
     it("should complain with mismatching zOSMF and SSH profile passwords", async () => {
-        zosmfProfile = { host: "wibble", user: "fred", password: "fakeZosmfPassword" };
-        sshProfile = { host: "wibble", user: "fred", password: "fakeSshPassword" };
+        sshProfile = { host: "wibble", user: "user", password: "fakeSshPassword" };
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01",  false,
               "Incompatible security credentials exist in the zosmf and ssh profiles.");
 
-        expect(consoleText).not.toContain("fakeZosmfPassword");
+        expect(consoleText).not.toContain("thisIsntReal");
         expect(consoleText).not.toContain("fakeSshPassword");
     });
     it("should tolerate mismatching zOSMF and SSH credentials if SSH keys are used", async () => {
-        zosmfProfile = { host: "wibble", user: "fred", password: "fakeZosmfPassword" };
         sshProfile = { host: "wibble", user: "fred", privateKey: "fakeSshKey" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed");
 
-        expect(consoleText).not.toContain("fakeZosmfPassword");
+        expect(consoleText).not.toContain("thisIsntReal");
         expect(consoleText).not.toContain("fakeSshKey");
     });
     it("should complain with mismatching zOSMF and cics profile passwords", async () => {
-        zosmfProfile = { host: "wibble", user: "fred", password: "fakePassword" };
-        sshProfile = { host: "wibble", user: "fred", password: "fakePassword" };
-        cicsProfile = { host: "wibble", user: "fred", password: "fakePassword2", cicsPlex: "12345678" };
+        cicsProfile = { host: "wibble", user: "user", password: "fakePassword2", cicsPlex: "12345678" };
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01",  false,
               "Incompatible security credentials exist in the zosmf and cics profiles.");
 
-        expect(consoleText).not.toContain("fakePassword");
+        expect(consoleText).not.toContain("thisIsntReal");
         expect(consoleText).not.toContain("fakePassword2");
     });
     it("should complain with mismatching cics-deploy and CICS plex names", async () => {
@@ -1552,5 +1594,11 @@ function getCommonParmsForPushTests(): IHandlerParameters {
   parms.arguments.targetstate = "ENABLED";
   parms.arguments.targetdir = "/u/ThisDoesNotExist";
   parms.arguments.overwrite = undefined;
+  parms.arguments.zh = undefined;
+  parms.arguments.zp = undefined;
+  parms.arguments.zu = undefined;
+  parms.arguments.zpw = undefined;
+  parms.arguments.zru = undefined;
+  parms.arguments.zbp = undefined;
   return parms;
 }

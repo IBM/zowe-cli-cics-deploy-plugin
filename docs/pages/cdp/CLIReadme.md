@@ -20,7 +20,7 @@ the target group of CICS regions\.
 
    zowe cics-deploy deploy bundle [options]
 
-#### cics-deploy
+#### cics-deploy Options
 
 *   `--name`  | `-n` *(string)*
 
@@ -142,7 +142,7 @@ required\.
 
    zowe cics-deploy generate bundle [options]
 
-#### cics-deploy
+#### cics-deploy Options
 
 *   `--bundle-id`  | `-b` | `--id` | `--bundleid` *(string)*
 
@@ -215,7 +215,7 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 
    zowe cics-deploy push bundle [options]
 
-#### cics-deploy
+#### cics-deploy Options
 
 *   `--name`  | `-n` *(string)*
 
@@ -303,11 +303,35 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 	* Enable or disable the ability to replace an existing bundle directory or bundle
       on the remote system\.
 
+#### Zosmf Connection Options
+
+*   `--zosmf-host`  | `--zh` *(string)*
+
+	* The z/OSMF server host name\.
+
+*   `--zosmf-port`  | `--zp` *(number)*
+
+	* The z/OSMF server port\.
+
+*   `--zosmf-user`  | `--zu` *(string)*
+
+	* Mainframe (z/OSMF) user name, which can be the same as your TSO login\.
+
+*   `--zosmf-password`  | `--zpw` *(string)*
+
+	* Mainframe (z/OSMF) password, which can be the same as your TSO password\.
+
+*   `--zosmf-reject-unauthorized`  | `--zru` *(boolean)*
+
+	* Reject self\-signed certificates\.
+
+*   `--zosmf-base-path`  | `--zbp` *(string)*
+
+	* The base path for your API mediation layer instance\. Specify this option to
+      prepend the base path to all z/OSMF resources when making REST requests\. Do not
+      specify this option if you are not using an API mediation layer\.
+
 #### Profile Options
-
-*   `--zosmf-profile`  | `--zosmf-p` *(string)*
-
-	* The name of a (zosmf) profile to load for this command execution\.
 
 *   `--ssh-profile`  | `--ssh-p` *(string)*
 
@@ -316,6 +340,10 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 *   `--cics-deploy-profile`  | `--cics-deploy-p` *(string)*
 
 	* The name of a (cics\-deploy) profile to load for this command execution\.
+
+*   `--zosmf-profile`  | `--zosmf-p` *(string)*
+
+	* The name of a (zosmf) profile to load for this command execution\.
 
 *   `--cics-profile`  | `--cics-p` *(string)*
 
@@ -349,7 +377,7 @@ target group of CICS regions\.
 
    zowe cics-deploy undeploy bundle [options]
 
-#### cics-deploy
+#### cics-deploy Options
 
 *   `--name`  | `-n` *(string)*
 

@@ -17,6 +17,7 @@ import { getResource, IResourceParms } from "@zowe/cics";
 import { BundleDeployer } from "../BundleDeploy/BundleDeployer";
 import { Bundle } from "../BundleContent/Bundle";
 import { SubtaskWithStatus } from "./SubtaskWithStatus";
+import { ZosmfConfig } from "./ZosmfConfig";
 
 
 /**
@@ -76,6 +77,7 @@ export class BundlePusher {
     const zosMFProfile = this.getProfile("zosmf", true);
     const sshProfile = this.getProfile("ssh", true);
     const cicsProfile = this.getProfile("cics", false);
+    ZosmfConfig.mergeProfile(zosMFProfile, this.params);
     this.validateProfiles(zosMFProfile, sshProfile, cicsProfile);
 
     // Create a zOSMF session
@@ -185,10 +187,10 @@ export class BundlePusher {
   }
 
   private getProfile(type: string, required: boolean): IProfile {
-    const profile =  this.params.profiles.get(type);
+    let profile =  this.params.profiles.get(type);
 
     if (required && profile === undefined) {
-      throw new Error("No " + type + " profile found");
+      profile = {};
     }
 
     return profile;
