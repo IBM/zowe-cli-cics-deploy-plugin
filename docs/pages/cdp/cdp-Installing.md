@@ -21,7 +21,7 @@ toc: false
 2. Install [Zowe CLI](https://zowe.github.io/docs-site/latest/user-guide/cli-installcli.html). For example, to install using npm:
 
     ```console
-    sudo npm install -g @zowe/cli
+    npm install -g @zowe/cli@latest
     ```
 
 3. Build and install the cics-deploy plug-in as described in [Setting up your development environment](https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/tutorials/Setup.md). For example:
@@ -36,8 +36,13 @@ toc: false
     npm run build
     zowe plugins install .
     ```
+4. Install the cics plugin: 
 
-4. Verify the plug-in is installed:
+    ```console
+    zowe plugins install @zowe/cics
+    ```
+
+5. Verify the plug-ins are installed:
 
     ```console
     zowe plugins list
