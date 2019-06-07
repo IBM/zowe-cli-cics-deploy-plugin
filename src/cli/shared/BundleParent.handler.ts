@@ -44,7 +44,14 @@ export abstract class BundleParentHandler implements ICommandHandler {
         // log the arguments on entry to the Handler
         const logger = Logger.getAppLogger();
         if (params.arguments.silent === undefined) {
-          logger.debug("Arguments received by cics-deploy: " + JSON.stringify(params.arguments));
+
+          // Strip passwords from the data before logging it
+          let inputParms = JSON.stringify(params.arguments);
+          inputParms = this.replacePassword(inputParms, params.arguments.zpw);
+          inputParms = this.replacePassword(inputParms, params.arguments.spw);
+          inputParms = this.replacePassword(inputParms, params.arguments.cpw);
+
+          logger.debug("Arguments received by cics-deploy: " + inputParms);
         }
 
         try {
@@ -87,4 +94,11 @@ export abstract class BundleParentHandler implements ICommandHandler {
      * @memberof BundleParentHandler
      */
     public abstract async performAction(params: IHandlerParameters): Promise<string>;
+
+    private replacePassword(source: string, pwd: string): string {
+      if (pwd !== undefined) {
+        return source.split(pwd).join("*REDACTED*");
+      }
+      return source;
+    }
 }
