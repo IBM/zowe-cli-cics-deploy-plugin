@@ -1538,8 +1538,7 @@ describe("BundlePusher01", () => {
         expect(consoleText).not.toContain("Querying NODEJSAPP resources over CMCI");
         expect(consoleText).not.toContain("zowe cics get resource CICSNodejsapp");
         expect(consoleText).not.toContain("An attempt to query the remote CICSplex using the cics plug-in has failed");
-        expect(consoleText).toContain("Consider examining the JESMSGLG, MSGUSR, SYSPRINT and SYSOUT spool files for job ID JOB12345 for more information," +
-                                      " or consult your CICS system programmer.");
+        expect(consoleText).toContain("DFHDPLOY output implied the bundle failed to install.");
         expect(cmciSpy).toHaveBeenCalledTimes(1);
     });
 });
