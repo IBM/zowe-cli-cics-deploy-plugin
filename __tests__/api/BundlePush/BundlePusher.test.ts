@@ -1206,6 +1206,7 @@ describe("BundlePusher01", () => {
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
+        expect(consoleText).toContain("An attempt to query the remote CICSplex using the cics plug-in has failed.");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(1);

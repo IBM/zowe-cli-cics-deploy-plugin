@@ -657,6 +657,12 @@ export class BundlePusher {
         logger.debug(diagnosticsError.message);
       }
     }
+
+    // Something went wrong, suggest a command that can be run to figure out more.
+    if (msgBuffer === "") {
+      this.issueMessage("An attempt to query the remote CICSplex using the cics plug-in has failed.");
+    }
+
     return msgBuffer;
   }
 
@@ -681,7 +687,7 @@ export class BundlePusher {
     if (msgBuffer === "") {
       msgBuffer += "For further information on the state of your NODEJSAPP resources, consider running the following command:\n\n" +
             "zowe cics get resource CICSNodejsapp --region-name " + this.params.arguments.scope +
-            " --criteria \"BUNDLE=" + this.params.arguments.name + "\" --cics-plex " + this.params.arguments.cicsplex + "\n";
+            " --criteria \"BUNDLE=" + this.params.arguments.name + "\" --cics-plex " + this.params.arguments.cicsplex + "\n\n";
     }
 
     return msgBuffer;
