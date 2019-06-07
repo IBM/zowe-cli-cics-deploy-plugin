@@ -74,9 +74,6 @@ let zosmfProfile = {};
 let sshProfile = {};
 let cicsProfile = {};
 
-// Initialise xml2json before mocking anything
-const parser = require("xml2json");
-
 let zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementation(() => ({}));
 let sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementation(() => ({}));
 let createSpy = jest.spyOn(Create, "uss").mockImplementation(() => ({}));
@@ -185,7 +182,7 @@ describe("BundlePusher01", () => {
         existsSpy.mockReturnValue(true);
         readSpy.mockImplementation((data: string) => ("wibble"));
         await runPushTestWithError("__tests__/__resources__/BadManifestBundle01", false,
-                                   "Existing CICS Manifest file found with unparsable content.");
+                                   "Existing CICS Manifest file found with unparsable content:");
     });
     it("should complain with missing manifest file", async () => {
         readSpy.mockImplementationOnce(() => {
