@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Bundle01 add a NODEJSAPP 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"define\\":[{\\"name\\":\\"NodeName\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/NodeName.nodejsapp\\"}]}}"`;
+exports[`Bundle01 add a NODEJSAPP 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"define\\":[{\\"name\\":\\"NodeName\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/NodeName.nodejsapp\\"}]}}"`;
 
 exports[`Bundle01 add a NODEJSAPP 2`] = `
 "<manifest xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle\\"><define name=\\"NodeName\\" type=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" path=\\"nodejsapps/NodeName.nodejsapp\\"></define></manifest>
@@ -25,4 +25,4 @@ exports[`Bundle01 should read an existing bundle 1`] = `"{\\"manifest\\":{\\"xml
 
 exports[`Bundle01 should warn that an existing bundle cant be overwritten 1`] = `"A bundle manifest file already exists. Specify --overwrite to replace it, or --merge to merge changes into it."`;
 
-exports[`Bundle01 tolerate an existing almost empty manifest 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"Artefact1\\"}]}}"`;
+exports[`Bundle01 tolerate an existing almost empty manifest 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"Artefact1\\"}]}}"`;

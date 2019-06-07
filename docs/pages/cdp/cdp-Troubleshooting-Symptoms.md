@@ -8,7 +8,9 @@ permalink: cdp-Troubleshooting-Symptoms.html
 folder: cdp
 ---
 
-{% include important.html content="To definitively diagnose a problem based on the suggested symptoms, you might need to refer to one or more [system logs and traces](cdp-Troubleshooting-General) particularly the STDERR Node.js log and the file assigned the MSGUSR DD name in the relevant CICS DFHDPLOY job. Depending on your familiarity with z/OS and CICS, and your system privileges, you may also need to consult a CICS systems administrator to get to the bottom of certain problems." %}
+{% include note.html content="For further troubleshooting steps, see [Troubleshooting Node.js applications](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.5.0/troubleshooting/node/node-troubleshooting.html)." %}
+
+{% include important.html content="To definitively diagnose a problem based on the suggested symptoms, you might need to refer to one or more [system logs and traces](cdp-Troubleshooting-General) particularly the STDERR Node.js log and the file assigned the MSGUSR DD name in the relevant CICS job. Depending on your familiarity with z/OS and CICS, and your system privileges, you may also need to consult a CICS systems administrator to get to the bottom of certain problems." %}
 
 ## Deployment errors
 
@@ -100,6 +102,3 @@ The length must be between 1 and 8 (inclusive)
 
 *Suggested action*: 
 Review the error output text and reissue the original command having corrected the name of the option so that its length falls within acceptable limits. 
-
-
-
