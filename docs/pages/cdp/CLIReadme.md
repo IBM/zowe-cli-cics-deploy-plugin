@@ -20,7 +20,7 @@ the target group of CICS regions\.
 
    zowe cics-deploy deploy bundle [options]
 
-#### Required Options
+#### cics-deploy
 
 *   `--name`  | `-n` *(string)*
 
@@ -30,8 +30,6 @@ the target group of CICS regions\.
 *   `--bundle-directory`  | `--bd` | `--bundledir` | `--bundle-dir` *(string)*
 
 	* Specifies the location of the CICS bundle (up to 255 characters) on zFS\.
-
-#### Options
 
 *   `--cicsplex`  | `--cp` *(string)*
 
@@ -144,7 +142,7 @@ required\.
 
    zowe cics-deploy generate bundle [options]
 
-#### Options
+#### cics-deploy
 
 *   `--bundle-id`  | `-b` | `--id` | `--bundleid` *(string)*
 
@@ -217,7 +215,7 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 
    zowe cics-deploy push bundle [options]
 
-#### Required Options
+#### cics-deploy
 
 *   `--name`  | `-n` *(string)*
 
@@ -228,8 +226,6 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 
 	* Specifies the target zFS location in which the CICS bundle is to be created (up
       to 255 characters)
-
-#### Options
 
 *   `--cicsplex`  | `--cp` *(string)*
 
@@ -353,14 +349,12 @@ target group of CICS regions\.
 
    zowe cics-deploy undeploy bundle [options]
 
-#### Required Options
+#### cics-deploy
 
 *   `--name`  | `-n` *(string)*
 
 	* Specifies the name of the CICS BUNDLE resource (up to 8 characters) to deploy or
       undeploy\.
-
-#### Options
 
 *   `--cicsplex`  | `--cp` *(string)*
 
