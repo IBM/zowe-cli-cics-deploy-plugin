@@ -15,7 +15,7 @@ import { IHandlerParameters, IProfile } from "@zowe/imperative";
 
 
 /**
- * Class to represent a CICS Bundle Pusher.
+ * Class to implement zosMF configuration.
  *
  * @export
  * @class ZosmfConfig

@@ -331,11 +331,38 @@ Push a CICS bundle from the working directory to a target CICSplex\.
       prepend the base path to all z/OSMF resources when making REST requests\. Do not
       specify this option if you are not using an API mediation layer\.
 
+#### z/OS Ssh Connection Options
+
+*   `--ssh-host`  | `--sh` *(string)*
+
+	* The z/OS SSH server host name\.
+
+*   `--ssh-port`  | `--sp` *(number)*
+
+	* The z/OS SSH server port\.
+
+*   `--ssh-user`  | `--su` *(string)*
+
+	* Mainframe user name, which can be the same as your TSO login\.
+
+*   `--ssh-password`  | `--spw` *(string)*
+
+	* Mainframe password, which can be the same as your TSO password\.
+
+*   `--ssh-private-key`  | `--spk` *(string)*
+
+	* Path to a file containing your private key, that must match a public key stored
+      in the server for authentication
+
+*   `--ssh-key-passphrase`  | `--skp` *(string)*
+
+	* Private key passphrase, which unlocks the private key\.
+
+*   `--ssh-handshake-timeout`  | `--sht` *(number)*
+
+	* How long in milliseconds to wait for the SSH handshake to complete\.
+
 #### Profile Options
-
-*   `--ssh-profile`  | `--ssh-p` *(string)*
-
-	* The name of a (ssh) profile to load for this command execution\.
 
 *   `--cics-deploy-profile`  | `--cics-deploy-p` *(string)*
 
@@ -344,6 +371,10 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 *   `--zosmf-profile`  | `--zosmf-p` *(string)*
 
 	* The name of a (zosmf) profile to load for this command execution\.
+
+*   `--ssh-profile`  | `--ssh-p` *(string)*
+
+	* The name of a (ssh) profile to load for this command execution\.
 
 *   `--cics-profile`  | `--cics-p` *(string)*
 
