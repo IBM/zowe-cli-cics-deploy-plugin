@@ -391,7 +391,14 @@ export class BundlePusher {
 
     // Collect general information about the regions in the CICSplex scope
     let deployMessages = await this.generateGeneralDiagnostics(cicsSession);
-    if (deployMessages !== "" && bundle.containsDefinitionsOfType("http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP")) {
+
+    if (deployError !== undefined && dfhdployOutput.indexOf("DFHRL2067") === -1) {
+        // If we have an, but DFHDPLOY did not report that some bundleparts are disabled,
+        // we can assume bundle didn't install at all. In this case skip generation of
+        // Node.js diagnostics.
+        deployMessages += "Consider examining the JESMSGLG, MSGUSR, SYSPRINT and SYSOUT spool files for job ID JOB12345 for more information, ";
+        deployMessages += "or consult your CICS system programmer.";
+    } else if (deployMessages !== "" && bundle.containsDefinitionsOfType("http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP")) {
       // Generate additional diagnostic output for Node.js
       deployMessages += await this.generateNodejsSpecificDiagnostics(cicsSession);
     }
