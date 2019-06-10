@@ -19,6 +19,7 @@ import { Bundle } from "../BundleContent/Bundle";
 import { SubtaskWithStatus } from "./SubtaskWithStatus";
 import { ZosmfConfig } from "./ZosmfConfig";
 import { SshConfig } from "./SshConfig";
+import { CmciConfig } from "./CmciConfig";
 
 
 /**
@@ -75,12 +76,21 @@ export class BundlePusher {
     }
 
     // Get the profiles
-    const zosMFProfile = this.getProfile("zosmf", true);
-    const sshProfile = this.getProfile("ssh", true);
-    const cicsProfile = this.getProfile("cics", false);
+    const zosMFProfile = this.getProfile("zosmf");
+    const sshProfile = this.getProfile("ssh");
+    let cicsProfile = this.getProfile("cics");
     ZosmfConfig.mergeProfile(zosMFProfile, this.params);
     SshConfig.mergeProfile(sshProfile, this.params);
+    CmciConfig.mergeProfile(cicsProfile, this.params);
+
+    // The cics profile is optional, detect whether it has been set (or constructed)
+    if (Object.keys(cicsProfile).length === 0) {
+       cicsProfile = undefined;
+    }
+
+    // Now detect any mismatches between the values from the profiles
     this.validateProfiles(zosMFProfile, sshProfile, cicsProfile);
+
 
     // Create a zOSMF session
     const zosMFSession = await this.createZosMFSession(zosMFProfile);
@@ -188,10 +198,10 @@ export class BundlePusher {
     }
   }
 
-  private getProfile(type: string, required: boolean): IProfile {
+  private getProfile(type: string): IProfile {
     let profile =  this.params.profiles.get(type);
 
-    if (required && profile === undefined) {
+    if (profile === undefined) {
       profile = {};
     }
 
@@ -231,7 +241,7 @@ export class BundlePusher {
     if (sameHostAndUser) {
       if (sshProfile.password !== undefined) {
         if (zosmfProfile.password !== sshProfile.password) {
-          throw new Error("Incompatible security credentials exist in the zosmf and ssh configurations.");
+          throw new Error("Different passwords are specified for the same user ID in the zosmf and ssh configurations.");
         }
       }
     }
@@ -250,7 +260,7 @@ export class BundlePusher {
 
       if (sameHostAndUser) {
         if (zosmfProfile.password !== cicsProfile.password) {
-          throw new Error("Incompatible security credentials exist in the zosmf and cics configurations.");
+          throw new Error("Different passwords are specified for the same user ID in the zosmf and cics configurations.");
         }
       }
     }

@@ -59,7 +59,7 @@ the target group of CICS regions\.
       bundle is undeployed, the definition is removed\. The \-\-csd\-group and
       \-\-res\-group options are mutually exclusive\.
 
-*   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
+*   `--cics-hlq`  | `--cq` | `--cicshlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CICS
       datasets can be found in the target environment\. Use this parameter if you have
@@ -255,7 +255,7 @@ Push a CICS bundle from the working directory to a target CICSplex\.
       bundle is undeployed, the definition is removed\. The \-\-csd\-group and
       \-\-res\-group options are mutually exclusive\.
 
-*   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
+*   `--cics-hlq`  | `--cq` | `--cicshlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CICS
       datasets can be found in the target environment\. Use this parameter if you have
@@ -362,6 +362,34 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 
 	* How long in milliseconds to wait for the SSH handshake to complete\.
 
+#### CICS Connection Options
+
+*   `--cics-host`  | `--ch` *(string)*
+
+	* The CMCI server host name\.
+
+*   `--cics-port`  | `--cpo` *(number)*
+
+	* The CICS server port\.
+
+*   `--cics-user`  | `--cu` *(string)*
+
+	* Mainframe (CICS) user name, which can be the same as your TSO login\.
+
+*   `--cics-password`  | `--cpw` *(string)*
+
+	* Mainframe (CICS) password, which can be the same as your TSO password\.
+
+*   `--cics-reject-unauthorized`  | `--cru` *(boolean)*
+
+	* Reject self\-signed certificates\.
+
+*   `--cics-protocol`  | `--cpr` *(string)*
+
+	* Specifies CMCI protocol (http or https)\.
+
+      Allowed values: http, https
+
 #### Profile Options
 
 *   `--cics-deploy-profile`  | `--cics-deploy-p` *(string)*
@@ -383,7 +411,7 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 ### Examples
 
 *  Push a CICS bundle from the working directory by using
-default cics-deploy, ssh and zosmf profiles:
+default cics-deploy, cics, ssh and zosmf profiles:
 
       * `$  zowe cics-deploy push bundle --name EXAMPLE --target-directory /u/example/bundles`
 
@@ -443,7 +471,7 @@ target group of CICS regions\.
       bundle is undeployed, the definition is removed\. The \-\-csd\-group and
       \-\-res\-group options are mutually exclusive\.
 
-*   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
+*   `--cics-hlq`  | `--cq` | `--cicshlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CICS
       datasets can be found in the target environment\. Use this parameter if you have
@@ -539,7 +567,7 @@ actions\.
 	* Specifies the name of the CICS System, or CICS System Group (up to 8 characters)
       to target\.
 
-*   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
+*   `--cics-hlq`  | `--cq` | `--cicshlq` *(string)*
 
 	* Specifies the High Level Qualifier (up to 35 characters) at which the CICS
       datasets can be found in the target environment\.
@@ -645,7 +673,7 @@ actions\.
       if a bundle is undeployed then the definition is removed\. The \-\-csd\-group
       and \-\-res\-group options are mutually exclusive\.
 
-*   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
+*   `--cics-hlq`  | `--cq` | `--cicshlq` *(string)*
 
 	* Specifies the High Level Qualifier (up to 35 characters) at which the CICS
       datasets can be found in the target environment\.

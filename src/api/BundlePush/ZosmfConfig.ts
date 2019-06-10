@@ -62,22 +62,28 @@ export class ZosmfConfig {
     ZosmfConfig.validateRequired(zosmfProfile);
   }
 
+  private static DEFAULT_ZOSMF_PORT = 443;
   private static validateRequired(zosmfProfile: IProfile) {
-    if (zosmfProfile.host === undefined) {
-      throw new Error("Required parameter --zosmf-host is not set.");
-    }
+    this.checkValueFound(zosmfProfile.host, "zosmf-host");
+    this.checkValueFound(zosmfProfile.user, "zosmf-user");
+    this.checkValueFound(zosmfProfile.password, "zosmf-password");
+
+    // Now implement the default value for the port
     if (zosmfProfile.port === undefined) {
-      throw new Error("Required parameter --zosmf-port is not set.");
+       zosmfProfile.port = ZosmfConfig.DEFAULT_ZOSMF_PORT;
+       zosmfProfile.P = ZosmfConfig.DEFAULT_ZOSMF_PORT;
     }
-    if (zosmfProfile.user === undefined) {
-      throw new Error("Required parameter --zosmf-user is not set.");
-    }
-    if (zosmfProfile.password === undefined) {
-      throw new Error("Required parameter --zosmf-password is not set.");
-    }
+
+    // And for reject-unauthorized
     if (zosmfProfile.rejectUnauthorized === undefined) {
-      throw new Error("Required parameter --zosmf-reject-unauthorized is not set.");
+       zosmfProfile.rejectUnauthorized = true;
+       zosmfProfile.ru = true;
     }
   }
 
+  private static checkValueFound(value: string, parm: string) {
+    if (value === undefined) {
+      throw new Error("Required parameter --" + parm  + " is not set.");
+    }
+  }
 }

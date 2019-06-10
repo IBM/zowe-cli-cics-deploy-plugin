@@ -70,16 +70,21 @@ export class SshConfig {
     SshConfig.validateRequired(sshProfile);
   }
 
+  private static DEFAULT_SSH_PORT = 22;
   private static validateRequired(sshProfile: IProfile) {
-    if (sshProfile.host === undefined) {
-      throw new Error("Required parameter --ssh-host is not set.");
-    }
+    this.checkValueFound(sshProfile.host, "ssh-host");
+    this.checkValueFound(sshProfile.user, "ssh-user");
+
+    // Now implement the default value for the port
     if (sshProfile.port === undefined) {
-      throw new Error("Required parameter --ssh-port is not set.");
-    }
-    if (sshProfile.user === undefined) {
-      throw new Error("Required parameter --ssh-user is not set.");
+       sshProfile.port = SshConfig.DEFAULT_SSH_PORT;
+       sshProfile.P = SshConfig.DEFAULT_SSH_PORT;
     }
   }
 
+  private static checkValueFound(value: string, parm: string) {
+    if (value === undefined) {
+      throw new Error("Required parameter --" + parm  + " is not set.");
+    }
+  }
 }

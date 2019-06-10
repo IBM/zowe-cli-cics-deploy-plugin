@@ -26,6 +26,7 @@ import { VerboseOption } from "../../shared/Verbose.option";
 import { OverwriteOption } from "./options/Overwrite.option";
 import { ZosmfOptions } from "./options/ZosmfOptions";
 import { SshOptions } from "./options/SshOptions";
+import { CmciOptions } from "./options/CmciOptions";
 
 /**
  * Imperative command for the Bundle sub-option of Push.
@@ -42,11 +43,12 @@ export const PushBundleDefinition: ICommandDefinition = {
                CicshlqOption, CpsmhlqOption, DescriptionOption, JobcardOption, TimeoutOption, TargetStateOption,
                VerboseOption, OverwriteOption ]
                .concat(ZosmfOptions.CICS_DEPLOY_ZOSMF_CONNECTION_OPTIONS)
-               .concat(SshOptions.CICS_DEPLOY_SSH_CONNECTION_OPTIONS),
+               .concat(SshOptions.CICS_DEPLOY_SSH_CONNECTION_OPTIONS)
+               .concat(CmciOptions.CICS_DEPLOY_CMCI_CONNECTION_OPTIONS),
     profile: { optional: ["cics-deploy", "zosmf", "ssh", "cics"] },
     examples: [
         {
-            description: "Push a CICS bundle from the working directory by using default cics-deploy, ssh and zosmf profiles",
+            description: "Push a CICS bundle from the working directory by using default cics-deploy, cics, ssh and zosmf profiles",
             options: `--name EXAMPLE --target-directory /u/example/bundles`
         },
         {
