@@ -1302,7 +1302,7 @@ describe("BundlePusher01", () => {
     it("should generate diagnostics even if deploy fails", async () => {
         cicsProfile = { host: "wibble", port: 443, user: "user", password: "thisIsntReal" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
-                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2055I"}] );
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2055I DFHRL2067W"}] );
         readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
           if (data.indexOf("cics.xml") > -1) {
             return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
@@ -1652,6 +1652,55 @@ describe("BundlePusher01", () => {
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
         expect(cmciSpy).toHaveBeenCalledTimes(2);
+    });
+
+    it("should not attempt to generate diagnostics for NODEJSAPPs if bundle does not install", async () => {
+        readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
+            if (data.indexOf("cics.xml") > -1) {
+              return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
+                     "<define name=\"test\" type=\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\" path=\"nodejsapps/test.nodejsapp\"></define>" +
+                     "</manifest>";
+            }
+          });
+        submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
+                  [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2055I"}] );
+        cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
+        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
+            if (nodejsData.name === "CICSRegion") {
+                return { response: {
+                    records: {
+                    cicsregion: {
+                        applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS"
+                    }
+                    }
+                }
+                };
+            } else if (nodejsData.name === "CICSNodejsapp") {
+                return { response: {
+                    records: {
+                      cicsnodejsapp: [{
+                        name: "name", pid: "22", enablestatus: "ENABLED", stderr: "/tmp/stderr", stdout: "/tmp/stdout", eyu_cicsname: "1"
+                      }]
+                    }
+                  }
+                };
+            } else {
+                return {};
+            }
+        });
+
+        const parms = getCommonParmsForPushTests();
+
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
+              "DFHDPLOY stopped processing for jobid UNKNOWN due to an error.", parms);
+
+        expect(consoleText).toContain("Gathering scope information");
+        expect(consoleText).toContain("Querying regions in scope over CMCI");
+        expect(consoleText).not.toContain("Querying NODEJSAPP resources over CMCI");
+        expect(consoleText).not.toContain("zowe cics get resource CICSNodejsapp");
+        expect(consoleText).not.toContain("An attempt to query the remote CICSplex using the cics plug-in has failed");
+        expect(consoleText).toContain("DFHDPLOY output implied the bundle failed to install.");
+        expect(cmciSpy).toHaveBeenCalledTimes(1);
     });
 });
 
