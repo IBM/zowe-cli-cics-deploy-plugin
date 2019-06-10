@@ -26,14 +26,17 @@ entries:
     url: cdp-Deploying-your-first-nodejs-app.html
     output: web
     folderitems:
+    - title: Preparing a z/OS PT image
+      url: cdp-Preparing-a-zOS-PT-image.html
+      output: web
+    - title: Provisioning a CICS region
+      url: cdp-Provisioning-a-CICS-region.html
+      output: web
     - title: Deploying your first Node.js app
       url: cdp-Deploying-your-first-nodejs-app.html
       output: web
     - title: Deploying using individual actions
       url: cdp-Deploying-using-individual-actions.html
-      output: web
-    - title: Provisioning a CICS region with z/OS PT
-      url: cdp-Provisioning-a-CICS-region-using-zospt.html
       output: web
 
   - title: Concepts
