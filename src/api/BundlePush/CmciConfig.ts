@@ -64,7 +64,7 @@ export class CmciConfig {
     }
   }
 
-  private static DEFAULT_CMCI_PORT = 443;
+  private static DEFAULT_CMCI_PORT = 1490;
   private static validateRequired(cmciProfile: IProfile) {
     this.checkValueFound(cmciProfile.host, "cics-host");
     this.checkValueFound(cmciProfile.user, "cics-user");

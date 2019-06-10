@@ -304,7 +304,7 @@ describe("BundlePusher01", () => {
         expect(sshSpy).toHaveBeenCalledTimes(1);
     });
     it("should implement --cics-* overrides" , async () => {
-        cicsProfile = { host: "wibble", port: 443, user: "user", password: "thisIsntReal",
+        cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal",
                         rejectUnauthorized: true, protocol: "http" };
         const parms = getCommonParmsForPushTests();
         parms.arguments.ch = "overrideHost";
@@ -336,19 +336,19 @@ describe("BundlePusher01", () => {
         expect(consoleText).toContain("PROTOCOL: https");
     });
     it("should complain if cics configured and cics-host notset" , async () => {
-        cicsProfile = { user: "user", port: 443, password: "thisIsntReal" };
+        cicsProfile = { user: "user", port: 1490, password: "thisIsntReal" };
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
                                    "Partial cics plug-in configuration encountered, --cics-host is not set.");
     });
     it("should complain if cics configured and cics-user notset" , async () => {
-        cicsProfile = { host: "wibble", port: 443, password: "thisIsntReal" };
+        cicsProfile = { host: "wibble", port: 1490, password: "thisIsntReal" };
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
                                    "Partial cics plug-in configuration encountered, --cics-user is not set.");
     });
     it("should complain if cics configured and cics-password notset" , async () => {
-        cicsProfile = { host: "wibble", port: 443, user: "user" };
+        cicsProfile = { host: "wibble", port: 1490, user: "user" };
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
                                    "Partial cics plug-in configuration encountered, --cics-password is not set.");
@@ -371,7 +371,7 @@ describe("BundlePusher01", () => {
         expect(cmciSpy).toHaveBeenCalledTimes(1);
         expect(consoleText).toContain("PROTOCOL: http\n");
         expect(consoleText).toContain("REJECT: true");
-        expect(consoleText).toContain("PORT: 443");
+        expect(consoleText).toContain("PORT: 1490");
     });
     it("should complain with mismatching zOSMF and SSH profile host names", async () => {
         const parms = getCommonParmsForPushTests();
@@ -392,14 +392,14 @@ describe("BundlePusher01", () => {
         expect(consoleText).not.toContain("WARNING: --ssh-host");
     });
     it("should complain with mismatching zOSMF and CICS profile host names", async () => {
-        cicsProfile = { host: "different", port: 443, user: "user", password: "thisIsntReal" };
+        cicsProfile = { host: "different", port: 1490, user: "user", password: "thisIsntReal" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed");
         expect(consoleText).toContain("WARNING: --cics-host value 'different' does not match --zosmf-host value 'wibble'.");
     });
     it("should not complain with matching zOSMF and CICS profile host names", async () => {
-        cicsProfile = { host: "wibble", port: 443, user: "user", password: "thisIsntReal" };
+        cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed");
@@ -433,7 +433,7 @@ describe("BundlePusher01", () => {
         expect(consoleText).not.toContain("WARNING: --ssh-user");
     });
     it("should complain with mismatching zOSMF and CICS profile user names", async () => {
-        cicsProfile = { host: "wibble", port: 443, user: "joe", password: "fakePassword" };
+        cicsProfile = { host: "wibble", port: 1490, user: "joe", password: "fakePassword" };
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed");
@@ -460,7 +460,7 @@ describe("BundlePusher01", () => {
         expect(consoleText).not.toContain("fakeSshKey");
     });
     it("should complain with mismatching zOSMF and cics profile passwords", async () => {
-        cicsProfile = { host: "wibble", port: 443, user: "user", password: "fakePassword2" };
+        cicsProfile = { host: "wibble", port: 1490, user: "user", password: "fakePassword2" };
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01",  false,
               "Different passwords are specified for the same user ID in the zosmf and cics configurations.");
@@ -1210,7 +1210,7 @@ describe("BundlePusher01", () => {
         expect(cmciSpy).toHaveBeenCalledTimes(0);
     });
     it("should cope with a NODEJSAPP in the bundle with a CICS profile specified", async () => {
-        cicsProfile = { host: "wibble", port: 443, user: "user", password: "thisIsntReal" };
+        cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
 
@@ -1229,7 +1229,7 @@ describe("BundlePusher01", () => {
         expect(cmciSpy).toHaveBeenCalledTimes(1);
     });
     it("should query scope even with no NODEJSAPPs", async () => {
-        cicsProfile = { host: "wibble", port: 443, user: "user", password: "thisIsntReal" };
+        cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
         readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
           if (data.indexOf("cics.xml") > -1) {
             return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
@@ -1271,7 +1271,7 @@ describe("BundlePusher01", () => {
         expect(cmciSpy).toHaveBeenCalledTimes(1);
     });
     it("should cope with a NODEJSAPP in the bundle with a CICS profile specified and --verbose", async () => {
-        cicsProfile = { host: "wibble", port: 443, user: "user", password: "thisIsntReal" };
+        cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
         const parms = getCommonParmsForPushTests();
@@ -1300,7 +1300,7 @@ describe("BundlePusher01", () => {
         expect(cmciSpy).toHaveBeenCalledTimes(1);
     });
     it("should generate diagnostics even if deploy fails", async () => {
-        cicsProfile = { host: "wibble", port: 443, user: "user", password: "thisIsntReal" };
+        cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2055I DFHRL2067W"}] );
         readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
@@ -1357,7 +1357,7 @@ describe("BundlePusher01", () => {
         expect(cmciSpy).toHaveBeenCalledTimes(2);
     });
     it("should tolerate a Node.js diagnostics generation failure - region", async () => {
-        cicsProfile = { host: "wibble", port: 443, user: "user", password: "thisIsntReal" };
+        cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
         cmciSpy.mockImplementationOnce(() => { throw new Error("Injected CMCI GET error"); });
@@ -1378,7 +1378,7 @@ describe("BundlePusher01", () => {
         expect(cmciSpy).toHaveBeenCalledTimes(1);
     });
     it("should tolerate a Node.js diagnostics generation failure - nodejsapp", async () => {
-        cicsProfile = { host: "wibble", port: 443, user: "user", password: "thisIsntReal" };
+        cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
         readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
@@ -1423,7 +1423,7 @@ describe("BundlePusher01", () => {
         expect(cmciSpy).toHaveBeenCalledTimes(2);
     });
     it("should tolerate a Node.js diagnostics generation failure - nodejsapp empty", async () => {
-        cicsProfile = { host: "wibble", port: 443, user: "user", password: "thisIsntReal" };
+        cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
         readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
@@ -1468,7 +1468,7 @@ describe("BundlePusher01", () => {
         expect(cmciSpy).toHaveBeenCalledTimes(2);
     });
     it("should generate Node.js diagnostics for 1 enabled NODEJSAPP", async () => {
-        cicsProfile = { host: "wibble", port: 443, user: "user", password: "thisIsntReal" };
+        cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
         readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
@@ -1525,7 +1525,7 @@ describe("BundlePusher01", () => {
         expect(cmciSpy).toHaveBeenCalledTimes(2);
     });
     it("should generate Node.js diagnostics for 1 disabled NODEJSAPP", async () => {
-        cicsProfile = { host: "wibble", port: 443, user: "user", password: "thisIsntReal" };
+        cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
         readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
@@ -1584,7 +1584,7 @@ describe("BundlePusher01", () => {
     it("should generate Node.js diagnostics for 2 NODEJSAPPs", async () => {
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
-        cicsProfile = { host: "wibble", port: 443, user: "user", password: "thisIsntReal" };
+        cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
         readSpy = jest.spyOn(fs, "readFileSync").mockImplementation((data: string) => {
           if (data.indexOf("cics.xml") > -1) {
             return "<manifest xmlns=\"http://www.ibm.com/xmlns/prod/cics/bundle\">" +
