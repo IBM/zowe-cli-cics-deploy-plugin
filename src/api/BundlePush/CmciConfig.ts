@@ -55,7 +55,7 @@ export class CmciConfig {
 
     if (params.arguments.cpr !== undefined) {
       cmciProfile.protocol = params.arguments.cpr;
-      cmciProfile.u = params.arguments.cpr;
+      cmciProfile.o = params.arguments.cpr;
     }
 
     // The CICS profile is optional, only validate it further if there is some content
