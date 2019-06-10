@@ -23,6 +23,7 @@ export const JobcardOption: ICommandOptionDefinition = {
                  "if you need to tailor the job card and you have not set the --cics-deploy-profile " +
                  "option. You can separate multiple lines of the jobcard with \\n.",
     defaultValue: "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT",
+    group: "cics-deploy Options",
     required: false
 };
 

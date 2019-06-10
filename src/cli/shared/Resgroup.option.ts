@@ -23,6 +23,7 @@ export const ResgroupOption: ICommandOptionDefinition = {
     type: "string",
     stringLengthRange: [1, MAX_LENGTH],
     conflictsWith: [ "csdgroup" ],
+    group: "cics-deploy Options",
     description: "Specifies the BAS resource group (up to 8 characters) for the bundle resource. If a bundle is " +
                  "deployed, a resource is defined in the BAS data repository. If a bundle is undeployed, the " +
                  "definition is removed. The --csd-group and --res-group options are " +

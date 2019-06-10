@@ -22,6 +22,7 @@ export const TimeoutOption: ICommandOptionDefinition = {
     aliases: ["to"],
     type: "number",
     numericValueRange: [1, MAX_VALUE],
+    group: "cics-deploy Options",
     description: "An optional numerical value that specifies the maximum amount of time in seconds " +
                  "(1 - " + MAX_VALUE + " inclusive) for the DFHDPLOY command to complete. If not specified " +
                  "DFHDPLOY will use its default of 300 seconds."

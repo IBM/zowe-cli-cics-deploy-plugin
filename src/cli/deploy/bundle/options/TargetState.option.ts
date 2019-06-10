@@ -25,6 +25,7 @@ export const TargetStateOption: ICommandOptionDefinition = {
       values: ["DISABLED", "ENABLED", "AVAILABLE"],
       caseSensitive: false
     },
+    group: "cics-deploy Options",
     description: "Specifies the target state for the deployed bundle."
 };
 

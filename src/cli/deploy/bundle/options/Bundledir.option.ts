@@ -23,6 +23,7 @@ export const BundledirOption: ICommandOptionDefinition = {
     type: "string",
     required: true,
     stringLengthRange: [1, MAX_LENGTH],
+    group: "cics-deploy Options",
     description: "Specifies the location of the CICS bundle (up to 255 characters) on zFS."
 };
 

@@ -88,7 +88,7 @@ const config: IImperativeConfig = {
                              "datasets can be found in the target environment.",
                 type: "string",
                 name: "cics-hlq",
-                aliases: ["ch", "cicshlq"],
+                aliases: ["cq", "cicshlq"],
                 stringLengthRange: [1, MAX_HLQ_LENGTH],
                 required: true
               },

@@ -21,6 +21,7 @@ export const VerboseOption: ICommandOptionDefinition = {
     type: "boolean",
     defaultValue: false,
     required: false,
+    group: "cics-deploy Options",
     description: "Enable or suppress verbose output from the DFHDPLOY tool."
 };
 

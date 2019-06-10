@@ -17,6 +17,9 @@ import { getResource, IResourceParms } from "@zowe/cics";
 import { BundleDeployer } from "../BundleDeploy/BundleDeployer";
 import { Bundle } from "../BundleContent/Bundle";
 import { SubtaskWithStatus } from "./SubtaskWithStatus";
+import { ZosmfConfig } from "./ZosmfConfig";
+import { SshConfig } from "./SshConfig";
+import { CmciConfig } from "./CmciConfig";
 
 
 /**
@@ -73,10 +76,21 @@ export class BundlePusher {
     }
 
     // Get the profiles
-    const zosMFProfile = this.getProfile("zosmf", true);
-    const sshProfile = this.getProfile("ssh", true);
-    const cicsProfile = this.getProfile("cics", false);
+    const zosMFProfile = this.getProfile("zosmf");
+    const sshProfile = this.getProfile("ssh");
+    let cicsProfile = this.getProfile("cics");
+    ZosmfConfig.mergeProfile(zosMFProfile, this.params);
+    SshConfig.mergeProfile(sshProfile, this.params);
+    CmciConfig.mergeProfile(cicsProfile, this.params);
+
+    // The cics profile is optional, detect whether it has been set (or constructed)
+    if (Object.keys(cicsProfile).length === 0) {
+       cicsProfile = undefined;
+    }
+
+    // Now detect any mismatches between the values from the profiles
     this.validateProfiles(zosMFProfile, sshProfile, cicsProfile);
+
 
     // Create a zOSMF session
     const zosMFSession = await this.createZosMFSession(zosMFProfile);
@@ -184,11 +198,11 @@ export class BundlePusher {
     }
   }
 
-  private getProfile(type: string, required: boolean): IProfile {
-    const profile =  this.params.profiles.get(type);
+  private getProfile(type: string): IProfile {
+    let profile =  this.params.profiles.get(type);
 
-    if (required && profile === undefined) {
-      throw new Error("No " + type + " profile found");
+    if (profile === undefined) {
+      profile = {};
     }
 
     return profile;
@@ -212,13 +226,13 @@ export class BundlePusher {
     let sameHostAndUser = true;
     if (zosmfProfile.host !== sshProfile.host) {
       sameHostAndUser = false;
-      this.issueWarning("ssh profile --host value '" + sshProfile.host + "' does not match zosmf value '" + zosmfProfile.host + "'.");
+      this.issueWarning("--ssh-host value '" + sshProfile.host + "' does not match --zosmf-host value '" + zosmfProfile.host + "'.");
     }
 
     // Do the required profiles share the same user name?
     if (zosmfProfile.user.toUpperCase() !== sshProfile.user.toUpperCase()) {
       sameHostAndUser = false;
-      this.issueWarning("ssh profile --user value '" + sshProfile.user + "' does not match zosmf value '" + zosmfProfile.user + "'.");
+      this.issueWarning("--ssh-user value '" + sshProfile.user + "' does not match --zosmf-user value '" + zosmfProfile.user + "'.");
     }
 
     // If the zoSMF user and host are the same then validate that the passwords are the same too.
@@ -227,7 +241,7 @@ export class BundlePusher {
     if (sameHostAndUser) {
       if (sshProfile.password !== undefined) {
         if (zosmfProfile.password !== sshProfile.password) {
-          throw new Error("Incompatible security credentials exist in the zosmf and ssh profiles.");
+          throw new Error("Different passwords are specified for the same user ID in the zosmf and ssh configurations.");
         }
       }
     }
@@ -237,23 +251,17 @@ export class BundlePusher {
       sameHostAndUser = true;
       if (zosmfProfile.host !== cicsProfile.host) {
         sameHostAndUser = false;
-        this.issueWarning("cics profile --host value '" + cicsProfile.host + "' does not match zosmf value '" + zosmfProfile.host + "'.");
+        this.issueWarning("--cics-host value '" + cicsProfile.host + "' does not match --zosmf-host value '" + zosmfProfile.host + "'.");
       }
       if (zosmfProfile.user.toUpperCase() !== cicsProfile.user.toUpperCase()) {
         sameHostAndUser = false;
-        this.issueWarning("cics profile --user value '" + cicsProfile.user + "' does not match zosmf value '" + zosmfProfile.user + "'.");
+        this.issueWarning("--cics-user value '" + cicsProfile.user + "' does not match --zosmf-user value '" + zosmfProfile.user + "'.");
       }
 
       if (sameHostAndUser) {
         if (zosmfProfile.password !== cicsProfile.password) {
-          throw new Error("Incompatible security credentials exist in the zosmf and cics profiles.");
+          throw new Error("Different passwords are specified for the same user ID in the zosmf and cics configurations.");
         }
-      }
-
-      // Do the cics-plexes match?
-      if (cicsProfile.cicsPlex !== undefined && this.params.arguments.cicsplex !== cicsProfile.cicsPlex) {
-        this.issueWarning("cics profile --cics-plex value '" + cicsProfile.cicsPlex +
-          "' does not match --cicsplex value '" + this.params.arguments.cicsplex + "'.");
       }
     }
   }

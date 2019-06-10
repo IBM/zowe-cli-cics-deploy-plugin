@@ -19,6 +19,7 @@ export const PortOption: ICommandOptionDefinition = {
     name: "port",
     aliases: ["p"],
     type: "string",
+    group: "cics-deploy Options",
     description: "The TCP/IP port number the Node.js application should use for clients to connect to. " +
                  "If a value is specified, it is set within the generated NODEJSAPP's profile. " +
                  "The Node.js application can reference this value by accessing the PORT environment variable, " +
