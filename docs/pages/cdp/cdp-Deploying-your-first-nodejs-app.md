@@ -15,9 +15,9 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
 
 ### Procedure
 
-1. Install the Zowe CLI and cics-deploy plug-in by following the steps in [Installing](cdp-Installing).
+1. Install the Zowe CLI and plug-ins by following the steps in [Installing](cdp-Installing).
 
-2. Create Zowe CLI profiles for z/OSMF, SSH, cics-deploy and CICS by following the steps in [Creating Zowe CLI profiles](cdp-Creating-Zowe-CLI-profiles).
+2. Create Zowe CLI profiles by following the steps in [Creating Zowe CLI profiles](cdp-Creating-Zowe-CLI-profiles).
 
 3. Create a Node.js application using the [Express Application Generator](https://expressjs.com/en/starter/generator.html):
 
