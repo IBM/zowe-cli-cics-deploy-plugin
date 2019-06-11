@@ -16,6 +16,7 @@ import { IHandlerParameters, Logger, ImperativeError, AbstractSession, ITaskWith
 import { ZosmfSession, SubmitJobs, List } from "@zowe/cli";
 import { ParmValidator } from "./ParmValidator";
 import * as path from "path";
+import { ZosmfConfig } from "../BundlePush/ZosmfConfig";
 
 /**
  * Class to represent a CICS Bundle Deployer.
@@ -224,11 +225,14 @@ export class BundleDeployer {
 
   private async createZosMFSession(): Promise<AbstractSession> {
     // Create a zosMF session
-    const zosmfProfile = this.params.profiles.get("zosmf");
+    let zosmfProfile = this.params.profiles.get("zosmf");
 
     if (zosmfProfile === undefined) {
-      throw new Error("No zosmf profile found");
+      zosmfProfile = {};
     }
+
+    ZosmfConfig.mergeProfile(zosmfProfile, this.params);
+
     return ZosmfSession.createBasicZosmfSession(zosmfProfile);
   }
 

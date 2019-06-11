@@ -24,7 +24,7 @@ import { TargetStateOption } from "../../deploy/bundle/options/TargetState.optio
 import { DescriptionOption } from "../../deploy/bundle/options/Description.option";
 import { VerboseOption } from "../../shared/Verbose.option";
 import { OverwriteOption } from "./options/Overwrite.option";
-import { ZosmfOptions } from "./options/ZosmfOptions";
+import { ZosmfOptions } from "../../shared/ZosmfOptions";
 import { SshOptions } from "./options/SshOptions";
 import { CmciOptions } from "./options/CmciOptions";
 
