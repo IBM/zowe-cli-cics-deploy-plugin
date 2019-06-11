@@ -11,7 +11,7 @@ toc: true
 
 The [z/OS Provisioning Toolkit](https://developer.ibm.com/mainframe/products/zospt/) (z/OS PT) provides a command line utility and z/OSMF workflows to provision CICS regions and other development environments on z/OS. This tutorial requires z/OS PT version 1.1.5 or above to be installed on z/OS, and your user `.profile` file on z/OS configured to run z/OS PT.
 
-z/OS PT uses configuration and files in an *image* as input to z/OSMF workflows to provision a CICS region. The image is typically prepared by a CICS system administrator. This tutorial provide two alternative approaches to preparing a z/OS PT image:
+z/OS PT uses configuration and files in an *image* as input to z/OSMF workflows to provision a CICS region. The image is typically prepared by a CICS system administrator. This tutorial provides two alternative approaches to preparing a z/OS PT image:
 
 * [Prepare a z/OS PT image for CICS](#prepare-a-zos-pt-image-for-cics) - no application is included in the image, and the `zosptfile` is kept separate to the application source.
 * [Prepare a z/OS PT image for CICS including an application](#prepare-a-zos-pt-image-for-cics-including-an-application) - the application is provisioned together with the CICS region, and the `zosptfile` is kept with the application source.
