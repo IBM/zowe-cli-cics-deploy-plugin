@@ -8,9 +8,17 @@ permalink: cdp-Creating-Zowe-CLI-profiles.html
 folder: cdp
 ---
 
+The Zowe CLI lets you define arguments and options for commands in multiple ways, with the following order of precedence:
+
+1. Command-line
+2. Environment variables
+3. Profiles
+
+This provides flexibility when you issue commands and write automation scripts. Further detail is in [Understanding command option order of precedence](https://zowe.github.io/docs-site/latest/user-guide/cli-configuringcli.html#understanding-command-option-order-of-precedence). Therefore by creating and setting options in the following profiles, they will become your defaults and do not need to repeat them on Zowe CLI command unless you wish to override them.
+
 ### Create a z/OSMF profile
 
-The z/OSMF profile defines the parameters needed to connect to the z/OSMF server on z/OS. You need to know the following from your z/OS system administrator:
+The z/OSMF profile defines the options needed to connect to the z/OSMF server on z/OS. You need to know the following from your z/OS system administrator:
 
 | Option | Description |
 | --- | --- |
@@ -41,7 +49,7 @@ zowe zosmf check status
 
 ### Create an SSH profile
 
-The SSH profile defines the parameters needed to connect to the SSH server on z/OS. You need to know the following from your z/OS system administrator:
+The SSH profile defines the options needed to connect to the SSH server on z/OS. You need to know the following from your z/OS system administrator:
 
 | Option | Description |
 | --- | --- |

@@ -17,7 +17,7 @@ Before you can provision a CICS region, a z/OS PT image needs to be created and 
 
 #### Procedure
 
-1. Install the Zowe CLI and plugins by following the steps in [Installing](cdp-Installing).
+1. Install the Zowe CLI and plug-ins by following the steps in [Installing](cdp-Installing).
 
 2. Create Zowe CLI profiles by following the steps in [Creating Zowe CLI profiles](cdp-Creating-Zowe-CLI-profiles).
 
