@@ -40,10 +40,10 @@ export const UndeployBundleDefinition: ICommandDefinition = {
                CicshlqOption, CpsmhlqOption, JobcardOption, TimeoutOption, TargetStateOption,
                VerboseOption]
              .concat(ZosmfOptions.CICS_DEPLOY_ZOSMF_CONNECTION_OPTIONS),
-    profile: { required: ["zosmf"], optional: ["cics-deploy"] },
+    profile: { optional: ["cics-deploy", "zosmf"] },
     examples: [
         {
-            description: "Undeploy a CICS bundle by using the default cics-deploy profile",
+            description: "Undeploy a CICS bundle by using the default cics-deploy and zosmf profiles",
             options: `--name EXAMPLE`
         },
         {

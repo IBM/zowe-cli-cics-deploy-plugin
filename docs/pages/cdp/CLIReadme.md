@@ -567,13 +567,13 @@ target group of CICS regions\.
 
 #### Profile Options
 
-*   `--zosmf-profile`  | `--zosmf-p` *(string)*
-
-	* The name of a (zosmf) profile to load for this command execution\.
-
 *   `--cics-deploy-profile`  | `--cics-deploy-p` *(string)*
 
 	* The name of a (cics\-deploy) profile to load for this command execution\.
+
+*   `--zosmf-profile`  | `--zosmf-p` *(string)*
+
+	* The name of a (zosmf) profile to load for this command execution\.
 
 ### Examples
 
