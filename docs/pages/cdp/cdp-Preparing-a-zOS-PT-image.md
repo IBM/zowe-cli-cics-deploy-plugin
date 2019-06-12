@@ -73,7 +73,7 @@ Run the following commands on your workstation.
    ```properties
    cat <<EOF >> $IMAGE_DIR/.zosattributes
    # Upload zosptfile files as UTF-8
-   *.profile UTF-8 IBM-1047
+   zosptfile UTF-8 UTF-8
    EOF
    ```
 
