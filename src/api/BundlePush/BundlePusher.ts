@@ -684,6 +684,11 @@ export class BundlePusher {
 
   private async generateNodejsSpecificDiagnostics(cicsSession: AbstractSession): Promise<string> {
     let msgBuffer = "";
+
+    if (cicsSession === undefined) {
+      return msgBuffer;
+    }
+
     try {
       // Attempt to gather additional Node.js specific information from CICS
       this.updateStatus("Gathering Node.js diagnostics");
