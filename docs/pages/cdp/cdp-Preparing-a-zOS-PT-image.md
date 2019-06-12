@@ -66,7 +66,7 @@ Run the following commands on your workstation.
    | `ENV DFH_NODE_HOME=` | Installation directory for Node.js runtime provided by IBM SDK for Node.js - z/OS. |
    | `COPY bundles bundles` | Create an empty `bundles` directory in the provisioned file system to contain CICS bundles. |
 
-6. Create a .zosattributes file to upload zosptfile files as UTF-8.
+6. Create a `.zosattributes` file to upload zosptfile files as UTF-8.
 
    This file is used by the `zowe zos-files upload dir-to-uss` command in the next step to exclude, convert, and tag files that are uploaded.
 
