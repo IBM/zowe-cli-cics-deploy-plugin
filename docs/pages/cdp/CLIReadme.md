@@ -577,8 +577,8 @@ target group of CICS regions\.
 
 ### Examples
 
-*  Undeploy a CICS bundle by using the default cics-deploy
-profile:
+*  Undeploy a CICS bundle by using the default cics-deploy and
+zosmf profiles:
 
       * `$  zowe cics-deploy undeploy bundle --name EXAMPLE`
 
