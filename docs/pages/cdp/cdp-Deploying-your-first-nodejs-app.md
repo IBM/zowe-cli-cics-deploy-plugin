@@ -81,7 +81,7 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
 
 7. View the application output files.
 
-   Use Zowe CLI commands or the Visual Studio Code extension to view the application output files, for example:
+   Use the [Zowe](https://marketplace.visualstudio.com/items?itemName=Zowe.vscode-extension-for-zowe) extension for Visual Studio Code or Zowe CLI commands to view the application output files. For example:
 
    ```text
    zowe zos-uss issue ssh "tail -f /u/cicprov/mnt/CICPY000/workdir/CICPY000/myexpressapp/Express/D20190612.T144609.stdout"
