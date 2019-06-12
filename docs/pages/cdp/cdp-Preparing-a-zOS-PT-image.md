@@ -30,7 +30,7 @@ Run the following commands on your workstation.
 
 3. Setup environment variables for the name of your image, and paths for the image source on the workstation and z/OS.
 
-   Update these value for to be suitable for your workstation and z/OS environments.
+   Update these values to be suitable for your workstation and z/OS environments.
 
    ```text
    export IMAGE="cics_55_nodejs"
@@ -66,7 +66,18 @@ Run the following commands on your workstation.
    | `ENV DFH_NODE_HOME=` | Installation directory for Node.js runtime provided by IBM SDK for Node.js - z/OS. |
    | `COPY bundles bundles` | Create an empty `bundles` directory in the provisioned file system to contain CICS bundles. |
 
-6. Upload the image source to z/OS.
+6. Create a `.zosattributes` file to upload zosptfile files as UTF-8.
+
+   This file is used by the `zowe zos-files upload dir-to-uss` command in the next step to exclude, convert, and tag files that are uploaded.
+
+   ```properties
+   cat <<EOF >> $IMAGE_DIR/.zosattributes
+   # Upload zosptfile files as UTF-8
+   zosptfile UTF-8 UTF-8
+   EOF
+   ```
+
+7. Upload the image source to z/OS.
 
    ```text
    zowe zos-uss issue ssh "rm -Rv *" --cwd "$IMAGE_DIR_ZOS"
@@ -74,7 +85,7 @@ Run the following commands on your workstation.
    zowe zos-files upload dir-to-uss "$IMAGE_DIR" "$IMAGE_DIR_ZOS" --recursive
    ```
 
-7. Build the image source on z/OS.
+8. Build the image source on z/OS.
 
    ```text
    zowe zos-uss issue ssh "zospt build -t $IMAGE ." --cwd "$IMAGE_DIR_ZOS"
@@ -96,7 +107,7 @@ Run the following commands on your workstation.
 
 2. Create Zowe CLI profiles for at least z/OSMF and SSH following the steps in [Creating Zowe CLI profiles](cdp-Creating-Zowe-CLI-profiles).
 
-3. Prepare your environment and Node.js application by following steps 1 thru 4 in tutorial [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app).
+3. Prepare your environment and Node.js application by following steps 1 to 4 in tutorial [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app).
 
 4. Setup environment variables for the name of your image, and paths for the image source on the workstation and z/OS.
 
