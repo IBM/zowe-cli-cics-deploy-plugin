@@ -21,6 +21,7 @@ import { JobcardOption } from "../../shared/Jobcard.option";
 import { TimeoutOption } from "../../shared/Timeout.option";
 import { TargetStateOption } from "./options/TargetState.option";
 import { VerboseOption } from "../../shared/Verbose.option";
+import { ZosmfOptions } from "../../shared/ZosmfOptions";
 
 /**
  * Imperative command for the Bundle sub-option of Deploy.
@@ -37,11 +38,12 @@ export const UndeployBundleDefinition: ICommandDefinition = {
     handler: __dirname + "/UndeployBundle.handler",
     options: [ NameOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption,
                CicshlqOption, CpsmhlqOption, JobcardOption, TimeoutOption, TargetStateOption,
-               VerboseOption],
-    profile: { required: ["zosmf"], optional: ["cics-deploy"] },
+               VerboseOption]
+             .concat(ZosmfOptions.CICS_DEPLOY_ZOSMF_CONNECTION_OPTIONS),
+    profile: { optional: ["cics-deploy", "zosmf"] },
     examples: [
         {
-            description: "Undeploy a CICS bundle by using the default cics-deploy profile",
+            description: "Undeploy a CICS bundle by using the default cics-deploy and zosmf profiles",
             options: `--name EXAMPLE`
         },
         {

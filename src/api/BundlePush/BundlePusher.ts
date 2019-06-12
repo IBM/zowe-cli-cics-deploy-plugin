@@ -676,7 +676,7 @@ export class BundlePusher {
 
     // Something went wrong, suggest a command that can be run to figure out more.
     if (msgBuffer === "") {
-      this.issueMessage("An attempt to query the remote CICSplex using the cics plug-in has failed.");
+      this.issueMessage("An attempt to query the remote CICSplex using the cics plug-in has failed.\n");
     }
 
     return msgBuffer;
@@ -782,8 +782,9 @@ export class BundlePusher {
     const applid = outputRecord.applid.padEnd(MAX_LENGTH, " ");
     const jobid = outputRecord.jobid.padEnd(MAX_LENGTH, " ");
     const jobname = outputRecord.jobname.padEnd(MAX_LENGTH, " ");
+    const sysname = outputRecord.mvssysname.padEnd(MAX_LENGTH, " ");
 
-    return msgBuffer + "   Applid: " + applid + "   jobname: " + jobname + "   jobid: " + jobid + "\n";
+    return msgBuffer + "   Applid: " + applid + "   jobname: " + jobname + "   jobid: " + jobid + "   sysname: " + sysname + "\n";
   }
 
   private reportNODEJSAPPData(outputRecord: any, msgBuffer: string) {
