@@ -424,7 +424,7 @@ describe("bundle Handler", () => {
         } catch (e) {
             err = e;
         }
-        expectImperativeErrorWithMessage(err, "No zosmf profile found");
+        expectImperativeErrorWithMessage(err, "Required parameter --zosmf-host is not set.");
     });
 });
 

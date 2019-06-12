@@ -102,15 +102,43 @@ the target group of CICS regions\.
 
 	* Enable or suppress verbose output from the DFHDPLOY tool\.
 
+#### Zosmf Connection Options
+
+*   `--zosmf-host`  | `--zh` *(string)*
+
+	* The z/OSMF server host name\.
+
+*   `--zosmf-port`  | `--zp` *(number)*
+
+	* The z/OSMF server port\.
+
+*   `--zosmf-user`  | `--zu` *(string)*
+
+	* Mainframe (z/OSMF) user name, which can be the same as your TSO login\.
+
+*   `--zosmf-password`  | `--zpw` *(string)*
+
+	* Mainframe (z/OSMF) password, which can be the same as your TSO password\.
+
+*   `--zosmf-reject-unauthorized`  | `--zru` *(boolean)*
+
+	* Reject self\-signed certificates\.
+
+*   `--zosmf-base-path`  | `--zbp` *(string)*
+
+	* The base path for your API mediation layer instance\. Specify this option to
+      prepend the base path to all z/OSMF resources when making REST requests\. Do not
+      specify this option if you are not using an API mediation layer\.
+
 #### Profile Options
-
-*   `--zosmf-profile`  | `--zosmf-p` *(string)*
-
-	* The name of a (zosmf) profile to load for this command execution\.
 
 *   `--cics-deploy-profile`  | `--cics-deploy-p` *(string)*
 
 	* The name of a (cics\-deploy) profile to load for this command execution\.
+
+*   `--zosmf-profile`  | `--zosmf-p` *(string)*
+
+	* The name of a (zosmf) profile to load for this command execution\.
 
 ### Examples
 
@@ -509,15 +537,43 @@ target group of CICS regions\.
 
 	* Enable or suppress verbose output from the DFHDPLOY tool\.
 
+#### Zosmf Connection Options
+
+*   `--zosmf-host`  | `--zh` *(string)*
+
+	* The z/OSMF server host name\.
+
+*   `--zosmf-port`  | `--zp` *(number)*
+
+	* The z/OSMF server port\.
+
+*   `--zosmf-user`  | `--zu` *(string)*
+
+	* Mainframe (z/OSMF) user name, which can be the same as your TSO login\.
+
+*   `--zosmf-password`  | `--zpw` *(string)*
+
+	* Mainframe (z/OSMF) password, which can be the same as your TSO password\.
+
+*   `--zosmf-reject-unauthorized`  | `--zru` *(boolean)*
+
+	* Reject self\-signed certificates\.
+
+*   `--zosmf-base-path`  | `--zbp` *(string)*
+
+	* The base path for your API mediation layer instance\. Specify this option to
+      prepend the base path to all z/OSMF resources when making REST requests\. Do not
+      specify this option if you are not using an API mediation layer\.
+
 #### Profile Options
-
-*   `--zosmf-profile`  | `--zosmf-p` *(string)*
-
-	* The name of a (zosmf) profile to load for this command execution\.
 
 *   `--cics-deploy-profile`  | `--cics-deploy-p` *(string)*
 
 	* The name of a (cics\-deploy) profile to load for this command execution\.
+
+*   `--zosmf-profile`  | `--zosmf-p` *(string)*
+
+	* The name of a (zosmf) profile to load for this command execution\.
 
 ### Examples
 

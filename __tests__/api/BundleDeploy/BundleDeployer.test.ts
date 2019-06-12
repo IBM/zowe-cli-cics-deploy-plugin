@@ -23,7 +23,7 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     },
     profiles: {
         get: (type: string) => {
-            return {};
+            return { host: "testname", user: "testuser", password: "testpwd" };
         }
     } as any,
     response: {
@@ -604,6 +604,12 @@ function setCommonParmsForUndeployTests(parms: IHandlerParameters) {
   parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT";
   parms.arguments.targetstate = "DISCARDED";
   parms.arguments.description = undefined;
+  parms.arguments.zh = undefined;
+  parms.arguments.zp = undefined;
+  parms.arguments.zu = undefined;
+  parms.arguments.zpw = undefined;
+  parms.arguments.zru = undefined;
+  parms.arguments.zbp = undefined;
 }
 
 async function testDeployJCL(parms: IHandlerParameters) {
