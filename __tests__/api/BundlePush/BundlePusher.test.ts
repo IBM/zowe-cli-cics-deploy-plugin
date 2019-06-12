@@ -1242,7 +1242,7 @@ describe("BundlePusher01", () => {
             return { response: {
                 records: {
                   cicsregion: {
-                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS"
+                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS", mvssysname: "ABCD"
                   }
                 }
               }
@@ -1256,7 +1256,7 @@ describe("BundlePusher01", () => {
         await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
         expect(consoleText).toContain("Regions in scope '12345678' of CICSplex '12345678':");
-        expect(consoleText).toContain("Applid: ABCDEFG    jobname: MYCICS     jobid: JOB12345");
+        expect(consoleText).toContain("Applid: ABCDEFG    jobname: MYCICS     jobid: JOB12345   sysname: ABCD");
         expect(consoleText).not.toContain("NODEJSAPP");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
@@ -1315,7 +1315,7 @@ describe("BundlePusher01", () => {
             return { response: {
                 records: {
                   cicsregion: {
-                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS"
+                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS", mvssysname: "ABCD"
                   }
                 }
               }
@@ -1341,7 +1341,7 @@ describe("BundlePusher01", () => {
         expect(consoleText).toContain("Gathering scope information");
         expect(consoleText).toContain("Querying regions in scope over CMCI");
         expect(consoleText).toContain("Regions in scope '12345678' of CICSplex '12345678':");
-        expect(consoleText).toContain("Applid: ABCDEFG    jobname: MYCICS     jobid: JOB12345");
+        expect(consoleText).toContain("Applid: ABCDEFG    jobname: MYCICS     jobid: JOB12345   sysname: ABCD");
         expect(consoleText).toContain("Querying NODEJSAPP resources over CMCI");
         expect(consoleText).toContain("zowe cics get resource CICSNodejsapp --region-name 12345678 --criteria \"BUNDLE=12345678\" --cics-plex 12345678");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -1396,7 +1396,7 @@ describe("BundlePusher01", () => {
             return { response: {
                 records: {
                   cicsregion: {
-                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS"
+                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS", mvssysname: "ABCD"
                   }
                 }
               }
@@ -1441,7 +1441,7 @@ describe("BundlePusher01", () => {
             return { response: {
                 records: {
                   cicsregion: {
-                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS"
+                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS", mvssysname: "ABCD"
                   }
                 }
               }
@@ -1493,7 +1493,7 @@ describe("BundlePusher01", () => {
             return { response: {
                 records: {
                   cicsregion: {
-                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS"
+                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS", mvssysname: "ABCD"
                   }
                 }
               }
@@ -1550,7 +1550,7 @@ describe("BundlePusher01", () => {
             return { response: {
                 records: {
                   cicsregion: {
-                    applid: "ABCD", jobid: "JOB12345", jobname: "MYCICS"
+                    applid: "ABCD", jobid: "JOB12345", jobname: "MYCICS", mvssysname: "ABCD"
                   }
                 }
               }
@@ -1564,7 +1564,7 @@ describe("BundlePusher01", () => {
         await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
         expect(consoleText).toContain("Regions in scope '12345678' of CICSplex '12345678':");
-        expect(consoleText).toContain("Applid: ABCD       jobname: MYCICS     jobid: JOB12345");
+        expect(consoleText).toContain("Applid: ABCD       jobname: MYCICS     jobid: JOB12345   sysname: ABCD");
         expect(consoleText).toContain("NODEJSAPP resources for bundle '12345678' in scope '12345678':");
         expect(consoleText).toContain("NODEJSAPP resource 'name' is in 'DISABLED' state in region '1' with process id '0'.");
         expect(consoleText).toContain("stdout: <not available>");
@@ -1614,10 +1614,10 @@ describe("BundlePusher01", () => {
                 records: {
                   cicsregion: [
                     {
-                      applid: "ABCD", jobid: "JOB12345", jobname: "MYCICS"
+                      applid: "ABCD", jobid: "JOB12345", jobname: "MYCICS", mvssysname: "ABCD"
                     },
                     {
-                      applid: "EFGHIHJK", jobid: "JOB54321", jobname: "MYCICS2"
+                      applid: "EFGHIHJK", jobid: "JOB54321", jobname: "MYCICS2", mvssysname: "EFGH"
                     },
                   ]
                 }
@@ -1632,8 +1632,8 @@ describe("BundlePusher01", () => {
         await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
         expect(consoleText).toContain("Regions in scope '12345678' of CICSplex '12345678':");
-        expect(consoleText).toContain("Applid: ABCD       jobname: MYCICS     jobid: JOB12345");
-        expect(consoleText).toContain("Applid: EFGHIHJK   jobname: MYCICS2    jobid: JOB54321");
+        expect(consoleText).toContain("Applid: ABCD       jobname: MYCICS     jobid: JOB12345   sysname: ABCD");
+        expect(consoleText).toContain("Applid: EFGHIHJK   jobname: MYCICS2    jobid: JOB54321   sysname: EFGH");
         expect(consoleText).toContain("NODEJSAPP resources for bundle '12345678' in scope '12345678':");
         expect(consoleText).toContain("NODEJSAPP resource 'name' is in 'ENABLED' state in region '1' with process id '22'.");
         expect(consoleText).toContain("stdout: /tmp/stdout");
@@ -1670,7 +1670,7 @@ describe("BundlePusher01", () => {
                 return { response: {
                     records: {
                     cicsregion: {
-                        applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS"
+                        applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS", mvssysname: "ABCD"
                     }
                     }
                 }
