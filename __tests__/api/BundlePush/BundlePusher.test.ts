@@ -1242,7 +1242,7 @@ describe("BundlePusher01", () => {
             return { response: {
                 records: {
                   cicsregion: {
-                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS"
+                    applid: "ABCDEFG", jobid: "JOB12345", jobname: "MYCICS", sysname: "ABCD"
                   }
                 }
               }
@@ -1256,7 +1256,7 @@ describe("BundlePusher01", () => {
         await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
         expect(consoleText).toContain("Regions in scope '12345678' of CICSplex '12345678':");
-        expect(consoleText).toContain("Applid: ABCDEFG    jobname: MYCICS     jobid: JOB12345");
+        expect(consoleText).toContain("Applid: ABCDEFG    jobname: MYCICS     jobid: JOB12345   sysname: ABCD");
         expect(consoleText).not.toContain("NODEJSAPP");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
