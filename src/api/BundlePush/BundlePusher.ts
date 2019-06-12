@@ -13,7 +13,7 @@
 
 import { IHandlerParameters, AbstractSession, ITaskWithStatus, TaskStage, TaskProgress, Logger, IProfile, Session } from "@brightside/imperative";
 import { List, ZosmfSession, SshSession, Shell, Upload, IUploadOptions, ZosFilesAttributes, Create } from "@brightside/core";
-import { getResource, IResourceParms } from "@zowe/cics";
+import { getResource, IResourceParms } from "@brightside/cics";
 import { BundleDeployer } from "../BundleDeploy/BundleDeployer";
 import { Bundle } from "../BundleContent/Bundle";
 import { SubtaskWithStatus } from "./SubtaskWithStatus";
@@ -289,7 +289,7 @@ export class BundlePusher {
       return undefined;
     }
 
-    // At time of writing, the CicsSession object in the @zowe/cics project isn't
+    // At time of writing, the CicsSession object in the @brightside/cics project isn't
     // accessible, so the following code is copied out of CicsSession.createBasicCicsSession().
     try {
       return new Session({

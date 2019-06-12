@@ -11,7 +11,7 @@
 
 import { BundlePusher } from "../../../src/api/BundlePush/BundlePusher";
 import { IHandlerParameters, ImperativeError, IImperativeError, IProfile, Session } from "@brightside/imperative";
-import * as cmci from "@zowe/cics";
+import * as cmci from "@brightside/cics";
 import * as PushBundleDefinition from "../../../src/cli/push/bundle/PushBundle.definition";
 import * as fse from "fs-extra";
 import * as fs from "fs";

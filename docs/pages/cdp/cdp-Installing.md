@@ -39,7 +39,7 @@ toc: false
 4. Install the cics plugin: 
 
     ```console
-    zowe plugins install @zowe/cics
+    zowe plugins install @brightside/cics
     ```
 
 5. Verify the plug-ins are installed:
