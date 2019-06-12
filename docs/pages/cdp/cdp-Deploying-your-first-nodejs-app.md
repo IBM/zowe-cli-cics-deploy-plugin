@@ -59,11 +59,12 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
    zowe cics-deploy push bundle --name Express --overwrite
    ```
 
-   A progress bar is shown with status messages as the CICS bundle is deployed and the application is started. This can take a few minutes. The command will summarise the deployment, including the Node.js runtime `.stdout` and `.stderr` file names that the application will write output to:
+   A progress bar is shown with status messages as the CICS bundle is deployed and the application is started. This can take a few minutes. The command will summarize the deployment, including the Node.js runtime `.stdout` and `.stderr` file names that the application will write output to:
 
    <pre class="messageText">
    Regions in scope 'CICPY000' of CICSplex 'ZOSPTINT':
-   Applid: CICPY000   jobname: CICPY000   jobid: STC35860   sysname: MV2C</br>
+   Applid: CICPY000   jobname: CICPY000   jobid: STC35860   sysname: MV2C
+
    NODEJSAPP resources for bundle 'Express' in scope 'CICPY000':
    NODEJSAPP resource 'Express' is in 'ENABLED' state in region 'CICPY000' with process id '16844444'.
    stdout: /u/cicprov/mnt/CICPY000/workdir/CICPY000/myexpressapp/Express/D20190612.T144609.stdout
