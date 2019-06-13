@@ -231,11 +231,12 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES') {
                     echo "Install Zowe CLI globaly"
                     sh "rm -f .npmrc"
-                    sh("npm set registry https://registry.npmjs.org")
-                    sh("npm set @brightside:registry https://api.bintray.com/npm/ca/brightside/")
+                    sh "npm set registry https://registry.npmjs.org"
+                    sh "echo @brightside:registry=https://api.bintray.com/npm/ca/brightside/ >> .npmrc"
+                    sh "echo @brightside:always-auth=false >> .npmrc"
 
-                    sh("npm install -g @brightside/core@lts-incremental")
-                    sh("zowe --version")
+                    sh "npm install -g @brightside/core@lts-incremental"
+                    sh "zowe --version"
                 }
             }
         }
