@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandDefinition } from "@zowe/imperative";
+import { ICommandDefinition } from "@brightside/imperative";
 import { NameOption } from "../../shared/Name.option";
 import { BundledirOption } from "./options/Bundledir.option";
 import { CicsplexOption } from "../../shared/Cicsplex.option";

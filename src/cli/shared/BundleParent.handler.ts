@@ -9,7 +9,7 @@
 *
 */
 
-import { Logger, ICommandHandler, IHandlerParameters, ICommandArguments, ImperativeError, Imperative } from "@zowe/imperative";
+import { Logger, ICommandHandler, IHandlerParameters, ICommandArguments, ImperativeError, Imperative } from "@brightside/imperative";
 
 /**
  * Generic Command handler for a CICS bundle action

@@ -32,11 +32,11 @@
   },
   "dependencies": {
     "fast-xml-parser": "^3.12.16",
-    "@zowe/cics": "^2.0.1"
+    "@brightside/cics": "^1.1.1"
   },
   "devDependencies": {
-    "@zowe/cli": "^5.5.0",
-    "@zowe/imperative": "^4.1.2",
+    "@brightside/core": "^2.28.1",
+    "@brightside/imperative": "^2.4.2",
     "@types/fs-extra": "^5.0.5",
     "@types/jest": "^22.2.3",
     "@types/node": "^8.0.28",
@@ -67,8 +67,8 @@
     "uuid": "^3.3.2"
   },
   "peerDependencies": {
-    "@zowe/cli": "^5.5.0",
-    "@zowe/imperative": "^4.1.2"
+    "@brightside/core": "^2.28.1",
+    "@brightside/imperative": "^2.4.2"
   },
   "jest": {
     "modulePathIgnorePatterns": [

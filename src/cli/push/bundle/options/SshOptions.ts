@@ -9,8 +9,8 @@
 *
 */
 
-import { ICommandOptionDefinition } from "@zowe/imperative";
-import { SshSession } from "@zowe/cli";
+import { ICommandOptionDefinition } from "@brightside/imperative";
+import { SshSession } from "@brightside/core";
 
 /**
  * ssh command line options, derived from zowe-cli equivalents

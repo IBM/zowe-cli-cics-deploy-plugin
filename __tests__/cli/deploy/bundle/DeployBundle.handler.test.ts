@@ -10,7 +10,7 @@
 *
 */
 
-import {IHandlerParameters, ImperativeError} from "@zowe/imperative";
+import {IHandlerParameters, ImperativeError} from "@brightside/imperative";
 import * as DeployBundleDefinition from "../../../../src/cli/deploy/bundle/DeployBundle.definition";
 import * as DeployBundleHandler from "../../../../src/cli/deploy/bundle/DeployBundle.handler";
 

@@ -10,8 +10,8 @@
 *
 */
 
-import {CheckStatus, ZosmfSession} from "@zowe/cli";
-import {IHandlerParameters, Imperative, ImperativeError} from "@zowe/imperative";
+import {CheckStatus, ZosmfSession} from "@brightside/core";
+import {IHandlerParameters, Imperative, ImperativeError} from "@brightside/imperative";
 import * as GenerateBundleDefinition from "../../../../src/cli/generate/bundle/GenerateBundle.definition";
 import * as GenerateBundleHandler from "../../../../src/cli/generate/bundle/GenerateBundle.handler";
 import * as fs from "fs";

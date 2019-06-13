@@ -10,7 +10,7 @@
 *
 */
 
-import {IHandlerParameters, ImperativeError} from "@zowe/imperative";
+import {IHandlerParameters, ImperativeError} from "@brightside/imperative";
 import * as PushBundleDefinition from "../../../../src/cli/push/bundle/PushBundle.definition";
 import * as PushBundleHandler from "../../../../src/cli/push/bundle/PushBundle.handler";
 

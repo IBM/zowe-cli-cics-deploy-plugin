@@ -11,7 +11,7 @@
 
 "use strict";
 
-import { IHandlerParameters, Logger } from "@zowe/imperative";
+import { IHandlerParameters, Logger } from "@brightside/imperative";
 
 export class ParmValidator {
 
