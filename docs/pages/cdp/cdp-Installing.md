@@ -2,7 +2,7 @@
 title: Installing
 tags: [getting_started]
 keywords:
-summary: "To install the Zowe CLI and cics-deploy plug-in, perform the following steps. For clarity, these components are installed on your local workstation, not on z/OS."
+summary: "To install the Zowe CLI and cics-deploy plug-in, perform the following steps on your local workstation."
 sidebar: cdp_sidebar
 permalink: cdp-Installing.html
 folder: cdp

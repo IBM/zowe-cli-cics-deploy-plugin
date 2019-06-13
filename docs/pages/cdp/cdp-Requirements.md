@@ -25,4 +25,4 @@ The [DFHDPLOY](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0/applicat
 
 ### CICSPlex System Manager
 
-CICSPlex System Manager \(CPSM\) is provided with CICS and is required to run the DFHDPLOY utility, and for the [`zowe cics-deploy push bundle`](cdp-CLIReadMe#push--p) to query application resources. CPSM should be connected to the CICS regions into which the application is being installed.
+CICSPlex System Manager \(CPSM\) is provided with CICS and is required to run the DFHDPLOY utility, and for the [`zowe cics-deploy push bundle`](cdp-CLIReadMe#push--p) command to query application resources via the CICS Management Client Interface (CMCI). CPSM should be connected to the CICS regions into which the application is being installed.
