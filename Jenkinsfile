@@ -89,7 +89,7 @@ def PRODUCT_NAME = "zowe-cli-cics-deploy-plugin"
 /**
  * This is where the Zowe project needs to be installed
  */
-def ZOWE_CLI_INSTALL_DIR = "/.npm-global/lib/node_modules/@zowee/cli"
+def ZOWE_CLI_INSTALL_DIR = "/.npm-global/lib/node_modules/@brightside/core"
 
 def ARTIFACTORY_CREDENTIALS_ID = "c8e3aa62-5eef-4e6b-8a3f-aa1006a7ef01"
 
@@ -232,7 +232,7 @@ pipeline {
                     echo "Install Zowe CLI globaly"
                     sh "rm -f .npmrc"
                     sh("npm set registry https://registry.npmjs.org")
-                    //sh("npm set @brightside:registry https://api.bintray.com/npm/ca/brightside/")
+                    sh("npm set @brightside:registry https://api.bintray.com/npm/ca/brightside/")
 
                     sh("npm install -g @brightside/core@lts-incremental")
                     sh("zowe --version")
@@ -620,8 +620,8 @@ pipeline {
                         sh "rm -f .npmrc"
                         sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
                         sh "echo registry=$TEST_NPM_REGISTRY >> .npmrc"
-                        sh "echo @zowe:registry=https://registry.npmjs.org >> .npmrc"
-                        sh "echo @zowe:always-auth=false >> .npmrc"
+                        sh "echo @brightside:registry=https://api.bintray.com/npm/ca/brightside/ >> .npmrc"
+                        sh "echo @brightside:always-auth=false >> .npmrc"
                         
                         script {
                             if (BRANCH_NAME == MASTER_BRANCH) {
