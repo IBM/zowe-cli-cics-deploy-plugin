@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "fast-xml-parser": "^3.12.16",
-    "@brightside/cics": "^1.0.1"
+    "@brightside/cics": "^1.1.1"
   },
   "devDependencies": {
     "@brightside/core": "^2.28.1",
