@@ -9,7 +9,7 @@
 *
 */
 import { SubtaskWithStatus } from "../../../src/api/BundlePush/SubtaskWithStatus";
-import { TaskStage, ITaskWithStatus, TaskProgress } from "@zowe/imperative";
+import { TaskStage, ITaskWithStatus, TaskProgress } from "@brightside/imperative";
 
 
 let parentTask: ITaskWithStatus;

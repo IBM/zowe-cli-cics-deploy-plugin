@@ -8,7 +8,7 @@
 * Copyright IBM Corp, 2019
 *
 */
-import { ITaskWithStatus, TaskProgress, TaskStage, ImperativeExpect, ImperativeError, Logger} from "@zowe/imperative";
+import { ITaskWithStatus, TaskProgress, TaskStage, ImperativeExpect, ImperativeError, Logger} from "@brightside/imperative";
 
 
 export class SubtaskWithStatus {

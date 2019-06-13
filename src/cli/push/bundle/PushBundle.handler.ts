@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandHandler, IHandlerParameters } from "@zowe/imperative";
+import { ICommandHandler, IHandlerParameters } from "@brightside/imperative";
 import { BundleParentHandler } from "../../shared/BundleParent.handler";
 import { BundlePusher } from "../../../api/BundlePush/BundlePusher";
 

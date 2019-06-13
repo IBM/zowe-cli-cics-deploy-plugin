@@ -10,7 +10,7 @@
 */
 
 import {ISetupEnvironmentParms} from "./doc/parms/ISetupEnvironmentParms";
-import {ImperativeError, ImperativeExpect, IO, Logger, TextUtils} from "@zowe/imperative";
+import {ImperativeError, ImperativeExpect, IO, Logger, TextUtils} from "@brightside/imperative";
 import * as nodePath from "path";
 import {mkdirpSync} from "fs-extra";
 import {ITestEnvironment} from "./doc/response/ITestEnvironment";

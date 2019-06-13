@@ -10,8 +10,8 @@
 *
 */
 
-import {CheckStatus, ZosmfSession} from "@zowe/cli";
-import {IHandlerParameters, Imperative, ImperativeError} from "@zowe/imperative";
+import {CheckStatus, ZosmfSession} from "@brightside/core";
+import {IHandlerParameters, Imperative, ImperativeError} from "@brightside/imperative";
 import * as UndeployBundleDefinition from "../../../../src/cli/undeploy/bundle/UndeployBundle.definition";
 import * as UndeployBundleHandler from "../../../../src/cli/undeploy/bundle/UndeployBundle.handler";
 import * as fs from "fs";

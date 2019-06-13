@@ -9,7 +9,7 @@
 *
 */
 
-import { Logger, ICommandHandler, IHandlerParameters, ICommandArguments, ImperativeError } from "@zowe/imperative";
+import { Logger, ICommandHandler, IHandlerParameters, ICommandArguments, ImperativeError } from "@brightside/imperative";
 import { AutoBundler } from "../../../api/BundleContent/AutoBundler";
 import { BundleParentHandler } from "../../shared/BundleParent.handler";
 

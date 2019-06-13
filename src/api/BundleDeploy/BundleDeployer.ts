@@ -12,8 +12,8 @@
 "use strict";
 
 import { IHandlerParameters, Logger, ImperativeError, AbstractSession, ITaskWithStatus,
-         TaskStage , TaskProgress} from "@zowe/imperative";
-import { ZosmfSession, SubmitJobs, List } from "@zowe/cli";
+         TaskStage , TaskProgress} from "@brightside/imperative";
+import { ZosmfSession, SubmitJobs, List } from "@brightside/core";
 import { ParmValidator } from "./ParmValidator";
 import * as path from "path";
 import { ZosmfConfig } from "../BundlePush/ZosmfConfig";
