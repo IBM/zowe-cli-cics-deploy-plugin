@@ -2,13 +2,13 @@
 title: Zowe CLI CICS deploy plug-in
 tags: [getting_started]
 keywords:
-summary: "The Zowe command line interface (CLI) provides a simple and streamlined way to interact with IBM z/OS. The cics-deploy plug-in extends the Zowe CLI to deploy applications developed on a workstation to IBM CICS Transaction Server for z/OS (CICS)."
+summary: "The cics-deploy plug-in extends the Zowe command line interface (CLI) to deploy applications developed on a workstation to IBM CICS Transaction Server for z/OS (CICS). The Zowe CLI and plugins provide a simple and streamlined way to interact with IBM z/OS."
 sidebar: cdp_sidebar
 permalink: index.html
 folder: cdp
 ---
 
-It provides a CICS deployment workflow for developers and CI/CD automation pipelines similar to that experienced when deploying applications to cloud environments.
+The cics-deploy plugin provides a CICS deployment workflow for developers and CI/CD automation pipelines similar to that experienced when deploying applications to cloud environments.
 
 Before you start, and especially if you are not familiar with the world of z/OS, Zowe, and CICS, it's a good idea to read about some of the key concepts, which include [Zowe](cdp-zowe-and-cli), [Zowe CLI profiles](cdp-zowe-profiles) and [CICS bundles](cdp-cics-bundles). If you're keen to get going quickly, you can jump right in and follow along with our tutorial on [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app).
 
