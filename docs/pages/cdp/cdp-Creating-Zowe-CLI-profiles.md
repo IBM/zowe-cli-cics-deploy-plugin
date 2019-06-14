@@ -58,7 +58,7 @@ The SSH profile defines the options needed to connect to the SSH server on z/OS.
 | user | User ID to identify yourself to the SSH server. |
 | password | Password to identify yourself to the SSH server. |
 
-{% include note.html content="It is recommended that you use the same user ID and host name to connect with SSH as is used in the z/OSMF profile, failure to do so results in undefined behaviour. When an SSH connection is made, the user's remote [z/OS shell .profile](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.bpxa400/cupro.htm) is used to set-up the shell environment and variables. This remote .profile should include any necessary environment variables and npm configuration required to run `npm install`. This is descibed in [Installing and configuring](https://www.ibm.com/support/knowledgecenter/SSTRRS_6.0.0/com.ibm.nodejs.zos.v6.doc/install.htm)." %}
+{% include note.html content="It is recommended that you use the same user ID and host name to connect with SSH as is used in the z/OSMF profile, failure to do so results in undefined behaviour. When an SSH connection is made, the user's remote [z/OS shell .profile](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.bpxa400/cupro.htm) is used to set-up the shell environment and variables. This remote .profile should include any necessary environment variables and npm configuration required to run `npm install`. This is described in [Installing and configuring](https://www.ibm.com/support/knowledgecenter/SSTRRS_6.0.0/com.ibm.nodejs.zos.v6.doc/install.htm)." %}
 
 For example, to create an SSH profile:
 
@@ -95,7 +95,7 @@ The cics-deploy profile identifies the CICS environment for deployment. An examp
 For example to create a cics-deploy profile:
 
 ```console
-zowe profiles create cics-deploy-profile cics --cicsplex PLEX1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --scope TESTGRP1 --csd-group BUNDGRP1 --target-directory /var/cicsts/bundles --overwrite
+zowe profiles create cics-deploy-profile cics --cicsplex PLEX1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --scope CICPY000 --csd-group BUNDGRP1 --target-directory /var/cicsts/bundles --overwrite
 ```
 
 For help on using the options:
@@ -113,6 +113,7 @@ The CICS profile identifies the connection to the CICS Web User Interface (WUI) 
 | Option | Description |
 | --- | --- |
 | cics-plex | CPSM CICSplex name. This will typically be set to the same as cicsplex in the cics-deploy profile. |
+| region-name | The name of the CICS region name to interact with. |
 | protocol | HTTP or HTTPS to use to connect to the CICS WUI server. |
 | host | Host name of the CICS WUI server. |
 | port | Port number of the CICS WUI server. |
@@ -122,7 +123,7 @@ The CICS profile identifies the connection to the CICS Web User Interface (WUI) 
 For example, to create an SSH profile:
 
 ```console
-zowe profiles create cics-profile cics --cics-plex PLEX1 --protocol https --host myzos.example.com --port 1490 --user myuserid --password mypassword --overwrite
+zowe profiles create cics-profile cics --cics-plex PLEX1 --region-name CICPY000 --protocol https --host myzos.example.com --port 1490 --user myuserid --password mypassword --overwrite
 ```
 
 For help on using the options:
