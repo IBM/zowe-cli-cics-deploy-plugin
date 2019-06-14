@@ -1,5 +1,5 @@
 ---
-title: Preparing a z/OS PT image
+title: Preparing a z/OS Provisioning Toolkit image
 tags: [tutorial]
 keywords:
 summary: "The following steps take you through preparing a z/OS Provisioning Toolkit image for CICS, and optionally including an application in the image."

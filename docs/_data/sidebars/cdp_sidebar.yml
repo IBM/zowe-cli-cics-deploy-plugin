@@ -23,7 +23,7 @@ entries:
       output: web
 
   - title: Tutorials
-    url: cdp-Deploying-your-first-nodejs-app.html
+    url: cdp-Preparing-a-zOS-PT-image.html
     output: web
     folderitems:
     - title: Preparing a z/OS PT image
@@ -34,6 +34,9 @@ entries:
       output: web
     - title: Deploying your first Node.js app
       url: cdp-Deploying-your-first-nodejs-app.html
+      output: web
+    - title: Deploying a CICS policy
+      url: cdp-Deploying-a-CICS-policy.html
       output: web
     - title: Deploying using individual actions
       url: cdp-Deploying-using-individual-actions.html

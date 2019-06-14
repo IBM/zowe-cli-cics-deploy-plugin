@@ -80,10 +80,10 @@ Before you can provision a CICS region, a z/OS PT image needs to be created and 
 
 7. Update your Zowe CLI cics-deploy profile to deploy to your CICS region by default.
 
-   Update `--scope` to specify the value from DFH_REGION_APPLID, and `--bundle-directory` to specify the `bundles` subdirectory of DFH_REGION_ZFS_DIRECTORY. For example:
+   Update `--scope` to specify the value from DFH_REGION_APPLID, and `--target-directory` to specify the `bundles` subdirectory of DFH_REGION_ZFS_DIRECTORY. For example:
 
    ```console
-   zowe profiles update cics-deploy cics --scope CICPY000 --bundle-directory "/u/cicprov/mnt/CICPY000/bundles"
+   zowe profiles update cics-deploy cics --scope CICPY000 --target-directory "/u/cicprov/mnt/CICPY000/bundles"
    ```
 
 #### Results
