@@ -35,8 +35,8 @@ entries:
     - title: Provisioning a CICS region
       url: cdp-Provisioning-a-CICS-region.html
       output: web
-    - title: Deploying your first Node.js app
-      url: cdp-Deploying-your-first-nodejs-app.html
+    - title: Deploying a Node.js application
+      url: cdp-Deploying-a-nodejs-application.html
       output: web
     - title: Deploying a CICS policy
       url: cdp-Deploying-a-CICS-policy.html

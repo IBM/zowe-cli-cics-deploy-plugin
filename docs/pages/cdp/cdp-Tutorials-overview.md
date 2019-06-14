@@ -17,7 +17,7 @@ Firstly, you will need a CICS region. The z/OS Provisioning Toolkit enables you 
 
 Next deploy an application:
 
-* [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app) - create a Node.js application using the Express Application Generator and deploy it.
+* [Deploying a Node.js application](cdp-Deploying-a-nodejs-application) - create a Node.js application using the Express Application Generator and deploy it.
 
 * [Deploying a CICS policy](cdp-Deploying-a-CICS-policy) - download a sample CICS bundle containing a policy and deploy it.
 
