@@ -68,7 +68,9 @@
   },
   "peerDependencies": {
     "@brightside/core": "^2.28.1",
-    "@brightside/imperative": "^2.4.2"
+    "@brightside/imperative": "^2.4.2",
+    "@zowe/cli": "^5.5.0",
+    "@zowe/imperative": "^4.1.2"
   },
   "jest": {
     "modulePathIgnorePatterns": [
