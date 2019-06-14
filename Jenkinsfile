@@ -21,7 +21,7 @@ def PIPELINE_CONTROL = [
     build: true,
     unit_test: true,    
     system_test: true,
-    deploy: true,
+    cd_skip: false,
     ci_skip: false ]
 
 /**
@@ -34,9 +34,14 @@ def BUILD_RESULT = [
 ]
 
 /**
- * Test npm registry using for smoke test
+ * Test npm registry
  */
 def TEST_NPM_REGISTRY = "https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-virtual"
+
+/**
+ * npm registry 
+ */
+def NPM_REGISTRY = "https://registry.npmjs.org/"
 
 /**
  * The root results folder for items configurable by environmental variables
@@ -137,6 +142,9 @@ pipeline {
         // other Jenkins jobs or needing root access.
         NPM_CONFIG_PREFIX = "${WORKSPACE}/npm-global"
         PATH = "${NPM_CONFIG_PREFIX}/bin:${PATH}"
+
+        // Credential to publish to npmjs.org
+        NPM_CREDENTIALS = credentials('ibmcics.npmjs.auth.token')
     }
 
     stages {
@@ -523,53 +531,74 @@ pipeline {
         /************************************************************************
          * STAGE
          * -----
-         * Bump Version
+         * Check for CD Skip
          *
          * TIMEOUT
          * -------
-         * 5 Minutes
+         * 2 Minutes
          *
          * EXECUTION CONDITIONS
          * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
-         * - PIPELINE_CONTROL.deploy is true
-         * - The build is still successful and not unstable
+         * - Always
          *
-         * DESCRIPTION
-         * -----------
-         * Bumps the pre-release version in preparation for publishing to an npm
-         * registry. 
+         * DECRIPTION
+         * ----------
+         * Compare the version in package.json with released version. If the same,
+         * the build is stopped. Needed because the pipeline does do some simple
+         * merge on the master branch for documentation updates
+         *
+         * OUTPUTS
+         * -------
+         * PIPELINE_CONTROL.cd_skip will be set to 'true', 
+         *  - if master branch's release version and new version are the same
+         *  - if there isn't any new commit
          ************************************************************************/
-        stage('Bump Version') {
+        stage('Check for CD Skip') {
         when {
                 allOf {
                     expression {
                         return PIPELINE_CONTROL.ci_skip == false
                     }
                     expression {
-                        return PIPELINE_CONTROL.deploy
+                        return PIPELINE_CONTROL.cd_skip == false
                     }
                     expression {
                         return RELEASE_BRANCHES.contains(BRANCH_NAME)
                     }
-                    expression {
-                        return GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT
-                    }
                 }
             }
             steps {
-                timeout(time: 5, unit: 'MINUTES') {
-                    echo "Bumping Version"
-
-                    // This npm command does the version bump
+                timeout(time: 2, unit: 'MINUTES') {
                     script {
-                        def baseVersion = sh returnStdout: true, script: 'node -e "console.log(require(\'./package.json\').version.split(\'-\')[0])"'
-                        def preReleaseVersion = baseVersion.trim() + "-next." + new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("UTC"))
-                        sh "npm version ${preReleaseVersion} --no-git-tag-version"
+                        // Retrieve new version from package.json
+                        def NEW_VERSION = sh (
+                            script: 'echo "console.log(require(\'./package.json\').version);" | node',
+                            returnStdout: true
+                        ).trim()
+                        echo "NEW_VERSION: ${NEW_VERSION}"
+                        // Retrieve released version from npmjs.org
+                        def RELEASED_VERSION = sh (
+                            script: 'npm view "$(echo "console.log(require(\'./package.json\').name);" | node)" version || true',
+                            returnStdout: true
+                        ).trim()
+                        echo "RELEASED_VERSION: ${RELEASED_VERSION}"
+
+                        // skip deploying, if version has not changed.
+                        // However, we deploy dev branch even if version has not changed
+                        // as long as there is any new commit
+                        if (NEW_VERSION == RELEASED_VERSION && BRANCH_NAME != DEV_BRANCH) {
+                            echo 'New version and released version are the same. Skip deploying.'
+                            PIPELINE_CONTROL.cd_skip = true
+                        }
+                        if (GIT_COMMIT == GIT_PREVIOUS_SUCCESSFUL_COMMIT) {
+                            echo 'There is no new commit. Skip deploying'
+                            PIPELINE_CONTROL.cd_skip = true
+                        }
                     }
                 }
             }
         }
+
         /************************************************************************
          * STAGE
          * -----
@@ -582,7 +611,6 @@ pipeline {
          * EXECUTION CONDITIONS
          * --------------------
          * - PIPELINE_CONTROL.ci_skip is false
-         * - PIPELINE_CONTROL.deploy is true
          * - The build is still successful and not unstable
          *
          * DESCRIPTION
@@ -601,47 +629,54 @@ pipeline {
                         return PIPELINE_CONTROL.ci_skip == false
                     }
                     expression {
-                        return PIPELINE_CONTROL.deploy
+                        return PIPELINE_CONTROL.cd_skip == false
                     }
                     expression {
                         return RELEASE_BRANCHES.contains(BRANCH_NAME)
-                    }
-                    expression {
-                        return GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT
                     }
                 }
             }
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
                     echo 'Deploy Binary'
-                    withCredentials([usernamePassword(credentialsId: ARTIFACTORY_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'API_KEY')]) {
-
-                        // Set up authentication to Artifactory
+                    script {
                         sh "rm -f .npmrc"
-                        sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
-                        sh "echo registry=$TEST_NPM_REGISTRY >> .npmrc"
+                        // set @zowe registry
+                        sh "echo always-auth=true >> .npmrc"
                         sh "echo @brightside:registry=https://api.bintray.com/npm/ca/brightside/ >> .npmrc"
                         sh "echo @brightside:always-auth=false >> .npmrc"
-                        
-                        script {
-                            if (BRANCH_NAME == MASTER_BRANCH) {
-                                echo "publishing next to $TEST_NPM_REGISTRY"
-                                sh "npm publish --tag alpha"
-                            } else if (BRANCH_NAME == DEV_BRANCH) {
-                                echo "publishing next to $TEST_NPM_REGISTRY"
-                                sh "npm publish --tag next"
-                            } else {
-                                echo "publishing latest to $TEST_NPM_REGISTRY"
-                                sh "npm publish --tag latest"
+                        if (BRANCH_NAME == MASTER_BRANCH) {
+                            // Set credential
+                            sh "echo _auth=${NPM_CREDENTIALS} >> .npmrc"
+                            // Set registry
+                            sh "echo registry=$NPM_REGISTRY >> .npmrc"
+                            // deploy 
+                            echo "publishing to $NPM_REGISTRY"
+                            sh "npm publish --tag latest"
+                        } else if (BRANCH_NAME == DEV_BRANCH) {
+                            // Set version
+                            def baseVersion = sh returnStdout: true, script: 'node -e "console.log(require(\'./package.json\').version.split(\'-\')[0])"'
+                            def preReleaseVersion = baseVersion.trim() + "-next." + new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("UTC"))
+                            sh "npm version ${preReleaseVersion} --no-git-tag-version"
+                            // Set credential
+                            withCredentials([usernamePassword(credentialsId: ARTIFACTORY_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'API_KEY')]) {
+                                sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
                             }
+                            // Set registry
+                            sh "echo registry=$TEST_NPM_REGISTRY >> .npmrc"
+                            // deploy 
+                            echo "publishing to $TEST_NPM_REGISTRY"
+                            sh "npm publish --tag alpha"
+                        } else {
+                            echo "Only master and dev branch is allowed to deploy the app (current branch: $BRANCH_NAME). Skip deploying"
                         }
-
-                        sh "rm -f .npmrc"
                     }
                 }
             }
         }
     }
+
+    // Slack notification when fails or back to normal
     post {
         unsuccessful {
             script {
