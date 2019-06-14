@@ -36,7 +36,8 @@ toc: false
     npm run build
     zowe plugins install .
     ```
-4. Install the cics plugin: 
+
+4. Install the cics plugin:
 
     ```console
     zowe plugins install @brightside/cics
@@ -47,3 +48,16 @@ toc: false
     ```console
     zowe plugins list
     ```
+
+    Displays a list of the installed plug-ins:
+
+   <pre class="messageText">
+   -- pluginName: zowe-cli-cics-deploy-plugin
+   -- package: zowe-cli-cics-deploy-plugin
+   -- version: 0.5.0
+   -- registry: https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-virtual
+
+   -- pluginName: @zowe/cics
+   -- package: @zowe/cics
+   -- version: 2.0.1
+   -- registry: https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-virtual</pre>
