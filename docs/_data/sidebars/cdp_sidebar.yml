@@ -9,7 +9,7 @@ entries:
     url: index.html
     output: web
     folderitems:
-    - title: Home
+    - title: Zowe CLI CICS deploy plug-in
       url: index.html
       output: web
     - title: Requirements on z/OS
@@ -26,6 +26,9 @@ entries:
     url: cdp-Preparing-a-zOS-PT-image.html
     output: web
     folderitems:
+    - title: Tutorials overview
+      url: cdp-Tutorials-overview.html
+      output: web
     - title: Preparing a z/OS PT image
       url: cdp-Preparing-a-zOS-PT-image.html
       output: web

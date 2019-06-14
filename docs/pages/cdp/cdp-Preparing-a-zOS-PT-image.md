@@ -2,7 +2,7 @@
 title: Preparing a z/OS Provisioning Toolkit image
 tags: [tutorial]
 keywords:
-summary: "The following steps take you through preparing a z/OS Provisioning Toolkit image for CICS, and optionally including an application in the image."
+summary: "The following steps take you through preparing a z/OS Provisioning Toolkit image for CICS, and optionally include an application in the image."
 sidebar: cdp_sidebar
 permalink: cdp-Preparing-a-zOS-PT-image.html
 folder: cdp
