@@ -586,7 +586,7 @@ export class BundlePusher {
     }
 
     // A project specific .zosattributes has not been found, so use a default
-    this.issueWarning("No .zosAttributes file found in the bundle directory, default values will be applied.");
+    this.issueWarning("No .zosattributes file found in the bundle directory, default values will be applied.");
     return new ZosFilesAttributes(Bundle.getTemplateZosAttributesFile());
   }
 

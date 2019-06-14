@@ -787,7 +787,7 @@ describe("BundlePusher01", () => {
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed");
 
-        expect(consoleText).not.toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied.");
+        expect(consoleText).not.toContain("WARNING: No .zosattributes file found in the bundle directory, default values will be applied.");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
         expect(createSpy).toHaveBeenCalledTimes(1);
@@ -802,7 +802,7 @@ describe("BundlePusher01", () => {
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed");
 
-        expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied.");
+        expect(consoleText).toContain("WARNING: No .zosattributes file found in the bundle directory, default values will be applied.");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
         expect(sshSpy).toHaveBeenCalledTimes(1);
         expect(createSpy).toHaveBeenCalledTimes(1);
@@ -1132,7 +1132,7 @@ describe("BundlePusher01", () => {
         expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Accessing contents of remote bundle directory");
         expect(consoleText).toContain("Uploading bundle contents to remote directory");
-        expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied");
+        expect(consoleText).toContain("WARNING: No .zosattributes file found in the bundle directory, default values will be applied");
         expect(consoleText).toContain("Running 'npm install' in '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Injected stdout shell message");
         expect(consoleText).toContain("Deploying bundle '12345678' to CICS");
@@ -1172,7 +1172,7 @@ describe("BundlePusher01", () => {
         expect(consoleText).toContain("Removing contents of remote bundle directory");
         expect(consoleText).toContain("Issuing SSH command 'if [ \"$(ls)\" ]; then rm -r *; fi' in remote directory '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Uploading bundle contents to remote directory");
-        expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied");
+        expect(consoleText).toContain("WARNING: No .zosattributes file found in the bundle directory, default values will be applied");
         expect(consoleText).toContain("Running 'npm install' in '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Injected stdout shell message");
         expect(consoleText).toContain("Deploying bundle '12345678' to CICS");
@@ -1282,7 +1282,7 @@ describe("BundlePusher01", () => {
         expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Accessing contents of remote bundle directory");
         expect(consoleText).toContain("Uploading bundle contents to remote directory");
-        expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied");
+        expect(consoleText).toContain("WARNING: No .zosattributes file found in the bundle directory, default values will be applied");
         expect(consoleText).toContain("Deploying bundle '12345678' to CICS");
         expect(consoleText).toContain("Deploy complete");
         expect(consoleText).toContain("Gathering scope information");
@@ -1335,7 +1335,7 @@ describe("BundlePusher01", () => {
         expect(consoleText).toContain("Making remote bundle directory '/u/ThisDoesNotExist/12345678'");
         expect(consoleText).toContain("Accessing contents of remote bundle directory");
         expect(consoleText).toContain("Uploading bundle contents to remote directory");
-        expect(consoleText).toContain("WARNING: No .zosAttributes file found in the bundle directory, default values will be applied");
+        expect(consoleText).toContain("WARNING: No .zosattributes file found in the bundle directory, default values will be applied");
         expect(consoleText).toContain("Deploying bundle '12345678' to CICS");
         expect(consoleText).toContain("Deploy ended with errors");
         expect(consoleText).toContain("Gathering scope information");
