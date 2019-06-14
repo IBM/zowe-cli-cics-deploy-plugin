@@ -73,39 +73,43 @@ entries:
       url: cdp-Troubleshooting-Symptoms.html
       output: web
 
-  - title: Commands - zowe profiles
-    url: cdp-CLIReadMe#create--cre
+  - title: Commands
     output: web
     folderitems:
-    - title: create cics-deploy-profile
-      url: cdp-CLIReadMe#create--cre
+    
+    - title: zowe profiles
       output: web
-    - title: update cics-deploy-profile
-      url: cdp-CLIReadMe#update--upd
-      output: web
-    - title: delete cics-deploy-profile
-      url: cdp-CLIReadMe#delete--rm
-      output: web
-    - title: list cics-deploy-profile
-      url: cdp-CLIReadMe#list--ls
-      output: web
-    - title: set-default cics-deploy-profile
-      url: cdp-CLIReadMe#set-default--set
-      output: web
+      subfolderitems:
 
-  - title: Commands - zowe cics-deploy
-    url: cdp-CLIReadMe#generate--g--gen
-    output: web
-    folderitems:
-    - title: generate bundle
-      url: cdp-CLIReadMe#generate--g--gen
+      - title: create cics-deploy-profile
+        url: cdp-CLIReadMe#create--cre
+        output: web
+      - title: update cics-deploy-profile
+        url: cdp-CLIReadMe#update--upd
+        output: web
+      - title: delete cics-deploy-profile
+        url: cdp-CLIReadMe#delete--rm
+        output: web
+      - title: list cics-deploy-profile
+        url: cdp-CLIReadMe#list--ls
+        output: web
+      - title: set-default cics-deploy-profile
+        url: cdp-CLIReadMe#set-default--set
+        output: web
+
+    - title: zowe cics-deploy
       output: web
-    - title: push bundle
-      url: cdp-CLIReadMe#push--p
-      output: web
-    - title: deploy bundle
-      url: cdp-CLIReadMe#deploy--d--dep
-      output: web
-    - title: undeploy bundle
-      url: cdp-CLIReadMe#undeploy--u--udep
-      output: web
+      subfolderitems:
+      
+      - title: generate bundle
+        url: cdp-CLIReadMe#generate--g--gen
+        output: web
+      - title: push bundle
+        url: cdp-CLIReadMe#push--p
+        output: web
+      - title: deploy bundle
+        url: cdp-CLIReadMe#deploy--d--dep
+        output: web
+      - title: undeploy bundle
+        url: cdp-CLIReadMe#undeploy--u--udep
+        output: web
