@@ -2,16 +2,14 @@
 title: Tutorials overview
 tags: [tutorial]
 keywords:
-summary: "Summary of the tutorials."
+summary: "Summary of the tutorials to provision a CICS region and deploy applications to it."
 sidebar: cdp_sidebar
 permalink: cdp-Tutorials-overview.html
 folder: cdp
 toc: true
 ---
 
-These tutorials will help you setup a CICS region and try the Zowe CLI CICS deploy plug-in to deploy applications.
-
-Firstly, you will need a CICS region. The z/OS Provisioning Toolkit enables you to provision and deprovision CICS regions yourself. Work with your CICS and z/OS administrators to setup a z/OS PT image, then provision your CICS region:
+Firstly, you will need a CICS region. The z/OS Provisioning Toolkit enables you to provision CICS regions yourself:
 
 * [Preparing a z/OS Provisioning Toolkit image](cdp-Preparing-a-zOS-PT-image) - steps to prepare a z/OS Provisioning Toolkit image for CICS, and optionally include an application in the image.
 
@@ -19,9 +17,9 @@ Firstly, you will need a CICS region. The z/OS Provisioning Toolkit enables you 
 
 Next deploy an application:
 
-* [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app) - deploy your first Node.js application to CICS using the Express Application Generator.
+* [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app) - create a Node.js application using the Express Application Generator and deploy it.
 
-* [Deploying a CICS policy](cdp-Deploying-a-CICS-policy) - deploy a sample CICS bundle containing a policy.
+* [Deploying a CICS policy](cdp-Deploying-a-CICS-policy) - download a sample CICS bundle containing a policy and deploy it.
 
 Finally if you need more precise control of the deployment steps, for example if you are writing a CI-CD pipeline:
 

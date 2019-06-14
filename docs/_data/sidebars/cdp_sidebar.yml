@@ -23,7 +23,7 @@ entries:
       output: web
 
   - title: Tutorials
-    url: cdp-Preparing-a-zOS-PT-image.html
+    url: cdp-Tutorials-overview.html
     output: web
     folderitems:
     - title: Tutorials overview
