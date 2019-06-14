@@ -31,19 +31,19 @@ The z/OSMF profile defines the options needed to connect to the z/OSMF server on
 
 For example, to create a z/OSMF profile:
 
-```console
+```text
 zowe profiles create zosmf-profile myzos --host myzos.example.com --port 3000 --user myuserid --password mypassword --reject-unauthorized false --overwrite
 ```
 
 For help on using the options:
 
-```console
+```text
 zowe profiles create zosmf-profile --help
 ```
 
 To test the connection to the z/OSMF server using the profile:
 
-```console
+```text
 zowe zosmf check status
 ```
 
@@ -62,19 +62,19 @@ The SSH profile defines the options needed to connect to the SSH server on z/OS.
 
 For example, to create an SSH profile:
 
-```console
+```text
 zowe profiles create ssh-profile myzos --host myzos.example.com --user myuserid --password mypassword --overwrite
 ```
 
 For help on using the options:
 
-```console
+```text
 zowe profiles create ssh-profile --help
 ```
 
 To test the connection to the SSH server using the profile:
 
-```console
+```text
 zowe zos-uss issue ssh 'uname -a'
 ```
 
@@ -94,13 +94,13 @@ The cics-deploy profile identifies the CICS environment for deployment. An examp
 
 For example to create a cics-deploy profile:
 
-```console
+```text
 zowe profiles create cics-deploy-profile cics --cicsplex PLEX1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --scope CICPY000 --csd-group BUNDGRP1 --target-directory /var/cicsts/bundles --overwrite
 ```
 
 For help on using the options:
 
-```console
+```text
 zowe profiles create cics-deploy-profile --help
 ```
 
@@ -122,18 +122,26 @@ The CICS profile identifies the connection to the CICS Web User Interface (WUI) 
 
 For example, to create an SSH profile:
 
-```console
+```text
 zowe profiles create cics-profile cics --cics-plex PLEX1 --region-name CICPY000 --protocol https --host myzos.example.com --port 1490 --user myuserid --password mypassword --overwrite
 ```
 
 For help on using the options:
 
-```console
+```text
 zowe profiles create cics-profile --help
 ```
 
 To test the connection to the CICS WUI server using the profile:
 
-```console
-zowe cics get resource CICSRegion
+```text
+zowe cics get resource CICSRegion | grep -E "applid|cicsstatus|jobname|mvssysname|strttime|cputime"
 ```
+
+<pre class="messageText">
+applid:       CICPY00V
+cicsstatus:   ACTIVE
+cputime:      0000:02:29.2824
+jobname:      CICPY00V
+mvssysname:   MV2C
+strttime:     2019-06-13T16:08:15.938572+00:00</pre>
