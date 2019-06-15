@@ -6,6 +6,7 @@ summary: "Zowe profiles let you store configuration details so you don't have to
 sidebar: cdp_sidebar
 permalink: cdp-Creating-Zowe-CLI-profiles.html
 folder: cdp
+toc: false
 ---
 
 The Zowe CLI lets you define arguments and options for commands in multiple ways, with the following order of precedence:
@@ -14,9 +15,18 @@ The Zowe CLI lets you define arguments and options for commands in multiple ways
 2. Environment variables
 3. Profiles
 
-This provides flexibility when you issue commands and write automation scripts. Further detail is in [Understanding command option order of precedence](https://zowe.github.io/docs-site/latest/user-guide/cli-configuringcli.html#understanding-command-option-order-of-precedence). Therefore by creating and setting options in the following profiles, they will become your defaults and do not need to repeat them on Zowe CLI command unless you wish to override them.
+Therefore by creating and setting options in the following profiles, they will become your defaults and do not need to repeat them on Zowe CLI command unless you wish to override them. This provides flexibility when you issue commands and write automation scripts. Further detail is in [Understanding command option order of precedence](https://zowe.github.io/docs-site/latest/user-guide/cli-configuringcli.html#understanding-command-option-order-of-precedence).
 
-### Create a z/OSMF profile
+The CICS deploy plug-in makes use of the following profiles:
+
+| Profile | Used by command | Connects to z/OS server |
+| --- | --- | --- |
+| [z/OSMF profile](#zosmf-profile) | **zowe cics-deploy ...** <br /> zowe console ... <br />  zowe zos-files ... <br />  zowe zos-jobs ... <br />  zowe zos-tso ... <br />  zowe zos-workflows ... <br />  zowe zosmf ... <br />  zowe provisioing ... | z/OSMF |
+| [SSH profile](#ssh-profile) | **zowe cics-deploy push ...** <br />  zowe zos-uss ... | SSH |
+| [CICS deploy profile](#cics-deploy-profile) | **zowe cics-deploy ...** |  |
+| [CICS profile](#cics-profile) | **zowe cics-deploy push ...** <br />  zowe cics ... | CICSPlex SM WUI |
+
+### z/OSMF profile
 
 The z/OSMF profile defines the options needed to connect to the z/OSMF server on z/OS. You need to know the following from your z/OS system administrator:
 
@@ -47,7 +57,7 @@ To test the connection to the z/OSMF server using the profile:
 zowe zosmf check status
 ```
 
-### Create an SSH profile
+### SSH profile
 
 The SSH profile defines the options needed to connect to the SSH server on z/OS. You need to know the following from your z/OS system administrator:
 
@@ -78,7 +88,7 @@ To test the connection to the SSH server using the profile:
 zowe zos-uss issue ssh 'uname -a'
 ```
 
-### Create a cics-deploy profile
+### CICS deploy profile
 
 The cics-deploy profile identifies the CICS environment for deployment. An example of how to create an environment using using z/OS Provisioning Toolkit as described in [Provisioning a CICS region using z/OS PT](cdp-Provisioning-a-CICS-region-using-zospt). You need to know the following from your CICS system administrator:
 
@@ -106,7 +116,7 @@ zowe profiles create cics-deploy-profile --help
 
 To test the cics-deploy profile, follow the steps in [Deploying a Node.js application](cdp-Deploying-a-nodejs-application).
 
-### Create a CICS profile
+### CICS profile
 
 The CICS profile identifies the connection to the CICS Web User Interface (WUI) server to query application resources. You need to know the following from your CICS system administrator:
 
