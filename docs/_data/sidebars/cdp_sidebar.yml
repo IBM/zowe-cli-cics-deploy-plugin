@@ -91,11 +91,16 @@ entries:
 
   - title: Commands
     output: web
-    subfolder:
-    
+    folderitems:
+
+    - title: Commands overview
+     url: cdp-CLIReadMe#create--cre
+     output: web
+
+    subfolders:
     - title: zowe profiles
       output: web
-      folderitems:
+      subfolderitems:
 
       - title: create cics-deploy-profile
         url: cdp-CLIReadMe#create--cre
@@ -119,7 +124,7 @@ entries:
 
     - title: zowe cics-deploy
       output: web
-      folderitemss:
+      subfolderitems:
       
       - title: generate bundle
         url: cdp-CLIReadMe#generate--g--gen
