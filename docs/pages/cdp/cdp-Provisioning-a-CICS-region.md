@@ -88,7 +88,7 @@ Before you can provision a CICS region, a z/OS PT image needs to be created and 
 
 #### Results
 
-You are now ready to deploy applications to the provisioned CICS region. You can try this out by following the steps in [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app). During deployment, the CICS bundle will be copied into the `bundles/` directory, and output files will be written into a sub-directory of `workdir/`.
+You are now ready to deploy applications to the provisioned CICS region. You can try this out by following the steps in [Deploying a Node.js application](cdp-Deploying-a-nodejs-application). During deployment, the CICS bundle will be copied into the `bundles/` directory, and output files will be written into a sub-directory of `workdir/`.
 
 ### Stop your CICS region
 

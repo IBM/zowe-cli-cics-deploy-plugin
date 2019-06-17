@@ -19,10 +19,10 @@ This tutorial shows how to download a sample CICS policy and deploy it using the
 
 2. Create Zowe CLI profiles by following the steps in [Creating Zowe CLI profiles](cdp-Creating-Zowe-CLI-profiles).
 
-3. Clone the [cics-policy-samples](https://github.ibm.com/CICS/cics-policy-samples/tree/master) repository.
+3. Clone the [cics-policy-samples](https://github.com/cicsdev/cics-policy-samples) repository from GitHub.
 
    ```text
-   git clone https://github.ibm.com/CICS/cics-policy-samples.git
+   git clone https://github.com/cicsdev/cics-policy-samples.git
 
    cd cics-policy-samples/bundles/CICSDEV_system_rule
    ```
