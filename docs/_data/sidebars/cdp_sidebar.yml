@@ -81,12 +81,8 @@ entries:
       url: cdp-Troubleshooting-General.html
       output: web
 
-    - title: Precautionary checks
-      url: cdp-Precautionary-Checks.html
-      output: web
-
-    - title: Potential problems
-      url: cdp-Troubleshooting-Symptoms.html
+    - title: Common Errors
+      url: cdp-Common-Errors.html
       output: web
 
   - title: Commands
