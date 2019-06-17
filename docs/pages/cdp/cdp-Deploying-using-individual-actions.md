@@ -9,7 +9,7 @@ folder: cdp
 toc: true
 ---
 
-The `zowe cics-deploy push bundle` command performs a set of actions to deploy applications to CICS, as can be seen in [Deploying your first Node.js app](cdp-Deploying-your-first-nodejs-app). The main actions include:
+The `zowe cics-deploy push bundle` command performs a set of actions to deploy applications to CICS, as can be seen in [Deploying a Node.js application](cdp-Deploying-a-nodejs-application). The main actions include:
 
 * undeploy the old version of the CICS bundle in CICS
 * upload the new version of the CICS bundle to z/OS
