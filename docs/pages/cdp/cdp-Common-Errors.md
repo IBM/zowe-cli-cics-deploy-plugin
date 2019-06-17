@@ -1,18 +1,23 @@
 ---
-title: Possible problems and their resolutions
+title: Common Errors
 tags: [troubleshooting]
-keywords:
-summary: "This section describes sets of problem symptoms, their possible causes and suggested solutions."
+keywords: 
+summary: "Some common errors can occasionally occur when you attempt to deploy a Node.js application using the cics-deploy plug-in."
 sidebar: cdp_sidebar
-permalink: cdp-Troubleshooting-Symptoms.html
+permalink: cdp-Common-Errors.html
 folder: cdp
 ---
 
+## Precautionary checks
+If you experience errors while using the cics-deploy plug-in, check the following potential causes before investigating further:
+* CICS must be authorized to read the bundle directory `META-INF`.
+* The port specified by the `--port` argument of the `cics-deploy generate bundle` command *must* be free on z/OS before you attempt to deploy an application. 
+* If you set a `WORK_DIR` in the CICS Node.js application profile, such as `nodejsapps/<your application name>.profile`, it must be *writeable* by CICS.
+
+## Deployment errors
 {% include note.html content="For further troubleshooting steps, see [Troubleshooting Node.js applications](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.5.0/troubleshooting/node/node-troubleshooting.html)." %}
 
 {% include important.html content="To definitively diagnose a problem based on the suggested symptoms, you might need to refer to one or more [system logs and traces](cdp-Troubleshooting-General) particularly the STDERR Node.js log and the file assigned the MSGUSR DD name in the relevant CICS job. Depending on your familiarity with z/OS and CICS, and your system privileges, you may also need to consult a CICS systems administrator to get to the bottom of certain problems." %}
-
-## Deployment errors
 
 ### Application incorrectly deploys in a DISABLED state
 *Possible cause*: The port requested by the application is already in use.
