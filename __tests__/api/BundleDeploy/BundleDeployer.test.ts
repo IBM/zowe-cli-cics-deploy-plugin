@@ -23,6 +23,9 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     },
     profiles: {
         get: (type: string) => {
+            if (profileError === true) {
+              throw new Error("Profile Error");
+            }
             return { host: "testname", user: "testuser", password: "testpwd" };
         }
     } as any,
@@ -57,7 +60,7 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
 let createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementation(() => ({}));
 let listSpy = jest.spyOn(List, "allMembers").mockImplementation(() => ({}));
 let submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() => ({}));
-
+let profileError = false;
 
 describe("BundleDeployer01", () => {
 
@@ -65,6 +68,7 @@ describe("BundleDeployer01", () => {
         createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementation(() => ({}));
         listSpy = jest.spyOn(List, "allMembers").mockImplementation(() => ( { val: "DFHDPLOY EYU9ABSI" }));
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() => ({}));
+        profileError = false;
     });
     afterEach(() => {
         jest.restoreAllMocks();
@@ -77,6 +81,12 @@ describe("BundleDeployer01", () => {
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should complain with error during profile load for deploy", async () => {
+        profileError = true;
+        await runDeployTestWithError();
+
+        expect(createSpy).toHaveBeenCalledTimes(0);
     });
     it("should complain with missing zOSMF profile for undeploy", async () => {
         createSpy.mockImplementationOnce(() => { throw new Error( "Injected Create error" ); });
