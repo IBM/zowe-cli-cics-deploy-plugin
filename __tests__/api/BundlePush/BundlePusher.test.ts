@@ -922,7 +922,7 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\" " +
+              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\" " +
               "&& npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
               "Problem is: The output from the remote command implied that an error occurred, return code 1.");
 
@@ -955,7 +955,7 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\" " +
+              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\" " +
               "&& npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
               "Problem is: The output from the remote command implied that an error occurred, return code 1.");
 
@@ -988,7 +988,7 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\" " +
+              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\" " +
               "&& npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
               "Problem is: The output from the remote command implied that an error occurred, return code 1.");
 
