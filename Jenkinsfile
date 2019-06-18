@@ -21,8 +21,8 @@ def PIPELINE_CONTROL = [
     build: true,
     unit_test: true,    
     system_test: true,
-    cd_skip: false,
-    ci_skip: false ]
+    cd_skip: false
+]
 
 /**
  * The result strings for a build status
@@ -165,45 +165,6 @@ pipeline {
         /************************************************************************
          * STAGE
          * -----
-         * Check for CI Skip
-         *
-         * TIMEOUT
-         * -------
-         * 2 Minutes
-         *
-         * EXECUTION CONDITIONS
-         * --------------------
-         * - Always
-         *
-         * DECRIPTION
-         * ----------
-         * Checks for the [ci skip] text in the last commit. If it is present,
-         * the build is stopped. Needed because the pipeline does do some simple
-         * git commits on the master branch for the purposes of version bumping.
-         *
-         * OUTPUTS
-         * -------
-         * PIPELINE_CONTROL.ci_skip will be set to 'true' if [ci skip] is found in the
-         * commit text.
-         ************************************************************************/
-        stage('Check for CI Skip') {
-            steps {
-                timeout(time: 2, unit: 'MINUTES') {
-                    script {
-                        // This checks for the [ci skip] text. If found, the status code is 0
-                        def result = sh returnStatus: true, script: 'git log -1 | grep \'.*\\[ci skip\\].*\''
-                        if (result == 0) {
-                            echo '"ci skip" spotted in the git commit. Aborting.'
-                            PIPELINE_CONTROL.ci_skip = true
-                        }
-                    }
-                }
-            }
-        }
-
-        /************************************************************************
-         * STAGE
-         * -----
          * Install Zowe CLI
          *
          * TIMEOUT
@@ -212,7 +173,6 @@ pipeline {
          *
          * EXECUTION CONDITIONS
          * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
          * - PIPELINE_CONTROL.build is true or PIPELINE_CONTROL.smoke_test is true
          *
          * DESCRIPTION
@@ -227,9 +187,6 @@ pipeline {
         stage('Install Zowe CLI') {
             when {
                 allOf {
-                    expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
                     expression {
                         return PIPELINE_CONTROL.build || PIPELINE_CONTROL.smoke_test
                     }
@@ -259,7 +216,6 @@ pipeline {
          *
          * EXECUTION CONDITIONS
          * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
          * - PIPELINE_CONTROL.build is true
          *
          * DESCRIPTION
@@ -273,9 +229,6 @@ pipeline {
         stage('Install Dependencies') {
             when {
                 allOf {
-                    expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
                     expression {
                         return PIPELINE_CONTROL.build
                     }
@@ -301,7 +254,6 @@ pipeline {
          *
          * EXECUTION CONDITIONS
          * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
          * - PIPELINE_CONTROL.build is true
          *
          * DESCRIPTION
@@ -315,9 +267,6 @@ pipeline {
         stage('Build') {
             when {
                 allOf {
-                    expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
                     expression {
                         return PIPELINE_CONTROL.build
                     }
@@ -347,7 +296,6 @@ pipeline {
          *
          * EXECUTION CONDITIONS
          * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
          * - PIPELINE_CONTROL.unit_test is true
          *
          * ENVIRONMENT VARIABLES
@@ -387,9 +335,6 @@ pipeline {
         stage('Test: Unit') {
             when {
                 allOf {
-                    expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
                     expression {
                         return PIPELINE_CONTROL.unit_test
                     }
@@ -451,7 +396,6 @@ pipeline {
          *
          * EXECUTION CONDITIONS
          * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
          * - PIPELINE_CONTROL.system_test is true
          *
          * ENVIRONMENT VARIABLES
@@ -494,9 +438,6 @@ pipeline {
         stage('Test: System') {
             when {
                 allOf {
-                    expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
                     expression {
                         return PIPELINE_CONTROL.system_test
                     }
@@ -557,9 +498,6 @@ pipeline {
         when {
                 allOf {
                     expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
-                    expression {
                         return PIPELINE_CONTROL.cd_skip == false
                     }
                     expression {
@@ -610,7 +548,6 @@ pipeline {
          *
          * EXECUTION CONDITIONS
          * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
          * - The build is still successful and not unstable
          *
          * DESCRIPTION
@@ -625,9 +562,6 @@ pipeline {
         stage('Deploy') {
             when {
                 allOf {
-                    expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
                     expression {
                         return PIPELINE_CONTROL.cd_skip == false
                     }
