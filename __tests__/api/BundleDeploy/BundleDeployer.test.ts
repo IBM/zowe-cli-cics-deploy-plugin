@@ -337,6 +337,60 @@ describe("BundleDeployer01", () => {
         expect(err).toBeDefined();
         expect(err.message).toMatchSnapshot();
     });
+    it("tolerate embedded quote", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = '//DFHDPLOY JOB DFHDPLOY,"some text",CLASS=A,MSGCLASS=X,TIME=NOLIMIT';
+        await testDeployJCL(parms);
+    });
+    it("tolerate embedded single quote", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,'some text',CLASS=A,MSGCLASS=X,TIME=NOLIMIT";
+        await testDeployJCL(parms);
+    });
+    it("tolerate quotes around jobcard", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = '"//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT"';
+        await testDeployJCL(parms);
+    });
+    it("tolerate single quotes around jobcard", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = "'//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT'";
+        await testDeployJCL(parms);
+    });
+    it("tolerate quotes around jobcard with embedded quote", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = '"//DFHDPLOY JOB DFHDPLOY,"some text",CLASS=A,MSGCLASS=X,TIME=NOLIMIT"';
+        await testDeployJCL(parms);
+    });
+    it("tolerate single quotes around jobcard with embedded single quote", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = "'//DFHDPLOY JOB DFHDPLOY,'some text',CLASS=A,MSGCLASS=X,TIME=NOLIMIT'";
+        await testDeployJCL(parms);
+    });
     it("should support long bundledir", async () => {
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
