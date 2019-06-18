@@ -36,7 +36,7 @@ export class BundlePusher {
   private path = require("path");
   private fs = require("fs");
   private progressBar: ITaskWithStatus;
-  private defaultRemoteNodehomeCmd = "export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\"";
+  private defaultRemoteNodehomeCmd = "export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\"";
 
   /**
    * Constructor for a BundlePusher.
