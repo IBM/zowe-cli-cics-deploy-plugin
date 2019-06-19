@@ -516,7 +516,7 @@ pipeline {
                         echo "NEW_VERSION: ${NEW_VERSION}"
                         // Retrieve released version from npmjs.org
                         def RELEASED_VERSION = sh (
-                            script: 'npm view "$(echo "console.log(require(\'./package.json\').name);" | node)" version --registry ${NPM_REGISTRY} || true',
+                            script: 'npm view "$(echo "console.log(require(\'./package.json\').name);" | node)" version --registry '+NPM_REGISTRY+' || true',
                             returnStdout: true
                         ).trim()
                         echo "RELEASED_VERSION: ${RELEASED_VERSION}"
