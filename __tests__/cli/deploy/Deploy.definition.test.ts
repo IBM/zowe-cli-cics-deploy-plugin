@@ -11,7 +11,7 @@
 */
 
 import * as fs from "fs";
-import { Imperative } from "@zowe/imperative";
+import { Imperative } from "@brightside/imperative";
 
 describe("Deploy definition", () => {
     it("should match the snapshot", () => {

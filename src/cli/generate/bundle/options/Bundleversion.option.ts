@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandOptionDefinition } from "@zowe/imperative";
+import { ICommandOptionDefinition } from "@brightside/imperative";
 
 /**
  * Imperative option for the "bundleversion" parameter
@@ -19,6 +19,7 @@ export const BundleversionOption: ICommandOptionDefinition = {
     name: "bundle-version",
     aliases: ["bv", "bundleversion"],
     type: "string",
+    group: "cics-deploy Options",
     description: "The major.minor.micro version number for the generated CICS bundle. If no value is " +
                  "specified, a default value of 1.0.0 is used."
 };

@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandOptionDefinition } from "@zowe/imperative";
+import { ICommandOptionDefinition } from "@brightside/imperative";
 
 /**
  * Imperative option for the "startscript" parameter
@@ -19,6 +19,7 @@ export const StartscriptOption: ICommandOptionDefinition = {
     name: "start-script",
     aliases: ["s", "ss", "startscript"],
     type: "string",
+    group: "cics-deploy Options",
     description: "Up to 255 character path to the Node.js start script that runs when " +
                  "the associated bundle is enabled in CICS. If a value is not " +
                  "specified, a default value is created from either the 'scripts.start' property " +

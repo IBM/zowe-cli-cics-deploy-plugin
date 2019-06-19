@@ -11,12 +11,15 @@
 
 "use strict";
 
-import { IHandlerParameters, AbstractSession, ITaskWithStatus, TaskStage, TaskProgress, Logger, IProfile, Session } from "@zowe/imperative";
-import { List, ZosmfSession, SshSession, Shell, Upload, IUploadOptions, ZosFilesAttributes, Create } from "@zowe/cli";
-import { getResource, IResourceParms } from "@zowe/cics";
+import { IHandlerParameters, AbstractSession, ITaskWithStatus, TaskStage, TaskProgress, Logger, IProfile, Session } from "@brightside/imperative";
+import { List, ZosmfSession, SshSession, Shell, Upload, IUploadOptions, ZosFilesAttributes, Create } from "@brightside/core";
+import { getResource, IResourceParms } from "@brightside/cics";
 import { BundleDeployer } from "../BundleDeploy/BundleDeployer";
 import { Bundle } from "../BundleContent/Bundle";
 import { SubtaskWithStatus } from "./SubtaskWithStatus";
+import { ZosmfConfig } from "./ZosmfConfig";
+import { SshConfig } from "./SshConfig";
+import { CmciConfig } from "./CmciConfig";
 
 
 /**
@@ -33,7 +36,7 @@ export class BundlePusher {
   private path = require("path");
   private fs = require("fs");
   private progressBar: ITaskWithStatus;
-  private defaultRemoteNodehomeCmd = "export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\"";
+  private defaultRemoteNodehomeCmd = "export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\"";
 
   /**
    * Constructor for a BundlePusher.
@@ -72,11 +75,32 @@ export class BundlePusher {
                                         "_" + bundle.getVersion();
     }
 
+    if (this.params.arguments.silent === undefined) {
+      const logger = Logger.getAppLogger();
+      logger.debug("Loading profiles");
+    }
+
     // Get the profiles
-    const zosMFProfile = this.getProfile("zosmf", true);
-    const sshProfile = this.getProfile("ssh", true);
-    const cicsProfile = this.getProfile("cics", false);
+    const zosMFProfile = this.getProfile("zosmf");
+    const sshProfile = this.getProfile("ssh");
+    let cicsProfile = this.getProfile("cics");
+    ZosmfConfig.mergeProfile(zosMFProfile, this.params);
+    SshConfig.mergeProfile(sshProfile, this.params);
+    CmciConfig.mergeProfile(cicsProfile, this.params);
+
+    // The cics profile is optional, detect whether it has been set (or constructed)
+    if (Object.keys(cicsProfile).length === 0) {
+       cicsProfile = undefined;
+    }
+
+    // Now detect any mismatches between the values from the profiles
     this.validateProfiles(zosMFProfile, sshProfile, cicsProfile);
+
+
+    if (this.params.arguments.silent === undefined) {
+      const logger = Logger.getAppLogger();
+      logger.debug("Creating sessions");
+    }
 
     // Create a zOSMF session
     const zosMFSession = await this.createZosMFSession(zosMFProfile);
@@ -184,11 +208,17 @@ export class BundlePusher {
     }
   }
 
-  private getProfile(type: string, required: boolean): IProfile {
-    const profile =  this.params.profiles.get(type);
+  private getProfile(type: string): IProfile {
+    let profile;
+    try {
+      profile = this.params.profiles.get(type);
+    }
+    catch (error) {
+      // Tolerate errors
+    }
 
-    if (required && profile === undefined) {
-      throw new Error("No " + type + " profile found");
+    if (profile === undefined) {
+      profile = {};
     }
 
     return profile;
@@ -212,13 +242,13 @@ export class BundlePusher {
     let sameHostAndUser = true;
     if (zosmfProfile.host !== sshProfile.host) {
       sameHostAndUser = false;
-      this.issueWarning("ssh profile --host value '" + sshProfile.host + "' does not match zosmf value '" + zosmfProfile.host + "'.");
+      this.issueWarning("--ssh-host value '" + sshProfile.host + "' does not match --zosmf-host value '" + zosmfProfile.host + "'.");
     }
 
     // Do the required profiles share the same user name?
     if (zosmfProfile.user.toUpperCase() !== sshProfile.user.toUpperCase()) {
       sameHostAndUser = false;
-      this.issueWarning("ssh profile --user value '" + sshProfile.user + "' does not match zosmf value '" + zosmfProfile.user + "'.");
+      this.issueWarning("--ssh-user value '" + sshProfile.user + "' does not match --zosmf-user value '" + zosmfProfile.user + "'.");
     }
 
     // If the zoSMF user and host are the same then validate that the passwords are the same too.
@@ -227,7 +257,7 @@ export class BundlePusher {
     if (sameHostAndUser) {
       if (sshProfile.password !== undefined) {
         if (zosmfProfile.password !== sshProfile.password) {
-          throw new Error("Incompatible security credentials exist in the zosmf and ssh profiles.");
+          throw new Error("Different passwords are specified for the same user ID in the zosmf and ssh configurations.");
         }
       }
     }
@@ -237,23 +267,17 @@ export class BundlePusher {
       sameHostAndUser = true;
       if (zosmfProfile.host !== cicsProfile.host) {
         sameHostAndUser = false;
-        this.issueWarning("cics profile --host value '" + cicsProfile.host + "' does not match zosmf value '" + zosmfProfile.host + "'.");
+        this.issueWarning("--cics-host value '" + cicsProfile.host + "' does not match --zosmf-host value '" + zosmfProfile.host + "'.");
       }
       if (zosmfProfile.user.toUpperCase() !== cicsProfile.user.toUpperCase()) {
         sameHostAndUser = false;
-        this.issueWarning("cics profile --user value '" + cicsProfile.user + "' does not match zosmf value '" + zosmfProfile.user + "'.");
+        this.issueWarning("--cics-user value '" + cicsProfile.user + "' does not match --zosmf-user value '" + zosmfProfile.user + "'.");
       }
 
       if (sameHostAndUser) {
         if (zosmfProfile.password !== cicsProfile.password) {
-          throw new Error("Incompatible security credentials exist in the zosmf and cics profiles.");
+          throw new Error("Different passwords are specified for the same user ID in the zosmf and cics configurations.");
         }
-      }
-
-      // Do the cics-plexes match?
-      if (cicsProfile.cicsPlex !== undefined && this.params.arguments.cicsplex !== cicsProfile.cicsPlex) {
-        this.issueWarning("cics profile --cics-plex value '" + cicsProfile.cicsPlex +
-          "' does not match --cicsplex value '" + this.params.arguments.cicsplex + "'.");
       }
     }
   }
@@ -281,7 +305,7 @@ export class BundlePusher {
       return undefined;
     }
 
-    // At time of writing, the CicsSession object in the @zowe/cics project isn't
+    // At time of writing, the CicsSession object in the @brightside/cics project isn't
     // accessible, so the following code is copied out of CicsSession.createBasicCicsSession().
     try {
       return new Session({
@@ -391,7 +415,15 @@ export class BundlePusher {
 
     // Collect general information about the regions in the CICSplex scope
     let deployMessages = await this.generateGeneralDiagnostics(cicsSession);
-    if (deployMessages !== "" && bundle.containsDefinitionsOfType("http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP")) {
+
+    if (deployError !== undefined && dfhdployOutput.indexOf("DFHRL2067") === -1) {
+        // If we have an error, but DFHDPLOY did not report that some bundleparts are disabled,
+        // we can assume bundle didn't install at all. In this case skip generation of
+        // Node.js diagnostics.
+        deployMessages += "DFHDPLOY output implied the bundle failed to install. Check the output above for further information. ";
+        deployMessages += "Consider examining the JESMSGLG, MSGUSR, SYSPRINT and SYSOUT spool files of the CICS region job, ";
+        deployMessages += "or consult your CICS system programmer.\n";
+    } else if (deployMessages !== "" && bundle.containsDefinitionsOfType("http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP")) {
       // Generate additional diagnostic output for Node.js
       deployMessages += await this.generateNodejsSpecificDiagnostics(cicsSession);
     }
@@ -570,7 +602,7 @@ export class BundlePusher {
     }
 
     // A project specific .zosattributes has not been found, so use a default
-    this.issueWarning("No .zosAttributes file found in the bundle directory, default values will be applied.");
+    this.issueWarning("No .zosattributes file found in the bundle directory, default values will be applied.");
     return new ZosFilesAttributes(Bundle.getTemplateZosAttributesFile());
   }
 
@@ -657,11 +689,22 @@ export class BundlePusher {
         logger.debug(diagnosticsError.message);
       }
     }
+
+    // Something went wrong, suggest a command that can be run to figure out more.
+    if (msgBuffer === "") {
+      this.issueMessage("An attempt to query the remote CICSplex using the cics plug-in has failed.\n");
+    }
+
     return msgBuffer;
   }
 
   private async generateNodejsSpecificDiagnostics(cicsSession: AbstractSession): Promise<string> {
     let msgBuffer = "";
+
+    if (cicsSession === undefined) {
+      return msgBuffer;
+    }
+
     try {
       // Attempt to gather additional Node.js specific information from CICS
       this.updateStatus("Gathering Node.js diagnostics");
@@ -681,7 +724,7 @@ export class BundlePusher {
     if (msgBuffer === "") {
       msgBuffer += "For further information on the state of your NODEJSAPP resources, consider running the following command:\n\n" +
             "zowe cics get resource CICSNodejsapp --region-name " + this.params.arguments.scope +
-            " --criteria \"BUNDLE=" + this.params.arguments.name + "\" --cics-plex " + this.params.arguments.cicsplex + "\n";
+            " --criteria \"BUNDLE=" + this.params.arguments.name + "\" --cics-plex " + this.params.arguments.cicsplex + "\n\n";
     }
 
     return msgBuffer;
@@ -760,8 +803,9 @@ export class BundlePusher {
     const applid = outputRecord.applid.padEnd(MAX_LENGTH, " ");
     const jobid = outputRecord.jobid.padEnd(MAX_LENGTH, " ");
     const jobname = outputRecord.jobname.padEnd(MAX_LENGTH, " ");
+    const sysname = outputRecord.mvssysname.padEnd(MAX_LENGTH, " ");
 
-    return msgBuffer + "   Applid: " + applid + "   jobname: " + jobname + "   jobid: " + jobid + "\n";
+    return msgBuffer + "   Applid: " + applid + "   jobname: " + jobname + "   jobid: " + jobid + "   sysname: " + sysname + "\n";
   }
 
   private reportNODEJSAPPData(outputRecord: any, msgBuffer: string) {

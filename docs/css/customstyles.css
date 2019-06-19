@@ -1,5 +1,14 @@
 body {
+    font-family: 'IBM Plex Sans', sans-serif;
     font-size:15px;
+}
+
+pre {
+    font-family: 'IBM Plex Mono', 'Courier New', Courier, monospace;
+}
+
+code {
+    font-family: 'IBM Plex Mono', 'Courier New', Courier, monospace;
 }
 
 .bs-callout {
@@ -429,7 +438,7 @@ ul#mysidebar {
 }
 
 span.projectTitle {
-    font-family: Helvetica;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-weight: bold;
 }
 
@@ -820,7 +829,7 @@ a.accordion-toggle {
 
 span.red {
     color: red;
-    font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+    font-family: 'IBM Plex Mono', Monaco, Menlo, Consolas, "Courier New", monospace;
 }
 
 h3.codeExplanation {

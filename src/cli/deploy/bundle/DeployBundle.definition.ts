@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandDefinition } from "@zowe/imperative";
+import { ICommandDefinition } from "@brightside/imperative";
 import { NameOption } from "../../shared/Name.option";
 import { BundledirOption } from "./options/Bundledir.option";
 import { CicsplexOption } from "../../shared/Cicsplex.option";
@@ -23,6 +23,7 @@ import { TimeoutOption } from "../../shared/Timeout.option";
 import { TargetStateOption } from "./options/TargetState.option";
 import { VerboseOption } from "../../shared/Verbose.option";
 import { DescriptionOption } from "./options/Description.option";
+import { ZosmfOptions } from "../../shared/ZosmfOptions";
 
 
 /**
@@ -39,8 +40,9 @@ export const DeployBundleDefinition: ICommandDefinition = {
     type: "command",
     handler: __dirname + "/DeployBundle.handler",
     options: [ NameOption, BundledirOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption,
-               CicshlqOption, CpsmhlqOption, DescriptionOption, JobcardOption, TimeoutOption, TargetStateOption, VerboseOption],
-    profile: { required: ["zosmf"], optional: ["cics-deploy"] },
+               CicshlqOption, CpsmhlqOption, DescriptionOption, JobcardOption, TimeoutOption, TargetStateOption, VerboseOption]
+             .concat(ZosmfOptions.CICS_DEPLOY_ZOSMF_CONNECTION_OPTIONS),
+    profile: { optional: ["cics-deploy", "zosmf"] },
     examples: [
         {
             description: "Deploy a CICS bundle with a specific name and location to a default set of target regions",

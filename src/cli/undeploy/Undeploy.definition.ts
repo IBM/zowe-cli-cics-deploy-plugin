@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandDefinition } from "@zowe/imperative";
+import { ICommandDefinition } from "@brightside/imperative";
 import { UndeployBundleDefinition } from "./bundle/UndeployBundle.definition";
 /**
  * Imperative command to "undeploy" a Bundle, etc.

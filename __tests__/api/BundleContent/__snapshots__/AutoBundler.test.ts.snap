@@ -12,17 +12,17 @@ exports[`AutoBundler01 should not merge an existing bundle 1`] = `"{\\"manifest\
 
 exports[`AutoBundler01 should read an existing bundle 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"ThisIsAnId\\",\\"bundleMajorVer\\":\\"10\\",\\"bundleMinorVer\\":\\"11\\",\\"bundleMicroVer\\":\\"12\\",\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"path1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"path2\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"}]}}"`;
 
-exports[`AutoBundler01 should receive default values from package.json 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"id\\":\\"testBundleName\\",\\"bundleMajorVer\\":1,\\"bundleMinorVer\\":0,\\"bundleMicroVer\\":0,\\"define\\":[{\\"name\\":\\"testBundleName\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/testBundleName.nodejsapp\\"}]}}"`;
+exports[`AutoBundler01 should receive default values from package.json 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"id\\":\\"testBundleName\\",\\"bundleMajorVer\\":1,\\"bundleMinorVer\\":0,\\"bundleMicroVer\\":0,\\"define\\":[{\\"name\\":\\"testBundleName\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/testBundleName.nodejsapp\\"}]}}"`;
 
-exports[`AutoBundler01 should set a nodejsapp name 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"id\\":\\"testBundleName\\",\\"bundleMajorVer\\":1,\\"bundleMinorVer\\":0,\\"bundleMicroVer\\":0,\\"define\\":[{\\"name\\":\\"MyExampleOverride\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/MyExampleOverride.nodejsapp\\"}]}}"`;
+exports[`AutoBundler01 should set a nodejsapp name 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"id\\":\\"testBundleName\\",\\"bundleMajorVer\\":1,\\"bundleMinorVer\\":0,\\"bundleMicroVer\\":0,\\"define\\":[{\\"name\\":\\"MyExampleOverride\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/MyExampleOverride.nodejsapp\\"}]}}"`;
 
 exports[`AutoBundler01 should set a port number 1`] = `"Supplied Port is outside the range of 1-65535: -27"`;
 
-exports[`AutoBundler01 should set the bundle version 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"bundleMajorVer\\":3,\\"bundleMinorVer\\":4,\\"bundleMicroVer\\":5}}"`;
+exports[`AutoBundler01 should set the bundle version 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleMajorVer\\":3,\\"bundleMinorVer\\":4,\\"bundleMicroVer\\":5}}"`;
 
-exports[`AutoBundler01 should set the bundleid 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"id\\":\\"test\\"}}"`;
+exports[`AutoBundler01 should set the bundleid 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"id\\":\\"test\\"}}"`;
 
-exports[`AutoBundler01 should support main script from package.json 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"$t\\":\\"\\",\\"id\\":\\"testBundleName\\",\\"bundleMajorVer\\":1,\\"bundleMinorVer\\":0,\\"bundleMicroVer\\":0,\\"define\\":[{\\"name\\":\\"testBundleName\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/testBundleName.nodejsapp\\"}]}}"`;
+exports[`AutoBundler01 should support main script from package.json 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"id\\":\\"testBundleName\\",\\"bundleMajorVer\\":1,\\"bundleMinorVer\\":0,\\"bundleMicroVer\\":0,\\"define\\":[{\\"name\\":\\"testBundleName\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/testBundleName.nodejsapp\\"}]}}"`;
 
 exports[`AutoBundler01 should tolerate an almost empty package.json 1`] = `"No startscript value set for NODEJSAPP \\"almostEmpty\\""`;
 

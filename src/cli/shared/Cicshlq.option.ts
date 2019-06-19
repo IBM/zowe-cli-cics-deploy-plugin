@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandOptionDefinition } from "@zowe/imperative";
+import { ICommandOptionDefinition } from "@brightside/imperative";
 
 const MAX_LENGTH = 35;
 
@@ -19,10 +19,11 @@ const MAX_LENGTH = 35;
  */
 export const CicshlqOption: ICommandOptionDefinition = {
     name: "cics-hlq",
-    aliases: ["ch", "cicshlq"],
+    aliases: ["cq", "cicshlq"],
     type: "string",
     required: false,
     stringLengthRange: [1, MAX_LENGTH],
+    group: "cics-deploy Options",
     description: "Specifies the high-level qualifier (up to 35 characters) at which the CICS " +
                  "datasets can be found in the target environment. Use this parameter if you have not set " +
                  "the --cics-deploy-profile option."

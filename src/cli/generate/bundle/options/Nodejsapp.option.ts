@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandOptionDefinition } from "@zowe/imperative";
+import { ICommandOptionDefinition } from "@brightside/imperative";
 
 /**
  * Imperative option for the "nodejsapp" parameter
@@ -19,6 +19,7 @@ export const NodejsappOption: ICommandOptionDefinition = {
     name: "nodejsapp",
     aliases: ["n", "nj", "nja"],
     type: "string",
+    group: "cics-deploy Options",
     description: "The ID of the generated CICS NODEJSAPP resource, up to 32 characters.  If no value is " +
                  "specified, a default value is created from the " +
                  "'name' property in package.json, or the bundleid option if specified. " +

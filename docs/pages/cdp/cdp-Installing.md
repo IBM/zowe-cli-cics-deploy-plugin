@@ -2,7 +2,7 @@
 title: Installing
 tags: [getting_started]
 keywords:
-summary: "To install the Zowe CLI and cics-deploy plugin, perform the following steps. For clarity, these components are installed on your local workstation, not on z/OS."
+summary: "To install the Zowe CLI and cics-deploy plug-in, perform the following steps on your local workstation."
 sidebar: cdp_sidebar
 permalink: cdp-Installing.html
 folder: cdp
@@ -18,13 +18,13 @@ toc: false
     npm --version
     ```
 
-2. Install [Zowe CLI](https://zowe.github.io/docs-site/latest/user-guide/cli-installcli.html). For example to install using npm:
+2. Install [Zowe CLI](https://zowe.github.io/docs-site/latest/user-guide/cli-installcli.html). For example, to install using npm:
 
     ```console
-    sudo npm install -g @zowe/cli
+    sudo npm install -g @brightside/core
     ```
 
-3. Build and install the cics-deploy plugin as described in [Setting up your development environment](https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/tutorials/Setup.md). For example:
+3. Build and install the cics-deploy plug-in as described in [Setting up your development environment](https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/tutorials/Setup.md). For example:
 
     ```console
     mkdir ~/cics-deploy
@@ -37,8 +37,27 @@ toc: false
     zowe plugins install .
     ```
 
-4. Verify the plugin is installed:
+4. Install the cics plugin:
+
+    ```console
+    zowe plugins install @brightside/cics
+    ```
+
+5. Verify the plug-ins are installed:
 
     ```console
     zowe plugins list
     ```
+
+    Displays a list of the installed plug-ins:
+
+   <pre class="messageText">
+   -- pluginName: zowe-cli-cics-deploy-plugin
+   -- package: zowe-cli-cics-deploy-plugin
+   -- version: 0.5.0
+   -- registry: https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-virtual
+
+   -- pluginName: @zowe/cics
+   -- package: @zowe/cics
+   -- version: 2.0.1
+   -- registry: https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-virtual</pre>

@@ -12,7 +12,7 @@
 */
 
 
-import { Imperative } from "@zowe/imperative";
+import { Imperative } from "@brightside/imperative";
 // init imperative & parse the CLI input.
 Imperative.init().then(() => {
     Imperative.api.imperativeLogger.info("Imperative Initialized the cics-deploy CLI!");

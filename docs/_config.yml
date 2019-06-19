@@ -4,10 +4,10 @@ output: web
 # this property is useful for conditional filtering of content that is separate from the PDF.
 # note that this adaption of Tom Johnston's Jekyll documentation theme does not generate PDF outputs
 
-topnav_title: Zowe CLI CICS deploy plugin
+topnav_title: Zowe CLI CICS deploy plug-in
 # this appears on the top navigation bar next to the home button
 
-site_title: CICS deploy plugin
+site_title: CICS deploy plug-in
 # this appears in the html browser tab for the site title (seen mostly by search engines, not users)
 
 company_name: IBM

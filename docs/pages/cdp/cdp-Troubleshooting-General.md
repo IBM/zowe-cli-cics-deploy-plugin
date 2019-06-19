@@ -9,7 +9,7 @@ folder: cdp
 ---
 
 ### Console output
-All Zowe CLI cics deploy plugin commands send output to the console when invoked. Very often, enough information is provided for you to diagnose and pinpoint the cause of a problem. The commands `cics-deploy push`, `cics-deploy deploy` and `cics-deploy undeploy` accept a `--verbose` command-line option which can generate extra information if needed.  
+All Zowe CLI CICS deploy plug-in commands send output to the console when invoked. Very often, enough information is provided for you to diagnose and pinpoint the cause of a problem. The commands `cics-deploy push`, `cics-deploy deploy` and `cics-deploy undeploy` accept a `--verbose` command-line option which can generate extra information if needed.  
 
 ### zowe.log
 The .zowe directory on your local workstation contains log files, profiles, and plug-ins. The location of this directory can be customised as described in [ Setting the Zowe CLI home directory](https://zowe.github.io/docs-site/latest/user-guide/cli-configuringcli.html#setting-the-zowe-cli-home-directory) and logging level set as described in [Setting Zowe CLI log levels](https://zowe.github.io/docs-site/latest/user-guide/cli-configuringcli.html#setting-zowe-cli-log-levels).

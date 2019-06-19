@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandOptionDefinition } from "@zowe/imperative";
+import { ICommandOptionDefinition } from "@brightside/imperative";
 
 /**
  * Imperative option for the "targetstate" parameter
@@ -25,6 +25,7 @@ export const TargetStateOption: ICommandOptionDefinition = {
       values: ["UNAVAILABLE", "DISABLED", "DISCARDED"],
       caseSensitive: false
     },
+    group: "cics-deploy Options",
     description: "Specifies the target state for the undeployed bundle."
 };
 

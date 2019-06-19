@@ -14,7 +14,7 @@
 import { Manifest } from "./Manifest";
 import { BundlePart, IBundlePartDataType } from "./BundlePart";
 import { NodejsappBundlePart } from "./NodejsappBundlePart";
-import { IHandlerParameters } from "@zowe/imperative";
+import { IHandlerParameters } from "@brightside/imperative";
 
 /**
  * Class to represent a CICS Bundle.
@@ -86,6 +86,7 @@ node_modules -
     this.manifest = new Manifest(this.bundleDirectory, this.merge, this.overwrite, params);
     this.preparedToSave = false;
     this.zosAttribsFile = this.path.join(this.bundleDirectory, ".zosattributes");
+    this.zosAttribsNeeded = true;
   }
 
   /**

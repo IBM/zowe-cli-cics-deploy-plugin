@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandOptionDefinition } from "@zowe/imperative";
+import { ICommandOptionDefinition } from "@brightside/imperative";
 
 /**
  * Imperative option for the "verbose" parameter
@@ -21,6 +21,7 @@ export const VerboseOption: ICommandOptionDefinition = {
     type: "boolean",
     defaultValue: false,
     required: false,
+    group: "cics-deploy Options",
     description: "Enable or suppress verbose output from the DFHDPLOY tool."
 };
 
