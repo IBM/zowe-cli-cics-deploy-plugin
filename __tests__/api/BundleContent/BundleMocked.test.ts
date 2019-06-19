@@ -22,7 +22,16 @@ describe("MockedFilesystemTests", () => {
 
     it("should tolerate META-INF directory not existing", () => {
         // Mocks for the manifest - META-INF exists
-        jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
+        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
+          if (path.endsWith("META-INF")) {
+              return false;
+          }
+          if (path.endsWith(".zosattributes")) {
+              return false;
+          }
+          return true;
+        });
+
         // Mocks for the manifest - Bundle dir writable
         jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
 
@@ -355,6 +364,9 @@ describe("MockedFilesystemTests", () => {
             }
             return true;
           });
+        jest.spyOn(fs, "writeFileSync").mockImplementation((path: string) => {
+          return true;
+        });
 
         jest.spyOn(fs, "mkdirSync").mockImplementationOnce(() => { throw new Error("InjectedError"); });
 
@@ -383,7 +395,11 @@ describe("MockedFilesystemTests", () => {
           });
 
         // Mocks for the manifest - manifest write
-        jest.spyOn(fs, "writeFileSync").mockImplementationOnce(() => { throw new Error("InjectedError"); });
+        jest.spyOn(fs, "writeFileSync").mockImplementation((path: string) => {
+          if (path.endsWith("cics.xml")) {
+            throw new Error("InjectedError");
+          }
+        });
 
 
         let err: Error;
@@ -408,6 +424,9 @@ describe("MockedFilesystemTests", () => {
             }
             return true;
           });
+        jest.spyOn(fs, "writeFileSync").mockImplementation((path: string) => {
+          return true;
+        });
 
         jest.spyOn(fs, "mkdirSync").mockImplementationOnce(() => { throw new Error("InjectedError"); });
 
@@ -434,9 +453,11 @@ describe("MockedFilesystemTests", () => {
             }
             return true;
           });
-
-        // Mocks for the nodejsapp - write .nodejsapp file)
-        jest.spyOn(fs, "writeFileSync").mockImplementationOnce(() => { throw new Error("InjectedError"); });
+        jest.spyOn(fs, "writeFileSync").mockImplementation((path: string) => {
+          if (path.endsWith(".nodejsapp")) {
+            throw new Error("InjectedError");
+          }
+        });
 
         let err: Error;
         try {
