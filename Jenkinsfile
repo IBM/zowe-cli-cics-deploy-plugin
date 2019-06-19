@@ -41,7 +41,8 @@ def TEST_NPM_REGISTRY = "https://eu.artifactory.swg-devops.com/artifactory/api/n
 /**
  * npm registry 
  */
-def NPM_REGISTRY = "https://registry.npmjs.org/"
+def NPM_REGISTRY = "registry.npmjs.org"
+def NPM_FULL_REGISTRY = "https://registry.npmjs.org"
 
 /**
  * The root results folder for items configurable by environmental variables
@@ -144,6 +145,8 @@ pipeline {
         PATH = "${NPM_CONFIG_PREFIX}/bin:${PATH}"
 
         // Credential to publish to npmjs.org
+        // NPM_CREDENTIALS_USR is email address
+        // NPM_REDENTIALS_PSW is the login token
         NPM_CREDENTIALS = credentials('ibmcics.npmjs.auth.token')
     }
 
@@ -516,7 +519,7 @@ pipeline {
                         echo "NEW_VERSION: ${NEW_VERSION}"
                         // Retrieve released version from npmjs.org
                         def RELEASED_VERSION = sh (
-                            script: 'npm view "$(echo "console.log(require(\'./package.json\').name);" | node)" version --registry '+NPM_REGISTRY+' || true',
+                            script: 'npm view "$(echo "console.log(require(\'./package.json\').name);" | node)" version --registry '+NPM_FULL_REGISTRY+' || true',
                             returnStdout: true
                         ).trim()
                         echo "RELEASED_VERSION: ${RELEASED_VERSION}"
@@ -580,12 +583,12 @@ pipeline {
                         sh "echo @brightside:registry=https://api.bintray.com/npm/ca/brightside/ >> .npmrc"
                         sh "echo @brightside:always-auth=false >> .npmrc"
                         if (BRANCH_NAME == MASTER_BRANCH) {
-                            // Set credential
-                            sh "echo _auth=${NPM_CREDENTIALS} >> .npmrc"
                             // Set registry
-                            sh "echo registry=$NPM_REGISTRY >> .npmrc"
+                            sh "echo registry=$NPM_FULL_REGISTRY >> .npmrc"
+                            // Set credential
+                            sh "echo //$NPM_REGISTRY/:_authToken=${NPM_CREDENTIALS_PSW} >> .npmrc"
                             // deploy 
-                            echo "publishing to $NPM_REGISTRY"
+                            echo "publishing to $NPM_FULL_REGISTRY"
                             sh "npm publish --tag latest"
                         } else if (BRANCH_NAME == DEV_BRANCH) {
                             // Set version
