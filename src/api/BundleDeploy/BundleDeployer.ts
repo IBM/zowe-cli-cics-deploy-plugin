@@ -225,7 +225,13 @@ export class BundleDeployer {
 
   private async createZosMFSession(): Promise<AbstractSession> {
     // Create a zosMF session
-    let zosmfProfile = this.params.profiles.get("zosmf");
+    let zosmfProfile;
+    try {
+      zosmfProfile = this.params.profiles.get("zosmf");
+    }
+    catch (error) {
+      // No-op, we can cope with there being no profile.
+    }
 
     if (zosmfProfile === undefined) {
       zosmfProfile = {};
