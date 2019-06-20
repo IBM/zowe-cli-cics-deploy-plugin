@@ -56,7 +56,7 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
 5. Confirm that the Node.js SDK is installed on z/OS
 
    ```text
-   zowe zos-uss issue "ssh node --version" --user <my z/OS userid> --password <my z/OS password>
+   zowe zos-uss issue ssh "node --version" --user <my z/OS userid> --password <my z/OS password>
    ```
    The output should indicate the installed version of Node.js.
 
