@@ -93,6 +93,14 @@ To save you having to type the above for every commit, Git can add the `Signed-o
 
 If you haven't signed each commit, then the pull request will fail to pass all checks.
 
+### Build and install the cics-deploy plugin
+```console
+git clone https://github.com/IBM/zowe-cli-cics-deploy-plugin
+cd zowe-cli-cics-deploy-plugin
+npm install
+npm run build
+zowe plugins install .
+```
 
 ## Developing Zowe CLI plug-ins
 
