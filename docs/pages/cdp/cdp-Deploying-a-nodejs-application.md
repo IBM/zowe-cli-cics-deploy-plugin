@@ -4,7 +4,7 @@ tags: [tutorial]
 keywords:
 summary: "The following steps take you through creating a Node.js application using the Express Application Generator then deploying it to CICS."
 sidebar: cdp_sidebar
-permalink: cdp-Deploying-a-nodejs-application.html
+permalink: cdp-Deploying-a-Nodejs-application.html
 folder: cdp
 toc: true
 ---
@@ -31,7 +31,7 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
 
    The Node.js application will start. You can call the application from a browser by using URL [http://localhost:3000/](http://localhost:3000/). To stop the application in the console press CTRL+C.
 
-4. Package the Node.js application into a [CICS bundle](cdp-cics-bundles).
+4. Package the Node.js application into a [CICS bundle](cdp-CICS-bundles).
 
    Make sure that you are in the root directory of the application.
 
@@ -71,7 +71,7 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
    stderr: /u/cicprov/mnt/CICPY000/workdir/CICPY000/myexpressapp/Express/D20190612.T144609.stderr
    PUSH operation completed</pre>
 
-   This results in a CICS BUNDLE resource named `Express` being defined, installed, and enabled in CICS. If the BUNDLE `Express` was already defined or installed in CICS, it is undeployed first. As the BUNDLE is enabled, the application is started. If there are errors, retry with the `--verbose` option for more detailed output, or refer to [Troubleshooting](cdp-Troubleshooting-General).
+   This results in a CICS BUNDLE resource named `Express` being defined, installed, and enabled in CICS. If the BUNDLE `Express` was already defined or installed in CICS, it is undeployed first. As the BUNDLE is enabled, the application is started. If there are errors, retry with the `--verbose` option for more detailed output, or refer to [Troubleshooting](cdp-Log-and-trace-files).
 
 6. Test the application.
 

@@ -15,7 +15,7 @@ entries:
       output: web
 
     - title: Requirements on z/OS
-      url: cdp-Requirements.html
+      url: cdp-Requirements-on-zOS.html
       output: web
 
     - title: Installing
@@ -44,7 +44,7 @@ entries:
       output: web
 
     - title: Deploying a Node.js application
-      url: cdp-Deploying-a-nodejs-application.html
+      url: cdp-Deploying-a-Nodejs-application.html
       output: web
 
     - title: Deploying a CICS policy
@@ -56,33 +56,33 @@ entries:
       output: web
 
   - title: Concepts
-    url: cdp-zowe-and-cli.html
+    url: cdp-Zowe-and-CLI.html
     output: web
     folderitems:
 
     - title: Zowe and the Zowe CLI
-      url: cdp-zowe-and-cli.html
+      url: cdp-Zowe-and-CLI.html
       output: web
 
     - title: Zowe CLI profiles
-      url: cdp-zowe-profiles.html
+      url: cdp-Zowe-CLI-profiles.html
       output: web
 
     - title: CICS bundles
-      url: cdp-cics-bundles.html
+      url: cdp-CICS-bundles.html
       output: web
 
   - title: Troubleshooting
-    url: cdp-Troubleshooting-General.html
+    url: cdp-Log-and-trace-files.html
     output: web
     folderitems:
 
     - title: Log and trace files
-      url: cdp-Troubleshooting-General.html
+      url: cdp-Log-and-trace-files.html
       output: web
 
     - title: Common Errors
-      url: cdp-Common-Errors.html
+      url: cdp-Common-errors.html
       output: web
 
   - title: Commands
