@@ -36,16 +36,6 @@ toc: false
     zowe plugins install zowe-cli-cics-deploy-plugin
     ```
 
-    Alternatively, you can build and install the cics-deploy plugin from the source. For example:
-
-    ```console
-    git clone https://github.com/IBM/zowe-cli-cics-deploy-plugin
-    cd zowe-cli-cics-deploy-plugin
-    npm install
-    npm run build
-    zowe plugins install .
-    ```
-
 5. Validate the plug-ins are installed:
 
     ```console
