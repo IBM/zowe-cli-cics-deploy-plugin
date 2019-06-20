@@ -6,86 +6,87 @@ entries:
   folders:
 
   - title: Getting Started
-    url: index.html
+    url: index
     output: web
     folderitems:
 
     - title: Zowe CLI CICS deploy plug-in
-      url: index.html
+      url: index
       output: web
 
     - title: Requirements on z/OS
-      url: cdp-Requirements-on-zOS.html
+      url: cdp-Requirements-on-zOS
       output: web
 
     - title: Installing
-      url: cdp-Installing.html
+      url: cdp-Installing
       output: web
 
     - title: Creating Zowe CLI profiles
-      url: cdp-Creating-Zowe-CLI-profiles.html
+      url: cdp-Creating-Zowe-CLI-profiles
       output: web
 
   - title: Tutorials
-    url: cdp-Tutorials-overview.html
+    url: cdp-Tutorials-overview
     output: web
     folderitems:
 
     - title: Tutorials overview
-      url: cdp-Tutorials-overview.html
+      url: cdp-Tutorials-overview
       output: web
 
     - title: Preparing a z/OS PT image
-      url: cdp-Preparing-a-zOS-PT-image.html
+      url: cdp-Preparing-a-zOS-PT-image
       output: web
 
     - title: Provisioning a CICS region
-      url: cdp-Provisioning-a-CICS-region.html
+      url: cdp-Provisioning-a-CICS-region
       output: web
 
     - title: Deploying a Node.js application
-      url: cdp-Deploying-a-Nodejs-application.html
+      url: cdp-Deploying-a-Nodejs-application
       output: web
 
     - title: Deploying a CICS policy
-      url: cdp-Deploying-a-CICS-policy.html
+      url: cdp-Deploying-a-CICS-policy
       output: web
 
     - title: Deploying using individual actions
-      url: cdp-Deploying-using-individual-actions.html
+      url: cdp-Deploying-using-individual-actions
       output: web
 
   - title: Concepts
-    url: cdp-Zowe-and-CLI.html
+    url: cdp-Zowe-and-CLI
     output: web
     folderitems:
 
     - title: Zowe and the Zowe CLI
-      url: cdp-Zowe-and-CLI.html
+      url: cdp-Zowe-and-CLI
       output: web
 
     - title: Zowe CLI profiles
-      url: cdp-Zowe-CLI-profiles.html
+      url: cdp-Zowe-CLI-profiles
       output: web
 
     - title: CICS bundles
-      url: cdp-CICS-bundles.html
+      url: cdp-CICS-bundles
       output: web
 
   - title: Troubleshooting
-    url: cdp-Log-and-trace-files.html
+    url: cdp-Log-and-trace-files
     output: web
     folderitems:
 
     - title: Log and trace files
-      url: cdp-Log-and-trace-files.html
+      url: cdp-Log-and-trace-files
       output: web
 
     - title: Common Errors
-      url: cdp-Common-errors.html
+      url: cdp-Common-errors
       output: web
 
   - title: Commands
+    url: cdp-CLIReadMe#create--cre
     output: web
     folderitems:
 
