@@ -21,13 +21,13 @@ toc: false
 2. Install [Zowe CLI](https://zowe.github.io/docs-site/latest/user-guide/cli-installcli.html). For example, to install using npm:
 
     ```console
-    sudo npm install -g @brightside/core
+    npm install -g @brightside/core
     ```
 
 3. Install the cics plugin:
 
     ```console
-    zowe plugins install @brightside/cics
+    zowe plugins install @brightside/cics@lts-incremental
     ```
 
 4. Install the cics-deploy plugin:
@@ -36,16 +36,22 @@ toc: false
     zowe plugins install zowe-cli-cics-deploy-plugin
     ```
 
-5. Validate the plug-ins are installed:
+5. Verify the plug-ins are installed:
 
     ```console
-    zowe plugins validate
+    zowe plugins list
     ```
 
-    validates the installed plugins:
+    Displays a list of the installed plugins:
 
     <pre class="messageText">
-    _____ Validation results for plugin '@brightside/cics' _____
-    This plugin was successfully validated. Enjoy the plugin. <br>
-    _____ Validation results for plugin 'zowe-cli-cics-deploy-plugin' _____
-    This plugin was successfully validated. Enjoy the plugin. </pre>
+    Installed plugins:
+
+    -- pluginName: @brightside/cics
+    -- package: @brightside/cics@lts-incremental
+    -- version: 1.1.1
+    -- registry: https://registry.npmjs.org/<br>
+    -- pluginName: zowe-cli-cics-deploy-plugin
+    -- package: zowe-cli-cics-deploy-plugin
+    -- version: 0.5.0
+    -- registry: https://registry.npmjs.org/ </pre>
