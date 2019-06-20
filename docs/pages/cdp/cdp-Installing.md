@@ -24,12 +24,21 @@ toc: false
     sudo npm install -g @brightside/core
     ```
 
-3. Build and install the cics-deploy plug-in as described in [Setting up your development environment](https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/tutorials/Setup.md). For example:
+3. Install the cics plugin:
 
     ```console
-    mkdir ~/cics-deploy
-    cd ~/cics-deploy
-    rm -Rf *
+    zowe plugins install @brightside/cics
+    ```
+
+4. Install the cics-deploy plugin:
+
+    ```console
+    zowe plugins install zowe-cli-cics-deploy-plugin
+    ```
+
+    Alternatively, you can build and install the cics-deploy plugin from the source. For example:
+
+    ```console
     git clone https://github.com/IBM/zowe-cli-cics-deploy-plugin
     cd zowe-cli-cics-deploy-plugin
     npm install
@@ -37,27 +46,16 @@ toc: false
     zowe plugins install .
     ```
 
-4. Install the cics plugin:
+5. Validate the plug-ins are installed:
 
     ```console
-    zowe plugins install @brightside/cics
+    zowe plugins validate
     ```
 
-5. Verify the plug-ins are installed:
+    validates the installed plugins:
 
-    ```console
-    zowe plugins list
-    ```
-
-    Displays a list of the installed plug-ins:
-
-   <pre class="messageText">
-   -- pluginName: zowe-cli-cics-deploy-plugin
-   -- package: zowe-cli-cics-deploy-plugin
-   -- version: 0.5.0
-   -- registry: https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-virtual
-
-   -- pluginName: @zowe/cics
-   -- package: @zowe/cics
-   -- version: 2.0.1
-   -- registry: https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-virtual</pre>
+    <pre class="messageText">
+    _____ Validation results for plugin '@brightside/cics' _____
+    This plugin was successfully validated. Enjoy the plugin. <br>
+    _____ Validation results for plugin 'zowe-cli-cics-deploy-plugin' _____
+    This plugin was successfully validated. Enjoy the plugin. </pre>
