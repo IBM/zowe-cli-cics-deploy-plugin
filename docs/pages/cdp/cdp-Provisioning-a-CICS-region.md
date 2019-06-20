@@ -114,7 +114,7 @@ zowe zos-uss issue ssh "zospt start my_cics_region"
 
 ### Deprovision your CICS region
 
-The CICS region can be stopped and removed completely using the following commands. This will remove the `DFH_REGION_ZFS_DIRECTORY` directory used to upload your CICS application and store application output files.
+The CICS region can be stopped and removed completely using the following command. This will remove the `DFH_REGION_ZFS_DIRECTORY` directory used to upload your application and store application output files.
 
 ```console
 zowe zos-uss issue ssh "zospt rm -f my_cics_region"
