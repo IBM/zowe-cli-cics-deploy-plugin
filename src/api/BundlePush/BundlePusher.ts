@@ -36,7 +36,7 @@ export class BundlePusher {
   private path = require("path");
   private fs = require("fs");
   private progressBar: ITaskWithStatus;
-  private defaultRemoteNodehomeCmd = "export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\"";
+  private defaultRemoteNodehomeCmd = "export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\"";
 
   /**
    * Constructor for a BundlePusher.
@@ -75,6 +75,11 @@ export class BundlePusher {
                                         "_" + bundle.getVersion();
     }
 
+    if (this.params.arguments.silent === undefined) {
+      const logger = Logger.getAppLogger();
+      logger.debug("Loading profiles");
+    }
+
     // Get the profiles
     const zosMFProfile = this.getProfile("zosmf");
     const sshProfile = this.getProfile("ssh");
@@ -91,6 +96,11 @@ export class BundlePusher {
     // Now detect any mismatches between the values from the profiles
     this.validateProfiles(zosMFProfile, sshProfile, cicsProfile);
 
+
+    if (this.params.arguments.silent === undefined) {
+      const logger = Logger.getAppLogger();
+      logger.debug("Creating sessions");
+    }
 
     // Create a zOSMF session
     const zosMFSession = await this.createZosMFSession(zosMFProfile);
@@ -199,7 +209,13 @@ export class BundlePusher {
   }
 
   private getProfile(type: string): IProfile {
-    let profile =  this.params.profiles.get(type);
+    let profile;
+    try {
+      profile = this.params.profiles.get(type);
+    }
+    catch (error) {
+      // Tolerate errors
+    }
 
     if (profile === undefined) {
       profile = {};

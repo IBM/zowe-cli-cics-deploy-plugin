@@ -18,6 +18,8 @@ exports[`BundleDeployer01 should complain if status can't be determined 1`] = `"
 
 exports[`BundleDeployer01 should complain if status can't be determined 2`] = `"DFHDPLOY command completed for jobid UNKNOWN, but status cannot be determined."`;
 
+exports[`BundleDeployer01 should complain with error during profile load for deploy 1`] = `"Required parameter --zosmf-host is not set."`;
+
 exports[`BundleDeployer01 should complain with missing zOSMF profile for deploy 1`] = `"Injected Create error"`;
 
 exports[`BundleDeployer01 should complain with missing zOSMF profile for undeploy 1`] = `"Injected Create error"`;
@@ -599,3 +601,117 @@ exports[`BundleDeployer01 should tolerate empty output from DFHDPLOY 1`] = `"DFH
 exports[`BundleDeployer01 should undeploy successfully 1`] = `"Bundle undeployment successful."`;
 
 exports[`BundleDeployer01 should update the progress bar 1`] = `"spoolOutput is not iterable"`;
+
+exports[`BundleDeployer01 tolerate embedded quote 1`] = `
+"//DFHDPLOY JOB DFHDPLOY,\\"some text\\",CLASS=A,MSGCLASS=X,TIME=NOLIMIT
+//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
+//STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
+//         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
+//SYSTSPRT DD SYSOUT=*
+//SYSIN    DD *
+*
+SET CICSPLEX(12345678);
+*
+DEPLOY BUNDLE(12345678)
+       BUNDLEDIR(1234567890)
+       SCOPE(12345678)
+       STATE(ENABLED)
+       RESGROUP(12345678);
+/*
+"
+`;
+
+exports[`BundleDeployer01 tolerate embedded single quote 1`] = `
+"//DFHDPLOY JOB DFHDPLOY,'some text',CLASS=A,MSGCLASS=X,TIME=NOLIMIT
+//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
+//STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
+//         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
+//SYSTSPRT DD SYSOUT=*
+//SYSIN    DD *
+*
+SET CICSPLEX(12345678);
+*
+DEPLOY BUNDLE(12345678)
+       BUNDLEDIR(1234567890)
+       SCOPE(12345678)
+       STATE(ENABLED)
+       RESGROUP(12345678);
+/*
+"
+`;
+
+exports[`BundleDeployer01 tolerate quotes around jobcard 1`] = `
+"//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
+//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
+//STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
+//         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
+//SYSTSPRT DD SYSOUT=*
+//SYSIN    DD *
+*
+SET CICSPLEX(12345678);
+*
+DEPLOY BUNDLE(12345678)
+       BUNDLEDIR(1234567890)
+       SCOPE(12345678)
+       STATE(ENABLED)
+       RESGROUP(12345678);
+/*
+"
+`;
+
+exports[`BundleDeployer01 tolerate quotes around jobcard with embedded quote 1`] = `
+"//DFHDPLOY JOB DFHDPLOY,\\"some text\\",CLASS=A,MSGCLASS=X,TIME=NOLIMIT
+//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
+//STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
+//         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
+//SYSTSPRT DD SYSOUT=*
+//SYSIN    DD *
+*
+SET CICSPLEX(12345678);
+*
+DEPLOY BUNDLE(12345678)
+       BUNDLEDIR(1234567890)
+       SCOPE(12345678)
+       STATE(ENABLED)
+       RESGROUP(12345678);
+/*
+"
+`;
+
+exports[`BundleDeployer01 tolerate single quotes around jobcard 1`] = `
+"//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
+//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
+//STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
+//         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
+//SYSTSPRT DD SYSOUT=*
+//SYSIN    DD *
+*
+SET CICSPLEX(12345678);
+*
+DEPLOY BUNDLE(12345678)
+       BUNDLEDIR(1234567890)
+       SCOPE(12345678)
+       STATE(ENABLED)
+       RESGROUP(12345678);
+/*
+"
+`;
+
+exports[`BundleDeployer01 tolerate single quotes around jobcard with embedded single quote 1`] = `
+"//DFHDPLOY JOB DFHDPLOY,'some text',CLASS=A,MSGCLASS=X,TIME=NOLIMIT
+//DFHDPLOY EXEC PGM=DFHDPLOY,REGION=100M
+//STEPLIB  DD DISP=SHR,DSN=12345678901234567890123456789012345.SDFHLOAD
+//         DD DISP=SHR,DSN=abcde12345abcde12345abcde12345abcde.SEYUAUTH
+//SYSTSPRT DD SYSOUT=*
+//SYSIN    DD *
+*
+SET CICSPLEX(12345678);
+*
+DEPLOY BUNDLE(12345678)
+       BUNDLEDIR(1234567890)
+       SCOPE(12345678)
+       STATE(ENABLED)
+       RESGROUP(12345678);
+/*
+"
+`;

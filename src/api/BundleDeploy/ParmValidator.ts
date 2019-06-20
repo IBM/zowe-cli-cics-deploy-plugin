@@ -303,6 +303,10 @@ export class ParmValidator {
     // handle long jobcards
     ParmValidator.wrapJobcard(params);
 
+    // Strip leading and trailing quotes, if they're there
+    params.arguments.jobcard = params.arguments.jobcard.replace(/^"(.*)"$/, "$1");
+    params.arguments.jobcard = params.arguments.jobcard.replace(/^'(.*)'$/, "$1");
+
     // split the jobcard into a comma separated list
     const jobcardParts = params.arguments.jobcard.split(",");
     const firstPart = jobcardParts[0].trim();

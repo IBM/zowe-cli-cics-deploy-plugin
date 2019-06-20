@@ -25,6 +25,11 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     },
     profiles: {
         get: (type: string) => {
+
+            if (profileError === true) {
+              throw new Error("Profile Error");
+            }
+
             if (type === "zosmf") {
               return zosmfProfile;
             }
@@ -73,6 +78,7 @@ let consoleText = "";
 let zosmfProfile = {};
 let sshProfile = {};
 let cicsProfile = {};
+let profileError = false;
 
 let zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementation(() => ({}));
 let sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementation(() => ({}));
@@ -114,6 +120,7 @@ describe("BundlePusher01", () => {
         zosmfProfile = { host: "wibble", user: "user", password: "thisIsntReal", port: 443, rejectUnauthorized: true };
         sshProfile = { host: "wibble", user: "user", password: "thisIsntReal", port: 22 };
         cicsProfile = undefined;
+        profileError = false;
     });
     afterEach(() => {
         jest.restoreAllMocks();
@@ -198,6 +205,12 @@ describe("BundlePusher01", () => {
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01",  false, "Injected zOSMF Create error");
 
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should complain with error during profile load for push", async () => {
+        profileError = true;
+        await runPushTestWithError("__tests__/__resources__/ExampleBundle01",  false, "Required parameter --zosmf-host is not set.");
+
+        expect(zosMFSpy).toHaveBeenCalledTimes(0);
     });
     it("should implement --zosmf-* overrides" , async () => {
         const parms = getCommonParmsForPushTests();
@@ -922,7 +935,7 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\" " +
+              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\" " +
               "&& npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
               "Problem is: The output from the remote command implied that an error occurred, return code 1.");
 
@@ -955,7 +968,7 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\" " +
+              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\" " +
               "&& npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
               "Problem is: The output from the remote command implied that an error occurred, return code 1.");
 
@@ -988,7 +1001,7 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x/bin\" " +
+              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\" " +
               "&& npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
               "Problem is: The output from the remote command implied that an error occurred, return code 1.");
 
