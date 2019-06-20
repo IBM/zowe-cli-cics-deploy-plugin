@@ -4,7 +4,7 @@ tags: [getting_started, requirements]
 keywords:
 summary: "The cics-deploy plug-in is dependent on several servers and facilities that need to be set up on z/OS."
 sidebar: cdp_sidebar
-permalink: cdp-Requirements.html
+permalink: cdp-Requirements-on-zOS.html
 folder: cdp
 toc: false
 ---

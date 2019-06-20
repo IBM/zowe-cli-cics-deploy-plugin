@@ -13,7 +13,7 @@ Firstly, you will need a CICS region:
 
 * The z/OS Provisioning Toolkit enables you to provision CICS regions yourself:
 
-   * [Preparing a z/OS Provisioning Toolkit image](cdp-Preparing-a-zOS-PT-image) - prepare a z/OS Provisioning Toolkit image for CICS, and optionally include an application in the image.
+  * [Preparing a z/OS Provisioning Toolkit image](cdp-Preparing-a-zOS-PT-image) - prepare a z/OS Provisioning Toolkit image for CICS, and optionally include an application in the image.
 
   * [Provisioning a CICS region](cdp-Provisioning-a-CICS-region) - provision a CICS region from a z/OS Provisioning Toolkit image.
 
@@ -21,7 +21,7 @@ Firstly, you will need a CICS region:
 
 Next, deploy a CICS bundle containing an application to the CICS region:
 
-* [Deploying a Node.js application](cdp-Deploying-a-nodejs-application) - create a Node.js application using the Express Application Generator, package it into a CICS bundle, and deploy it.
+* [Deploying a Node.js application](cdp-Deploying-a-Nodejs-application) - create a Node.js application using the Express Application Generator, package it into a CICS bundle, and deploy it.
 
 * [Deploying a CICS policy](cdp-Deploying-a-CICS-policy) - download a sample policy packaged in a CICS bundle, and deploy it.
 

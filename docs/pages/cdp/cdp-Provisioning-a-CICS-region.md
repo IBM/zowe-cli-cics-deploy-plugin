@@ -94,7 +94,7 @@ Before you can provision a CICS region, a z/OS PT image needs to be created and 
 
 #### Results
 
-You are now ready to deploy applications to the provisioned CICS region. You can try this out by following the steps in [Deploying a Node.js application](cdp-Deploying-a-nodejs-application). During deployment, the CICS bundle will be copied into the `bundles/` directory, and output files will be written into a sub-directory of `workdir/`.
+You are now ready to deploy applications to the provisioned CICS region. You can try this out by following the steps in [Deploying a Node.js application](cdp-Deploying-a-Nodejs-application). During deployment, the CICS bundle will be copied into the `bundles/` directory, and output files will be written into a sub-directory of `workdir/`.
 
 ### Stop your CICS region
 
@@ -114,7 +114,7 @@ zowe zos-uss issue ssh "zospt start my_cics_region"
 
 ### Deprovision your CICS region
 
-The CICS region can be stopped and removed completely using the following commands. This will remove the `DFH_REGION_ZFS_DIRECTORY` directory used to upload your CICS application and store application output files.
+The CICS region can be stopped and removed completely using the following command. This will remove the `DFH_REGION_ZFS_DIRECTORY` directory used to upload your application and store application output files.
 
 ```console
 zowe zos-uss issue ssh "zospt rm -f my_cics_region"
