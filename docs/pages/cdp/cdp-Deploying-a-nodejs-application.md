@@ -53,7 +53,14 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
    create : META-INF/cics.xml
    CICS Bundle generated with bundleid "myexpressapp"</pre>
 
-5. Deploy the CICS bundle into CICS.
+5. Confirm that the Node.js SDK is installed on z/OS
+
+   ```text
+   zowe zos-uss issue "ssh node --version" --user <my z/OS userid> --password <my z/OS password>
+   ```
+   The output should indicate the installed version of Node.js.
+
+6. Deploy the CICS bundle into CICS.
 
    ```text
    zowe cics-deploy push bundle --name Express --overwrite
@@ -73,13 +80,13 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
 
    This results in a CICS BUNDLE resource named `Express` being defined, installed, and enabled in CICS. If the BUNDLE `Express` was already defined or installed in CICS, it is undeployed first. As the BUNDLE is enabled, the application is started. If there are errors, retry with the `--verbose` option for more detailed output, or refer to [Troubleshooting](cdp-Troubleshooting-General).
 
-6. Test the application.
+7. Test the application.
 
    You can call the application from a browser by using URL [http://myzos:3000/](http://myzos:3000/), replacing _myzos_ with the host name of the z/OS system, and _3000_ with the port specified in step 4.
 
    If you make changes to the application, you can redeploy it by repeating step 5.
 
-7. View the application output files.
+8. View the application output files.
 
    Use the [Zowe](https://marketplace.visualstudio.com/items?itemName=Zowe.vscode-extension-for-zowe) extension for Visual Studio Code or Zowe CLI commands to view the application output files. For example:
 
