@@ -48,15 +48,21 @@ Before you can provision a CICS region, a z/OS PT image needs to be created and 
    zowe zos-uss issue ssh "zospt --help"
    ```
 
-5. Provision your CICS region.
+5. List the z/OS PT images available for you to use.
 
-   Update `--name` to specify a name for the container that is easy to remember for use in later commands. This command may take a few minutes to complete.
+   ```tex
+    zowe zos-uss issue ssh "zospt images"
+   ```
+
+6. Provision your CICS region.
+
+   Update `cics_55_nodejs` to the name of the image, and `--name` to specify a name for the container that is easy to remember for use in later commands. This command may take a few minutes to complete.
 
    ```console
    zowe zos-uss issue ssh "zospt run cics_55_nodejs --name my_cics_region"
    ```
 
-6. Display your CICS region information.
+7. Display your CICS region information.
 
    ```console
    zowe zos-uss issue ssh "zospt inspect my_cics_region"
@@ -78,7 +84,7 @@ Before you can provision a CICS region, a z/OS PT image needs to be created and 
    | dfhconfig/nodejsprofiles/general.profile | General profile containing values for WORK_DIR and NODE_HOME. Node.js application should include this by adding `%INCLUDE=&USSCONFIG;/nodejsprofiles/general.profile` to their CICS Node.js application profile |
    | workdir/ | Trace, log and configuration files create by applications, Node.js runtimes, Java runtimes, and CICS runtimes |
 
-7. Update your Zowe CLI cics-deploy profile to deploy to your CICS region by default.
+8. Update your Zowe CLI cics-deploy profile to deploy to your CICS region by default.
 
    Update `--scope` to specify the value from DFH_REGION_APPLID, and `--target-directory` to specify the `bundles` subdirectory of DFH_REGION_ZFS_DIRECTORY. For example:
 
