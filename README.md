@@ -8,7 +8,7 @@ This project provides a plug-in for [Zowe CLI](https://github.com/zowe/zowe-cli)
 
 The project was started in February 2019 and is at an early stage of development. It will initially focus on generating and deploying CICS bundles containing Node.js applications.
 
-To try it out, build the plug-in from source as described in [setup](docs-internal/tutorials/Setup.md).
+To try it out, install the plug-in by following the steps in [installing](https://ibm.github.io/zowe-cli-cics-deploy-plugin/installing.html).
 
 ## Documentation
 
