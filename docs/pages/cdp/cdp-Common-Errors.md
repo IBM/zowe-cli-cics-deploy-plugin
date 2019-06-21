@@ -72,7 +72,26 @@ details:
 *Suggested action*: 
 Check that your `--cicshlq` profile setting matches the value configured for CICS high-level qualifiers in your CICS region. 
 
-### BUNDLE ... cannot be deployed
+### BUNDLE ... cannot be deployed (1)
+
+*Possible cause*: CICS does not have permission to read the bundle directory.
+
+*Representative output*:
+<pre class="messageText">
+11:46:15.916293 : DFHRL2300E BUNDLE(CICSJS02) cannot be deployed. The reason for the failure could not be determined.
+11:46:15.922147 : DFHRL2055I Errors have occurred, processing terminated.
+11:46:15.927066 : DFHRL2014I Disconnecting from CICSPLEX(CAPLEX).
+</pre>
+
+*Suggested action*: 
+Check the MSGUSR file for more specific diagnostics and if relevant, change the permissions on the offending directory.
+
+<pre class="messageText">
+DFHRL0106 E 04/24/2019 11:46:13 CALMAS1 COIE The CICS resource lifecycle manager failed to create the BUNDLE resource CICSJS02 because CICS is not authorized to read the manifest /u/&lt;username>/CICSJSON_1.0.0/META-INF/cics.xml in the root directory of the bundle.
+DFHRL0110 E 04/24/2019 11:46:13 CALMAS1 COIE The CICS resource lifecycle manager has failed to create the BUNDLE resource CICSJS02.
+</pre>
+
+### BUNDLE ... cannot be deployed (2)
 
 *Possible cause*: The `cics.xml` file is malformed.
 

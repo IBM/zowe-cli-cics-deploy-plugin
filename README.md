@@ -4,12 +4,7 @@ This project provides a plug-in for [Zowe CLI](https://github.com/zowe/zowe-cli)
 
 ## Installing
 
-To use the cics-deploy plug-in, you'll first need Zowe CLI.
-
-Then you can install the plug-in from the public npm registry by running the command
-```
-zowe plugins install zowe-cli-cics-deploy-plugin
-```
+Install the plug-in by following the steps in [installing](https://ibm.github.io/zowe-cli-cics-deploy-plugin/installing.html).
 
 ## Documentation
 
