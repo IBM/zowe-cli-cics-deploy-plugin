@@ -24,20 +24,30 @@ If you experience errors while using the cics-deploy plug-in, check the followin
 
 ### Application incorrectly deploys in a DISABLED state
 
-*Possible cause*: The port requested by the application is already in use.
+*Possible cause:* The port requested by the application is already in use.
 
-*Suggested action*: Choose a new port number after double-checking that it is not in use. Redeploy the application using the new value for the port.
+*Suggested action:* Choose a new port number after double-checking that it is not in use. Redeploy the application using the new value for the port.
 
 {% include note.html content="An application in a `DISABLED` state does not necessarily indicate an error condition. The `cics-deploy deploy`, `cics-deploy push` and `cics-deploy undeploy` commands allow you to specify a `--target-state` option which you may deliberately choose to set to `DISABLED`." %}
 
+### When deploying to multiple regions, the application fails to enable in the second and subsequent regions
+*Possible cause:* The application has deployed successfully in the first region, but subsequent regions see the requested port as in use, and cannot enable the application.
+
+*Suggested action:* Confirm the error by searching for `Error: listen EADDRINUSE :::30701` in STDERR. Contact a CICS systems administrator to set up port sharing for the affected port.
+
 ### Command error: DFHDPLOY stopped processing due to an error
 
+<<<<<<< HEAD
 *Possible causes*:
 * The `--scope` and/or `--cicsplex` settings for the current deploy profile are wrong, and don't correctly identify a current CICS® system, CICS® System Group and/or a correct CICSPlex respectively.
+=======
+*Possible causes:*
+* The `--scope` and/or `--cicsplex` settings for the current deploy profile are wrong, and don't correctly identify a current CICS system, CICS System Group and/or a correct CICSPlex respectively.
+>>>>>>> 0756169330262b1a362a12c4d130ffc377eb0283
 * The CMAS for the current CICSPlex is inactive.
 * CPSM is not functioning correctly.
 
-*Representative output*:
+*Representative output:*
 <pre class="messageText">
 16:22:50.058844 :  DFHDPLOY CICS TS APPLICATION DEPLOYMENT  2019/04/10 4:22pm
 16:22:50.059562 :  RELEASE: HCI7300.   SERVICE LEVEL: HCI7300.
@@ -47,16 +57,16 @@ If you experience errors while using the cics-deploy plug-in, check the followin
 16:22:50.065729 :  DFHRL2055I Errors have occurred, processing terminated.
 </pre>
 
-*Suggested actions*:
+*Suggested actions:*
 
 * Confirm that the `--scope` and `--cicsplex` settings are correct.
 * Ask your CICS® Systems Programmer to check that the CMAS for the current CICSPlex is alive and that CPSM is working properly.
 
 ### Command error: ... validation of - -cicshlq dataset failed: z/OSMF REST API Error
 
-*Possible cause*: The profile setting for `--cicshlq` is incorrect.
+*Possible cause:* The profile setting for `--cicshlq` is incorrect.
 
-*Representative output*:
+*Representative output:*
 <pre class="messageText">
 A failure occurred during CICS® bundle deployment.
 Reason = Validation of --cicshlq dataset failed: z/OSMF REST API Error:
@@ -69,21 +79,21 @@ details:
   - ISRZ002 Data set not cataloged - 'ANT.CICS.TS.DEV.INTEGRAT.SDFHLOAD' was not found in catalog.
 </pre>
 
-*Suggested action*: 
-Check that your `--cicshlq` profile setting matches the value configured for CICS® high-level qualifiers in your CICS® region. 
+*Suggested action:* 
+Check that your `--cicshlq` profile setting matches the value configured for CICS® high-level qualifiers in your CICS region. 
 
 ### BUNDLE ... cannot be deployed (1)
 
-*Possible cause*: CICS® does not have permission to read the bundle directory.
+*Possible cause:* CICS® does not have permission to read the bundle directory.
 
-*Representative output*:
+*Representative output:*
 <pre class="messageText">
 11:46:15.916293 : DFHRL2300E BUNDLE(CICSJS02) cannot be deployed. The reason for the failure could not be determined.
 11:46:15.922147 : DFHRL2055I Errors have occurred, processing terminated.
 11:46:15.927066 : DFHRL2014I Disconnecting from CICSPLEX(CAPLEX).
 </pre>
 
-*Suggested action*: 
+*Suggested action:* 
 Check the MSGUSR file for more specific diagnostics and if relevant, change the permissions on the offending directory.
 
 <pre class="messageText">
@@ -93,9 +103,9 @@ DFHRL0110 E 04/24/2019 11:46:13 CALMAS1 COIE The CICS resource lifecycle manager
 
 ### BUNDLE ... cannot be deployed (2)
 
-*Possible cause*: The `cics.xml` file is malformed.
+*Possible cause:* The `cics.xml` file is malformed.
 
-*Representative output*:
+*Representative output:*
 <pre class="messageText">
 15:56:17.411714 :  DFHRL2300E BUNDLE(CICSJS02) cannot be deployed. The reason for the failure could not be determined.
 15:56:17.419308 :  DFHRL2055I Errors have occurred, processing terminated.
@@ -110,16 +120,16 @@ DFHRL0113 E 05/17/2019 15:56:15 CALMAS1 COIE The CICS resource lifecycle manager
            root directory. The manifest is not valid.
 </pre>
 
-*Suggested action*: 
+*Suggested action:* 
 Check that your `cics.xml` file is well-formed.
 
 ## General errors
 
 ### Syntax error: Invalid value length for option
 
-*Possible cause*: The length of the option you provided in a command was either too long or two short.
+*Possible cause:* The length of the option you provided in a command was either too long or two short.
 
-*Representative output*:
+*Representative output:*
 <pre class="messageText">
 Syntax Error:
 Invalid value length for option:
@@ -131,5 +141,5 @@ NODETESTS
 The length must be between 1 and 8 (inclusive)
 </pre>
 
-*Suggested action*:
+*Suggested action:*
 Review the error output text and reissue the original command having corrected the name of the option so that its length falls within acceptable limits.
