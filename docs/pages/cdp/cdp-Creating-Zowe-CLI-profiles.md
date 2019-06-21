@@ -24,7 +24,7 @@ The CICS® deploy plug-in makes use of the following profiles:
 | [z/OSMF profile](#zosmf-profile) | **zowe cics-deploy ...** <br /> zowe console ... <br />  zowe zos-files ... <br />  zowe zos-jobs ... <br />  zowe zos-tso ... <br />  zowe zos-workflows ... <br />  zowe zosmf ... <br />  zowe provisioing ... | z/OSMF |
 | [SSH profile](#ssh-profile) | **zowe cics-deploy push ...** <br />  zowe zos-uss ... | SSH |
 | [CICS deploy profile](#cics-deploy-profile) | **zowe cics-deploy ...** |  |
-| [CICS profile](#cics-profile) | **zowe cics-deploy push ...** <br />  zowe cics ... | CICSPlex SM WUI |
+| [CICS profile](#cics-profile) | **zowe cics-deploy push ...** <br />  zowe cics ... | CICSPlex® SM WUI |
 
 ### z/OSMF profile
 
@@ -94,7 +94,7 @@ The cics-deploy profile identifies the CICS® environment for deployment. An exa
 
 | Option | Description |
 | --- | --- |
-| cicsplex | CPSM CICSplex name. |
+| cicsplex | CPSM CICSplex® name. |
 | cics-hlq | High Level Qualifier \(HLQ\) for the CICS® data sets. |
 | cpsm-hlq | High Level Qualifier \(HLQ\) for the CPSM data sets. |
 | scope | CPSM scope to identify the CICS® region or group of regions to deploy your application. |
@@ -122,7 +122,7 @@ The CICS® profile identifies the connection to the CICS® Web User Interface (W
 
 | Option | Description |
 | --- | --- |
-| cics-plex | CPSM CICSplex name. This will typically be set to the same as cicsplex in the cics-deploy profile. |
+| cics-plex | CPSM CICSplex® name. This will typically be set to the same as cicsplex in the cics-deploy profile. |
 | region-name | The name of the CICS® region name to interact with. |
 | protocol | HTTP or HTTPS to use to connect to the CICS® WUI server. |
 | host | Host name of the CICS® WUI server. |

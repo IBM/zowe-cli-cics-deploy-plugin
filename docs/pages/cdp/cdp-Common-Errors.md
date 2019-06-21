@@ -38,8 +38,8 @@ If you experience errors while using the cics-deploy plug-in, check the followin
 ### Command error: DFHDPLOY stopped processing due to an error
 
 *Possible causes:*
-* The `--scope` and/or `--cicsplex` settings for the current deploy profile are wrong, and don't correctly identify a current CICS® system, CICS® System Group and/or a correct CICSPlex respectively.
-* The CMAS for the current CICSPlex is inactive.
+* The `--scope` and/or `--cicsplex` settings for the current deploy profile are wrong, and don't correctly identify a current CICS® system, CICS® System Group and/or a correct CICSPlex® respectively.
+* The CMAS for the current CICSPlex® is inactive.
 * CPSM is not functioning correctly.
 
 *Representative output:*
@@ -55,7 +55,7 @@ If you experience errors while using the cics-deploy plug-in, check the followin
 *Suggested actions:*
 
 * Confirm that the `--scope` and `--cicsplex` settings are correct.
-* Ask your CICS® Systems Programmer to check that the CMAS for the current CICSPlex is alive and that CPSM is working properly.
+* Ask your CICS® Systems Programmer to check that the CMAS for the current CICSPlex® is alive and that CPSM is working properly.
 
 ### Command error: ... validation of - -cicshlq dataset failed: z/OSMF REST API Error
 

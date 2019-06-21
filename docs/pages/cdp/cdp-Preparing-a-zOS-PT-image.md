@@ -22,7 +22,7 @@ z/OS PT uses configuration and files in an *image* as input to z/OSMF workflows 
 
 ### Prepare a z/OS® PT image for CICS®
 
-Use these steps to prepare a z/OS® PT image for a CICS® region. No application is included in the image. The CICS® region is connected to a CICSplex environment, and has NODE_HOME set.
+Use these steps to prepare a z/OS® PT image for a CICS® region. No application is included in the image. The CICS® region is connected to a CICSplex® environment, and has NODE_HOME set.
 
 #### Procedure
 
@@ -101,7 +101,7 @@ The image is now ready for developers to provision CICS® regions and deploy the
 
 ### Prepare a z/OS® PT image for CICS® including an application
 
-Use these steps to prepare a z/OS® PT image for a CICS® region that includes a Node.js application, such that the region and application are provisioned / started / stopped / de-provisioned together. The CICS® region is connected to a CICSplex environment, and has NODE_HOME set.
+Use these steps to prepare a z/OS® PT image for a CICS® region that includes a Node.js application, such that the region and application are provisioned / started / stopped / de-provisioned together. The CICS® region is connected to a CICSplex® environment, and has NODE_HOME set.
 
 #### Procedure
 
