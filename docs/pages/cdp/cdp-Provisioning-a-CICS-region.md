@@ -2,18 +2,18 @@
 title: Provisioning a CICS® region
 tags: [tutorial]
 keywords:
-summary: "The following steps take you through provisioning a CICS® region from a z/OS Provisioning Toolkit image. You can then deploy and test applications using the CICS® region."
+summary: "The following steps take you through provisioning a CICS® region from a z/OS® Provisioning Toolkit image. You can then deploy and test applications using the CICS® region."
 sidebar: cdp_sidebar
 permalink: cdp-Provisioning-a-CICS-region.html
 folder: cdp
 toc: true
 ---
 
-The [z/OS Provisioning Toolkit](https://developer.ibm.com/mainframe/products/zospt/) (z/OS PT) provides a command line utility and z/OSMF workflows to provision CICS® regions and other development environments on z/OS. This tutorial requires z/OS PT version 1.1.5 or above to be installed on z/OS.
+The [z/OS Provisioning Toolkit](https://developer.ibm.com/mainframe/products/zospt/) (z/OS® PT) provides a command line utility and z/OSMF workflows to provision CICS® regions and other development environments on z/OS. This tutorial requires z/OS® PT version 1.1.5 or above to be installed on z/OS.
 
-### Provision your CICS® region using a z/OS PT image
+### Provision your CICS® region using a z/OS® PT image
 
-Before you can provision a CICS® region, a z/OS PT image needs to be created and built as outlined in [Preparing a z/OS PT image](cdp-Preparing-a-zOS-PT-image). This is typically prepared by a CICS® system administrator.
+Before you can provision a CICS® region, a z/OS® PT image needs to be created and built as outlined in [Preparing a z/OS® PT image](cdp-Preparing-a-zOS-PT-image). This is typically prepared by a CICS® system administrator.
 
 #### Procedure
 
@@ -21,7 +21,7 @@ Before you can provision a CICS® region, a z/OS PT image needs to be created an
 
 2. Create Zowe CLI profiles by following the steps in [Creating Zowe CLI profiles](cdp-Creating-Zowe-CLI-profiles).
 
-3. On z/OS, update your user `.profile` file to run z/OS PT.
+3. On z/OS, update your user `.profile` file to run z/OS® PT.
 
    Add the directory to the `zospt` command to your PATH.
 
@@ -35,20 +35,20 @@ Before you can provision a CICS® region, a z/OS PT image needs to be created an
    export zospt_pw=
    ```
 
-   Optional: If z/OSMF is configured with domain and tenant names that are not the default as described in [Configuring z/OS Provisioning Toolkit](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/zospt-configuring.html), add the following environment variables:
+   Optional: If z/OSMF is configured with domain and tenant names that are not the default as described in [Configuring z/OS® Provisioning Toolkit](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/zospt-configuring.html), add the following environment variables:
 
    ```properties
    export zospt_domain=
    export zospt_tenant=
    ```
 
-4. On your workstation, test you can run z/OS PT.
+4. On your workstation, test you can run z/OS® PT.
 
    ```console
    zowe zos-uss issue ssh "zospt --help"
    ```
 
-5. List the z/OS PT images available for you to use.
+5. List the z/OS® PT images available for you to use.
 
    ```tex
     zowe zos-uss issue ssh "zospt images"

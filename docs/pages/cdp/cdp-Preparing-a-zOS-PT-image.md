@@ -1,28 +1,28 @@
 ---
-title: Preparing a z/OS Provisioning Toolkit image
+title: Preparing a z/OS® Provisioning Toolkit image
 tags: [tutorial]
 keywords:
-summary: "The following steps take you through preparing a z/OS Provisioning Toolkit image for CICS, and optionally include an application in the image."
+summary: "The following steps take you through preparing a z/OS® Provisioning Toolkit image for CICS, and optionally include an application in the image."
 sidebar: cdp_sidebar
 permalink: cdp-Preparing-a-zOS-PT-image.html
 folder: cdp
 toc: true
 ---
 
-The [z/OS Provisioning Toolkit](https://developer.ibm.com/mainframe/products/zospt/) (z/OS PT) provides a command line utility and z/OSMF workflows to provision CICS® regions and other development environments on z/OS. This tutorial requires z/OS PT version 1.1.5 or above to be installed on z/OS, and your user `.profile` file on z/OS® configured to run z/OS PT.
+The [z/OS Provisioning Toolkit](https://developer.ibm.com/mainframe/products/zospt/) (z/OS PT) provides a command line utility and z/OSMF workflows to provision CICS® regions and other development environments on z/OS. This tutorial requires z/OS® PT version 1.1.5 or above to be installed on z/OS, and your user `.profile` file on z/OS® configured to run z/OS® PT.
 
-z/OS PT uses configuration and files in an *image* as input to z/OSMF workflows to provision a CICS® region. The image is typically prepared by a CICS® system administrator. This tutorial provides two alternative approaches to preparing a z/OS PT image:
+z/OS PT uses configuration and files in an *image* as input to z/OSMF workflows to provision a CICS® region. The image is typically prepared by a CICS® system administrator. This tutorial provides two alternative approaches to preparing a z/OS® PT image:
 
-- [Prepare a z/OS PT image for CICS®](#prepare-a-zos-pt-image-for-cics%C2%AE)
+- [Prepare a z/OS® PT image for CICS®](#prepare-a-zos%C2%AE-pt-image-for-cics%C2%AE)
   - [Procedure](#procedure)
   - [Results](#results)
-- [Prepare a z/OS PT image for CICS® including an application](#prepare-a-zos-pt-image-for-cics%C2%AE-including-an-application)
+- [Prepare a z/OS® PT image for CICS® including an application](#prepare-a-zos%C2%AE-pt-image-for-cics%C2%AE-including-an-application)
   - [Procedure](#procedure-1)
   - [Results](#results-1)
 
-### Prepare a z/OS PT image for CICS®
+### Prepare a z/OS® PT image for CICS®
 
-Use these steps to prepare a z/OS PT image for a CICS® region. No application is included in the image. The CICS® region is connected to a CICSplex environment, and has NODE_HOME set.
+Use these steps to prepare a z/OS® PT image for a CICS® region. No application is included in the image. The CICS® region is connected to a CICSplex environment, and has NODE_HOME set.
 
 #### Procedure
 
@@ -42,7 +42,7 @@ Run the following commands on your workstation.
    export IMAGE_DIR_ZOS="/zosptimages/$IMAGE"
    ```
 
-4. Create directories for the z/OS PT image source and bundles sub-directory.
+4. Create directories for the z/OS® PT image source and bundles sub-directory.
 
    ```text
    mkdir -p "$IMAGE_DIR/bundles"
@@ -60,7 +60,7 @@ Run the following commands on your workstation.
    EOF
    ```
 
-   Update the values for `DFH_CICSPLEX` and `DFH_NODE_HOME` to be suitable for your z/OS environment. Further customization can be made by adding properties as described in [Configuration properties for CICS images](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/cics/zospt-cics-properties.html).
+   Update the values for `DFH_CICSPLEX` and `DFH_NODE_HOME` to be suitable for your z/OS® environment. Further customization can be made by adding properties as described in [Configuration properties for CICS images](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/cics/zospt-cics-properties.html).
 
    | zosptfile&nbsp;entry&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Usage |
    | --- | -- |
@@ -99,9 +99,9 @@ Run the following commands on your workstation.
 
 The image is now ready for developers to provision CICS® regions and deploy their Node.js applications using [Deploying a Node.js application](cdp-Deploying-a-Nodejs-application). The image source can be stored with other images and shared using a source code management system.
 
-### Prepare a z/OS PT image for CICS® including an application
+### Prepare a z/OS® PT image for CICS® including an application
 
-Use these steps to prepare a z/OS PT image for a CICS® region that includes a Node.js application, such that the region and application are provisioned / started / stopped / de-provisioned together. The CICS® region is connected to a CICSplex environment, and has NODE_HOME set.
+Use these steps to prepare a z/OS® PT image for a CICS® region that includes a Node.js application, such that the region and application are provisioned / started / stopped / de-provisioned together. The CICS® region is connected to a CICSplex environment, and has NODE_HOME set.
 
 #### Procedure
 
@@ -138,9 +138,9 @@ Run the following commands on your workstation.
 
    The `COPY` directive will copy all the files from the applications root directory a sub-directory of the z/FS file system provisioned with the CICS® region. Update the value of the sub-directory to suit the application.
 
-   Update the values for `DFH_CICSPLEX` and `DFH_NODE_HOME` to be suitable for your z/OS environment, and add additional properties as required. Further customization can be made by adding properties as described in [Configuration properties for CICS® images](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/cics/zospt-cics-properties.html).
+   Update the values for `DFH_CICSPLEX` and `DFH_NODE_HOME` to be suitable for your z/OS® environment, and add additional properties as required. Further customization can be made by adding properties as described in [Configuration properties for CICS® images](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/cics/zospt-cics-properties.html).
 
-6. Upload the z/OS PT image source and application to z/OS.
+6. Upload the z/OS® PT image source and application to z/OS.
 
    ```text
    zowe zos-uss issue ssh "rm -Rv *" --cwd "$IMAGE_DIR_ZOS"
@@ -154,7 +154,7 @@ Run the following commands on your workstation.
    zowe zos-uss issue ssh "npm install" --cwd "$IMAGE_DIR_ZOS/$IMAGE_APP_DIR_ZOS"
    ```
 
-8. Build the z/OS PT image.
+8. Build the z/OS® PT image.
 
    ```text
    zowe zos-uss issue ssh "zospt build -t $IMAGE ." --cwd "$IMAGE_DIR_ZOS"

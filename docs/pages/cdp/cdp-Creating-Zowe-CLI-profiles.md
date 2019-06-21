@@ -90,7 +90,7 @@ zowe zos-uss issue ssh 'uname -a'
 
 ### CICS® deploy profile
 
-The cics-deploy profile identifies the CICS® environment for deployment. An example of how to create an environment using using z/OS® Provisioning Toolkit as described in [Provisioning a CICS® region using z/OS PT](cdp-Provisioning-a-CICS-region-using-zospt). You need to know the following from your CICS® system administrator:
+The cics-deploy profile identifies the CICS® environment for deployment. An example of how to create an environment using using z/OS® Provisioning Toolkit as described in [Provisioning a CICS® region using z/OS® PT](cdp-Provisioning-a-CICS-region-using-zospt). You need to know the following from your CICS® system administrator:
 
 | Option | Description |
 | --- | --- |

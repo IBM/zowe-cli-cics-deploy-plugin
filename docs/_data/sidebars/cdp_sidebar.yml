@@ -35,7 +35,7 @@ entries:
       url: cdp-Tutorials-overview
       output: web
 
-    - title: Preparing a z/OS PT image
+    - title: Preparing a z/OS® PT image
       url: cdp-Preparing-a-zOS-PT-image
       output: web
 
