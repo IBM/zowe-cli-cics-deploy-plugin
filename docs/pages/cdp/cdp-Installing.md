@@ -21,7 +21,8 @@ toc: false
 2. Install [Zowe CLI](https://zowe.github.io/docs-site/latest/user-guide/cli-installcli.html). For example, to install using npm:
 
     ```console
-    npm install -g @brightside/core
+    npm config set @brightside:registry https://api.bintray.com/npm/ca/brightside
+    npm install -g @brightside/core@lts-incremental
     ```
 
 3. Install the cics plugin:
