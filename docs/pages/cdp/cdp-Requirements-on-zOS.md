@@ -21,7 +21,7 @@ The [z/OS Secure SHell daemon (sshd)](https://www.ibm.com/support/knowledgecente
 
 ### DFHDPLOY utility
 
-The [DFHDPLOY](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0/applications/deploying/dfhdploy_overview.html) utility is provided with IBM CICS® Transaction Server (CICS) and is required to run the [`zowe cics-deploy push bundle`](cdp-CLIReadMe#push--p), [`zowe cics-deploy deploy bundle`](cdp-CLIReadMe#deploy--d--dep), and [`zowe cics-deploy undeploy bundle`](cdp-CLIReadMe#undeploy--u--udep) commands. These commands start DFHDPLOY with a script to perform deploy and undeploy operations.
+The [DFHDPLOY](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0/applications/deploying/dfhdploy_overview.html) utility is provided with IBM® CICS® Transaction Server (CICS) and is required to run the [`zowe cics-deploy push bundle`](cdp-CLIReadMe#push--p), [`zowe cics-deploy deploy bundle`](cdp-CLIReadMe#deploy--d--dep), and [`zowe cics-deploy undeploy bundle`](cdp-CLIReadMe#undeploy--u--udep) commands. These commands start DFHDPLOY with a script to perform deploy and undeploy operations.
 
 ### CICSPlex® System Manager
 
@@ -29,4 +29,4 @@ CICSPlex® System Manager \(CPSM\) is provided with CICS® and is required to ru
 
 ### Node.js SDK
 
-If you intend to run Node.js applications on z/OS®, you must install the IBM SDK for Node.js - z/OS. See [Installing and configuring IBM SDK for Node.js - z/OS®](https://www.ibm.com/support/knowledgecenter/en/SSTRRS_8.0.0/com.ibm.nodejs.zos.v8.doc/install.htm) for full details.
+If you intend to run Node.js applications on z/OS®, you must install the IBM® SDK for Node.js - z/OS®. See [Installing and configuring IBM® SDK for Node.js - z/OS®](https://www.ibm.com/support/knowledgecenter/en/SSTRRS_8.0.0/com.ibm.nodejs.zos.v8.doc/install.htm) for full details.

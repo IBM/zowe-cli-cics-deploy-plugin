@@ -1,6 +1,6 @@
 # Notices and Information
 
-## Zowe CLI IBM CICS® deploy plug-in
+## Zowe CLI IBM® CICS® deploy plug-in
 
 This file provides details concerning notices applicable to third party code included in the products listed above ("the Program").
 

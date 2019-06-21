@@ -2,7 +2,7 @@
 title: Zowe CLI CICS® deploy plug-in
 tags: [getting_started]
 keywords:
-summary: "The cics-deploy plug-in extends the Zowe command line interface (CLI) to deploy applications developed on a workstation to IBM CICS® Transaction Server for z/OS® (CICS). The Zowe CLI and plug-ins provide a simple and streamlined way to interact with IBM z/OS."
+summary: "The cics-deploy plug-in extends the Zowe command line interface (CLI) to deploy applications developed on a workstation to IBM® CICS® Transaction Server for z/OS® (CICS). The Zowe CLI and plug-ins provide a simple and streamlined way to interact with IBM® z/OS®."
 sidebar: cdp_sidebar
 permalink: index.html
 folder: cdp
