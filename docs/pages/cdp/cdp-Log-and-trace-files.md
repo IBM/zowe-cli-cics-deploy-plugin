@@ -39,13 +39,13 @@ You can use the following command to display messages written to the log file as
 
 ### Node.js logs
 
-By default, CICS writes Node.js log files on z/OS to the `/tmp` directory. However, the `generate bundle` command creates a number of files including `nodejsapps/<my app name>.profile` (often referred to as the Node.js profile), which you can edit to specify a more convenient log file location. Such logs get written to the directory referenced by the environment variable `WORK_DIR`. For example, you might edit your Node.js profile so that it includes the line:
+By default, CICS® writes Node.js log files on z/OS to the `/tmp` directory. However, the `generate bundle` command creates a number of files including `nodejsapps/<my app name>.profile` (often referred to as the Node.js profile), which you can edit to specify a more convenient log file location. Such logs get written to the directory referenced by the environment variable `WORK_DIR`. For example, you might edit your Node.js profile so that it includes the line:
 
 ```properties
 WORK_DIR=/u/<your user id>/nodelogs
 ```
 
-This causes CICS to write all Node.js logs to the specified directory.
+This causes CICS® to write all Node.js logs to the specified directory.
 
 Files typically written to `WORK_DIR` include:
 
@@ -60,6 +60,6 @@ They can all be useful when identifying the cause of an error, especially STDERR
 
 ### JES job logs
 
-If you are familiar with the z/OS environment, you can often find some useful diagnostics by accessing the JES job log associated with the CICS region you deployed to.  The `cics-deploy push` command outputs the job IDs for all the CICS regions in the scope after a deployment.  The MSGUSR, SYSPRINT, SYSOUT and JESMSGLG spool files can all provide useful information.   If you are not so fluent with the world of z/OS, you may need to discuss your needs with one of your organization's CICS system administrators.
+If you are familiar with the z/OS environment, you can often find some useful diagnostics by accessing the JES job log associated with the CICS® region you deployed to.  The `cics-deploy push` command outputs the job IDs for all the CICS® regions in the scope after a deployment.  The MSGUSR, SYSPRINT, SYSOUT and JESMSGLG spool files can all provide useful information.   If you are not so fluent with the world of z/OS, you may need to discuss your needs with one of your organization's CICS® system administrators.
 
 {% include note.html content="If you use [Visual Studio Code](https://code.visualstudio.com/) as your editor, there is a [Zowe extension](https://marketplace.visualstudio.com/items?itemName=Zowe.vscode-extension-for-zowe) that enables you to interact with USS files and examine JES job logs from your local workstation." %}

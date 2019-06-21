@@ -2,7 +2,7 @@
 title: Deploying a Node.js application
 tags: [tutorial]
 keywords:
-summary: "The following steps take you through creating a Node.js application using the Express Application Generator then deploying it to CICS."
+summary: "The following steps take you through creating a Node.js application using the Express Application Generator then deploying it to CICS®."
 sidebar: cdp_sidebar
 permalink: cdp-Deploying-a-Nodejs-application.html
 folder: cdp
@@ -11,7 +11,7 @@ toc: true
 
 ### Before you begin
 
-CICS TS V5.5 introduced support to run Node.js applications and is required by this tutorial. If you do not have a CICS TS V5.5 region, use the steps in [Provisioning a CICS region using z/OS PT](cdp-Provisioning-a-CICS-region-using-zospt) to provision one, or speak to your CICS system administrator.
+CICS® TS V5.5 introduced support to run Node.js applications and is required by this tutorial. If you do not have a CICS® TS V5.5 region, use the steps in [Provisioning a CICS® region using z/OS PT](cdp-Provisioning-a-CICS-region-using-zospt) to provision one, or speak to your CICS® system administrator.
 
 ### Procedure
 
@@ -31,17 +31,17 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
 
    The Node.js application will start. You can call the application from a browser by using URL [http://localhost:3000/](http://localhost:3000/). To stop the application in the console press CTRL+C.
 
-4. Package the Node.js application into a [CICS bundle](cdp-CICS-bundles).
+4. Package the Node.js application into a [CICS® bundle](cdp-CICS-bundles).
 
    Make sure that you are in the root directory of the application.
 
-   Replace the value for `--port` with one that is available for use by the CICS region on z/OS. This sets the PORT environment variable in the generated `.profile` file. Additional variables can be set by editing this file.
+   Replace the value for `--port` with one that is available for use by the CICS® region on z/OS. This sets the PORT environment variable in the generated `.profile` file. Additional variables can be set by editing this file.
 
    ```console
     zowe cics-deploy generate bundle --port 3000 --overwrite
    ```
 
-   The output indicates the directories and files that are created to form a CICS bundle. For example:
+   The output indicates the directories and files that are created to form a CICS® bundle. For example:
 
    <pre class="messageText">
    define : NODEJSAPP "myexpressapp" with startscript "./bin/www"
@@ -60,13 +60,13 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
    ```
    The output should indicate the installed version of Node.js.
 
-6. Deploy the CICS bundle into CICS.
+6. Deploy the CICS® bundle into CICS®.
 
    ```text
    zowe cics-deploy push bundle --name Express --overwrite
    ```
 
-   A progress bar is shown with status messages as the CICS bundle is deployed and the application is started. This can take a few minutes. The command will summarize the deployment, including the Node.js runtime `.stdout` and `.stderr` file names that the application will write output to:
+   A progress bar is shown with status messages as the CICS® bundle is deployed and the application is started. This can take a few minutes. The command will summarize the deployment, including the Node.js runtime `.stdout` and `.stderr` file names that the application will write output to:
 
    <pre class="messageText">
    Regions in scope 'CICPY000' of CICSplex 'ZOSPTINT':
@@ -78,7 +78,7 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
    stderr: /u/cicprov/mnt/CICPY000/workdir/CICPY000/myexpressapp/Express/D20190612.T144609.stderr
    PUSH operation completed</pre>
 
-   This results in a CICS BUNDLE resource named `Express` being defined, installed, and enabled in CICS. If the BUNDLE `Express` was already defined or installed in CICS, it is undeployed first. As the BUNDLE is enabled, the application is started. If there are errors, retry with the `--verbose` option for more detailed output, or refer to [Troubleshooting](cdp-Log-and-trace-files).
+   This results in a CICS BUNDLE resource named `Express` being defined, installed, and enabled in CICS®. If the BUNDLE `Express` was already defined or installed in CICS®, it is undeployed first. As the BUNDLE is enabled, the application is started. If there are errors, retry with the `--verbose` option for more detailed output, or refer to [Troubleshooting](cdp-Log-and-trace-files).
 
 7. Test the application.
 
@@ -96,6 +96,6 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
 
 ### Results
 
-The Node.js application is packaged into a CICS bundle on the workstation, uploaded to a directory on z/OS, and is running in CICS.
+The Node.js application is packaged into a CICS® bundle on the workstation, uploaded to a directory on z/OS, and is running in CICS®.
 
 {% include tip.html content="When writing your own application, follow the guidance in [Best practice for developing Node.js applications](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0/applications/developing/node/best-practice.html) to use environment variables and enable the application to terminate gracefully." %}

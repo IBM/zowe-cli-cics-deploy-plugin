@@ -17,7 +17,7 @@ The Zowe CLI lets you define arguments and options for commands in multiple ways
 
 Therefore by creating and setting options in the following profiles, they will become your defaults and you do not need to repeat them when using Zowe CLI commands unless you wish to override them. Further details are in [Understanding command option order of precedence](https://zowe.github.io/docs-site/latest/user-guide/cli-configuringcli.html#understanding-command-option-order-of-precedence).
 
-The CICS deploy plug-in makes use of the following profiles:
+The CICS® deploy plug-in makes use of the following profiles:
 
 | Profile | Used by command | Connects to z/OS server |
 | --- | --- | --- |
@@ -37,7 +37,7 @@ The z/OSMF profile defines the options needed to connect to the z/OSMF server on
 | user | User ID to identify yourself to the z/OSMF server. |
 | password | Password to identify yourself to the z/OSMF server. |
 
-{% include note.html content="The user ID needs to have sufficient permissions to remove and create directories and files in the directory specified by `--targetdir` in the cics-deploy profile. The user ID also needs permission to submit JCL and to run the DFHDPLOY utility as described in the **Security** heading in topic [Automate the deployment and undeployment of CICS bundles and applications with the DFHDPLOY utility](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0/applications/deploying/dfhdploy_overview.html)." %}
+{% include note.html content="The user ID needs to have sufficient permissions to remove and create directories and files in the directory specified by `--targetdir` in the cics-deploy profile. The user ID also needs permission to submit JCL and to run the DFHDPLOY utility as described in the **Security** heading in topic [Automate the deployment and undeployment of CICS® bundles and applications with the DFHDPLOY utility](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0/applications/deploying/dfhdploy_overview.html)." %}
 
 For example, to create a z/OSMF profile:
 
@@ -88,19 +88,19 @@ To test the connection to the SSH server using the profile:
 zowe zos-uss issue ssh 'uname -a'
 ```
 
-### CICS deploy profile
+### CICS® deploy profile
 
-The cics-deploy profile identifies the CICS environment for deployment. An example of how to create an environment using using z/OS Provisioning Toolkit as described in [Provisioning a CICS region using z/OS PT](cdp-Provisioning-a-CICS-region-using-zospt). You need to know the following from your CICS system administrator:
+The cics-deploy profile identifies the CICS® environment for deployment. An example of how to create an environment using using z/OS Provisioning Toolkit as described in [Provisioning a CICS® region using z/OS PT](cdp-Provisioning-a-CICS-region-using-zospt). You need to know the following from your CICS® system administrator:
 
 | Option | Description |
 | --- | --- |
 | cicsplex | CPSM CICSplex name. |
-| cics-hlq | High Level Qualifier \(HLQ\) for the CICS data sets. |
+| cics-hlq | High Level Qualifier \(HLQ\) for the CICS® data sets. |
 | cpsm-hlq | High Level Qualifier \(HLQ\) for the CPSM data sets. |
-| scope | CPSM scope to identify the CICS region or group of regions to deploy your application. |
-| csd-group or res-group | CICS CSD group name or CPSM BAS resource group name into which the bundle is defined. If not specified, BUNDLE resources are defined in CPSM BAS for installation and then removed. |
-| job-card | JCL jobcard to use when submitting JCL that will run the CICS utility DFHDPLOY. If not specified, a default job card will be used. |
-| target-directory | Target directory on z/OS to which CICS bundles should be uploaded. |
+| scope | CPSM scope to identify the CICS® region or group of regions to deploy your application. |
+| csd-group or res-group | CICS® CSD group name or CPSM BAS resource group name into which the bundle is defined. If not specified, BUNDLE resources are defined in CPSM BAS for installation and then removed. |
+| job-card | JCL jobcard to use when submitting JCL that will run the CICS® utility DFHDPLOY. If not specified, a default job card will be used. |
+| target-directory | Target directory on z/OS to which CICS® bundles should be uploaded. |
 
 For example to create a cics-deploy profile:
 
@@ -116,19 +116,19 @@ zowe profiles create cics-deploy-profile --help
 
 To test the cics-deploy profile, follow the steps in [Deploying a Node.js application](cdp-Deploying-a-Nodejs-application).
 
-### CICS profile
+### CICS® profile
 
-The CICS profile identifies the connection to the CICS Web User Interface (WUI) server to query application resources. You need to know the following from your CICS system administrator:
+The CICS® profile identifies the connection to the CICS® Web User Interface (WUI) server to query application resources. You need to know the following from your CICS® system administrator:
 
 | Option | Description |
 | --- | --- |
 | cics-plex | CPSM CICSplex name. This will typically be set to the same as cicsplex in the cics-deploy profile. |
-| region-name | The name of the CICS region name to interact with. |
-| protocol | HTTP or HTTPS to use to connect to the CICS WUI server. |
-| host | Host name of the CICS WUI server. |
-| port | Port number of the CICS WUI server. |
-| user | User ID to identify yourself to the CICS WUI server . |
-| password | Password to identify yourself to the CICS WUI server. |
+| region-name | The name of the CICS® region name to interact with. |
+| protocol | HTTP or HTTPS to use to connect to the CICS® WUI server. |
+| host | Host name of the CICS® WUI server. |
+| port | Port number of the CICS® WUI server. |
+| user | User ID to identify yourself to the CICS® WUI server . |
+| password | Password to identify yourself to the CICS® WUI server. |
 
 For example, to create an SSH profile:
 
@@ -142,7 +142,7 @@ For help on using the options:
 zowe profiles create cics-profile --help
 ```
 
-To test the connection to the CICS WUI server using the profile:
+To test the connection to the CICS® WUI server using the profile:
 
 ```text
 zowe cics get resource CICSRegion | grep -E "applid|cicsstatus|jobname|mvssysname|strttime|cputime"

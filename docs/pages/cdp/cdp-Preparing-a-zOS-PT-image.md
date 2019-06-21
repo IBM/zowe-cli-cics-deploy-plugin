@@ -9,16 +9,20 @@ folder: cdp
 toc: true
 ---
 
-The [z/OS Provisioning Toolkit](https://developer.ibm.com/mainframe/products/zospt/) (z/OS PT) provides a command line utility and z/OSMF workflows to provision CICS regions and other development environments on z/OS. This tutorial requires z/OS PT version 1.1.5 or above to be installed on z/OS, and your user `.profile` file on z/OS configured to run z/OS PT.
+The [z/OS Provisioning Toolkit](https://developer.ibm.com/mainframe/products/zospt/) (z/OS PT) provides a command line utility and z/OSMF workflows to provision CICS® regions and other development environments on z/OS. This tutorial requires z/OS PT version 1.1.5 or above to be installed on z/OS, and your user `.profile` file on z/OS configured to run z/OS PT.
 
-z/OS PT uses configuration and files in an *image* as input to z/OSMF workflows to provision a CICS region. The image is typically prepared by a CICS system administrator. This tutorial provides two alternative approaches to preparing a z/OS PT image:
+z/OS PT uses configuration and files in an *image* as input to z/OSMF workflows to provision a CICS® region. The image is typically prepared by a CICS® system administrator. This tutorial provides two alternative approaches to preparing a z/OS PT image:
 
-* [Prepare a z/OS PT image for CICS](#prepare-a-zos-pt-image-for-cics) - no application is included in the image, and the `zosptfile` is kept separate to the application source.
-* [Prepare a z/OS PT image for CICS including an application](#prepare-a-zos-pt-image-for-cics-including-an-application) - the application is provisioned together with the CICS region, and the `zosptfile` is kept with the application source.
+- [Prepare a z/OS PT image for CICS®](#prepare-a-zos-pt-image-for-cics%C2%AE)
+  - [Procedure](#procedure)
+  - [Results](#results)
+- [Prepare a z/OS PT image for CICS® including an application](#prepare-a-zos-pt-image-for-cics%C2%AE-including-an-application)
+  - [Procedure](#procedure-1)
+  - [Results](#results-1)
 
-### Prepare a z/OS PT image for CICS
+### Prepare a z/OS PT image for CICS®
 
-Use these steps to prepare a z/OS PT image for a CICS region. No application is included in the image. The CICS region is connected to a CICSplex environment, and has NODE_HOME set.
+Use these steps to prepare a z/OS PT image for a CICS® region. No application is included in the image. The CICS® region is connected to a CICSplex environment, and has NODE_HOME set.
 
 #### Procedure
 
@@ -60,11 +64,11 @@ Run the following commands on your workstation.
 
    | zosptfile&nbsp;entry&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Usage |
    | --- | -- |
-   | `FROM cics_55` | Provision a CICS TS V5.5 region that is the minimum release that supports Node.js applications. |
-   | `ENV DFH_CICS_TYPE=MAS` | CICS region should be managed by CPSM to enable the DFHDPLOY utility to deploy applications. |
+   | `FROM cics_55` | Provision a CICS® TS V5.5 region that is the minimum release that supports Node.js applications. |
+   | `ENV DFH_CICS_TYPE=MAS` | CICS® region should be managed by CPSM to enable the DFHDPLOY utility to deploy applications. |
    | `ENV DFH_CICSPLEX=` | Name of the CICSplex this region is to join. |
    | `ENV DFH_NODE_HOME=` | Installation directory for Node.js runtime provided by IBM SDK for Node.js - z/OS. |
-   | `COPY bundles bundles` | Create an empty `bundles` directory in the provisioned file system to contain CICS bundles. |
+   | `COPY bundles bundles` | Create an empty `bundles` directory in the provisioned file system to contain CICS® bundles. |
 
 6. Create a `.zosattributes` file to upload zosptfile files as UTF-8.
 
@@ -93,11 +97,11 @@ Run the following commands on your workstation.
 
 #### Results
 
-The image is now ready for developers to provision CICS regions and deploy their Node.js applications using [Deploying a Node.js application](cdp-Deploying-a-Nodejs-application). The image source can be stored with other images and shared using a source code management system.
+The image is now ready for developers to provision CICS® regions and deploy their Node.js applications using [Deploying a Node.js application](cdp-Deploying-a-Nodejs-application). The image source can be stored with other images and shared using a source code management system.
 
-### Prepare a z/OS PT image for CICS including an application
+### Prepare a z/OS PT image for CICS® including an application
 
-Use these steps to prepare a z/OS PT image for a CICS region that includes a Node.js application, such that the region and application are provisioned / started / stopped / de-provisioned together. The CICS region is connected to a CICSplex environment, and has NODE_HOME set.
+Use these steps to prepare a z/OS PT image for a CICS® region that includes a Node.js application, such that the region and application are provisioned / started / stopped / de-provisioned together. The CICS® region is connected to a CICSplex environment, and has NODE_HOME set.
 
 #### Procedure
 
@@ -132,9 +136,9 @@ Run the following commands on your workstation.
    EOF
    ```
 
-   The `COPY` directive will copy all the files from the applications root directory a sub-directory of the z/FS file system provisioned with the CICS region. Update the value of the sub-directory to suit the application.
+   The `COPY` directive will copy all the files from the applications root directory a sub-directory of the z/FS file system provisioned with the CICS® region. Update the value of the sub-directory to suit the application.
 
-   Update the values for `DFH_CICSPLEX` and `DFH_NODE_HOME` to be suitable for your z/OS environment, and add additional properties as required. Further customization can be made by adding properties as described in [Configuration properties for CICS images](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/cics/zospt-cics-properties.html).
+   Update the values for `DFH_CICSPLEX` and `DFH_NODE_HOME` to be suitable for your z/OS environment, and add additional properties as required. Further customization can be made by adding properties as described in [Configuration properties for CICS® images](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/cics/zospt-cics-properties.html).
 
 6. Upload the z/OS PT image source and application to z/OS.
 
@@ -158,6 +162,6 @@ Run the following commands on your workstation.
 
 #### Results
 
-The image is now ready for developers to use to provision their own CICS region. The Node.js application will be provisioned and started together the CICS region. The image source can be stored and shared with the application using a source code management system. When your application is updated, you will need to prepare a new image by repeating steps 3, 4 and 5.
+The image is now ready for developers to use to provision their own CICS® region. The Node.js application will be provisioned and started together the CICS® region. The image source can be stored and shared with the application using a source code management system. When your application is updated, you will need to prepare a new image by repeating steps 3, 4 and 5.
 
-For further details on including applications in z/OS images see [Including a CICS bundle in your image](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/cics/zospt-cics-bundles.html).
+For further details on including applications in z/OS images see [Including a CICS® bundle in your image](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/cics/zospt-cics-bundles.html).

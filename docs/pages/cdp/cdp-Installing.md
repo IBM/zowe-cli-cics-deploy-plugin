@@ -25,7 +25,7 @@ toc: false
     npm install -g @brightside/core@lts-incremental
     ```
 
-3. Install the cics plugin:
+3. Install the CICS® plugin:
 
     ```console
     zowe plugins install @brightside/cics@lts-incremental

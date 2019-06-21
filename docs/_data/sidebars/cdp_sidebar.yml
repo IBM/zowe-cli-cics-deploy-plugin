@@ -10,7 +10,7 @@ entries:
     output: web
     folderitems:
 
-    - title: Zowe CLI CICS deploy plug-in
+    - title: Zowe CLI CICS® deploy plug-in
       url: index
       output: web
 
@@ -39,7 +39,7 @@ entries:
       url: cdp-Preparing-a-zOS-PT-image
       output: web
 
-    - title: Provisioning a CICS region
+    - title: Provisioning a CICS® region
       url: cdp-Provisioning-a-CICS-region
       output: web
 
@@ -47,7 +47,7 @@ entries:
       url: cdp-Deploying-a-Nodejs-application
       output: web
 
-    - title: Deploying a CICS policy
+    - title: Deploying a CICS® policy
       url: cdp-Deploying-a-CICS-policy
       output: web
 
@@ -68,7 +68,7 @@ entries:
       url: cdp-Zowe-CLI-profiles
       output: web
 
-    - title: CICS bundles
+    - title: CICS® bundles
       url: cdp-CICS-bundles
       output: web
 
