@@ -391,6 +391,14 @@ describe("BundleDeployer01", () => {
         parms.arguments.jobcard = "'//DFHDPLOY JOB DFHDPLOY,'some text',CLASS=A,MSGCLASS=X,TIME=NOLIMIT'";
         await testDeployJCL(parms);
     });
+    it("should tolerate a single leading slash for jobcard", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.jobcard = "/DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT";
+        await testDeployJCL(parms);
+    });
     it("should support long bundledir", async () => {
         let parms: IHandlerParameters;
         parms = DEFAULT_PARAMTERS;
