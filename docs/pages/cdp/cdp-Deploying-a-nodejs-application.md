@@ -53,10 +53,10 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
    create : META-INF/cics.xml
    CICS Bundle generated with bundleid "myexpressapp"</pre>
 
-5. Confirm that the Node.js SDK is installed on z/OS
+5. Confirm that the Node.js version installed on z/OS is suitable for your application.
 
    ```text
-   zowe zos-uss issue ssh "node --version" --user <my z/OS userid> --password <my z/OS password>
+   zowe zos-uss issue ssh "node --version"
    ```
    The output should indicate the installed version of Node.js.
 

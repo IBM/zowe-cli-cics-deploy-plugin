@@ -29,4 +29,4 @@ CICSPlex System Manager \(CPSM\) is provided with CICS and is required to run th
 
 ### Node.js SDK
 
-If you intend to run Node.js applications on z/OS, you must install the Node.js SDK. See [Installing and configuring IBM SDK for Node.js - z/OS](https://www.ibm.com/support/knowledgecenter/en/SSTRRS_8.0.0/com.ibm.nodejs.zos.v8.doc/install.htm) for full details.
+If you intend to run Node.js applications on z/OS, you must install the IBM SDK for Node.js - z/OS. See [Installing and configuring IBM SDK for Node.js - z/OS](https://www.ibm.com/support/knowledgecenter/en/SSTRRS_8.0.0/com.ibm.nodejs.zos.v8.doc/install.htm) for full details.
