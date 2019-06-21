@@ -18,7 +18,7 @@ Firstly, you will need a CICS® region:
   * [Provisioning a CICS® region](cdp-Provisioning-a-CICS-region) - provision a CICS® region from a z/OS Provisioning Toolkit image.
   * [Provisioning a CICS® region](cdp-Provisioning-a-CICS-region) - provision a CICS® region from a z/OS Provisioning Toolkit image.
 
-* Alternatively, work with your CICS® and z/OS system administrators [Creating Zowe CLI profiles](cdp-Creating-Zowe-CLI-profiles) based on the z/OS system and CICS® region you can use.
+* Alternatively, work with your CICS® and z/OS® system administrators [Creating Zowe CLI profiles](cdp-Creating-Zowe-CLI-profiles) based on the z/OS® system and CICS® region you can use.
 
 Next, deploy a CICS® bundle containing an application to the CICS® region:
 

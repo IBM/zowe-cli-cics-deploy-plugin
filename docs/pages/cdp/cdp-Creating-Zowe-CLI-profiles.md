@@ -19,7 +19,7 @@ Therefore by creating and setting options in the following profiles, they will b
 
 The CICS® deploy plug-in makes use of the following profiles:
 
-| Profile | Used by command | Connects to z/OS server |
+| Profile | Used by command | Connects to z/OS® server |
 | --- | --- | --- |
 | [z/OSMF profile](#zosmf-profile) | **zowe cics-deploy ...** <br /> zowe console ... <br />  zowe zos-files ... <br />  zowe zos-jobs ... <br />  zowe zos-tso ... <br />  zowe zos-workflows ... <br />  zowe zosmf ... <br />  zowe provisioing ... | z/OSMF |
 | [SSH profile](#ssh-profile) | **zowe cics-deploy push ...** <br />  zowe zos-uss ... | SSH |
@@ -28,7 +28,7 @@ The CICS® deploy plug-in makes use of the following profiles:
 
 ### z/OSMF profile
 
-The z/OSMF profile defines the options needed to connect to the z/OSMF server on z/OS. You need to know the following from your z/OS system administrator:
+The z/OSMF profile defines the options needed to connect to the z/OSMF server on z/OS. You need to know the following from your z/OS® system administrator:
 
 | Option | Description |
 | --- | --- |
@@ -59,7 +59,7 @@ zowe zosmf check status
 
 ### SSH profile
 
-The SSH profile defines the options needed to connect to the SSH server on z/OS. You need to know the following from your z/OS system administrator:
+The SSH profile defines the options needed to connect to the SSH server on z/OS. You need to know the following from your z/OS® system administrator:
 
 | Option | Description |
 | --- | --- |
@@ -90,7 +90,7 @@ zowe zos-uss issue ssh 'uname -a'
 
 ### CICS® deploy profile
 
-The cics-deploy profile identifies the CICS® environment for deployment. An example of how to create an environment using using z/OS Provisioning Toolkit as described in [Provisioning a CICS® region using z/OS PT](cdp-Provisioning-a-CICS-region-using-zospt). You need to know the following from your CICS® system administrator:
+The cics-deploy profile identifies the CICS® environment for deployment. An example of how to create an environment using using z/OS® Provisioning Toolkit as described in [Provisioning a CICS® region using z/OS PT](cdp-Provisioning-a-CICS-region-using-zospt). You need to know the following from your CICS® system administrator:
 
 | Option | Description |
 | --- | --- |
@@ -100,7 +100,7 @@ The cics-deploy profile identifies the CICS® environment for deployment. An exa
 | scope | CPSM scope to identify the CICS® region or group of regions to deploy your application. |
 | csd-group or res-group | CICS® CSD group name or CPSM BAS resource group name into which the bundle is defined. If not specified, BUNDLE resources are defined in CPSM BAS for installation and then removed. |
 | job-card | JCL jobcard to use when submitting JCL that will run the CICS® utility DFHDPLOY. If not specified, a default job card will be used. |
-| target-directory | Target directory on z/OS to which CICS® bundles should be uploaded. |
+| target-directory | Target directory on z/OS® to which CICS® bundles should be uploaded. |
 
 For example to create a cics-deploy profile:
 

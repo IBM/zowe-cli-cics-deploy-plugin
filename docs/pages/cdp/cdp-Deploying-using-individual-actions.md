@@ -31,13 +31,13 @@ Alternatively, if you want to disable the CICS® bundle, but to not discard it:
 zowe cics-deploy undeploy bundle --name Express --target-state disabled
 ```
 
-{% include note.html content="This command does not remove the CICS® bundle from the z/OS directory." %}
+{% include note.html content="This command does not remove the CICS® bundle from the z/OS® directory." %}
 
 ### Upload a CICS® bundle to z/OS
 
 Before uploading the CICS® bundle to z/OS, you need to ensure the target directory is empty in order to prevent merging with a previously deployed version of the CICS® bundle.
 
-There are several ways to run shell commands and scripts on z/OS, such as SSH, batch jobs, and Zowe. When using Zowe, an SSH connection is established using information in the Zowe ssh profile, and the shell .profile for the user is run to setup the environment. The command is then run in z/OS in the directory specified by the `--cwd` option. The return code from the command is used to set the Zowe CLI return code, enabling you to take action in your script in error scenarios.
+There are several ways to run shell commands and scripts on z/OS, such as SSH, batch jobs, and Zowe. When using Zowe, an SSH connection is established using information in the Zowe ssh profile, and the shell .profile for the user is run to setup the environment. The command is then run in z/OS® in the directory specified by the `--cwd` option. The return code from the command is used to set the Zowe CLI return code, enabling you to take action in your script in error scenarios.
 
 For example, to remove the target directory:
 
@@ -47,7 +47,7 @@ zowe zos-uss issue ssh "rm -Rv *" --cwd "/var/cicsts/bundles/myexpressapp_1.0.0"
 
 {% include tip.html content="You can run several commands in one request using the syntax described in [sh — Invoke a shell](https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.bpxa500/sh.htm)." %}
 
-When uploading the CICS® bundle to z/OS, you may need to upload some files as binary, some as text, and exclude others that are not required to run the application. In addition, it is best practice to tag files on z/OS as binary or with their text codepage to allow for correct codepage translation by editors and environments such as Node.js and Java. You can specify these requirements in a `.zosattributes` file and use the Zowe CLI to upload and tag files in a single command.
+When uploading the CICS® bundle to z/OS, you may need to upload some files as binary, some as text, and exclude others that are not required to run the application. In addition, it is best practice to tag files on z/OS® as binary or with their text codepage to allow for correct codepage translation by editors and environments such as Node.js and Java. You can specify these requirements in a `.zosattributes` file and use the Zowe CLI to upload and tag files in a single command.
 
 For example, create file **~/myExpressApp/.zosattributes** in the CICS® bundle:
 
@@ -80,7 +80,7 @@ zowe zos-files upload dir-to-uss ~/myExpressApp/ "/var/cicsts/bundles/myexpressa
 
 ### Resolve Node.js application dependencies on z/OS
 
-A Node.js application typically depends on packages that are described in `package.json`. The dependencies can be installed by running `npm install` in the z/OS directory containing `package.json`, for example:
+A Node.js application typically depends on packages that are described in `package.json`. The dependencies can be installed by running `npm install` in the z/OS® directory containing `package.json`, for example:
 
 ```console
 zowe zos-uss issue ssh "npm install" --cwd "/var/cicsts/bundles/myexpressapp_1.0.0"

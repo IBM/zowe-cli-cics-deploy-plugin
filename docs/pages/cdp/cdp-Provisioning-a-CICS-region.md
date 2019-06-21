@@ -68,7 +68,7 @@ Before you can provision a CICS® region, a z/OS PT image needs to be created an
    zowe zos-uss issue ssh "zospt inspect my_cics_region"
    ```
 
-   The output is in JSON format and includes values for the CICS® region application ID, and the z/OS directory within which your CICS® bundles can be uploaded. For example:
+   The output is in JSON format and includes values for the CICS® region application ID, and the z/OS® directory within which your CICS® bundles can be uploaded. For example:
 
    <pre class="messageText">
     "DFH_REGION_APPLID": "CICPY000",
@@ -106,7 +106,7 @@ zowe zos-uss issue ssh "zospt stop my_cics_region"
 
 ### Start your CICS® region
 
-The CICS® region can be started after it was previously stopped, for example due to the z/OS system being restarted, by using the following command:
+The CICS® region can be started after it was previously stopped, for example due to the z/OS® system being restarted, by using the following command:
 
 ```console
 zowe zos-uss issue ssh "zospt start my_cics_region"

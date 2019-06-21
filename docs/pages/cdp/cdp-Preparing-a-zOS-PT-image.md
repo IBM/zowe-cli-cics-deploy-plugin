@@ -9,7 +9,7 @@ folder: cdp
 toc: true
 ---
 
-The [z/OS Provisioning Toolkit](https://developer.ibm.com/mainframe/products/zospt/) (z/OS PT) provides a command line utility and z/OSMF workflows to provision CICS® regions and other development environments on z/OS. This tutorial requires z/OS PT version 1.1.5 or above to be installed on z/OS, and your user `.profile` file on z/OS configured to run z/OS PT.
+The [z/OS Provisioning Toolkit](https://developer.ibm.com/mainframe/products/zospt/) (z/OS PT) provides a command line utility and z/OSMF workflows to provision CICS® regions and other development environments on z/OS. This tutorial requires z/OS PT version 1.1.5 or above to be installed on z/OS, and your user `.profile` file on z/OS® configured to run z/OS PT.
 
 z/OS PT uses configuration and files in an *image* as input to z/OSMF workflows to provision a CICS® region. The image is typically prepared by a CICS® system administrator. This tutorial provides two alternative approaches to preparing a z/OS PT image:
 
@@ -34,7 +34,7 @@ Run the following commands on your workstation.
 
 3. Setup environment variables for the name of your image, and paths for the image source on the workstation and z/OS.
 
-   Update these values to be suitable for your workstation and z/OS environments.
+   Update these values to be suitable for your workstation and z/OS® environments.
 
    ```text
    export IMAGE="cics_55_nodejs"
@@ -115,7 +115,7 @@ Run the following commands on your workstation.
 
 4. Setup environment variables for the name of your image, and paths for the image source on the workstation and z/OS.
 
-   Update these value for to be suitable for your workstation and z/OS environments.
+   Update these value for to be suitable for your workstation and z/OS® environments.
 
    ```text
    export APP_DIR=$HOME/myExpressApp
@@ -164,4 +164,4 @@ Run the following commands on your workstation.
 
 The image is now ready for developers to use to provision their own CICS® region. The Node.js application will be provisioned and started together the CICS® region. The image source can be stored and shared with the application using a source code management system. When your application is updated, you will need to prepare a new image by repeating steps 3, 4 and 5.
 
-For further details on including applications in z/OS images see [Including a CICS® bundle in your image](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/cics/zospt-cics-bundles.html).
+For further details on including applications in z/OS® images see [Including a CICS® bundle in your image](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/cics/zospt-cics-bundles.html).

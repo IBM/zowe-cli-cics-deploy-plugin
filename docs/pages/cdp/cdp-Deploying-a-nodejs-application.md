@@ -53,7 +53,7 @@ CICS® TS V5.5 introduced support to run Node.js applications and is required by
    create : META-INF/cics.xml
    CICS Bundle generated with bundleid "myexpressapp"</pre>
 
-5. Confirm that the Node.js version installed on z/OS is suitable for your application.
+5. Confirm that the Node.js version installed on z/OS® is suitable for your application.
 
    ```text
    zowe zos-uss issue ssh "node --version"
@@ -82,7 +82,7 @@ CICS® TS V5.5 introduced support to run Node.js applications and is required by
 
 7. Test the application.
 
-   You can call the application from a browser by using URL [http://myzos:3000/](http://myzos:3000/), replacing _myzos_ with the host name of the z/OS system, and _3000_ with the port specified in step 4.
+   You can call the application from a browser by using URL [http://myzos:3000/](http://myzos:3000/), replacing _myzos_ with the host name of the z/OS® system, and _3000_ with the port specified in step 4.
 
    If you make changes to the application, you can redeploy it by repeating step 5.
 
