@@ -309,11 +309,19 @@ export class ParmValidator {
 
     // split the jobcard into a comma separated list
     const jobcardParts = params.arguments.jobcard.split(",");
-    const firstPart = jobcardParts[0].trim();
+    let firstPart = jobcardParts[0].trim();
 
     // check that it starts with '//'
     if (firstPart.indexOf("//") !== 0) {
-      throw new Error("--jobcard parameter does not start with //");
+
+      // gitbash can swallow a '/' character. If we only have one then add another.
+      if (firstPart.startsWith("/")) {
+        params.arguments.jobcard = "/" + params.arguments.jobcard;
+        firstPart = "/" + firstPart;
+      }
+      else {
+        throw new Error("--jobcard parameter does not start with //");
+      }
     }
 
     // split the first section of the jobcard into chunks
