@@ -26,3 +26,7 @@ The [DFHDPLOY](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0/applicat
 ### CICSPlex System Manager
 
 CICSPlex System Manager \(CPSM\) is provided with CICS and is required to run the DFHDPLOY utility, and for the [`zowe cics-deploy push bundle`](cdp-CLIReadMe#push--p) command to query application resources via the CICS Management Client Interface (CMCI). CPSM should be connected to the CICS regions into which the application is being installed.
+
+### Node.js SDK
+
+If you intend to run Node.js applications on z/OS, you must install the Node.js SDK. See [Installing and configuring IBM SDK for Node.js - z/OS](https://www.ibm.com/support/knowledgecenter/en/SSTRRS_8.0.0/com.ibm.nodejs.zos.v8.doc/install.htm) for full details.
