@@ -10,7 +10,7 @@ folder: cdp
 
 ### Console output
 
-All Zowe CLI CICS deploy plug-in commands send output to the console when invoked. Very often, enough information is provided for you to diagnose and pinpoint the cause of a problem. The commands `cics-deploy push`, `cics-deploy deploy` and `cics-deploy undeploy` accept a `--verbose` command-line option which can generate extra information if needed.
+All Zowe CLI CICS® deploy plug-in commands send output to the console when invoked. Very often, enough information is provided for you to diagnose and pinpoint the cause of a problem. The commands `cics-deploy push`, `cics-deploy deploy` and `cics-deploy undeploy` accept a `--verbose` command-line option which can generate extra information if needed.
 
 ### zowe.log
 
@@ -39,7 +39,7 @@ You can use the following command to display messages written to the log file as
 
 ### Node.js logs
 
-By default, CICS® writes Node.js log files on z/OS to the `/tmp` directory. However, the `generate bundle` command creates a number of files including `nodejsapps/<my app name>.profile` (often referred to as the Node.js profile), which you can edit to specify a more convenient log file location. Such logs get written to the directory referenced by the environment variable `WORK_DIR`. For example, you might edit your Node.js profile so that it includes the line:
+By default, CICS writes Node.js log files on z/OS to the `/tmp` directory. However, the `generate bundle` command creates a number of files including `nodejsapps/<my app name>.profile` (often referred to as the Node.js profile), which you can edit to specify a more convenient log file location. Such logs get written to the directory referenced by the environment variable `WORK_DIR`. For example, you might edit your Node.js profile so that it includes the line:
 
 ```properties
 WORK_DIR=/u/<your user id>/nodelogs

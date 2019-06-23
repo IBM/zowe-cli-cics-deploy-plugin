@@ -16,7 +16,7 @@ When everything is [installed](cdp-Installing) and you have [created the Zowe CL
 
 1. Use the [zowe cics-deploy generate bundle](cdp-CLIReadMe#generate--g--gen) command to generate some metadata and artifacts that help the target CICS system understand your application.
 
-2. Use the [zowe cics-deploy push bundle](cdp-CLIReadMe#push--p) command to push the generated bundle to one or more regions within a CICSplex®, enabling and deploying it as an executing application. 
+2. Use the [zowe cics-deploy push bundle](cdp-CLIReadMe#push--p) command to push the generated bundle to one or more regions within a CICSplex, enabling and deploying it as an executing application. 
 
 Should you need it, and if you understand a little more about CICS, further commands like [zowe cics-deploy deploy bundle](cdp-CLIReadMe#deploy--d--dep) and [zowe cics-deploy undeploy bundle](cdp-CLIReadMe#undeploy--u--udep) offer you finer-grained control of the process - for example, to enable you to install a bundle in subsets of CICS regions in a cluster in such a way as to maintain an application's availability for clients.
 
