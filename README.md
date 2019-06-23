@@ -1,3 +1,5 @@
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT)
+
 # zowe-cli-cics-deploy-plugin
 
 This project provides a plug-in for [Zowe CLI](https://github.com/zowe/zowe-cli) to deploy applications developed on a workstation to IBM® CICS® Transaction Server for z/OS® (CICS). It aims to provide an experience similar to deploying to a cloud platform when deploying to CICS®. It will also provide low-level commands for performing individual steps of the deployment process that could be used as part of a CI/CD pipeline.
