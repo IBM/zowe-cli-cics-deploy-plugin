@@ -14,13 +14,13 @@ If you experience errors while using the cics-deploy plug-in, check the followin
 
 * CICS® must be authorized to read the bundle directory `META-INF`.
 * The port specified by the `--port` argument of the `cics-deploy generate bundle` command *must* be free on z/OS® before you attempt to deploy an application.
-* If you set a `WORK_DIR` in the CICS® Node.js application profile, such as `nodejsapps/<your application name>.profile`, it must be *writeable* by CICS®.
+* If you set a `WORK_DIR` in the CICS Node.js application profile, such as `nodejsapps/<your application name>.profile`, it must be *writeable* by CICS.
 
 ## Deployment errors
 
 {% include note.html content="For further troubleshooting steps, see [Troubleshooting Node.js applications](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.5.0/troubleshooting/node/node-troubleshooting.html)." %}
 
-{% include important.html content="To definitively diagnose a problem based on the suggested symptoms, you might need to refer to one or more [system logs and traces](cdp-Log-and-trace-files) particularly the STDERR Node.js log and the file assigned the MSGUSR DD name in the relevant CICS® job. Depending on your familiarity with z/OS® and CICS®, and your system privileges, you may also need to consult a CICS® systems administrator to get to the bottom of certain problems." %}
+{% include important.html content="To definitively diagnose a problem based on the suggested symptoms, you might need to refer to one or more [system logs and traces](cdp-Log-and-trace-files) particularly the STDERR Node.js log and the file assigned the MSGUSR DD name in the relevant CICS job. Depending on your familiarity with z/OS and CICS, and your system privileges, you may also need to consult a CICS systems administrator to get to the bottom of certain problems." %}
 
 ### Application incorrectly deploys in a DISABLED state
 
@@ -38,8 +38,8 @@ If you experience errors while using the cics-deploy plug-in, check the followin
 ### Command error: DFHDPLOY stopped processing due to an error
 
 *Possible causes:*
-* The `--scope` and/or `--cicsplex` settings for the current deploy profile are wrong, and don't correctly identify a current CICS® system, CICS® System Group and/or a correct CICSPlex® respectively.
-* The CMAS for the current CICSPlex® is inactive.
+* The `--scope` and/or `--cicsplex` settings for the current deploy profile are wrong, and don't correctly identify a current CICS system, CICS System Group and/or a correct CICSPlex® respectively.
+* The CMAS for the cicsplex is inactive.
 * CPSM is not functioning correctly.
 
 *Representative output:*
@@ -55,7 +55,7 @@ If you experience errors while using the cics-deploy plug-in, check the followin
 *Suggested actions:*
 
 * Confirm that the `--scope` and `--cicsplex` settings are correct.
-* Ask your CICS® Systems Programmer to check that the CMAS for the current CICSPlex® is alive and that CPSM is working properly.
+* Ask your CICS Systems Programmer to check that the CMAS for the current CICSPlex is alive and that CPSM is working properly.
 
 ### Command error: ... validation of - -cicshlq dataset failed: z/OSMF REST API Error
 
@@ -63,7 +63,7 @@ If you experience errors while using the cics-deploy plug-in, check the followin
 
 *Representative output:*
 <pre class="messageText">
-A failure occurred during CICS® bundle deployment.
+A failure occurred during CICS bundle deployment.
 Reason = Validation of --cicshlq dataset failed: z/OSMF REST API Error:
 Rest API failure with HTTP(S) status 404
 category: 4
@@ -75,11 +75,11 @@ details:
 </pre>
 
 *Suggested action:* 
-Check that your `--cicshlq` profile setting matches the value configured for CICS® high-level qualifiers in your CICS region. 
+Check that your `--cicshlq` profile setting matches the value configured for CICS high-level qualifiers in your CICS region. 
 
 ### BUNDLE ... cannot be deployed (1)
 
-*Possible cause:* CICS® does not have permission to read the bundle directory.
+*Possible cause:* CICS does not have permission to read the bundle directory.
 
 *Representative output:*
 <pre class="messageText">
