@@ -12,8 +12,8 @@ folder: cdp
 
 If you experience errors while using the cics-deploy plug-in, check the following potential causes before investigating further:
 
-* CICS must be authorized to read the bundle directory `META-INF`.
-* The port specified by the `--port` argument of the `cics-deploy generate bundle` command *must* be free on z/OS before you attempt to deploy an application.
+* CICS® must be authorized to read the bundle directory `META-INF`.
+* The port specified by the `--port` argument of the `cics-deploy generate bundle` command *must* be free on z/OS® before you attempt to deploy an application.
 * If you set a `WORK_DIR` in the CICS Node.js application profile, such as `nodejsapps/<your application name>.profile`, it must be *writeable* by CICS.
 
 ## Deployment errors
@@ -38,8 +38,8 @@ If you experience errors while using the cics-deploy plug-in, check the followin
 ### Command error: DFHDPLOY stopped processing due to an error
 
 *Possible causes:*
-* The `--scope` and/or `--cicsplex` settings for the current deploy profile are wrong, and don't correctly identify a current CICS system, CICS System Group and/or a correct CICSPlex respectively.
-* The CMAS for the current CICSPlex is inactive.
+* The `--scope` and/or `--cicsplex` settings for the current deploy profile are wrong, and don't correctly identify a current CICS system, CICS System Group and/or a correct CICSPlex® respectively.
+* The CMAS for the cicsplex is inactive.
 * CPSM is not functioning correctly.
 
 *Representative output:*

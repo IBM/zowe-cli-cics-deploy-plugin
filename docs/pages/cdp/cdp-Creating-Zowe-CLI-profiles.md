@@ -11,14 +11,14 @@ toc: false
 
 See [Zowe CLI profiles](cdp-zowe-profiles) for an overview of profiles.
 
-The CICS deploy plug-in makes use of the following profiles:
+The CICS® deploy plug-in makes use of the following profiles:
 
-| Profile | Used by command | Connects to z/OS server |
+| Profile | Used by command | Connects to z/OS® server |
 | --- | --- | --- |
 | [z/OSMF profile](#zosmf-profile) | **zowe cics-deploy ...** <br /> zowe console ... <br />  zowe zos-files ... <br />  zowe zos-jobs ... <br />  zowe zos-tso ... <br />  zowe zos-workflows ... <br />  zowe zosmf ... <br />  zowe provisioing ... | z/OSMF |
 | [SSH profile](#ssh-profile) | **zowe cics-deploy push ...** <br />  zowe zos-uss ... | SSH |
 | [CICS deploy profile](#cics-deploy-profile) | **zowe cics-deploy ...** |  |
-| [CICS profile](#cics-profile) | **zowe cics-deploy push ...** <br />  zowe cics ... | CICSPlex SM WUI |
+| [CICS profile](#cics-profile) | **zowe cics-deploy push ...** <br />  zowe cics ... | CICSPlex® SM WUI |
 
 ### z/OSMF profile
 

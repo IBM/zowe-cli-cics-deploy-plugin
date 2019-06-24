@@ -13,7 +13,7 @@ toc: true
 
 The command-line is a conventional way to run and/or compose programs, especially if you come from a Linux or macOS background. Despite its usefulness, it can become tedious when large numbers of command-line arguments have to be entered and re-entered every time a program is executed. Zowe CLI profiles eliminate a lot of this tedium by collecting sequences of rarely-changing command-line arguments into just one argument - the name of a Zowe CLI profile - which is used as proxy whenever the original longer sequence needs to be subsequently invoked. 
 
-{% include note.html content="Be aware that the broader Zowe and z/OS technology stack includes some other entities commonly referred to as <i>profiles</i> that are entirely different to the profiles discussed here, which are, specifically, Zowe CLI profiles. For example, there is a ```.profile``` file in most z/OS Unix System Services (USS) user home directories - the remote z/OS shell profile - that contains session-initializing environmental configuration. A lack of precision, especially in conversation, can be confusing." %}
+{% include note.html content="Be aware that the broader Zowe and z/OS technology stack includes some other entities commonly referred to as <i>profiles</i> that are entirely different to the profiles discussed here, which are, specifically, Zowe CLI profiles. For example, there is a ```.profile``` file in most z/OS® Unix System Services (USS) user home directories - the remote z/OS shell profile - that contains session-initializing environmental configuration. A lack of precision, especially in conversation, can be confusing." %}
 
 Instead of having to type, say, six command-line arguments that describe a collection of z/OS connection details, you only need to type one, the name and type of the profile that stores the full set. 
 
@@ -41,7 +41,7 @@ zowe push bundle --name EXAMPLE --target-directory /u/example/bundles --zosmf-pr
 
 This is a much more economical and concise command-line than if were it necessary to enumerate all of the individual arguments from all of the profiles.
 
-As suggested above, to deploy a Node.js application from your workstation to one or more CICS regions, you will need to set up a minimum of three Zowe CLI profiles (optionally more if you wish to, say, deploy to multiple hosts) - you can read how to do it in detail [here](cdp-Creating-Zowe-CLI-profiles).
+As suggested above, to deploy a Node.js application from your workstation to one or more CICS® regions, you will need to set up a minimum of three Zowe CLI profiles (optionally more if you wish to, say, deploy to multiple hosts) - you can read how to do it in detail [here](cdp-Creating-Zowe-CLI-profiles).
 
 {% include tip.html content="For each profile type, the first profile you create becomes the default for that type. In many cases, you don't even have to type in the name of a specific profile if you know that the default profile will serve your needs." %}
 

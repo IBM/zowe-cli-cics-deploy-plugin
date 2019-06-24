@@ -2,7 +2,7 @@
 title: Provisioning a CICS region
 tags: [tutorial]
 keywords:
-summary: "The following steps take you through provisioning a CICS region from a z/OS Provisioning Toolkit image. You can then deploy and test applications using the CICS region."
+summary: "The following steps take you through provisioning a CICS® region from a z/OS® Provisioning Toolkit image. You can then deploy and test applications using the CICS region."
 sidebar: cdp_sidebar
 permalink: cdp-Provisioning-a-CICS-region.html
 folder: cdp
