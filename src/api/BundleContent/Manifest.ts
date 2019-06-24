@@ -12,7 +12,7 @@
 "use strict";
 
 import { BundlePart, IBundlePartDataType } from "./BundlePart";
-import { IHandlerParameters } from "@brightside/imperative";
+import { IHandlerParameters } from "@zowe/imperative";
 
 import * as parser from "fast-xml-parser";
 

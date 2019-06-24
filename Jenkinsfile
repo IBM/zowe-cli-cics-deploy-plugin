@@ -70,15 +70,19 @@ def MASTER_BRANCH = "master"
 def DEV_BRANCH = "dev"
 
 /**
+ * The name of the zowe-dev branch
+ */
+def ZOWE_DEV_BRANCH = "zowe-dev"
+
+/**
  * Release branches
  */
-def RELEASE_BRANCHES = [MASTER_BRANCH, DEV_BRANCH]
+def RELEASE_BRANCHES = [MASTER_BRANCH, DEV_BRANCH, ZOWE_DEV_BRANCH]
 
 /** 
  * Branches to send notifcations for
 */
-def NOTIFY_BRANCHES = [MASTER_BRANCH, DEV_BRANCH]
-
+def NOTIFY_BRANCHES = [MASTER_BRANCH, DEV_BRANCH, ZOWE_DEV_BRANCH]
 
 /**
  * Variables to check any new commit since the previous successful commit
@@ -95,7 +99,7 @@ def PRODUCT_NAME = "zowe-cli-cics-deploy-plugin"
 /**
  * This is where the Zowe project needs to be installed
  */
-def ZOWE_CLI_INSTALL_DIR = "/.npm-global/lib/node_modules/@brightside/core"
+def ZOWE_CLI_INSTALL_DIR = "/.npm-global/lib/node_modules/@zowe/cli"
 
 def ARTIFACTORY_CREDENTIALS_ID = "c8e3aa62-5eef-4e6b-8a3f-aa1006a7ef01"
 
@@ -200,9 +204,8 @@ pipeline {
                     echo "Install Zowe CLI globaly"
                     sh "rm -f .npmrc"
                     sh "npm set registry https://registry.npmjs.org"
-                    sh "npm set @brightside:registry=https://api.bintray.com/npm/ca/brightside/"
 
-                    sh "npm install -g @brightside/core@lts-incremental"
+                    sh "npm install -g @zowe/cli@daily"
                     sh "zowe --version"
                 }
             }

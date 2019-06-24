@@ -17,7 +17,7 @@ const fs = require("fs");
 
 const ok = 0;
 const error = 1;
-const impSymLinkPath = "./node_modules/@brightside/imperative";
+const impSymLinkPath = "./node_modules/@zowe/imperative";
 
 if (fs.existsSync(impSymLinkPath)) {
     // Get the file status to determine if it is a symlink.

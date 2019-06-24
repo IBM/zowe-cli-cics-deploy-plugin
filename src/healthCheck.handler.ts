@@ -9,7 +9,7 @@
 *
 */
 
-import {ICommandHandler, IHandlerParameters, Logger} from "@brightside/imperative";
+import {ICommandHandler, IHandlerParameters, Logger} from "@zowe/imperative";
 
 export default class HealthCheckHandler implements ICommandHandler {
   public async process(params: IHandlerParameters): Promise<void> {
