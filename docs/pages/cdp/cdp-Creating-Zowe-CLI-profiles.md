@@ -9,13 +9,7 @@ folder: cdp
 toc: false
 ---
 
-The Zowe CLI lets you define arguments and options for commands in multiple ways, with the following order of precedence:
-
-1. Command-line
-2. Environment variables
-3. Profiles
-
-Therefore by creating and setting options in the following profiles, they will become your defaults and you do not need to repeat them when using Zowe CLI commands unless you wish to override them. Further details are in [Understanding command option order of precedence](https://zowe.github.io/docs-site/latest/user-guide/cli-configuringcli.html#understanding-command-option-order-of-precedence).
+See [Zowe CLI profiles](cdp-zowe-profiles) for an overview of profiles.
 
 The CICS deploy plug-in makes use of the following profiles:
 
