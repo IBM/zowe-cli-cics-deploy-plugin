@@ -2,7 +2,7 @@
 title: Deploying a Node.js application
 tags: [tutorial]
 keywords:
-summary: "The following steps take you through creating a Node.js application using the Express Application Generator then deploying it to CICS."
+summary: "The following steps take you through creating a Node.js application using the Express Application Generator then deploying it to CICS®."
 sidebar: cdp_sidebar
 permalink: cdp-Deploying-a-Nodejs-application.html
 folder: cdp
@@ -11,7 +11,7 @@ toc: true
 
 ### Before you begin
 
-CICS TS V5.5 introduced support to run Node.js applications and is required by this tutorial. If you do not have a CICS TS V5.5 region, use the steps in [Provisioning a CICS region using z/OS PT](cdp-Provisioning-a-CICS-region-using-zospt) to provision one, or speak to your CICS system administrator.
+CICS TS V5.5 introduced support to run Node.js applications and is required by this tutorial. If you do not have a CICS TS V5.5 region, use the steps in [Provisioning a CICS region using z/OS® PT](cdp-Provisioning-a-CICS-region-using-zospt) to provision one, or speak to your CICS system administrator.
 
 ### Procedure
 
