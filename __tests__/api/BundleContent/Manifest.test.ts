@@ -169,7 +169,7 @@ describe("Manifest01", () => {
         }
 
         // Check the output as JSON
-        expect(err.message).toContain("Existing CICS Manifest file found with unparsable content.");
+        expect(err.message).toContain("Existing CICS Manifest file found with unparsable content:");
     });
     it("Parse a manifest with bad namespace", () => {
 
@@ -197,6 +197,6 @@ describe("Manifest01", () => {
         }
 
         // Check the output as JSON
-        expect(err.message).toContain("Existing CICS Manifest file found with unparsable content.");
+        expect(err.message).toContain("Existing CICS Manifest file found with unparsable content:");
     });
 });

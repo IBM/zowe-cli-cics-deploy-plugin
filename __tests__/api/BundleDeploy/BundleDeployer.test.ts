@@ -10,9 +10,9 @@
 */
 
 import { BundleDeployer } from "../../../src/api/BundleDeploy/BundleDeployer";
-import { IHandlerParameters, TaskStage } from "@zowe/imperative";
+import { IHandlerParameters, TaskStage } from "@brightside/imperative";
 import * as DeployBundleDefinition from "../../../src/cli/deploy/bundle/DeployBundle.definition";
-import { ZosmfSession, SubmitJobs, List } from "@zowe/cli";
+import { ZosmfSession, SubmitJobs, List } from "@brightside/core";
 
 
 const DEFAULT_PARAMTERS: IHandlerParameters = {
@@ -23,7 +23,10 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     },
     profiles: {
         get: (type: string) => {
-            return {};
+            if (profileError === true) {
+              throw new Error("Profile Error");
+            }
+            return { host: "testname", user: "testuser", password: "testpwd" };
         }
     } as any,
     response: {
@@ -57,7 +60,7 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
 let createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementation(() => ({}));
 let listSpy = jest.spyOn(List, "allMembers").mockImplementation(() => ({}));
 let submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() => ({}));
-
+let profileError = false;
 
 describe("BundleDeployer01", () => {
 
@@ -65,6 +68,7 @@ describe("BundleDeployer01", () => {
         createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementation(() => ({}));
         listSpy = jest.spyOn(List, "allMembers").mockImplementation(() => ( { val: "DFHDPLOY EYU9ABSI" }));
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() => ({}));
+        profileError = false;
     });
     afterEach(() => {
         jest.restoreAllMocks();
@@ -77,6 +81,12 @@ describe("BundleDeployer01", () => {
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should complain with error during profile load for deploy", async () => {
+        profileError = true;
+        await runDeployTestWithError();
+
+        expect(createSpy).toHaveBeenCalledTimes(0);
     });
     it("should complain with missing zOSMF profile for undeploy", async () => {
         createSpy.mockImplementationOnce(() => { throw new Error( "Injected Create error" ); });
@@ -326,6 +336,68 @@ describe("BundleDeployer01", () => {
         }
         expect(err).toBeDefined();
         expect(err.message).toMatchSnapshot();
+    });
+    it("tolerate embedded quote", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = '//DFHDPLOY JOB DFHDPLOY,"some text",CLASS=A,MSGCLASS=X,TIME=NOLIMIT';
+        await testDeployJCL(parms);
+    });
+    it("tolerate embedded single quote", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,'some text',CLASS=A,MSGCLASS=X,TIME=NOLIMIT";
+        await testDeployJCL(parms);
+    });
+    it("tolerate quotes around jobcard", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = '"//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT"';
+        await testDeployJCL(parms);
+    });
+    it("tolerate single quotes around jobcard", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = "'//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT'";
+        await testDeployJCL(parms);
+    });
+    it("tolerate quotes around jobcard with embedded quote", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = '"//DFHDPLOY JOB DFHDPLOY,"some text",CLASS=A,MSGCLASS=X,TIME=NOLIMIT"';
+        await testDeployJCL(parms);
+    });
+    it("tolerate single quotes around jobcard with embedded single quote", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.resgroup = "12345678";
+        parms.arguments.jobcard = "'//DFHDPLOY JOB DFHDPLOY,'some text',CLASS=A,MSGCLASS=X,TIME=NOLIMIT'";
+        await testDeployJCL(parms);
+    });
+    it("should tolerate a single leading slash for jobcard", async () => {
+
+        let parms: IHandlerParameters;
+        parms = DEFAULT_PARAMTERS;
+        setCommonParmsForDeployTests(parms);
+        parms.arguments.jobcard = "/DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT";
+        await testDeployJCL(parms);
     });
     it("should support long bundledir", async () => {
         let parms: IHandlerParameters;
@@ -604,6 +676,12 @@ function setCommonParmsForUndeployTests(parms: IHandlerParameters) {
   parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT";
   parms.arguments.targetstate = "DISCARDED";
   parms.arguments.description = undefined;
+  parms.arguments.zh = undefined;
+  parms.arguments.zp = undefined;
+  parms.arguments.zu = undefined;
+  parms.arguments.zpw = undefined;
+  parms.arguments.zru = undefined;
+  parms.arguments.zbp = undefined;
 }
 
 async function testDeployJCL(parms: IHandlerParameters) {

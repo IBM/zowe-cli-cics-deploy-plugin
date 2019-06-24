@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandOptionDefinition } from "@zowe/imperative";
+import { ICommandOptionDefinition } from "@brightside/imperative";
 
 const MAX_LENGTH = 58;
 
@@ -23,6 +23,7 @@ export const DescriptionOption: ICommandOptionDefinition = {
     type: "string",
     required: false,
     stringLengthRange: [1, MAX_LENGTH],
+    group: "cics-deploy Options",
     description: "An optional value that specifies a description of the bundle definition (up to 58 characters)."
 };
 

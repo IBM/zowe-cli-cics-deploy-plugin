@@ -20,7 +20,7 @@ the target group of CICS regions\.
 
    zowe cics-deploy deploy bundle [options]
 
-#### Required Options
+#### cics-deploy Options
 
 *   `--name`  | `-n` *(string)*
 
@@ -30,8 +30,6 @@ the target group of CICS regions\.
 *   `--bundle-directory`  | `--bd` | `--bundledir` | `--bundle-dir` *(string)*
 
 	* Specifies the location of the CICS bundle (up to 255 characters) on zFS\.
-
-#### Options
 
 *   `--cicsplex`  | `--cp` *(string)*
 
@@ -61,7 +59,7 @@ the target group of CICS regions\.
       bundle is undeployed, the definition is removed\. The \-\-csd\-group and
       \-\-res\-group options are mutually exclusive\.
 
-*   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
+*   `--cics-hlq`  | `--cq` | `--cicshlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CICS
       datasets can be found in the target environment\. Use this parameter if you have
@@ -104,15 +102,43 @@ the target group of CICS regions\.
 
 	* Enable or suppress verbose output from the DFHDPLOY tool\.
 
+#### Zosmf Connection Options
+
+*   `--zosmf-host`  | `--zh` *(string)*
+
+	* The z/OSMF server host name\.
+
+*   `--zosmf-port`  | `--zp` *(number)*
+
+	* The z/OSMF server port\.
+
+*   `--zosmf-user`  | `--zu` *(string)*
+
+	* Mainframe (z/OSMF) user name, which can be the same as your TSO login\.
+
+*   `--zosmf-password`  | `--zpw` *(string)*
+
+	* Mainframe (z/OSMF) password, which can be the same as your TSO password\.
+
+*   `--zosmf-reject-unauthorized`  | `--zru` *(boolean)*
+
+	* Reject self\-signed certificates\.
+
+*   `--zosmf-base-path`  | `--zbp` *(string)*
+
+	* The base path for your API mediation layer instance\. Specify this option to
+      prepend the base path to all z/OSMF resources when making REST requests\. Do not
+      specify this option if you are not using an API mediation layer\.
+
 #### Profile Options
-
-*   `--zosmf-profile`  | `--zosmf-p` *(string)*
-
-	* The name of a (zosmf) profile to load for this command execution\.
 
 *   `--cics-deploy-profile`  | `--cics-deploy-p` *(string)*
 
 	* The name of a (cics\-deploy) profile to load for this command execution\.
+
+*   `--zosmf-profile`  | `--zosmf-p` *(string)*
+
+	* The name of a (zosmf) profile to load for this command execution\.
 
 ### Examples
 
@@ -144,7 +170,7 @@ required\.
 
    zowe cics-deploy generate bundle [options]
 
-#### Options
+#### cics-deploy Options
 
 *   `--bundle-id`  | `-b` | `--id` | `--bundleid` *(string)*
 
@@ -217,7 +243,7 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 
    zowe cics-deploy push bundle [options]
 
-#### Required Options
+#### cics-deploy Options
 
 *   `--name`  | `-n` *(string)*
 
@@ -228,8 +254,6 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 
 	* Specifies the target zFS location in which the CICS bundle is to be created (up
       to 255 characters)
-
-#### Options
 
 *   `--cicsplex`  | `--cp` *(string)*
 
@@ -259,7 +283,7 @@ Push a CICS bundle from the working directory to a target CICSplex\.
       bundle is undeployed, the definition is removed\. The \-\-csd\-group and
       \-\-res\-group options are mutually exclusive\.
 
-*   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
+*   `--cics-hlq`  | `--cq` | `--cicshlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CICS
       datasets can be found in the target environment\. Use this parameter if you have
@@ -307,7 +331,98 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 	* Enable or disable the ability to replace an existing bundle directory or bundle
       on the remote system\.
 
+#### Zosmf Connection Options
+
+*   `--zosmf-host`  | `--zh` *(string)*
+
+	* The z/OSMF server host name\.
+
+*   `--zosmf-port`  | `--zp` *(number)*
+
+	* The z/OSMF server port\.
+
+*   `--zosmf-user`  | `--zu` *(string)*
+
+	* Mainframe (z/OSMF) user name, which can be the same as your TSO login\.
+
+*   `--zosmf-password`  | `--zpw` *(string)*
+
+	* Mainframe (z/OSMF) password, which can be the same as your TSO password\.
+
+*   `--zosmf-reject-unauthorized`  | `--zru` *(boolean)*
+
+	* Reject self\-signed certificates\.
+
+*   `--zosmf-base-path`  | `--zbp` *(string)*
+
+	* The base path for your API mediation layer instance\. Specify this option to
+      prepend the base path to all z/OSMF resources when making REST requests\. Do not
+      specify this option if you are not using an API mediation layer\.
+
+#### z/OS Ssh Connection Options
+
+*   `--ssh-host`  | `--sh` *(string)*
+
+	* The z/OS SSH server host name\.
+
+*   `--ssh-port`  | `--sp` *(number)*
+
+	* The z/OS SSH server port\.
+
+*   `--ssh-user`  | `--su` *(string)*
+
+	* Mainframe user name, which can be the same as your TSO login\.
+
+*   `--ssh-password`  | `--spw` *(string)*
+
+	* Mainframe password, which can be the same as your TSO password\.
+
+*   `--ssh-private-key`  | `--spk` *(string)*
+
+	* Path to a file containing your private key, that must match a public key stored
+      in the server for authentication
+
+*   `--ssh-key-passphrase`  | `--skp` *(string)*
+
+	* Private key passphrase, which unlocks the private key\.
+
+*   `--ssh-handshake-timeout`  | `--sht` *(number)*
+
+	* How long in milliseconds to wait for the SSH handshake to complete\.
+
+#### CICS Connection Options
+
+*   `--cics-host`  | `--ch` *(string)*
+
+	* The CMCI server host name\.
+
+*   `--cics-port`  | `--cpo` *(number)*
+
+	* The CICS server port\.
+
+*   `--cics-user`  | `--cu` *(string)*
+
+	* Mainframe (CICS) user name, which can be the same as your TSO login\.
+
+*   `--cics-password`  | `--cpw` *(string)*
+
+	* Mainframe (CICS) password, which can be the same as your TSO password\.
+
+*   `--cics-reject-unauthorized`  | `--cru` *(boolean)*
+
+	* Reject self\-signed certificates\.
+
+*   `--cics-protocol`  | `--cpr` *(string)*
+
+	* Specifies CMCI protocol (http or https)\.
+
+      Allowed values: http, https
+
 #### Profile Options
+
+*   `--cics-deploy-profile`  | `--cics-deploy-p` *(string)*
+
+	* The name of a (cics\-deploy) profile to load for this command execution\.
 
 *   `--zosmf-profile`  | `--zosmf-p` *(string)*
 
@@ -317,10 +432,6 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 
 	* The name of a (ssh) profile to load for this command execution\.
 
-*   `--cics-deploy-profile`  | `--cics-deploy-p` *(string)*
-
-	* The name of a (cics\-deploy) profile to load for this command execution\.
-
 *   `--cics-profile`  | `--cics-p` *(string)*
 
 	* The name of a (cics) profile to load for this command execution\.
@@ -328,7 +439,7 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 ### Examples
 
 *  Push a CICS bundle from the working directory by using
-default cics-deploy, ssh and zosmf profiles:
+default cics-deploy, cics, ssh and zosmf profiles:
 
       * `$  zowe cics-deploy push bundle --name EXAMPLE --target-directory /u/example/bundles`
 
@@ -353,14 +464,12 @@ target group of CICS regions\.
 
    zowe cics-deploy undeploy bundle [options]
 
-#### Required Options
+#### cics-deploy Options
 
 *   `--name`  | `-n` *(string)*
 
 	* Specifies the name of the CICS BUNDLE resource (up to 8 characters) to deploy or
       undeploy\.
-
-#### Options
 
 *   `--cicsplex`  | `--cp` *(string)*
 
@@ -390,7 +499,7 @@ target group of CICS regions\.
       bundle is undeployed, the definition is removed\. The \-\-csd\-group and
       \-\-res\-group options are mutually exclusive\.
 
-*   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
+*   `--cics-hlq`  | `--cq` | `--cicshlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CICS
       datasets can be found in the target environment\. Use this parameter if you have
@@ -428,20 +537,48 @@ target group of CICS regions\.
 
 	* Enable or suppress verbose output from the DFHDPLOY tool\.
 
+#### Zosmf Connection Options
+
+*   `--zosmf-host`  | `--zh` *(string)*
+
+	* The z/OSMF server host name\.
+
+*   `--zosmf-port`  | `--zp` *(number)*
+
+	* The z/OSMF server port\.
+
+*   `--zosmf-user`  | `--zu` *(string)*
+
+	* Mainframe (z/OSMF) user name, which can be the same as your TSO login\.
+
+*   `--zosmf-password`  | `--zpw` *(string)*
+
+	* Mainframe (z/OSMF) password, which can be the same as your TSO password\.
+
+*   `--zosmf-reject-unauthorized`  | `--zru` *(boolean)*
+
+	* Reject self\-signed certificates\.
+
+*   `--zosmf-base-path`  | `--zbp` *(string)*
+
+	* The base path for your API mediation layer instance\. Specify this option to
+      prepend the base path to all z/OSMF resources when making REST requests\. Do not
+      specify this option if you are not using an API mediation layer\.
+
 #### Profile Options
-
-*   `--zosmf-profile`  | `--zosmf-p` *(string)*
-
-	* The name of a (zosmf) profile to load for this command execution\.
 
 *   `--cics-deploy-profile`  | `--cics-deploy-p` *(string)*
 
 	* The name of a (cics\-deploy) profile to load for this command execution\.
 
+*   `--zosmf-profile`  | `--zosmf-p` *(string)*
+
+	* The name of a (zosmf) profile to load for this command execution\.
+
 ### Examples
 
-*  Undeploy a CICS bundle by using the default cics-deploy
-profile:
+*  Undeploy a CICS bundle by using the default cics-deploy and
+zosmf profiles:
 
       * `$  zowe cics-deploy undeploy bundle --name EXAMPLE`
 
@@ -486,7 +623,7 @@ actions\.
 	* Specifies the name of the CICS System, or CICS System Group (up to 8 characters)
       to target\.
 
-*   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
+*   `--cics-hlq`  | `--cq` | `--cicshlq` *(string)*
 
 	* Specifies the High Level Qualifier (up to 35 characters) at which the CICS
       datasets can be found in the target environment\.
@@ -592,7 +729,7 @@ actions\.
       if a bundle is undeployed then the definition is removed\. The \-\-csd\-group
       and \-\-res\-group options are mutually exclusive\.
 
-*   `--cics-hlq`  | `--ch` | `--cicshlq` *(string)*
+*   `--cics-hlq`  | `--cq` | `--cicshlq` *(string)*
 
 	* Specifies the High Level Qualifier (up to 35 characters) at which the CICS
       datasets can be found in the target environment\.

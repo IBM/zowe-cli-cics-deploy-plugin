@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandDefinition } from "@zowe/imperative";
+import { ICommandDefinition } from "@brightside/imperative";
 import { NameOption } from "../../shared/Name.option";
 import { TargetdirOption } from "./options/Targetdir.option";
 import { CicsplexOption } from "../../shared/Cicsplex.option";
@@ -24,6 +24,9 @@ import { TargetStateOption } from "../../deploy/bundle/options/TargetState.optio
 import { DescriptionOption } from "../../deploy/bundle/options/Description.option";
 import { VerboseOption } from "../../shared/Verbose.option";
 import { OverwriteOption } from "./options/Overwrite.option";
+import { ZosmfOptions } from "../../shared/ZosmfOptions";
+import { SshOptions } from "./options/SshOptions";
+import { CmciOptions } from "./options/CmciOptions";
 
 /**
  * Imperative command for the Bundle sub-option of Push.
@@ -38,11 +41,14 @@ export const PushBundleDefinition: ICommandDefinition = {
     handler: __dirname + "/PushBundle.handler",
     options: [ NameOption, TargetdirOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption,
                CicshlqOption, CpsmhlqOption, DescriptionOption, JobcardOption, TimeoutOption, TargetStateOption,
-               VerboseOption, OverwriteOption ],
-    profile: { required: ["zosmf", "ssh"], optional: ["cics-deploy", "cics"] },
+               VerboseOption, OverwriteOption ]
+               .concat(ZosmfOptions.CICS_DEPLOY_ZOSMF_CONNECTION_OPTIONS)
+               .concat(SshOptions.CICS_DEPLOY_SSH_CONNECTION_OPTIONS)
+               .concat(CmciOptions.CICS_DEPLOY_CMCI_CONNECTION_OPTIONS),
+    profile: { optional: ["cics-deploy", "zosmf", "ssh", "cics"] },
     examples: [
         {
-            description: "Push a CICS bundle from the working directory by using default cics-deploy, ssh and zosmf profiles",
+            description: "Push a CICS bundle from the working directory by using default cics-deploy, cics, ssh and zosmf profiles",
             options: `--name EXAMPLE --target-directory /u/example/bundles`
         },
         {

@@ -12,10 +12,11 @@
 "use strict";
 
 import { IHandlerParameters, Logger, ImperativeError, AbstractSession, ITaskWithStatus,
-         TaskStage , TaskProgress} from "@zowe/imperative";
-import { ZosmfSession, SubmitJobs, List } from "@zowe/cli";
+         TaskStage , TaskProgress} from "@brightside/imperative";
+import { ZosmfSession, SubmitJobs, List } from "@brightside/core";
 import { ParmValidator } from "./ParmValidator";
 import * as path from "path";
+import { ZosmfConfig } from "../BundlePush/ZosmfConfig";
 
 /**
  * Class to represent a CICS Bundle Deployer.
@@ -224,11 +225,20 @@ export class BundleDeployer {
 
   private async createZosMFSession(): Promise<AbstractSession> {
     // Create a zosMF session
-    const zosmfProfile = this.params.profiles.get("zosmf");
+    let zosmfProfile;
+    try {
+      zosmfProfile = this.params.profiles.get("zosmf");
+    }
+    catch (error) {
+      // No-op, we can cope with there being no profile.
+    }
 
     if (zosmfProfile === undefined) {
-      throw new Error("No zosmf profile found");
+      zosmfProfile = {};
     }
+
+    ZosmfConfig.mergeProfile(zosmfProfile, this.params);
+
     return ZosmfSession.createBasicZosmfSession(zosmfProfile);
   }
 

@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandOptionDefinition } from "@zowe/imperative";
+import { ICommandOptionDefinition } from "@brightside/imperative";
 
 /**
  * Imperative option for the "overwrite" parameter
@@ -21,6 +21,7 @@ export const OverwriteOption: ICommandOptionDefinition = {
     type: "boolean",
     defaultValue: false,
     required: false,
+    group: "cics-deploy Options",
     description: "Enable or disable the ability to replace an existing bundle directory or bundle on the remote system."
 };
 

@@ -11,7 +11,7 @@
 
 "use strict";
 
-import { IHandlerParameters, Logger } from "@zowe/imperative";
+import { IHandlerParameters, Logger } from "@brightside/imperative";
 
 export class ParmValidator {
 
@@ -303,13 +303,25 @@ export class ParmValidator {
     // handle long jobcards
     ParmValidator.wrapJobcard(params);
 
+    // Strip leading and trailing quotes, if they're there
+    params.arguments.jobcard = params.arguments.jobcard.replace(/^"(.*)"$/, "$1");
+    params.arguments.jobcard = params.arguments.jobcard.replace(/^'(.*)'$/, "$1");
+
     // split the jobcard into a comma separated list
     const jobcardParts = params.arguments.jobcard.split(",");
-    const firstPart = jobcardParts[0].trim();
+    let firstPart = jobcardParts[0].trim();
 
     // check that it starts with '//'
     if (firstPart.indexOf("//") !== 0) {
-      throw new Error("--jobcard parameter does not start with //");
+
+      // gitbash can swallow a '/' character. If we only have one then add another.
+      if (firstPart.startsWith("/")) {
+        params.arguments.jobcard = "/" + params.arguments.jobcard;
+        firstPart = "/" + firstPart;
+      }
+      else {
+        throw new Error("--jobcard parameter does not start with //");
+      }
     }
 
     // split the first section of the jobcard into chunks

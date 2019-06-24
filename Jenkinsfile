@@ -14,17 +14,6 @@
 //System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "")
 
 /**
- * Release branches
- */
-def RELEASE_BRANCHES = ["master"]
-
-/** 
- * Branches to send notifcations for
-*/
-def NOTIFY_BRANCHES = ["master"]
-
-
-/**
  * The following flags are switches to control which stages of the pipeline to be run.  This is helpful when 
  * testing a specific stage of the pipeline.
  */
@@ -32,8 +21,8 @@ def PIPELINE_CONTROL = [
     build: true,
     unit_test: true,    
     system_test: true,
-    deploy: true,
-    ci_skip: false ]
+    cd_skip: false
+]
 
 /**
  * The result strings for a build status
@@ -45,9 +34,15 @@ def BUILD_RESULT = [
 ]
 
 /**
- * Test npm registry using for smoke test
+ * Test npm registry
  */
 def TEST_NPM_REGISTRY = "https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-virtual"
+
+/**
+ * npm registry 
+ */
+def NPM_REGISTRY = "registry.npmjs.org"
+def NPM_FULL_REGISTRY = "https://registry.npmjs.org"
 
 /**
  * The root results folder for items configurable by environmental variables
@@ -70,6 +65,22 @@ def SYSTEM_RESULTS = "${TEST_RESULTS_FOLDER}/system"
 def MASTER_BRANCH = "master"
 
 /**
+ * The name of the dev branch
+ */
+def DEV_BRANCH = "dev"
+
+/**
+ * Release branches
+ */
+def RELEASE_BRANCHES = [MASTER_BRANCH, DEV_BRANCH]
+
+/** 
+ * Branches to send notifcations for
+*/
+def NOTIFY_BRANCHES = [MASTER_BRANCH, DEV_BRANCH]
+
+
+/**
  * Variables to check any new commit since the previous successful commit
  */
 def GIT_COMMIT = "null"
@@ -84,7 +95,7 @@ def PRODUCT_NAME = "zowe-cli-cics-deploy-plugin"
 /**
  * This is where the Zowe project needs to be installed
  */
-def ZOWE_CLI_INSTALL_DIR = "/.npm-global/lib/node_modules/@zowee/cli"
+def ZOWE_CLI_INSTALL_DIR = "/.npm-global/lib/node_modules/@brightside/core"
 
 def ARTIFACTORY_CREDENTIALS_ID = "c8e3aa62-5eef-4e6b-8a3f-aa1006a7ef01"
 
@@ -94,7 +105,7 @@ def opts = []
 
 // Setup a schedule to run build periodically
 // Run a build at 2.00AM everyday
-def CRON_STRING = BRANCH_NAME == MASTER_BRANCH ? "H 2 * * *" : ""
+def CRON_STRING = RELEASE_BRANCHES.contains(BRANCH_NAME) ? "H 2 * * *" : ""
 
 if (RELEASE_BRANCHES.contains(BRANCH_NAME)) {
     // Only keep 20 builds
@@ -132,6 +143,11 @@ pipeline {
         // other Jenkins jobs or needing root access.
         NPM_CONFIG_PREFIX = "${WORKSPACE}/npm-global"
         PATH = "${NPM_CONFIG_PREFIX}/bin:${PATH}"
+
+        // Credential to publish to npmjs.org
+        // NPM_CREDENTIALS_USR is email address
+        // NPM_REDENTIALS_PSW is the login token
+        NPM_CREDENTIALS = credentials('ibmcics.npmjs.auth.token')
     }
 
     stages {
@@ -152,45 +168,6 @@ pipeline {
         /************************************************************************
          * STAGE
          * -----
-         * Check for CI Skip
-         *
-         * TIMEOUT
-         * -------
-         * 2 Minutes
-         *
-         * EXECUTION CONDITIONS
-         * --------------------
-         * - Always
-         *
-         * DECRIPTION
-         * ----------
-         * Checks for the [ci skip] text in the last commit. If it is present,
-         * the build is stopped. Needed because the pipeline does do some simple
-         * git commits on the master branch for the purposes of version bumping.
-         *
-         * OUTPUTS
-         * -------
-         * PIPELINE_CONTROL.ci_skip will be set to 'true' if [ci skip] is found in the
-         * commit text.
-         ************************************************************************/
-        stage('Check for CI Skip') {
-            steps {
-                timeout(time: 2, unit: 'MINUTES') {
-                    script {
-                        // This checks for the [ci skip] text. If found, the status code is 0
-                        def result = sh returnStatus: true, script: 'git log -1 | grep \'.*\\[ci skip\\].*\''
-                        if (result == 0) {
-                            echo '"ci skip" spotted in the git commit. Aborting.'
-                            PIPELINE_CONTROL.ci_skip = true
-                        }
-                    }
-                }
-            }
-        }
-
-        /************************************************************************
-         * STAGE
-         * -----
          * Install Zowe CLI
          *
          * TIMEOUT
@@ -199,7 +176,6 @@ pipeline {
          *
          * EXECUTION CONDITIONS
          * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
          * - PIPELINE_CONTROL.build is true or PIPELINE_CONTROL.smoke_test is true
          *
          * DESCRIPTION
@@ -215,9 +191,6 @@ pipeline {
             when {
                 allOf {
                     expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
-                    expression {
                         return PIPELINE_CONTROL.build || PIPELINE_CONTROL.smoke_test
                     }
                 }
@@ -226,13 +199,11 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES') {
                     echo "Install Zowe CLI globaly"
                     sh "rm -f .npmrc"
-                    sh("npm set registry https://registry.npmjs.org")
-                    //sh("npm set @brightside:registry https://api.bintray.com/npm/ca/brightside/")
-                    //sh("npm set @zowe:registry https://api.bintray.com/npm/ca/brightside/")
-                    sh("npm set @zowe:registry https://registry.npmjs.org")
+                    sh "npm set registry https://registry.npmjs.org"
+                    sh "npm set @brightside:registry=https://api.bintray.com/npm/ca/brightside/"
 
-                    sh("npm install -g @zowe/cli@daily")
-                    sh("zowe --version")
+                    sh "npm install -g @brightside/core@lts-incremental"
+                    sh "zowe --version"
                 }
             }
         }
@@ -248,7 +219,6 @@ pipeline {
          *
          * EXECUTION CONDITIONS
          * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
          * - PIPELINE_CONTROL.build is true
          *
          * DESCRIPTION
@@ -262,9 +232,6 @@ pipeline {
         stage('Install Dependencies') {
             when {
                 allOf {
-                    expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
                     expression {
                         return PIPELINE_CONTROL.build
                     }
@@ -290,7 +257,6 @@ pipeline {
          *
          * EXECUTION CONDITIONS
          * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
          * - PIPELINE_CONTROL.build is true
          *
          * DESCRIPTION
@@ -304,9 +270,6 @@ pipeline {
         stage('Build') {
             when {
                 allOf {
-                    expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
                     expression {
                         return PIPELINE_CONTROL.build
                     }
@@ -336,7 +299,6 @@ pipeline {
          *
          * EXECUTION CONDITIONS
          * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
          * - PIPELINE_CONTROL.unit_test is true
          *
          * ENVIRONMENT VARIABLES
@@ -376,9 +338,6 @@ pipeline {
         stage('Test: Unit') {
             when {
                 allOf {
-                    expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
                     expression {
                         return PIPELINE_CONTROL.unit_test
                     }
@@ -440,7 +399,6 @@ pipeline {
          *
          * EXECUTION CONDITIONS
          * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
          * - PIPELINE_CONTROL.system_test is true
          *
          * ENVIRONMENT VARIABLES
@@ -484,9 +442,6 @@ pipeline {
             when {
                 allOf {
                     expression {
-                        return PIPELINE_CONTROL.ci_skip == false
-                    }
-                    expression {
                         return PIPELINE_CONTROL.system_test
                     }
                 }
@@ -520,53 +475,71 @@ pipeline {
         /************************************************************************
          * STAGE
          * -----
-         * Bump Version
+         * Check for CD Skip
          *
          * TIMEOUT
          * -------
-         * 5 Minutes
+         * 2 Minutes
          *
          * EXECUTION CONDITIONS
          * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
-         * - PIPELINE_CONTROL.deploy is true
-         * - The build is still successful and not unstable
+         * - Always
          *
-         * DESCRIPTION
-         * -----------
-         * Bumps the pre-release version in preparation for publishing to an npm
-         * registry. 
+         * DECRIPTION
+         * ----------
+         * Compare the version in package.json with released version. If the same,
+         * the build is stopped. Needed because the pipeline does do some simple
+         * merge on the master branch for documentation updates
+         *
+         * OUTPUTS
+         * -------
+         * PIPELINE_CONTROL.cd_skip will be set to 'true', 
+         *  - if master branch's release version and new version are the same
+         *  - if there isn't any new commit
          ************************************************************************/
-        stage('Bump Version') {
+        stage('Check for CD Skip') {
         when {
                 allOf {
                     expression {
-                        return PIPELINE_CONTROL.ci_skip == false
+                        return PIPELINE_CONTROL.cd_skip == false
                     }
                     expression {
-                        return PIPELINE_CONTROL.deploy
-                    }
-                    expression {
-                        return BRANCH_NAME == MASTER_BRANCH
-                    }
-                    expression {
-                        return GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT
+                        return RELEASE_BRANCHES.contains(BRANCH_NAME)
                     }
                 }
             }
             steps {
-                timeout(time: 5, unit: 'MINUTES') {
-                    echo "Bumping Version"
-
-                    // This npm command does the version bump
+                timeout(time: 2, unit: 'MINUTES') {
                     script {
-                        def baseVersion = sh returnStdout: true, script: 'node -e "console.log(require(\'./package.json\').version.split(\'-\')[0])"'
-                        def preReleaseVersion = baseVersion.trim() + "-next." + new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("UTC"))
-                        sh "npm version ${preReleaseVersion} --no-git-tag-version"
+                        // Retrieve new version from package.json
+                        def NEW_VERSION = sh (
+                            script: 'echo "console.log(require(\'./package.json\').version);" | node',
+                            returnStdout: true
+                        ).trim()
+                        echo "NEW_VERSION: ${NEW_VERSION}"
+                        // Retrieve released version from npmjs.org
+                        def RELEASED_VERSION = sh (
+                            script: 'npm view "$(echo "console.log(require(\'./package.json\').name);" | node)" version --registry '+NPM_FULL_REGISTRY+' || true',
+                            returnStdout: true
+                        ).trim()
+                        echo "RELEASED_VERSION: ${RELEASED_VERSION}"
+
+                        // skip deploying, if version has not changed.
+                        // However, we deploy dev branch even if version has not changed
+                        // as long as there is any new commit
+                        if (NEW_VERSION == RELEASED_VERSION && BRANCH_NAME != DEV_BRANCH) {
+                            echo 'New version and released version are the same. Skip deploying.'
+                            PIPELINE_CONTROL.cd_skip = true
+                        }
+                        if (GIT_COMMIT == GIT_PREVIOUS_SUCCESSFUL_COMMIT) {
+                            echo 'There is no new commit. Skip deploying'
+                            PIPELINE_CONTROL.cd_skip = true
+                        }
                     }
                 }
             }
         }
+
         /************************************************************************
          * STAGE
          * -----
@@ -578,8 +551,6 @@ pipeline {
          *
          * EXECUTION CONDITIONS
          * --------------------
-         * - PIPELINE_CONTROL.ci_skip is false
-         * - PIPELINE_CONTROL.deploy is true
          * - The build is still successful and not unstable
          *
          * DESCRIPTION
@@ -595,47 +566,54 @@ pipeline {
             when {
                 allOf {
                     expression {
-                        return PIPELINE_CONTROL.ci_skip == false
+                        return PIPELINE_CONTROL.cd_skip == false
                     }
                     expression {
-                        return PIPELINE_CONTROL.deploy
-                    }
-                    expression {
-                        return BRANCH_NAME == MASTER_BRANCH
-                    }
-                    expression {
-                        return GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT
+                        return RELEASE_BRANCHES.contains(BRANCH_NAME)
                     }
                 }
             }
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
                     echo 'Deploy Binary'
-                    withCredentials([usernamePassword(credentialsId: ARTIFACTORY_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'API_KEY')]) {
-
-                        // Set up authentication to Artifactory
+                    script {
                         sh "rm -f .npmrc"
-                        sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
-                        sh "echo registry=$TEST_NPM_REGISTRY >> .npmrc"
-                        sh "echo @zowe:registry=https://registry.npmjs.org >> .npmrc"
-                        sh "echo @zowe:always-auth=false >> .npmrc"
-                        
-                        script {
-                            if (BRANCH_NAME == MASTER_BRANCH) {
-                                echo "publishing next to $TEST_NPM_REGISTRY"
-                                sh "npm publish --tag next"
-                            } else {
-                                echo "publishing latest to $TEST_NPM_REGISTRY"
-                                sh "npm publish --tag latest"
+                        // set @zowe registry
+                        sh "echo always-auth=true >> .npmrc"
+                        sh "echo @brightside:registry=https://api.bintray.com/npm/ca/brightside/ >> .npmrc"
+                        sh "echo @brightside:always-auth=false >> .npmrc"
+                        if (BRANCH_NAME == MASTER_BRANCH) {
+                            // Set registry
+                            sh "echo registry=$NPM_FULL_REGISTRY >> .npmrc"
+                            // Set credential
+                            sh "echo //$NPM_REGISTRY/:_authToken=${NPM_CREDENTIALS_PSW} >> .npmrc"
+                            // deploy 
+                            echo "publishing to $NPM_FULL_REGISTRY"
+                            sh "npm publish --tag latest"
+                        } else if (BRANCH_NAME == DEV_BRANCH) {
+                            // Set version
+                            def baseVersion = sh returnStdout: true, script: 'node -e "console.log(require(\'./package.json\').version.split(\'-\')[0])"'
+                            def preReleaseVersion = baseVersion.trim() + "-next." + new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("UTC"))
+                            sh "npm version ${preReleaseVersion} --no-git-tag-version"
+                            // Set credential
+                            withCredentials([usernamePassword(credentialsId: ARTIFACTORY_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'API_KEY')]) {
+                                sh 'curl -u $USERNAME:$API_KEY https://eu.artifactory.swg-devops.com/artifactory/api/npm/auth/ >> .npmrc'
                             }
+                            // Set registry
+                            sh "echo registry=$TEST_NPM_REGISTRY >> .npmrc"
+                            // deploy 
+                            echo "publishing to $TEST_NPM_REGISTRY"
+                            sh "npm publish --tag alpha"
+                        } else {
+                            echo "Only master and dev branch is allowed to deploy the app (current branch: $BRANCH_NAME). Skip deploying"
                         }
-
-                        sh "rm -f .npmrc"
                     }
                 }
             }
         }
     }
+
+    // Slack notification when fails or back to normal
     post {
         unsuccessful {
             script {
