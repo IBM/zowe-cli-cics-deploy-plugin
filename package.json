@@ -31,12 +31,12 @@
     "configurationModule": "lib/imperative.js"
   },
   "dependencies": {
-    "@brightside/cics": "^1.1.1",
+    "@zowe/cics": "^2.0.1",
     "fast-xml-parser": "^3.12.16"
   },
   "devDependencies": {
-    "@brightside/core": "^2.28.1",
-    "@brightside/imperative": "^2.4.2",
+    "@zowe/cli": "^5.9.1",
+    "@zowe/imperative": "^4.1.8",
     "@types/fs-extra": "^5.0.5",
     "@types/jest": "^22.2.3",
     "@types/node": "^8.0.28",
@@ -68,8 +68,8 @@
     "uuid": "^3.3.2"
   },
   "peerDependencies": {
-    "@brightside/core": "^2.28.1",
-    "@brightside/imperative": "^2.4.2"
+    "@zowe/cli": "^5.9.1",
+    "@zowe/imperative": "^4.1.8"
   },
   "jest": {
     "modulePathIgnorePatterns": [

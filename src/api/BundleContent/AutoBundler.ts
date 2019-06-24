@@ -12,7 +12,7 @@
 "use strict";
 
 import { Bundle } from "./Bundle";
-import { Logger, IHandlerParameters } from "@brightside/imperative";
+import { Logger, IHandlerParameters } from "@zowe/imperative";
 
 
 /**
