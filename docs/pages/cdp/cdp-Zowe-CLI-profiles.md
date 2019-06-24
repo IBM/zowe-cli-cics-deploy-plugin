@@ -47,9 +47,20 @@ As suggested above, to deploy a Node.js application from your workstation to one
 
 Ultimately, you are not *required* to use Zowe CLI profiles - you can specify all of the required command-line arguments explicitly - but they reduce the burden of typing when you are issuing commands that require many arguments.
 
+### Order of precedence
+
+The Zowe CLI lets you define arguments and options for commands in multiple ways, with the following order of precedence:
+
+1. Command-line
+2. Environment variables
+3. Profiles
+
+Therefore by setting options in a profile they will become your default and you do not need to repeat them on the command-line unless you wish to override them. Further details are in [Understanding command option order of precedence](https://zowe.github.io/docs-site/latest/user-guide/cli-configuringcli.html#understanding-command-option-order-of-precedence).
+
 ### Where are Zowe CLI profiles stored?
 
-When you create a Zowe CLI profile, a representation is written to an operating-system-dependent text file on your local workstation.
+When you create a Zowe CLI profile, a representation is written to a file on your local workstation in plain text. This file may contain sensitive information such as user IDs and passwords and therefore needs to be secured. Further details are in [Creating Zowe CLI profiles](https://zowe.github.io/docs-site/latest/user-guide/cli-configuringcli.html#creating-zowe-cli-profiles).
+
 <ul id="profileTabs" class="nav nav-tabs">
     <li class="active"><a href="#windows" data-toggle="tab">Windows</a></li>
     <li><a href="#linux" data-toggle="tab">Linux</a></li>

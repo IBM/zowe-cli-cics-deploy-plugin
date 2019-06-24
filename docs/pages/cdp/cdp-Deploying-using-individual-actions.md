@@ -16,7 +16,7 @@ The `zowe cics-deploy push bundle` command performs a set of actions to deploy a
 * resolve Node.js application dependencies on z/OS
 * deploy the CICS bundle in CICS
 
-However, there may be situations where you need more control of these actions or perform alternate actions. The following sections describe how each of these actions can be performed independently, enabling you to form a sequence of commands to achieve your needs.
+However, there may be situations where you need more control of these actions or perform alternate actions. The following sections describe how each of these actions can be performed independently, enabling you to form a sequence of commands to achieve your needs. Zowe CLI commands set the return code to 0 when the command completed successfully, or greater than 0 if the command failed.
 
 ### Undeploy a CICS bundle
 
