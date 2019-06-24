@@ -2,7 +2,7 @@
 title: Deploying a CICS policy
 tags: [tutorial]
 keywords:
-summary: "The following steps take you through deploying a sample CICS bundle containing a policy."
+summary: "The following steps take you through deploying a sample CICS® bundle containing a policy."
 sidebar: cdp_sidebar
 permalink: cdp-Deploying-a-CICS-policy.html
 folder: cdp

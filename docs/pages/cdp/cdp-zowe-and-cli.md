@@ -30,4 +30,4 @@ The Zowe CLI is extended by creating and installing plug-ins.
 
 ### Zowe CLI CICS deploy plug-in
 
-The Zowe CLI CICS deploy plug-in extends the Zowe CLI to offer a command-line mechanism for Node.js developers to deploy workstation-developed applications into a running CICS Transaction Server for z/OS region on a remote mainframe. It is the quickest way to get a Node.js application from your workstation into a running CICS region without any special CICS knowledge.
+The Zowe CLI CICS® deploy plug-in extends the Zowe CLI to offer a command-line mechanism for Node.js developers to deploy workstation-developed applications into a running CICS Transaction Server for z/OS region on a remote mainframe. It is the quickest way to get a Node.js application from your workstation into a running CICS region without any special CICS knowledge.

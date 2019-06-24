@@ -2,7 +2,7 @@
 title: Log and trace files
 tags: [troubleshooting]
 keywords:
-summary: "When you use Zowe, log and trace files are written on both your local workstation and z/OS."
+summary: "When you use Zowe, log and trace files are written on both your local workstation and z/OS®."
 sidebar: cdp_sidebar
 permalink: cdp-Log-and-trace-files.html
 folder: cdp
@@ -10,7 +10,7 @@ folder: cdp
 
 ### Console output
 
-All Zowe CLI CICS deploy plug-in commands send output to the console when invoked. Very often, enough information is provided for you to diagnose and pinpoint the cause of a problem. The commands `cics-deploy push`, `cics-deploy deploy` and `cics-deploy undeploy` accept a `--verbose` command-line option which can generate extra information if needed.  
+All Zowe CLI CICS® deploy plug-in commands send output to the console when invoked. Very often, enough information is provided for you to diagnose and pinpoint the cause of a problem. The commands `cics-deploy push`, `cics-deploy deploy` and `cics-deploy undeploy` accept a `--verbose` command-line option which can generate extra information if needed.
 
 ### zowe.log
 
@@ -60,6 +60,6 @@ They can all be useful when identifying the cause of an error, especially STDERR
 
 ### JES job logs
 
-If you are familiar with the z/OS environment, you can often find some useful diagnostics by accessing the JES job log associated with the CICS region you deployed to.  The `cics-deploy push` command outputs the job IDs for all the CICS regions in the scope after a deployment.  The MSGUSR, SYSPRINT, SYSOUT and JESMSGLG spool files can all provide useful information.   If you are not so fluent with the world of z/OS, you may need to discuss your needs with one of your organization's CICS system administrators.
+If you are familiar with the z/OS environment, you can often find some useful diagnostics by accessing the JES job log associated with the CICS region you deployed to. The `cics-deploy push` command outputs the job IDs for all the CICS regions in the scope after a deployment. The MSGUSR, SYSPRINT, SYSOUT and JESMSGLG spool files can all provide useful information. If you are not so fluent with the world of z/OS, you may need to discuss your needs with one of your organization's CICS system administrators.
 
 {% include note.html content="If you use [Visual Studio Code](https://code.visualstudio.com/) as your editor, there is a [Zowe extension](https://marketplace.visualstudio.com/items?itemName=Zowe.vscode-extension-for-zowe) that enables you to interact with USS files and examine JES job logs from your local workstation." %}

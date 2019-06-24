@@ -2,7 +2,7 @@
 title: Preparing a z/OS Provisioning Toolkit image
 tags: [tutorial]
 keywords:
-summary: "The following steps take you through preparing a z/OS Provisioning Toolkit image for CICS, and optionally include an application in the image."
+summary: "The following steps take you through preparing a z/OS® Provisioning Toolkit image for CICS®, and optionally include an application in the image."
 sidebar: cdp_sidebar
 permalink: cdp-Preparing-a-zOS-PT-image.html
 folder: cdp
@@ -13,8 +13,12 @@ The [z/OS Provisioning Toolkit](https://developer.ibm.com/mainframe/products/zos
 
 z/OS PT uses configuration and files in an *image* as input to z/OSMF workflows to provision a CICS region. The image is typically prepared by a CICS system administrator. This tutorial provides two alternative approaches to preparing a z/OS PT image:
 
-* [Prepare a z/OS PT image for CICS](#prepare-a-zos-pt-image-for-cics) - no application is included in the image, and the `zosptfile` is kept separate to the application source.
-* [Prepare a z/OS PT image for CICS including an application](#prepare-a-zos-pt-image-for-cics-including-an-application) - the application is provisioned together with the CICS region, and the `zosptfile` is kept with the application source.
+- [Prepare a z/OS PT image for CICS](#prepare-a-zos-pt-image-for-cics)
+  - [Procedure](#procedure)
+  - [Results](#results)
+- [Prepare a z/OS PT image for CICS including an application](#prepare-a-zos-pt-image-for-cics-including-an-application)
+  - [Procedure](#procedure-1)
+  - [Results](#results-1)
 
 ### Prepare a z/OS PT image for CICS
 
