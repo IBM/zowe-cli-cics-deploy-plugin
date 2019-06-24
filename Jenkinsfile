@@ -84,7 +84,6 @@ def RELEASE_BRANCHES = [MASTER_BRANCH, DEV_BRANCH, ZOWE_DEV_BRANCH]
 */
 def NOTIFY_BRANCHES = [MASTER_BRANCH, DEV_BRANCH, ZOWE_DEV_BRANCH]
 
-
 /**
  * Variables to check any new commit since the previous successful commit
  */
