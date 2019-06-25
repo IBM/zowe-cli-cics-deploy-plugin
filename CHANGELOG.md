@@ -19,6 +19,12 @@ Changes should be placed under the following headings:
 - in case of vulnerabilities
 -->
 
+## [Release v1.0.0]
+
+### Added
+
+- The plugin is now on public npmjs registry (https://www.npmjs.com/package/zowe-cli-cics-deploy-plugin)
+
 ## [Unreleased]
 
 ### Added
