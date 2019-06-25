@@ -55,7 +55,7 @@ Run the following commands on your workstation.
    FROM cics_55
    ENV DFH_CICS_TYPE=MAS
    ENV DFH_CICSPLEX=ZOSPTINT
-   ENV DFH_NODE_HOME=/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x
+   ENV DFH_NODE_HOME=/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x
    COPY bundles bundles
    EOF
    ```
@@ -131,7 +131,7 @@ Run the following commands on your workstation.
    FROM cics_55
    ENV DFH_CICS_TYPE=MAS
    ENV DFH_CICSPLEX=ZOSPTINT
-   ENV DFH_NODE_HOME=/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x
+   ENV DFH_NODE_HOME=/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x
    COPY . $APP_DIR_ZOS
    EOF
    ```
