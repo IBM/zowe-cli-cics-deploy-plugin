@@ -9,22 +9,16 @@ folder: cdp
 toc: false
 ---
 
-The Zowe CLI lets you define arguments and options for commands in multiple ways, with the following order of precedence:
+See [Zowe CLI profiles](cdp-zowe-profiles) for an overview of profiles.
 
-1. Command-line
-2. Environment variables
-3. Profiles
+The CICS® deploy plug-in makes use of the following profiles:
 
-Therefore by creating and setting options in the following profiles, they will become your defaults and do not need to repeat them on Zowe CLI command unless you wish to override them. This provides flexibility when you issue commands and write automation scripts. Further detail is in [Understanding command option order of precedence](https://zowe.github.io/docs-site/latest/user-guide/cli-configuringcli.html#understanding-command-option-order-of-precedence).
-
-The CICS deploy plug-in makes use of the following profiles:
-
-| Profile | Used by command | Connects to z/OS server |
+| Profile | Used by command | Connects to z/OS® server |
 | --- | --- | --- |
 | [z/OSMF profile](#zosmf-profile) | **zowe cics-deploy ...** <br /> zowe console ... <br />  zowe zos-files ... <br />  zowe zos-jobs ... <br />  zowe zos-tso ... <br />  zowe zos-workflows ... <br />  zowe zosmf ... <br />  zowe provisioing ... | z/OSMF |
 | [SSH profile](#ssh-profile) | **zowe cics-deploy push ...** <br />  zowe zos-uss ... | SSH |
 | [CICS deploy profile](#cics-deploy-profile) | **zowe cics-deploy ...** |  |
-| [CICS profile](#cics-profile) | **zowe cics-deploy push ...** <br />  zowe cics ... | CICSPlex SM WUI |
+| [CICS profile](#cics-profile) | **zowe cics-deploy push ...** <br />  zowe cics ... | CICSPlex® SM WUI |
 
 ### z/OSMF profile
 
@@ -114,7 +108,7 @@ For help on using the options:
 zowe profiles create cics-deploy-profile --help
 ```
 
-To test the cics-deploy profile, follow the steps in [Deploying a Node.js application](cdp-Deploying-a-nodejs-application).
+To test the cics-deploy profile, follow the steps in [Deploying a Node.js application](cdp-Deploying-a-Nodejs-application).
 
 ### CICS profile
 

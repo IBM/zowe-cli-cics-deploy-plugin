@@ -1,6 +1,6 @@
 {
   "name": "zowe-cli-cics-deploy-plugin",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "description": "IBM CICS Bundle generation and deployment for Zowe CLI",
   "repository": {
     "type": "git",

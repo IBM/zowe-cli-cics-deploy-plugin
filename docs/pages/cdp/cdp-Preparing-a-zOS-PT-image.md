@@ -2,7 +2,7 @@
 title: Preparing a z/OS Provisioning Toolkit image
 tags: [tutorial]
 keywords:
-summary: "The following steps take you through preparing a z/OS Provisioning Toolkit image for CICS, and optionally include an application in the image."
+summary: "The following steps take you through preparing a z/OS® Provisioning Toolkit image for CICS®, and optionally include an application in the image."
 sidebar: cdp_sidebar
 permalink: cdp-Preparing-a-zOS-PT-image.html
 folder: cdp
@@ -13,8 +13,12 @@ The [z/OS Provisioning Toolkit](https://developer.ibm.com/mainframe/products/zos
 
 z/OS PT uses configuration and files in an *image* as input to z/OSMF workflows to provision a CICS region. The image is typically prepared by a CICS system administrator. This tutorial provides two alternative approaches to preparing a z/OS PT image:
 
-* [Prepare a z/OS PT image for CICS](#prepare-a-zos-pt-image-for-cics) - no application is included in the image, and the `zosptfile` is kept separate to the application source.
-* [Prepare a z/OS PT image for CICS including an application](#prepare-a-zos-pt-image-for-cics-including-an-application) - the application is provisioned together with the CICS region, and the `zosptfile` is kept with the application source.
+- [Prepare a z/OS PT image for CICS](#prepare-a-zos-pt-image-for-cics)
+  - [Procedure](#procedure)
+  - [Results](#results)
+- [Prepare a z/OS PT image for CICS including an application](#prepare-a-zos-pt-image-for-cics-including-an-application)
+  - [Procedure](#procedure-1)
+  - [Results](#results-1)
 
 ### Prepare a z/OS PT image for CICS
 
@@ -93,7 +97,7 @@ Run the following commands on your workstation.
 
 #### Results
 
-The image is now ready for developers to provision CICS regions and deploy their Node.js applications using [Deploying a Node.js application](cdp-Deploying-a-nodejs-application). The image source can be stored with other images and shared using a source code management system.
+The image is now ready for developers to provision CICS regions and deploy their Node.js applications using [Deploying a Node.js application](cdp-Deploying-a-Nodejs-application). The image source can be stored with other images and shared using a source code management system.
 
 ### Prepare a z/OS PT image for CICS including an application
 
@@ -107,7 +111,7 @@ Run the following commands on your workstation.
 
 2. Create Zowe CLI profiles for at least z/OSMF and SSH following the steps in [Creating Zowe CLI profiles](cdp-Creating-Zowe-CLI-profiles).
 
-3. Prepare your environment and Node.js application by following steps 1 to 4 in tutorial [Deploying a Node.js application](cdp-Deploying-a-nodejs-application).
+3. Prepare your environment and Node.js application by following steps 1 to 4 in tutorial [Deploying a Node.js application](cdp-Deploying-a-Nodejs-application).
 
 4. Setup environment variables for the name of your image, and paths for the image source on the workstation and z/OS.
 

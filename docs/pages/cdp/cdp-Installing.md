@@ -21,26 +21,20 @@ toc: false
 2. Install [Zowe CLI](https://zowe.github.io/docs-site/latest/user-guide/cli-installcli.html). For example, to install using npm:
 
     ```console
-    sudo npm install -g @brightside/core
+    npm config set @brightside:registry https://api.bintray.com/npm/ca/brightside
+    npm install -g @brightside/core@lts-incremental
     ```
 
-3. Build and install the cics-deploy plug-in as described in [Setting up your development environment](https://github.com/IBM/zowe-cli-cics-deploy-plugin/blob/master/docs-internal/tutorials/Setup.md). For example:
+3. Install the CICS® plugin:
 
     ```console
-    mkdir ~/cics-deploy
-    cd ~/cics-deploy
-    rm -Rf *
-    git clone https://github.com/IBM/zowe-cli-cics-deploy-plugin
-    cd zowe-cli-cics-deploy-plugin
-    npm install
-    npm run build
-    zowe plugins install .
+    zowe plugins install @brightside/cics@lts-incremental
     ```
 
-4. Install the cics plugin:
+4. Install the cics-deploy plugin:
 
     ```console
-    zowe plugins install @brightside/cics
+    zowe plugins install zowe-cli-cics-deploy-plugin
     ```
 
 5. Verify the plug-ins are installed:
@@ -49,15 +43,16 @@ toc: false
     zowe plugins list
     ```
 
-    Displays a list of the installed plug-ins:
+    Displays a list of the installed plugins:
 
-   <pre class="messageText">
-   -- pluginName: zowe-cli-cics-deploy-plugin
-   -- package: zowe-cli-cics-deploy-plugin
-   -- version: 0.5.0
-   -- registry: https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-virtual
+    <pre class="messageText">
+    Installed plugins:
 
-   -- pluginName: @zowe/cics
-   -- package: @zowe/cics
-   -- version: 2.0.1
-   -- registry: https://eu.artifactory.swg-devops.com/artifactory/api/npm/cicsts-npm-virtual</pre>
+    -- pluginName: @brightside/cics
+    -- package: @brightside/cics@lts-incremental
+    -- version: 1.1.1
+    -- registry: https://registry.npmjs.org/<br>
+    -- pluginName: zowe-cli-cics-deploy-plugin
+    -- package: zowe-cli-cics-deploy-plugin
+    -- version: 0.5.0
+    -- registry: https://registry.npmjs.org/ </pre>

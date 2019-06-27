@@ -2,26 +2,25 @@
 title: Deploying using individual actions
 tags: [tutorial]
 keywords:
-summary: "The following steps take you through the individual actions to deploy a Node.js application in CICS."
+summary: "The following steps take you through the individual actions to deploy a Node.js application in CICS®."
 sidebar: cdp_sidebar
 permalink: cdp-Deploying-using-individual-actions.html
 folder: cdp
 toc: true
 ---
 
-The `zowe cics-deploy push bundle` command performs a set of actions to deploy applications to CICS, as can be seen in [Deploying a Node.js application](cdp-Deploying-a-nodejs-application). The main actions include:
+The `zowe cics-deploy push bundle` command performs a set of actions to deploy applications to CICS, as can be seen in [Deploying a Node.js application](cdp-Deploying-a-Nodejs-application). The main actions include:
 
 * undeploy the old version of the CICS bundle in CICS
 * upload the new version of the CICS bundle to z/OS
 * resolve Node.js application dependencies on z/OS
 * deploy the CICS bundle in CICS
 
-However, there may be situations where you need more control of these actions or perform alternate actions. The following sections describe how each of these actions can be performed independently, enabling you to form a sequence of commands to achieve your needs.
+However, there may be situations where you need more control of these actions or perform alternate actions. The following sections describe how each of these actions can be performed independently, enabling you to form a sequence of commands to achieve your needs. Zowe CLI commands set the return code to 0 when the command completed successfully, or greater than 0 if the command failed.
 
 ### Undeploy a CICS bundle
 
 Undeploying a CICS bundle disables the CICS bundle resource (BUNDLE) in CICS. Disabling the BUNDLE causes the resources defined in it to also be disabled. For Node.js applications, CICS sends a SIGTERM signal that can be handled in the application to stop in a controlled manner, such as stopping new requests and completing existing requests. Once the CICS bundle has been disabled it is then discarded in CICS.
-
 ```console
 zowe cics-deploy undeploy bundle --name Express
 ```
@@ -32,7 +31,7 @@ Alternatively, if you want to disable the CICS bundle, but to not discard it:
 zowe cics-deploy undeploy bundle --name Express --target-state disabled
 ```
 
-{% include note.html content="This command does not remove the CICS bundle from the z/OS directory." %}
+{% include note.html content="This command does not remove the CICS bundle from the z/OS® directory." %}
 
 ### Upload a CICS bundle to z/OS
 

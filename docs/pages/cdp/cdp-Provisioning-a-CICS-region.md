@@ -2,7 +2,7 @@
 title: Provisioning a CICS region
 tags: [tutorial]
 keywords:
-summary: "The following steps take you through provisioning a CICS region from a z/OS Provisioning Toolkit image. You can then deploy and test applications using the CICS region."
+summary: "The following steps take you through provisioning a CICS® region from a z/OS® Provisioning Toolkit image. You can then deploy and test applications using the CICS region."
 sidebar: cdp_sidebar
 permalink: cdp-Provisioning-a-CICS-region.html
 folder: cdp
@@ -48,15 +48,21 @@ Before you can provision a CICS region, a z/OS PT image needs to be created and 
    zowe zos-uss issue ssh "zospt --help"
    ```
 
-5. Provision your CICS region.
+5. List the z/OS PT images available for you to use.
 
-   Update `--name` to specify a name for the container that is easy to remember for use in later commands. This command may take a few minutes to complete.
+   ```tex
+    zowe zos-uss issue ssh "zospt images"
+   ```
+
+6. Provision your CICS region.
+
+   Update `cics_55_nodejs` to the name of the image, and `--name` to specify a name for the container that is easy to remember for use in later commands. This command may take a few minutes to complete.
 
    ```console
    zowe zos-uss issue ssh "zospt run cics_55_nodejs --name my_cics_region"
    ```
 
-6. Display your CICS region information.
+7. Display your CICS region information.
 
    ```console
    zowe zos-uss issue ssh "zospt inspect my_cics_region"
@@ -78,7 +84,7 @@ Before you can provision a CICS region, a z/OS PT image needs to be created and 
    | dfhconfig/nodejsprofiles/general.profile | General profile containing values for WORK_DIR and NODE_HOME. Node.js application should include this by adding `%INCLUDE=&USSCONFIG;/nodejsprofiles/general.profile` to their CICS Node.js application profile |
    | workdir/ | Trace, log and configuration files create by applications, Node.js runtimes, Java runtimes, and CICS runtimes |
 
-7. Update your Zowe CLI cics-deploy profile to deploy to your CICS region by default.
+8. Update your Zowe CLI cics-deploy profile to deploy to your CICS region by default.
 
    Update `--scope` to specify the value from DFH_REGION_APPLID, and `--target-directory` to specify the `bundles` subdirectory of DFH_REGION_ZFS_DIRECTORY. For example:
 
@@ -88,7 +94,7 @@ Before you can provision a CICS region, a z/OS PT image needs to be created and 
 
 #### Results
 
-You are now ready to deploy applications to the provisioned CICS region. You can try this out by following the steps in [Deploying a Node.js application](cdp-Deploying-a-nodejs-application). During deployment, the CICS bundle will be copied into the `bundles/` directory, and output files will be written into a sub-directory of `workdir/`.
+You are now ready to deploy applications to the provisioned CICS region. You can try this out by following the steps in [Deploying a Node.js application](cdp-Deploying-a-Nodejs-application). During deployment, the CICS bundle will be copied into the `bundles/` directory, and output files will be written into a sub-directory of `workdir/`.
 
 ### Stop your CICS region
 
@@ -108,7 +114,7 @@ zowe zos-uss issue ssh "zospt start my_cics_region"
 
 ### Deprovision your CICS region
 
-The CICS region can be stopped and removed completely using the following commands. This will remove the `DFH_REGION_ZFS_DIRECTORY` directory used to upload your CICS application and store application output files.
+The CICS region can be stopped and removed completely using the following command. This will remove the `DFH_REGION_ZFS_DIRECTORY` directory used to upload your application and store application output files.
 
 ```console
 zowe zos-uss issue ssh "zospt rm -f my_cics_region"
