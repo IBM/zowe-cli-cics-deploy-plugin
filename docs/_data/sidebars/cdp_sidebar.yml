@@ -56,12 +56,12 @@ entries:
       output: web
 
   - title: Concepts
-    url: cdp-Zowe-and-CLI
+    url: cdp-Zowe-and-the-Zowe-CLI
     output: web
     folderitems:
 
     - title: Zowe and the Zowe CLI
-      url: cdp-Zowe-and-CLI
+      url: cdp-Zowe-and-the-Zowe-CLI
       output: web
 
     - title: Zowe CLI profiles

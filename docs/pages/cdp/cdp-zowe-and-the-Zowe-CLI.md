@@ -4,7 +4,7 @@ tags: [getting_started, concepts]
 keywords:
 summary: "Zowe is an open source framework that bridges the divide between workstation and mainframe computing."
 sidebar: cdp_sidebar
-permalink: cdp-Zowe-and-CLI.html
+permalink: cdp-Zowe-and-the-Zowe-CLI.html
 folder: cdp
 ---
 
