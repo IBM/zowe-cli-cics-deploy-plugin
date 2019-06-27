@@ -9,7 +9,7 @@ folder: cdp
 toc: false
 ---
 
-See [Zowe CLI profiles](cdp-zowe-profiles) for an overview of profiles.
+See [Zowe CLI profiles](cdp-Zowe-CLI-profiles) for an overview of profiles.
 
 The CICS® deploy plug-in makes use of the following profiles:
 
