@@ -81,7 +81,7 @@ entries:
       url: cdp-Log-and-trace-files
       output: web
 
-    - title: Common Errors
+    - title: Common errors
       url: cdp-Common-errors
       output: web
 
