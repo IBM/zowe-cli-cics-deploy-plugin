@@ -6,7 +6,7 @@ This project provides a plug-in for [Zowe CLI](https://github.com/zowe/zowe-cli)
 
 ## Installing
 
-Install the plug-in by following the steps in [installing](https://ibm.github.io/zowe-cli-cics-deploy-plugin/installing.html).
+Install the plug-in by following the steps in [installing](https://ibm.github.io/zowe-cli-cics-deploy-plugin/cdp-Installing.html).
 
 ## Documentation
 
