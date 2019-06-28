@@ -54,5 +54,5 @@ toc: false
     -- registry: https://registry.npmjs.org/<br>
     -- pluginName: zowe-cli-cics-deploy-plugin
     -- package: zowe-cli-cics-deploy-plugin
-    -- version: 0.5.0
+    -- version: 1.0.0
     -- registry: https://registry.npmjs.org/ </pre>
