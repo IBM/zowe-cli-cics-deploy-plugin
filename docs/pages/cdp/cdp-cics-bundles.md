@@ -2,7 +2,7 @@
 title: CICS bundles
 tags: [getting_started, concepts]
 keywords:
-summary: "An overview of CICS® bundles and their contents"
+summary: "An overview of CICS® bundles and their contents."
 sidebar: cdp_sidebar
 permalink: cdp-CICS-bundles.html
 folder: cdp
