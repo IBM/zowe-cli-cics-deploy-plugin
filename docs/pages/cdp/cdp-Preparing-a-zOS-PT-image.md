@@ -55,7 +55,7 @@ Run the following commands on your workstation.
    FROM cics_55
    ENV DFH_CICS_TYPE=MAS
    ENV DFH_CICSPLEX=ZOSPTINT
-   ENV DFH_NODE_HOME=/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x
+   ENV DFH_NODE_HOME=/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x
    COPY bundles bundles
    EOF
    ```
@@ -70,7 +70,7 @@ Run the following commands on your workstation.
    | `ENV DFH_NODE_HOME=` | Installation directory for Node.js runtime provided by IBM SDK for Node.js - z/OS. |
    | `COPY bundles bundles` | Create an empty `bundles` directory in the provisioned file system to contain CICS bundles. |
 
-6. Create a `.zosattributes` file to upload zosptfile files as UTF-8.
+6. Create a `.zosattributes` file to upload zosptfile as UTF-8.
 
    This file is used by the `zowe zos-files upload dir-to-uss` command in the next step to exclude, convert, and tag files that are uploaded.
 
@@ -131,8 +131,8 @@ Run the following commands on your workstation.
    FROM cics_55
    ENV DFH_CICS_TYPE=MAS
    ENV DFH_CICSPLEX=ZOSPTINT
-   ENV DFH_NODE_HOME=/usr/lpp/IBM/cnj/IBM/node-latest-os390-s390x
-   COPY . $APP_DIR_ZOS
+   ENV DFH_NODE_HOME=/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x
+   COPY . $IMAGE_APP_DIR_ZOS
    EOF
    ```
 
