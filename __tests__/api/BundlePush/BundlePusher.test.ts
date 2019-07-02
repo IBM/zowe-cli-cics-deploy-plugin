@@ -935,9 +935,9 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\" " +
-              "&& npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
-              "Problem is: The output from the remote command implied that an error occurred, return code 1.");
+        "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\"" +
+        " && export _BPXK_AUTOCVT=ON && npm install' in remote directory '/u/ThisDoesNotExist/12345678'." +
+        " Problem is: The output from the remote command implied that an error occurred, return code 1.");
 
         expect(consoleText).toContain("Injected stdout error message");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -968,9 +968,9 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\" " +
-              "&& npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
-              "Problem is: The output from the remote command implied that an error occurred, return code 1.");
+        "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\"" +
+        " && export _BPXK_AUTOCVT=ON && npm install' in remote directory '/u/ThisDoesNotExist/12345678'." +
+        " Problem is: The output from the remote command implied that an error occurred, return code 1.");
 
         expect(consoleText).toContain("Injected FSUM7351 not found message");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -1001,9 +1001,9 @@ describe("BundlePusher01", () => {
         });
 
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
-              "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\" " +
-              "&& npm install' in remote directory '/u/ThisDoesNotExist/12345678'. " +
-              "Problem is: The output from the remote command implied that an error occurred, return code 1.");
+        "A problem occurred attempting to run 'export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\"" +
+        " && export _BPXK_AUTOCVT=ON && npm install' in remote directory '/u/ThisDoesNotExist/12345678'." +
+        " Problem is: The output from the remote command implied that an error occurred, return code 1.");
 
         expect(consoleText).toContain("Injected npm ERR! Exit status 1 message");
         expect(zosMFSpy).toHaveBeenCalledTimes(1);
@@ -1079,6 +1079,16 @@ describe("BundlePusher01", () => {
         expect(uploadSpy).toHaveBeenCalledTimes(1);
         expect(readdirSpy).toHaveBeenCalledTimes(1);
         expect(lstatSpy).toHaveBeenCalledTimes(1);
+    });
+    it("should set up auto conversion before running npm install", async () => {
+        readdirSpy.mockImplementation((data: string) => {
+            return [ "package.json" ];
+          });
+        await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
+        expect(shellSpy).toBeCalledWith(expect.anything(),
+                                        expect.stringContaining("_BPXK_AUTOCVT=ON"),
+                                        expect.anything(),
+                                        expect.anything());
     });
     it("should run npm install for each package.json", async () => {
         const parms = getCommonParmsForPushTests();
