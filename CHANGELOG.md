@@ -19,6 +19,12 @@ Changes should be placed under the following headings:
 - in case of vulnerabilities
 -->
 
+## [Release v1.0.1]
+
+### Added
+
+- Set _BPXK_AUTOCVT=ON when running npm over SSH
+
 ## [Release v1.0.0]
 
 ### Added
