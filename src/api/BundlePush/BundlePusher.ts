@@ -37,6 +37,7 @@ export class BundlePusher {
   private fs = require("fs");
   private progressBar: ITaskWithStatus;
   private defaultRemoteNodehomeCmd = "export PATH=\"$PATH:/usr/lpp/IBM/cnj/v8r0/IBM/node-latest-os390-s390x/bin\"";
+  private envSetupCommand = "export _BPXK_AUTOCVT=ON";
 
   /**
    * Constructor for a BundlePusher.
@@ -517,7 +518,9 @@ export class BundlePusher {
       this.updateStatus("Running 'npm install' in remote directory");
     }
 
-    await this.runSshCommandInRemoteDirectory(sshSession, remoteDirectory, this.defaultRemoteNodehomeCmd + " && npm install");
+    await this.runSshCommandInRemoteDirectory(sshSession,
+                                              remoteDirectory,
+                                              this.defaultRemoteNodehomeCmd + " && " + this.envSetupCommand + " && npm install");
   }
 
   private async runSingleNpmUninstall(sshSession: SshSession, remoteDirectory: string) {
@@ -530,7 +533,8 @@ export class BundlePusher {
 
     // uninstall each module individually
     await this.runSshCommandInRemoteDirectory(sshSession, remoteDirectory, this.defaultRemoteNodehomeCmd + " && " +
-          "if [ -d \"node_modules\" ] && [ \"$(ls node_modules)\" ]; then npm uninstall `ls -1 node_modules | tr '/\n' ' '`; fi");
+    this.envSetupCommand + " && " +
+    "if [ -d \"node_modules\" ] && [ \"$(ls node_modules)\" ]; then npm uninstall `ls -1 node_modules | tr '/\n' ' '`; fi");
   }
 
   private async runSshCommandInRemoteDirectory(sshSession: SshSession, directory: string, sshCommand: string) {
