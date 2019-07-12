@@ -135,10 +135,10 @@ We have three main branches in our repo:
 ### Release process
 
 1. Ensure all code to be released is merged into `dev`.
-2. Create a release branch locally based on `master`.
-3. Merge commits to be relaased into the release branch. Avoid cherry-picking changes so that `master` always remains a subset of `dev`.
-4. Update the version number in `package.json` according to [semantic versioning](https://semver.org/). 
+2. Make a PR into `dev` to update the version number in `package.json` according to [semantic versioning](https://semver.org/), 
    - Note: if the only changes being made are to the documentation, do not update the version number.  In this case the GitHub Pages site will be published when `master` is built, but no new version of the plug-in will be published.
+3. Create a release branch locally based on `master`.
+4. Merge commits to be released into the release branch. Avoid cherry-picking changes so that `master` always remains a subset of `dev`.
 5. Make a PR to merge your release brnach into `master`. The reviewer should make sure all commits are suitable to release and version number has been updated appropriately. 
 6. After the PR is merged, Jenkins will run a build of `master` and publish the new version to registry.npmjs.org.
 7. Delete the release branch.
