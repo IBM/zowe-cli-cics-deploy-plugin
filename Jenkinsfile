@@ -203,7 +203,8 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES') {
                     echo "Install Zowe CLI globaly"
                     sh "rm -f .npmrc"
-                    sh "npm set registry https://registry.npmjs.org"
+                    sh "npm set registry $NPM_FULL_REGISTRY"
+                    sh "npm set @zowe:registry $NPM_FULL_REGISTRY"
 
                     sh "npm install -g @zowe/cli@daily"
                     sh "zowe --version"
