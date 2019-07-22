@@ -198,15 +198,23 @@ pipeline {
             steps('Install Zowe CLI') {
                 timeout(time: 10, unit: 'MINUTES') {
                     echo "Install Zowe CLI globaly"
+                    // remove per-project config
                     sh "rm -f .npmrc"
+                    // remove user config
+                    sh "rm -f ~/.npmrc"
+                    // set user config
+                    sh "npm config set always-auth=false"
+                    sh "npm config set @brightside:always-auth=false"
                     sh "npm set registry https://registry.npmjs.org"
                     sh "npm set @brightside:registry=https://api.bintray.com/npm/ca/brightside/"
-
+                    sh "npm config list"
+                    // install 
                     sh "npm install -g @brightside/core@lts-incremental"
                     sh "zowe --version"
                 }
             }
         }
+
 
         /************************************************************************
          * STAGE
