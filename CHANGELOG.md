@@ -19,6 +19,12 @@ Changes should be placed under the following headings:
 - in case of vulnerabilities
 -->
 
+## [Release v1.0.2]
+
+### Updated
+
+- Updated NOTICES.md
+
 ## [Release v1.0.1]
 
 ### Added
