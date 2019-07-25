@@ -18,6 +18,10 @@ Changes should be placed under the following headings:
 ### Security
 - in case of vulnerabilities
 -->
+## [Release v1.0.3]
+
+### Added
+- Include NOTICES.md in npm package
 
 ## [Release v1.0.2]
 
