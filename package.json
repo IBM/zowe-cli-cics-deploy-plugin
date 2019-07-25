@@ -6,6 +6,15 @@
     "type": "git",
     "url": "https://github.com/IBM/zowe-cli-cics-deploy-plugin"
   },
+  "keywords": [
+    "cics",
+    "cli",
+    "mainframe",
+    "nodejs",
+    "zos",
+    "z/os",
+    "zowe"
+  ],
   "main": "lib/index.js",
   "files": [
     "lib",
