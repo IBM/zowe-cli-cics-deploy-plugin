@@ -25,7 +25,6 @@ export const CpsmhlqOption: ICommandOptionDefinition = {
     stringLengthRange: [1, MAX_LENGTH],
     group: "cics-deploy Options",
     description: "Specifies the high-level qualifier (up to 35 characters) at which the CPSM " +
-                 "datasets can be found in the target environment. Use this parameter if you have not set " +
-                 "the --cics-deploy-profile option."
+                 "datasets can be found in the target environment. " +
+                 "This parameter defaults to the value specified in the cics-deploy profile."
 };
-
