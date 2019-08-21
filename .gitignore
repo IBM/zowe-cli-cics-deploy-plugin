@@ -8,3 +8,4 @@ __tests__/__results__/
 /__tests__/__resources__/properties/**
 !/__tests__/__resources__/properties/example_properties.yaml
 package-lock.json
+docs/Gemfile.lock
