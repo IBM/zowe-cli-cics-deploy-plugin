@@ -282,7 +282,7 @@ export class BundlePusher {
     }
   }
 
-  private async createZosMFSession(zosmfProfile: IProfile): Promise<AbstractSession> {
+  private async createZosMFSession(zosmfProfile: IProfile): Promise<any> {
     try {
       return ZosmfSession.createBasicZosmfSession(zosmfProfile);
     }
@@ -324,7 +324,7 @@ export class BundlePusher {
     }
   }
 
-  private async validateBundleDirExistsAndIsEmpty(zosMFSession: AbstractSession) {
+  private async validateBundleDirExistsAndIsEmpty(zosMFSession: any) {
     try {
       this.updateStatus("Accessing contents of remote bundle directory");
 
@@ -445,7 +445,7 @@ export class BundlePusher {
     this.sshOutputText += data;
   }
 
-  private async makeBundleDir(zosMFSession: AbstractSession) {
+  private async makeBundleDir(zosMFSession: any) {
     if (this.params.arguments.verbose) {
       this.updateStatus("Making remote bundle directory '" + this.params.arguments.bundledir + "'");
     }
@@ -572,7 +572,7 @@ export class BundlePusher {
     }
   }
 
-  private async uploadBundle(zosMFSession: AbstractSession) {
+  private async uploadBundle(zosMFSession: any) {
     this.updateStatus("Uploading bundle contents to remote directory");
 
     const uploadOptions: IUploadOptions = { recursive: true };
