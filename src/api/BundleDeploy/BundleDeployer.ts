@@ -223,7 +223,7 @@ export class BundleDeployer {
     return jcl;
   }
 
-  private async createZosMFSession(): Promise<AbstractSession> {
+  private async createZosMFSession(): Promise<any> {
     // Create a zosMF session
     let zosmfProfile;
     try {
