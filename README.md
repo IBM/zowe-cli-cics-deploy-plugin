@@ -2,7 +2,7 @@
 
 # zowe-cli-cics-deploy-plugin
 
-<img align="right" width="150" src="https://github.com/openmainframeproject/artwork/blob/master/other/zowe-conformant/zowe-conformant-cli-2019-color.png">This project provides a plug-in for [Zowe CLI](https://github.com/zowe/zowe-cli) to deploy applications developed on a workstation to IBM® CICS® Transaction Server for z/OS® (CICS). It aims to provide an experience similar to deploying to a cloud platform when deploying to CICS. It will also provide low-level commands for performing individual steps of the deployment process that could be used as part of a CI/CD pipeline. The plug-in is conformant to [Zowe CLI - 2019](https://www.openmainframeproject.org/projects/zowe/conformance).
+<img align="right" width="150" src="https://github.com/openmainframeproject/artwork/blob/master/other/zowe-conformant/zowe-conformant-cli-2019-color.png">This project provides a plug-in for [Zowe CLI](https://github.com/zowe/zowe-cli) to deploy applications developed on a workstation to IBM® CICS® Transaction Server for z/OS® (CICS). It aims to provide an experience similar to deploying to a cloud platform when deploying to CICS. It will also provide low-level commands for performing individual steps of the deployment process that could be used as part of a CI/CD pipeline. The plug-in is conformant to [Zowe CLI - 2019](https://www.openmainframeproject.org/projects/zowe/conformance).
 
 ## Installing
 
