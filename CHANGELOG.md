@@ -18,6 +18,11 @@ Changes should be placed under the following headings:
 ### Security
 - in case of vulnerabilities
 -->
+## [Release v1.0.4]
+
+### Fixed
+- Temporary fix for zosMFSession type mismatching
+
 ## [Release v1.0.3]
 
 ### Added
