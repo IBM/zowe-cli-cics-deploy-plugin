@@ -18,10 +18,11 @@ toc: false
     npm --version
     ```
 
-2. Install [Zowe CLI](https://docs.zowe.org/stable/user-guide/cli-installcli.html). For example, to install using npm:
+2. Install [Zowe CLI](https://docs.zowe.org/stable/user-guide/cli-installcli.html). For example, to install using npm from an online registry:
 
     ```console
     npm install @zowe/cli@zowe-v1-lts -g
+    zowe plugins install @zowe/secure-credential-store-for-zowe-cli@zowe-v1-lts
     ```
 
 3. Install the CICS® plugin:
