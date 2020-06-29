@@ -14,7 +14,7 @@
 import { Manifest } from "./Manifest";
 import { BundlePart, IBundlePartDataType } from "./BundlePart";
 import { NodejsappBundlePart } from "./NodejsappBundlePart";
-import { IHandlerParameters } from "@brightside/imperative";
+import { IHandlerParameters } from "@zowe/imperative";
 
 /**
  * Class to represent a CICS Bundle.

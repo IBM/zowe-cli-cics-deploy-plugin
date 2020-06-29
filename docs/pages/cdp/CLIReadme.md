@@ -102,6 +102,8 @@ the target group of CICS regions\.
 
 	* Enable or suppress verbose output from the DFHDPLOY tool\.
 
+      Default value: false
+
 #### Zosmf Connection Options
 
 *   `--zosmf-host`  | `--zh` *(string)*
@@ -140,7 +142,7 @@ the target group of CICS regions\.
 
 	* The name of a (zosmf) profile to load for this command execution\.
 
-### Examples
+#### Examples
 
 *  Deploy a CICS bundle with a specific name and location to a
 default set of target regions:
@@ -212,17 +214,21 @@ required\.
 
 	* Enable or disable the ability to replace existing files within a CICS bundle\.
 
+      Default value: false
+
 *   `--merge`  | `--me` *(boolean)*
 
 	* Enable or disable the ability to merge new resources into an existing CICS
       bundle manifest\.Requires \-\-overwrite to be specified\.
 
-### Examples
+      Default value: false
+
+#### Examples
 
 *  Generate a CICS bundle in the working directory, taking
 information from package.json:
 
-      * `$  zowe cics-deploy generate bundle `
+      * `$  zowe cics-deploy generate bundle`
 
 *  Generate a CICS bundle in the working directory, based on
 package.json but using a bundle ID of "mybundle":
@@ -326,10 +332,14 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 
 	* Enable or suppress verbose output from the DFHDPLOY tool\.
 
+      Default value: false
+
 *   `--overwrite`  | `--ow` *(boolean)*
 
 	* Enable or disable the ability to replace an existing bundle directory or bundle
       on the remote system\.
+
+      Default value: false
 
 #### Zosmf Connection Options
 
@@ -436,7 +446,7 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 
 	* The name of a (cics) profile to load for this command execution\.
 
-### Examples
+#### Examples
 
 *  Push a CICS bundle from the working directory by using
 default cics-deploy, cics, ssh and zosmf profiles:
@@ -537,6 +547,8 @@ target group of CICS regions\.
 
 	* Enable or suppress verbose output from the DFHDPLOY tool\.
 
+      Default value: false
+
 #### Zosmf Connection Options
 
 *   `--zosmf-host`  | `--zh` *(string)*
@@ -575,7 +587,7 @@ target group of CICS regions\.
 
 	* The name of a (zosmf) profile to load for this command execution\.
 
-### Examples
+#### Examples
 
 *  Undeploy a CICS bundle by using the default cics-deploy and
 zosmf profiles:
@@ -665,7 +677,7 @@ actions\.
 
 	* Overwrite the cics\-deploy profile when a profile of the same name exists\.
 
-### Examples
+#### Examples
 
 *  Create a cics-deploy profile called 'example1' to connect to
 a CPSM managed group of CICS regions within the TESTGRP1 scope of a cicsplex
@@ -686,7 +698,7 @@ to which bundles should be uploaded:
       * `$  zowe profiles create cics-deploy-profile example3 --cicsplex PLEX1 --scope TESTGRP1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --target-directory /var/cicsts/bundles`
 
 ## update | upd<a name="module-update"></a>
-Update a  profile.You can update any property present within the profile configuration. The updated profile  will be printed so that you can review the result of the updates.
+Update a  profile. You can update any property present within the profile configuration. The updated profile will be printed so that you can review the result of the updates.
 ### cics-deploy-profile<a name="command-cics-deploy-profile"></a>
 Specifies the target environment for the cics\-deploy deploy and undeploy
 actions\.
@@ -774,7 +786,7 @@ command\. By default, you will be prompted to confirm the profile removal\.
 	* Force deletion of profile, and dependent profiles if specified\. No prompt will
       be displayed before deletion occurs\.
 
-### Examples
+#### Examples
 
 *  Delete a cics-deploy profile named profilename:
 
@@ -797,11 +809,11 @@ actions\.
 	* List cics\-deploy profiles and their contents\. All profile details will be
       printed as part of command output\.
 
-### Examples
+#### Examples
 
 *  List profiles of type cics-deploy:
 
-      * `$  zowe profiles list cics-deploy-profiles `
+      * `$  zowe profiles list cics-deploy-profiles`
 
 *  List profiles of type cics-deploy and display their
 contents:
@@ -830,7 +842,7 @@ requirements\.
       commands within the cics\-deploy group without a profile specified as part of
       the command, the default will be loaded instead\.
 
-### Examples
+#### Examples
 
 *  Set the default profile for type cics-deploy to the profile
 named 'profilename':
