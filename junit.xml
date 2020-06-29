@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="Sample Plugin System and Integration Tests" tests="16" failures="4" time="73.995">
-  <testsuite name="Sample Plugin System and Integration Tests" errors="0" failures="4" skipped="0" timestamp="2020-06-29T14:30:52" time="73.653" tests="16">
-    <testcase classname="cics-deploy generate bundle should generate a bundle using defaults from package.json" name="cics-deploy generate bundle should generate a bundle using defaults from package.json" time="3.315">
+<testsuites name="Sample Plugin System and Integration Tests" tests="16" failures="4" time="67.369">
+  <testsuite name="Sample Plugin System and Integration Tests" errors="0" failures="4" skipped="0" timestamp="2020-06-29T15:09:33" time="67.032" tests="16">
+    <testcase classname="cics-deploy generate bundle should generate a bundle using defaults from package.json" name="cics-deploy generate bundle should generate a bundle using defaults from package.json" time="3.183">
     </testcase>
-    <testcase classname="cics-deploy generate bundle should generate an empty bundle if no package.json present" name="cics-deploy generate bundle should generate an empty bundle if no package.json present" time="3.326">
+    <testcase classname="cics-deploy generate bundle should generate an empty bundle if no package.json present" name="cics-deploy generate bundle should generate an empty bundle if no package.json present" time="3.36">
     </testcase>
-    <testcase classname="cics-deploy generate bundle paramters should customise bundle ID according to command line args" name="cics-deploy generate bundle paramters should customise bundle ID according to command line args" time="3.268">
+    <testcase classname="cics-deploy generate bundle paramters should customise bundle ID according to command line args" name="cics-deploy generate bundle paramters should customise bundle ID according to command line args" time="3.218">
     </testcase>
-    <testcase classname="cics-deploy generate bundle paramters should customise bundle version according to command line args" name="cics-deploy generate bundle paramters should customise bundle version according to command line args" time="3.135">
+    <testcase classname="cics-deploy generate bundle paramters should customise bundle version according to command line args" name="cics-deploy generate bundle paramters should customise bundle version according to command line args" time="3.201">
     </testcase>
-    <testcase classname="cics-deploy generate bundle paramters should customise NODEJSAPP name according to command line args" name="cics-deploy generate bundle paramters should customise NODEJSAPP name according to command line args" time="3.159">
+    <testcase classname="cics-deploy generate bundle paramters should customise NODEJSAPP name according to command line args" name="cics-deploy generate bundle paramters should customise NODEJSAPP name according to command line args" time="3.202">
     </testcase>
-    <testcase classname="cics-deploy generate bundle paramters should customise NODEJSAPP name and bundle ID independently" name="cics-deploy generate bundle paramters should customise NODEJSAPP name and bundle ID independently" time="3.243">
+    <testcase classname="cics-deploy generate bundle paramters should customise NODEJSAPP name and bundle ID independently" name="cics-deploy generate bundle paramters should customise NODEJSAPP name and bundle ID independently" time="3.126">
     </testcase>
-    <testcase classname="cics-deploy generate bundle paramters should customise startscript according to args" name="cics-deploy generate bundle paramters should customise startscript according to args" time="3.17">
+    <testcase classname="cics-deploy generate bundle paramters should customise startscript according to args" name="cics-deploy generate bundle paramters should customise startscript according to args" time="3.22">
     </testcase>
-    <testcase classname="cics-deploy generate bundle paramters should customise port in generated profile accord to args" name="cics-deploy generate bundle paramters should customise port in generated profile accord to args" time="3.323">
+    <testcase classname="cics-deploy generate bundle paramters should customise port in generated profile accord to args" name="cics-deploy generate bundle paramters should customise port in generated profile accord to args" time="2.977">
     </testcase>
-    <testcase classname="cics-deploy generate bundle paramters should generate a bundle using values supplied when there&apos;s no package.json" name="cics-deploy generate bundle paramters should generate a bundle using values supplied when there&apos;s no package.json" time="3.062">
+    <testcase classname="cics-deploy generate bundle paramters should generate a bundle using values supplied when there&apos;s no package.json" name="cics-deploy generate bundle paramters should generate a bundle using values supplied when there&apos;s no package.json" time="3.051">
     </testcase>
-    <testcase classname="cics-deploy generate bundle paramters should return an error if invalid bundle version is supplied" name="cics-deploy generate bundle paramters should return an error if invalid bundle version is supplied" time="3.32">
+    <testcase classname="cics-deploy generate bundle paramters should return an error if invalid bundle version is supplied" name="cics-deploy generate bundle paramters should return an error if invalid bundle version is supplied" time="3.184">
       <failure>Error: expect(received).not.toBe(expected) // Object.is equality
 
 Expected: not &quot;&quot;
@@ -28,13 +28,13 @@ Expected: not &quot;&quot;
     at fulfilled (C:\temp\zowe\cics\zowe-cli-cics-deploy-plugin\__tests__\__system__\cli\generate\cli.generate.bundle.system.test.ts:16:58)
     at process._tickCallback (internal/process/next_tick.js:68:7)</failure>
     </testcase>
-    <testcase classname="cics-deploy generate bundle paramters should mangle NODEJSAPP name supplied on command line" name="cics-deploy generate bundle paramters should mangle NODEJSAPP name supplied on command line" time="3.219">
+    <testcase classname="cics-deploy generate bundle paramters should mangle NODEJSAPP name supplied on command line" name="cics-deploy generate bundle paramters should mangle NODEJSAPP name supplied on command line" time="3.033">
     </testcase>
-    <testcase classname="cics-deploy generate bundle paramters should mangle bundle ID supplied on command line" name="cics-deploy generate bundle paramters should mangle bundle ID supplied on command line" time="3.13">
+    <testcase classname="cics-deploy generate bundle paramters should mangle bundle ID supplied on command line" name="cics-deploy generate bundle paramters should mangle bundle ID supplied on command line" time="3.23">
     </testcase>
-    <testcase classname="cics-deploy generate bundle package.json variations should mangle name supplied in package.json" name="cics-deploy generate bundle package.json variations should mangle name supplied in package.json" time="3.09">
+    <testcase classname="cics-deploy generate bundle package.json variations should mangle name supplied in package.json" name="cics-deploy generate bundle package.json variations should mangle name supplied in package.json" time="3.236">
     </testcase>
-    <testcase classname="cics-deploy generate bundle package.json variations should error nicely if package.json is malformed" name="cics-deploy generate bundle package.json variations should error nicely if package.json is malformed" time="3.212">
+    <testcase classname="cics-deploy generate bundle package.json variations should error nicely if package.json is malformed" name="cics-deploy generate bundle package.json variations should error nicely if package.json is malformed" time="3.193">
       <failure>Error: expect(received).not.toBe(expected) // Object.is equality
 
 Expected: not &quot;&quot;
@@ -43,7 +43,7 @@ Expected: not &quot;&quot;
     at fulfilled (C:\temp\zowe\cics\zowe-cli-cics-deploy-plugin\__tests__\__system__\cli\generate\cli.generate.bundle.system.test.ts:16:58)
     at process._tickCallback (internal/process/next_tick.js:68:7)</failure>
     </testcase>
-    <testcase classname="cics-deploy generate bundle package.json variations should error nicely if package.json is empty" name="cics-deploy generate bundle package.json variations should error nicely if package.json is empty" time="3.226">
+    <testcase classname="cics-deploy generate bundle package.json variations should error nicely if package.json is empty" name="cics-deploy generate bundle package.json variations should error nicely if package.json is empty" time="3.077">
       <failure>Error: expect(received).not.toBe(expected) // Object.is equality
 
 Expected: not &quot;&quot;
@@ -52,7 +52,7 @@ Expected: not &quot;&quot;
     at fulfilled (C:\temp\zowe\cics\zowe-cli-cics-deploy-plugin\__tests__\__system__\cli\generate\cli.generate.bundle.system.test.ts:16:58)
     at process._tickCallback (internal/process/next_tick.js:68:7)</failure>
     </testcase>
-    <testcase classname="cics-deploy generate bundle package.json variations should error nicely if package.json doesn&apos;t have start script or main" name="cics-deploy generate bundle package.json variations should error nicely if package.json doesn&apos;t have start script or main" time="3.309">
+    <testcase classname="cics-deploy generate bundle package.json variations should error nicely if package.json doesn&apos;t have start script or main" name="cics-deploy generate bundle package.json variations should error nicely if package.json doesn&apos;t have start script or main" time="3.183">
       <failure>Error: expect(received).not.toBe(expected) // Object.is equality
 
 Expected: not &quot;&quot;
