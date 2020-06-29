@@ -58,6 +58,7 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
     } as any,
     definition: PushBundleDefinition.PushBundleDefinition,
     fullDefinition: PushBundleDefinition.PushBundleDefinition,
+    positionals: [],
 };
 
 describe("bundle Handler", () => {

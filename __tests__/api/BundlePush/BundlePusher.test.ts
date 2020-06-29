@@ -67,6 +67,7 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     } as any,
     definition: PushBundleDefinition.PushBundleDefinition,
     fullDefinition: PushBundleDefinition.PushBundleDefinition,
+    positionals: [],
 };
 const IS_DIRECTORY: any = {
   isDirectory: jest.fn((directory) => (true))

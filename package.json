@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@zowe/cli": "^6.0.0",
-    "@zowe/imperative": "^4.6.4",
+    "@zowe/imperative": "^4.7.3",
     "@types/fs-extra": "^8.0.1",
     "@types/jest": "^22.2.3",
     "@types/node": "^12.12.24",
@@ -79,7 +79,7 @@
   },
   "peerDependencies": {
     "@zowe/cli": "^6.0.0",
-    "@zowe/imperative": "^4.6.4"
+    "@zowe/imperative": "^4.7.3"
   },
   "jest": {
     "modulePathIgnorePatterns": [

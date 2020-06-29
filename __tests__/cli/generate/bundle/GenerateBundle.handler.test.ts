@@ -54,6 +54,7 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     } as any,
     definition: GenerateBundleDefinition.GenerateBundleDefinition,
     fullDefinition: GenerateBundleDefinition.GenerateBundleDefinition,
+    positionals: [],
 };
 let consoleText = "";
 

@@ -673,6 +673,10 @@ actions\.
 
 	* Overwrite the cics\-deploy profile when a profile of the same name exists\.
 
+*   `--disable-defaults`  | `--dd` *(boolean)*
+
+	* Disable populating profile values of undefined properties with default values\.
+
 #### Examples
 
 *  Create a cics-deploy profile called 'example1' to connect to

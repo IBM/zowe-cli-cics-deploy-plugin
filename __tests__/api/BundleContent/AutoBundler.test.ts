@@ -51,6 +51,7 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
     } as any,
     definition: GenerateBundleDefinition.GenerateBundleDefinition,
     fullDefinition: GenerateBundleDefinition.GenerateBundleDefinition,
+    positionals: [],
 };
 
 describe("AutoBundler01", () => {

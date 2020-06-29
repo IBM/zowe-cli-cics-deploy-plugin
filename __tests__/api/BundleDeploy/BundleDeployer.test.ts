@@ -54,6 +54,7 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     } as any,
     definition: DeployBundleDefinition.DeployBundleDefinition,
     fullDefinition: DeployBundleDefinition.DeployBundleDefinition,
+    positionals: [],
 };
 
 

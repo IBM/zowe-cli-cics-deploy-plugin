@@ -58,6 +58,7 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
     } as any,
     definition: DeployBundleDefinition.DeployBundleDefinition,
     fullDefinition: DeployBundleDefinition.DeployBundleDefinition,
+    positionals: [],
 };
 
 describe("bundle Handler", () => {
