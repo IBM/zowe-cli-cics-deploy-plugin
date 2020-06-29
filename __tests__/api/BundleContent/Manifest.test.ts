@@ -157,6 +157,20 @@ describe("Manifest01", () => {
         // Check the output as JSON
         expect(err.message).toMatchSnapshot();
     });
+    it("Parse a garbage manifest", () => {
+
+        // Read a bad manifest
+        let err: Error;
+        try {
+          const man = new Manifest("__tests__/__resources__/BadManifestBundle01", true, true);
+        }
+        catch (error) {
+          err = error;
+        }
+
+        // Check the output as JSON
+        expect(err.message).toContain("Existing CICS Manifest file found with unparsable content:");
+    });
     it("Parse a manifest with bad namespace", () => {
 
         // Read a bad manifest
@@ -170,19 +184,5 @@ describe("Manifest01", () => {
 
         // Check the output as JSON
         expect(err.message).toContain("Existing CICS Manifest file found with unexpected namespace: wibble .");
-    });
-    it("Parse a malformed manifest", () => {
-
-        // Read a bad manifest
-        let err: Error;
-        try {
-          const man = new Manifest("__tests__/__resources__/BadManifestBundle03", true, true);
-        }
-        catch (error) {
-          err = error;
-        }
-
-        // Check the output as JSON
-        expect(err.message).toContain("Existing CICS Manifest file found with unparsable content:");
     });
 });
