@@ -209,7 +209,7 @@ pipeline {
                     sh "npm set @brightside:registry=https://api.bintray.com/npm/ca/brightside/"
                     sh "npm config list"
                     // install 
-                    sh "npm install -g @brightside/core@lts-incremental"
+                    sh "npm install -g @zowe/cli@zowe-v1-lts"
                     sh "zowe --version"
                 }
             }
