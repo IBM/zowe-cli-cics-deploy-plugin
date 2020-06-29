@@ -33,7 +33,7 @@
     "lint": "tslint \"src/**/*.ts\" && tslint \"**/__tests__/**/*.ts\"",
     "test": "npm run test:unit && npm run test:system",
     "test:system": "env-cmd __tests__/__resources__/env/system.env jest .*/__system__/.* --coverage false",
-    "test:unit": "env-cmd __tests__/__resources__/env/unit.env jest --coverage --testPathIgnorePatterns \".*/__system__/.*\"",
+    "test:unit": "env-cmd __tests__/__resources__/env/unit.env jest --runInBand --detectOpenHandles --coverage --testPathIgnorePatterns \".*/__system__/.*\"",
     "installPlugin": "npm install && npm run clean && npm run build && zowe plugins install .",
     "doc": "gulp doc"
   },
