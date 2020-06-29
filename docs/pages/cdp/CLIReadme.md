@@ -24,25 +24,24 @@ the target group of CICS regions\.
 
 *   `--name`  | `-n` *(string)*
 
-	* Specifies the name of the CICS BUNDLE resource (up to 8 characters) to deploy or
-      undeploy\.
+	* Required\. Specifies the name of the CICS BUNDLE resource (up to 8 characters)
+      to deploy or undeploy\.
 
 *   `--bundle-directory`  | `--bd` | `--bundledir` | `--bundle-dir` *(string)*
 
-	* Specifies the location of the CICS bundle (up to 255 characters) on zFS\.
+	* Required\. Specifies the location of the CICS bundle (up to 255 characters) on
+      zFS\.
 
 *   `--cicsplex`  | `--cp` *(string)*
 
-	* Specifies the CICSplex (up to 8 characters) to target\. Use this parameter if
-      you have not set the \-\-cics\-deploy\-profile option\. For help on creating a
-      profile issue the 'zowe profiles create cics\-deploy \-\-help' command\.
+	* Specifies the CICSplex (up to 8 characters) to target\. This parameter defaults
+      to the value specified in the cics\-deploy profile\.
 
 *   `--scope`  | `--sc` *(string)*
 
 	* Specifies the name of the CICS System, or CICS System Group (up to 8 characters)
-      to target\. Use this parameter if you have not set the \-\-cics\-deploy\-profile
-      option\. For help on creating a profile issue the 'zowe profiles create
-      cics\-deploy \-\-help' command\.
+      to target\. This parameter defaults to the value specified in the cics\-deploy
+      profile\.
 
 *   `--csd-group`  | `--cg` | `--csdgroup` *(string)*
 
@@ -62,14 +61,14 @@ the target group of CICS regions\.
 *   `--cics-hlq`  | `--cq` | `--cicshlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CICS
-      datasets can be found in the target environment\. Use this parameter if you have
-      not set the \-\-cics\-deploy\-profile option\.
+      datasets can be found in the target environment\. This parameter defaults to the
+      value specified in the cics\-deploy profile\.
 
 *   `--cpsm-hlq`  | `--cph` | `--cpsmhlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CPSM
-      datasets can be found in the target environment\. Use this parameter if you have
-      not set the \-\-cics\-deploy\-profile option\.
+      datasets can be found in the target environment\. This parameter defaults to the
+      value specified in the cics\-deploy profile\.
 
 *   `--description`  | `--desc` *(string)*
 
@@ -219,7 +218,7 @@ required\.
 *   `--merge`  | `--me` *(boolean)*
 
 	* Enable or disable the ability to merge new resources into an existing CICS
-      bundle manifest\.Requires \-\-overwrite to be specified\.
+      bundle manifest\. Requires \-\-overwrite to be specified\.
 
       Default value: false
 
@@ -253,26 +252,25 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 
 *   `--name`  | `-n` *(string)*
 
-	* Specifies the name of the CICS BUNDLE resource (up to 8 characters) to deploy or
-      undeploy\.
+	* Required\. Specifies the name of the CICS BUNDLE resource (up to 8 characters)
+      to deploy or undeploy\.
 
 *   `--target-directory`  | `--td` | `--targetdir` | `--target-dir` *(string)*
 
 	* Specifies the target zFS location in which the CICS bundle is to be created (up
-      to 255 characters)
+      to 255 characters)\. This parameter defaults to the value specified in the
+      cics\-deploy profile\.
 
 *   `--cicsplex`  | `--cp` *(string)*
 
-	* Specifies the CICSplex (up to 8 characters) to target\. Use this parameter if
-      you have not set the \-\-cics\-deploy\-profile option\. For help on creating a
-      profile issue the 'zowe profiles create cics\-deploy \-\-help' command\.
+	* Specifies the CICSplex (up to 8 characters) to target\. This parameter defaults
+      to the value specified in the cics\-deploy profile\.
 
 *   `--scope`  | `--sc` *(string)*
 
 	* Specifies the name of the CICS System, or CICS System Group (up to 8 characters)
-      to target\. Use this parameter if you have not set the \-\-cics\-deploy\-profile
-      option\. For help on creating a profile issue the 'zowe profiles create
-      cics\-deploy \-\-help' command\.
+      to target\. This parameter defaults to the value specified in the cics\-deploy
+      profile\.
 
 *   `--csd-group`  | `--cg` | `--csdgroup` *(string)*
 
@@ -292,14 +290,14 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 *   `--cics-hlq`  | `--cq` | `--cicshlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CICS
-      datasets can be found in the target environment\. Use this parameter if you have
-      not set the \-\-cics\-deploy\-profile option\.
+      datasets can be found in the target environment\. This parameter defaults to the
+      value specified in the cics\-deploy profile\.
 
 *   `--cpsm-hlq`  | `--cph` | `--cpsmhlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CPSM
-      datasets can be found in the target environment\. Use this parameter if you have
-      not set the \-\-cics\-deploy\-profile option\.
+      datasets can be found in the target environment\. This parameter defaults to the
+      value specified in the cics\-deploy profile\.
 
 *   `--description`  | `--desc` *(string)*
 
@@ -478,21 +476,19 @@ target group of CICS regions\.
 
 *   `--name`  | `-n` *(string)*
 
-	* Specifies the name of the CICS BUNDLE resource (up to 8 characters) to deploy or
-      undeploy\.
+	* Required\. Specifies the name of the CICS BUNDLE resource (up to 8 characters)
+      to deploy or undeploy\.
 
 *   `--cicsplex`  | `--cp` *(string)*
 
-	* Specifies the CICSplex (up to 8 characters) to target\. Use this parameter if
-      you have not set the \-\-cics\-deploy\-profile option\. For help on creating a
-      profile issue the 'zowe profiles create cics\-deploy \-\-help' command\.
+	* Specifies the CICSplex (up to 8 characters) to target\. This parameter defaults
+      to the value specified in the cics\-deploy profile\.
 
 *   `--scope`  | `--sc` *(string)*
 
 	* Specifies the name of the CICS System, or CICS System Group (up to 8 characters)
-      to target\. Use this parameter if you have not set the \-\-cics\-deploy\-profile
-      option\. For help on creating a profile issue the 'zowe profiles create
-      cics\-deploy \-\-help' command\.
+      to target\. This parameter defaults to the value specified in the cics\-deploy
+      profile\.
 
 *   `--csd-group`  | `--cg` | `--csdgroup` *(string)*
 
@@ -512,14 +508,14 @@ target group of CICS regions\.
 *   `--cics-hlq`  | `--cq` | `--cicshlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CICS
-      datasets can be found in the target environment\. Use this parameter if you have
-      not set the \-\-cics\-deploy\-profile option\.
+      datasets can be found in the target environment\. This parameter defaults to the
+      value specified in the cics\-deploy profile\.
 
 *   `--cpsm-hlq`  | `--cph` | `--cpsmhlq` *(string)*
 
 	* Specifies the high\-level qualifier (up to 35 characters) at which the CPSM
-      datasets can be found in the target environment\. Use this parameter if you have
-      not set the \-\-cics\-deploy\-profile option\.
+      datasets can be found in the target environment\. This parameter defaults to the
+      value specified in the cics\-deploy profile\.
 
 *   `--job-card`  | `--jc` | `--jobcard` *(string)*
 
