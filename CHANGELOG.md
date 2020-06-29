@@ -18,6 +18,7 @@ Changes should be placed under the following headings:
 ### Security
 - in case of vulnerabilities
 -->
+
 ## [Release v1.1.0]
 
 ### Fixed
