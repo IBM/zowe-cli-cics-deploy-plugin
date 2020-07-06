@@ -459,15 +459,16 @@ pipeline {
                 }
             }
             environment {
-                JEST_JUNIT_OUTPUT = "${SYSTEM_RESULTS}/junit.xml"
                 JEST_SUITE_NAME = "System Tests"
+                JEST_JUNIT_OUTPUT_DIR = "${SYSTEM_RESULTS}/jest-junit"
+                JEST_JUNIT_OUTPUT_NAME = "${SYSTEM_RESULTS}/junit.xml"
                 JEST_JUNIT_ANCESTOR_SEPARATOR = " > "
                 JEST_JUNIT_CLASSNAME="System.{classname}"
                 JEST_JUNIT_TITLE="{title}"
                 JEST_HTML_REPORTER_OUTPUT_PATH = "${SYSTEM_RESULTS}/index.html"
                 JEST_HTML_REPORTER_PAGE_TITLE = "${BRANCH_NAME} - System Test"
-                JEST_STARE_RESULT_DIR = "${SYSTEM_RESULTS}/jest-stare"
-                JEST_STARE_RESULT_HTML = "index.html"
+                //JEST_STARE_RESULT_DIR = "${SYSTEM_RESULTS}/jest-stare"
+                //JEST_STARE_RESULT_HTML = "index.html"
                 TEST_SCRIPT = "./jenkins/system_tests.sh"
                 TEST_PROPERTIES_FILE = "./__tests__/__resources__/properties/custom_properties.yaml"
             }
@@ -479,7 +480,7 @@ pipeline {
                     sh 'npm run test:system'
 
                     // Capture test report
-                    junit JEST_JUNIT_OUTPUT
+                    junit  allowEmptyResults: true, testResults: JEST_JUNIT_OUTPUT
                 }
             }
         }
