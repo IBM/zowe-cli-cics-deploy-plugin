@@ -369,7 +369,7 @@ pipeline {
                     sh "npm run test:unit || exit 0"
 
                     // Capture test report
-                    echo 'Running JUnit Collector against ' JEST_JUNIT_OUTPUT_NAME
+                    echo 'Running JUnit Collector'
                     junit testResults: JEST_JUNIT_OUTPUT_NAME
 
                     echo 'Running Covertura Code Coverage Report'
