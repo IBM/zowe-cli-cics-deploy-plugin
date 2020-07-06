@@ -363,14 +363,16 @@ pipeline {
             }
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
-                    echo 'Unit Test'
+                    echo 'Running Unit Tests'
 
                     // Run tests but don't fail if the script reports an error
                     sh "npm run test:unit || exit 0"
 
                     // Capture test report
+                    echo 'Running JUnit Collector'
                     junit JEST_JUNIT_OUTPUT_NAME
 
+                    echo 'Running Covertura Code Coverage Report'
                     cobertura autoUpdateHealth: false,
                             autoUpdateStability: false,
                             coberturaReportFile: "${UNIT_RESULTS}/coverage/cobertura-coverage.xml",
@@ -385,6 +387,7 @@ pipeline {
                             // methodCoverageTargets: '80, 70, 50',
                             sourceEncoding: 'ASCII'
 
+                    echo 'Running HTML Generation'
                     publishHTML(target: [
                             allowMissing         : false,
                             alwaysLinkToLastBuild: true,
