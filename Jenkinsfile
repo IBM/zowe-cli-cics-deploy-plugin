@@ -352,13 +352,14 @@ pipeline {
                 }
             }
             environment {
-                JEST_JUNIT_OUTPUT = "${UNIT_RESULTS}/junit.xml"
                 JEST_SUITE_NAME = "Unit Tests"
+                JEST_JUNIT_OUTPUT_DIR = "${UNIT_RESULTS}/jest-junit"
+                JEST_JUNIT_OUTPUT_NAME = "${UNIT_RESULTS}/junit.xml"
                 JEST_JUNIT_ANCESTOR_SEPARATOR = " > "
                 JEST_JUNIT_CLASSNAME="Unit.{classname}"
                 JEST_JUNIT_TITLE="{title}"
-                JEST_STARE_RESULT_DIR = "${UNIT_RESULTS}/jest-stare"
-                JEST_STARE_RESULT_HTML = "index.html"
+                //JEST_STARE_RESULT_DIR = "${UNIT_RESULTS}/jest-stare"
+                //JEST_STARE_RESULT_HTML = "index.html"
             }
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
@@ -368,7 +369,7 @@ pipeline {
                     sh "npm run test:unit || exit 0"
 
                     // Capture test report
-                    junit JEST_JUNIT_OUTPUT
+                    junit JEST_JUNIT_OUTPUT_NAME
 
                     cobertura autoUpdateHealth: false,
                             autoUpdateStability: false,
