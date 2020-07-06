@@ -480,7 +480,7 @@ pipeline {
                     sh 'npm run test:system'
 
                     // Capture test report
-                    junit  allowEmptyResults: true, testResults: JEST_JUNIT_OUTPUT
+                    junit allowEmptyResults: true, testResults: JEST_JUNIT_OUTPUT_NAME
                 }
             }
         }
