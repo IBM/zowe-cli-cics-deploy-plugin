@@ -2,7 +2,7 @@
 title: Installing
 tags: [getting_started]
 keywords:
-summary: "To install the Zowe CLI and cics-deploy plug-in, perform the following steps on your local workstation."
+summary: 'To install the Zowe CLI and cics-deploy plug-in, perform the following steps on your local workstation.'
 sidebar: cdp_sidebar
 permalink: cdp-Installing.html
 folder: cdp
@@ -18,17 +18,17 @@ toc: false
     npm --version
     ```
 
-2. Install [Zowe CLI](https://zowe.github.io/docs-site/latest/user-guide/cli-installcli.html). For example, to install using npm:
+2. Install [Zowe CLI](https://docs.zowe.org/stable/user-guide/cli-installcli.html). For example, to install using npm from an online registry:
 
     ```console
-    npm config set @brightside:registry https://api.bintray.com/npm/ca/brightside
-    npm install -g @brightside/core@lts-incremental
+    npm install @zowe/cli@zowe-v1-lts -g
+    zowe plugins install @zowe/secure-credential-store-for-zowe-cli@zowe-v1-lts
     ```
 
 3. Install the CICS® plugin:
 
     ```console
-    zowe plugins install @brightside/cics@lts-incremental
+    zowe plugins install @zowe/cics-for-zowe-cli@zowe-v1-lts
     ```
 
 4. Install the cics-deploy plugin:
@@ -47,12 +47,12 @@ toc: false
 
     <pre class="messageText">
     Installed plugins:
-
-    -- pluginName: @brightside/cics
-    -- package: @brightside/cics@lts-incremental
-    -- version: 1.1.1
+    
+    -- pluginName: cics-for-zowe-cli
+    -- package: cics-for-zowe-cli@zowe-v1-lts
+    -- version: 4.0.2
     -- registry: https://registry.npmjs.org/<br>
     -- pluginName: zowe-cli-cics-deploy-plugin
     -- package: zowe-cli-cics-deploy-plugin
-    -- version: 1.0.0
+    -- version: 1.0.4
     -- registry: https://registry.npmjs.org/ </pre>
