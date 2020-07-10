@@ -10,7 +10,7 @@
 *
 */
 
-import {IImperativeConfig} from "@brightside/imperative";
+import {IImperativeConfig} from "@zowe/imperative";
 
 const MAX_LENGTH = 8;
 const MAX_HLQ_LENGTH = 35;

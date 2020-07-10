@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandOptionDefinition } from "@brightside/imperative";
+import { ICommandOptionDefinition } from "@zowe/imperative";
 
 const MAX_LENGTH = 35;
 

@@ -11,7 +11,7 @@
 
 "use strict";
 
-import { IHandlerParameters, IProfile } from "@brightside/imperative";
+import { IHandlerParameters, IProfile } from "@zowe/imperative";
 
 
 /**

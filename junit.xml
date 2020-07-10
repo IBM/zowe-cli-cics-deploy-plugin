@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Sample Plugin System and Integration Tests" tests="16" failures="4" time="72.987">
+  <testsuite name="Sample Plugin System and Integration Tests" errors="0" failures="4" skipped="0" timestamp="2020-06-30T09:01:14" time="72.779" tests="16">
+    <testcase classname="cics-deploy generate bundle should generate a bundle using defaults from package.json" name="cics-deploy generate bundle should generate a bundle using defaults from package.json" time="3.099">
+    </testcase>
+    <testcase classname="cics-deploy generate bundle should generate an empty bundle if no package.json present" name="cics-deploy generate bundle should generate an empty bundle if no package.json present" time="3.619">
+    </testcase>
+    <testcase classname="cics-deploy generate bundle paramters should customise bundle ID according to command line args" name="cics-deploy generate bundle paramters should customise bundle ID according to command line args" time="3.437">
+    </testcase>
+    <testcase classname="cics-deploy generate bundle paramters should customise bundle version according to command line args" name="cics-deploy generate bundle paramters should customise bundle version according to command line args" time="3.253">
+    </testcase>
+    <testcase classname="cics-deploy generate bundle paramters should customise NODEJSAPP name according to command line args" name="cics-deploy generate bundle paramters should customise NODEJSAPP name according to command line args" time="3.121">
+    </testcase>
+    <testcase classname="cics-deploy generate bundle paramters should customise NODEJSAPP name and bundle ID independently" name="cics-deploy generate bundle paramters should customise NODEJSAPP name and bundle ID independently" time="3.171">
+    </testcase>
+    <testcase classname="cics-deploy generate bundle paramters should customise startscript according to args" name="cics-deploy generate bundle paramters should customise startscript according to args" time="3.131">
+    </testcase>
+    <testcase classname="cics-deploy generate bundle paramters should customise port in generated profile accord to args" name="cics-deploy generate bundle paramters should customise port in generated profile accord to args" time="3.079">
+    </testcase>
+    <testcase classname="cics-deploy generate bundle paramters should generate a bundle using values supplied when there&apos;s no package.json" name="cics-deploy generate bundle paramters should generate a bundle using values supplied when there&apos;s no package.json" time="3.072">
+    </testcase>
+    <testcase classname="cics-deploy generate bundle paramters should return an error if invalid bundle version is supplied" name="cics-deploy generate bundle paramters should return an error if invalid bundle version is supplied" time="3.334">
+      <failure>Error: expect(received).not.toBe(expected) // Object.is equality
+
+Expected: not &quot;&quot;
+    at C:\temp\zowe\cics\zowe-cli-cics-deploy-plugin\__tests__\__system__\cli\generate\cli.generate.bundle.system.test.ts:131:44
+    at Generator.next (&lt;anonymous&gt;)
+    at fulfilled (C:\temp\zowe\cics\zowe-cli-cics-deploy-plugin\__tests__\__system__\cli\generate\cli.generate.bundle.system.test.ts:16:58)
+    at process._tickCallback (internal/process/next_tick.js:68:7)</failure>
+    </testcase>
+    <testcase classname="cics-deploy generate bundle paramters should mangle NODEJSAPP name supplied on command line" name="cics-deploy generate bundle paramters should mangle NODEJSAPP name supplied on command line" time="3.129">
+    </testcase>
+    <testcase classname="cics-deploy generate bundle paramters should mangle bundle ID supplied on command line" name="cics-deploy generate bundle paramters should mangle bundle ID supplied on command line" time="3.06">
+    </testcase>
+    <testcase classname="cics-deploy generate bundle package.json variations should mangle name supplied in package.json" name="cics-deploy generate bundle package.json variations should mangle name supplied in package.json" time="3.2">
+    </testcase>
+    <testcase classname="cics-deploy generate bundle package.json variations should error nicely if package.json is malformed" name="cics-deploy generate bundle package.json variations should error nicely if package.json is malformed" time="3.134">
+      <failure>Error: expect(received).not.toBe(expected) // Object.is equality
+
+Expected: not &quot;&quot;
+    at C:\temp\zowe\cics\zowe-cli-cics-deploy-plugin\__tests__\__system__\cli\generate\cli.generate.bundle.system.test.ts:131:44
+    at Generator.next (&lt;anonymous&gt;)
+    at fulfilled (C:\temp\zowe\cics\zowe-cli-cics-deploy-plugin\__tests__\__system__\cli\generate\cli.generate.bundle.system.test.ts:16:58)
+    at process._tickCallback (internal/process/next_tick.js:68:7)</failure>
+    </testcase>
+    <testcase classname="cics-deploy generate bundle package.json variations should error nicely if package.json is empty" name="cics-deploy generate bundle package.json variations should error nicely if package.json is empty" time="2.962">
+      <failure>Error: expect(received).not.toBe(expected) // Object.is equality
+
+Expected: not &quot;&quot;
+    at C:\temp\zowe\cics\zowe-cli-cics-deploy-plugin\__tests__\__system__\cli\generate\cli.generate.bundle.system.test.ts:131:44
+    at Generator.next (&lt;anonymous&gt;)
+    at fulfilled (C:\temp\zowe\cics\zowe-cli-cics-deploy-plugin\__tests__\__system__\cli\generate\cli.generate.bundle.system.test.ts:16:58)
+    at process._tickCallback (internal/process/next_tick.js:68:7)</failure>
+    </testcase>
+    <testcase classname="cics-deploy generate bundle package.json variations should error nicely if package.json doesn&apos;t have start script or main" name="cics-deploy generate bundle package.json variations should error nicely if package.json doesn&apos;t have start script or main" time="3.02">
+      <failure>Error: expect(received).not.toBe(expected) // Object.is equality
+
+Expected: not &quot;&quot;
+    at C:\temp\zowe\cics\zowe-cli-cics-deploy-plugin\__tests__\__system__\cli\generate\cli.generate.bundle.system.test.ts:131:44
+    at Generator.next (&lt;anonymous&gt;)
+    at fulfilled (C:\temp\zowe\cics\zowe-cli-cics-deploy-plugin\__tests__\__system__\cli\generate\cli.generate.bundle.system.test.ts:16:58)
+    at process._tickCallback (internal/process/next_tick.js:68:7)</failure>
+    </testcase>
+  </testsuite>
+</testsuites>

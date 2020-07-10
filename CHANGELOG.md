@@ -18,6 +18,12 @@ Changes should be placed under the following headings:
 ### Security
 - in case of vulnerabilities
 -->
+
+## [Release v1.1.0]
+
+### Fixed
+- Rebased on zowe-cli @zowe-v1-lts version
+
 ## [Release v1.0.4]
 
 ### Fixed

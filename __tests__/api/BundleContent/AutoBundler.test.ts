@@ -10,7 +10,7 @@
 */
 
 import { AutoBundler } from "../../../src/api/BundleContent/AutoBundler";
-import { IHandlerParameters } from "@brightside/imperative";
+import { IHandlerParameters } from "@zowe/imperative";
 import * as GenerateBundleDefinition from "../../../src/cli/generate/bundle/GenerateBundle.definition";
 import * as fse from "fs-extra";
 
@@ -51,6 +51,7 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
     } as any,
     definition: GenerateBundleDefinition.GenerateBundleDefinition,
     fullDefinition: GenerateBundleDefinition.GenerateBundleDefinition,
+    positionals: [],
 };
 
 describe("AutoBundler01", () => {

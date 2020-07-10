@@ -95,7 +95,7 @@ def PRODUCT_NAME = "zowe-cli-cics-deploy-plugin"
 /**
  * This is where the Zowe project needs to be installed
  */
-def ZOWE_CLI_INSTALL_DIR = "/.npm-global/lib/node_modules/@brightside/core"
+def ZOWE_CLI_INSTALL_DIR = "/.npm-global/lib/node_modules/@zowe/cli"
 
 def ARTIFACTORY_CREDENTIALS_ID = "c8e3aa62-5eef-4e6b-8a3f-aa1006a7ef01"
 
@@ -209,7 +209,7 @@ pipeline {
                     sh "npm set @brightside:registry=https://api.bintray.com/npm/ca/brightside/"
                     sh "npm config list"
                     // install 
-                    sh "npm install -g @brightside/core@lts-incremental"
+                    sh "npm install -g @zowe/cli@zowe-v1-lts"
                     sh "zowe --version"
                 }
             }
@@ -352,24 +352,27 @@ pipeline {
                 }
             }
             environment {
-                JEST_JUNIT_OUTPUT = "${UNIT_RESULTS}/junit.xml"
                 JEST_SUITE_NAME = "Unit Tests"
+                JEST_JUNIT_OUTPUT_DIR = "${UNIT_RESULTS}/jest-junit"
+                JEST_JUNIT_OUTPUT_NAME = "${UNIT_RESULTS}/junit.xml"
                 JEST_JUNIT_ANCESTOR_SEPARATOR = " > "
                 JEST_JUNIT_CLASSNAME="Unit.{classname}"
                 JEST_JUNIT_TITLE="{title}"
-                JEST_STARE_RESULT_DIR = "${UNIT_RESULTS}/jest-stare"
-                JEST_STARE_RESULT_HTML = "index.html"
+                //JEST_STARE_RESULT_DIR = "${UNIT_RESULTS}/jest-stare"
+                //JEST_STARE_RESULT_HTML = "index.html"
             }
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
-                    echo 'Unit Test'
+                    echo 'Running Unit Tests'
 
                     // Run tests but don't fail if the script reports an error
                     sh "npm run test:unit || exit 0"
 
                     // Capture test report
-                    junit JEST_JUNIT_OUTPUT
+                    echo 'Running JUnit Collector'
+                    junit allowEmptyResults: true, testResults: JEST_JUNIT_OUTPUT_NAME
 
+                    echo 'Running Covertura Code Coverage Report'
                     cobertura autoUpdateHealth: false,
                             autoUpdateStability: false,
                             coberturaReportFile: "${UNIT_RESULTS}/coverage/cobertura-coverage.xml",
@@ -384,6 +387,7 @@ pipeline {
                             // methodCoverageTargets: '80, 70, 50',
                             sourceEncoding: 'ASCII'
 
+                    echo 'Running HTML Generation'
                     publishHTML(target: [
                             allowMissing         : false,
                             alwaysLinkToLastBuild: true,
@@ -455,15 +459,16 @@ pipeline {
                 }
             }
             environment {
-                JEST_JUNIT_OUTPUT = "${SYSTEM_RESULTS}/junit.xml"
                 JEST_SUITE_NAME = "System Tests"
+                JEST_JUNIT_OUTPUT_DIR = "${SYSTEM_RESULTS}/jest-junit"
+                JEST_JUNIT_OUTPUT_NAME = "${SYSTEM_RESULTS}/junit.xml"
                 JEST_JUNIT_ANCESTOR_SEPARATOR = " > "
                 JEST_JUNIT_CLASSNAME="System.{classname}"
                 JEST_JUNIT_TITLE="{title}"
                 JEST_HTML_REPORTER_OUTPUT_PATH = "${SYSTEM_RESULTS}/index.html"
                 JEST_HTML_REPORTER_PAGE_TITLE = "${BRANCH_NAME} - System Test"
-                JEST_STARE_RESULT_DIR = "${SYSTEM_RESULTS}/jest-stare"
-                JEST_STARE_RESULT_HTML = "index.html"
+                //JEST_STARE_RESULT_DIR = "${SYSTEM_RESULTS}/jest-stare"
+                //JEST_STARE_RESULT_HTML = "index.html"
                 TEST_SCRIPT = "./jenkins/system_tests.sh"
                 TEST_PROPERTIES_FILE = "./__tests__/__resources__/properties/custom_properties.yaml"
             }
@@ -475,7 +480,7 @@ pipeline {
                     sh 'npm run test:system'
 
                     // Capture test report
-                    junit JEST_JUNIT_OUTPUT
+                    junit allowEmptyResults: true, testResults: JEST_JUNIT_OUTPUT_NAME
                 }
             }
         }

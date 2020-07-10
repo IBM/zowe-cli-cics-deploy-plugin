@@ -10,7 +10,7 @@
 *
 */
 
-import {IHandlerParameters, ImperativeError} from "@brightside/imperative";
+import {IHandlerParameters, ImperativeError} from "@zowe/imperative";
 import * as PushBundleDefinition from "../../../../src/cli/push/bundle/PushBundle.definition";
 import * as PushBundleHandler from "../../../../src/cli/push/bundle/PushBundle.handler";
 
@@ -58,6 +58,7 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
     } as any,
     definition: PushBundleDefinition.PushBundleDefinition,
     fullDefinition: PushBundleDefinition.PushBundleDefinition,
+    positionals: [],
 };
 
 describe("bundle Handler", () => {

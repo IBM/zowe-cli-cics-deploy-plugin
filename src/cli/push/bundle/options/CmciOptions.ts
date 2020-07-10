@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandOptionDefinition } from "@brightside/imperative";
+import { ICommandOptionDefinition } from "@zowe/imperative";
 
 /**
  * scmci command line options, derived from zowe-cics equivalents
