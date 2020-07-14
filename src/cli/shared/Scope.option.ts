@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandOptionDefinition } from "@brightside/imperative";
+import { ICommandOptionDefinition } from "@zowe/imperative";
 
 const MAX_LENGTH = 8;
 
@@ -25,8 +25,5 @@ export const ScopeOption: ICommandOptionDefinition = {
     group: "cics-deploy Options",
     description: "Specifies the name of the CICS System, or CICS System Group " +
                  "(up to 8 characters) to target. " +
-                 "Use this parameter if you have not set the --cics-deploy-profile option. " +
-                 "For help on creating a profile issue the 'zowe profiles create cics-deploy --help' " +
-                 "command."
+                 "This parameter defaults to the value specified in the cics-deploy profile."
 };
-

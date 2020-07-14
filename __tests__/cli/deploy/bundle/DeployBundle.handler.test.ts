@@ -10,7 +10,7 @@
 *
 */
 
-import {IHandlerParameters, ImperativeError} from "@brightside/imperative";
+import {IHandlerParameters, ImperativeError} from "@zowe/imperative";
 import * as DeployBundleDefinition from "../../../../src/cli/deploy/bundle/DeployBundle.definition";
 import * as DeployBundleHandler from "../../../../src/cli/deploy/bundle/DeployBundle.handler";
 
@@ -58,6 +58,7 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
     } as any,
     definition: DeployBundleDefinition.DeployBundleDefinition,
     fullDefinition: DeployBundleDefinition.DeployBundleDefinition,
+    positionals: [],
 };
 
 describe("bundle Handler", () => {

@@ -9,8 +9,8 @@
 *
 */
 
-import { ICommandOptionDefinition } from "@brightside/imperative";
-import { ZosmfSession } from "@brightside/core";
+import { ICommandOptionDefinition } from "@zowe/imperative";
+import { ZosmfSession } from "@zowe/cli";
 
 /**
  * zosMF command line options, derived from zowe-cli equivalents

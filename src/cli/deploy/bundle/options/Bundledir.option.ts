@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandOptionDefinition } from "@brightside/imperative";
+import { ICommandOptionDefinition } from "@zowe/imperative";
 
 const MAX_LENGTH = 255;
 
@@ -24,6 +24,6 @@ export const BundledirOption: ICommandOptionDefinition = {
     required: true,
     stringLengthRange: [1, MAX_LENGTH],
     group: "cics-deploy Options",
-    description: "Specifies the location of the CICS bundle (up to 255 characters) on zFS."
+    description: "Required. Specifies the location of the CICS bundle (up to 255 characters) on zFS."
 };
 

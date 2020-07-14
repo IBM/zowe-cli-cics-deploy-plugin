@@ -10,12 +10,12 @@
 */
 
 import { BundlePusher } from "../../../src/api/BundlePush/BundlePusher";
-import { IHandlerParameters, ImperativeError, IImperativeError, IProfile, Session } from "@brightside/imperative";
-import * as cmci from "@brightside/cics";
+import { IHandlerParameters, ImperativeError, IImperativeError, IProfile, Session } from "@zowe/imperative";
+import * as cmci from "@zowe/cics-for-zowe-cli";
 import * as PushBundleDefinition from "../../../src/cli/push/bundle/PushBundle.definition";
 import * as fse from "fs-extra";
 import * as fs from "fs";
-import { ZosmfSession, SshSession, SubmitJobs, Shell, List, Upload, Create } from "@brightside/core";
+import { ZosmfSession, SshSession, SubmitJobs, Shell, List, Upload, Create } from "@zowe/cli";
 
 const DEFAULT_PARAMTERS: IHandlerParameters = {
     arguments: {
@@ -67,6 +67,7 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     } as any,
     definition: PushBundleDefinition.PushBundleDefinition,
     fullDefinition: PushBundleDefinition.PushBundleDefinition,
+    positionals: [],
 };
 const IS_DIRECTORY: any = {
   isDirectory: jest.fn((directory) => (true))

@@ -9,7 +9,7 @@
 *
 */
 
-import { ICommandOptionDefinition } from "@brightside/imperative";
+import { ICommandOptionDefinition } from "@zowe/imperative";
 
 /**
  * Imperative option for the "merge" parameter
@@ -23,7 +23,7 @@ export const MergeOption: ICommandOptionDefinition = {
     required: false,
     implies: ["overwrite"],
     group: "cics-deploy Options",
-    description: "Enable or disable the ability to merge new resources into an existing CICS bundle manifest." +
+    description: "Enable or disable the ability to merge new resources into an existing CICS bundle manifest. " +
                  "Requires --overwrite to be specified."
 };
 
