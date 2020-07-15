@@ -11,7 +11,7 @@ toc: true
 
 ### Before you begin
 
-CICS TS V5.5 introduced support to run Node.js applications and is required by this tutorial. If you do not have a CICS TS V5.5 region, use the steps in [Provisioning a CICS region using z/OS® PT](cdp-Provisioning-a-CICS-region) to provision one, or speak to your CICS system administrator.
+CICS TS V5.5 introduced support to run Node.js applications and is required by this tutorial. If you do not have a CICS TS V5.5 (or higher) region, use the steps in [Provisioning a CICS region using z/OS® PT](cdp-Provisioning-a-CICS-region) to provision one, or speak to your CICS system administrator.
 
 ### Procedure
 
@@ -99,4 +99,4 @@ CICS TS V5.5 introduced support to run Node.js applications and is required by t
 
 The Node.js application is packaged into a CICS bundle on the workstation, uploaded to a directory on z/OS, and is running in CICS.
 
-{% include tip.html content="When writing your own application, follow the guidance in [Best practice for developing Node.js applications](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0/applications/developing/node/best-practice.html) to use environment variables and enable the application to terminate gracefully." %}
+{% include tip.html content="When writing your own application, follow the guidance in [Best practice for developing Node.js applications](https://www.ibm.com/support/knowledgecenter/SSGMCP_latest/applications/developing/node/best-practice.html) to use environment variables and enable the application to terminate gracefully." %}

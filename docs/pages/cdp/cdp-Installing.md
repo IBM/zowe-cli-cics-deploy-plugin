@@ -25,13 +25,13 @@ toc: false
     zowe plugins install @zowe/secure-credential-store-for-zowe-cli@zowe-v1-lts
     ```
 
-3. Install the CICS® plugin:
+3. Install the CICS® plug-in:
 
     ```console
     zowe plugins install @zowe/cics-for-zowe-cli@zowe-v1-lts
     ```
 
-4. Install the cics-deploy plugin:
+4. Install the cics-deploy plug-in:
 
     ```console
     zowe plugins install zowe-cli-cics-deploy-plugin
@@ -43,7 +43,7 @@ toc: false
     zowe plugins list
     ```
 
-    Displays a list of the installed plugins:
+    Displays a list of the installed plug-ins:
 
     <pre class="messageText">
     Installed plugins:
@@ -54,5 +54,5 @@ toc: false
     -- registry: https://registry.npmjs.org/<br>
     -- pluginName: zowe-cli-cics-deploy-plugin
     -- package: zowe-cli-cics-deploy-plugin
-    -- version: 1.0.4
+    -- version: 1.1.0
     -- registry: https://registry.npmjs.org/ </pre>

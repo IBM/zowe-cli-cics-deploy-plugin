@@ -84,7 +84,7 @@ zowe zos-uss issue ssh 'uname -a'
 
 ### CICS deploy profile
 
-The cics-deploy profile identifies the CICS environment for deployment. An example of how to create an environment using using z/OS Provisioning Toolkit as described in [Provisioning a CICS region using z/OS PT](cdp-Provisioning-a-CICS-region). You need to know the following from your CICS system administrator:
+The cics-deploy profile identifies the CICS environment for deployment. See [Provisioning a CICS region using z/OS PT](cdp-Provisioning-a-CICS-region) for an example of how to create an environment using z/OS Provisioning Toolkit. You need to know the following from your CICS system administrator:
 
 | Option                 | Description                                                                                                                                                                         |
 | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -96,7 +96,7 @@ The cics-deploy profile identifies the CICS environment for deployment. An examp
 | job-card               | JCL jobcard to use when submitting JCL that will run the CICS utility DFHDPLOY. If not specified, a default job card will be used.                                                  |
 | target-directory       | Target directory on z/OS to which CICS bundles should be uploaded.                                                                                                                  |
 
-For example to create a cics-deploy profile:
+For example, to create a cics-deploy profile:
 
 ```text
 zowe profiles create cics-deploy-profile cics --cicsplex PLEX1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --scope CICPY000 --csd-group BUNDGRP1 --target-directory /var/cicsts/bundles --overwrite
