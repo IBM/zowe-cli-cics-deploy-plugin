@@ -11,21 +11,21 @@ toc: true
 
 ### Using the command-line
 
-The command-line is a conventional way to run and/or compose programs, especially if you come from a Linux or macOS background. Despite its usefulness, it can become tedious when large numbers of command-line arguments have to be entered and re-entered every time a program is executed. Zowe CLI profiles eliminate a lot of this tedium by collecting sequences of rarely-changing command-line arguments into just one argument - the name of a Zowe CLI profile - which is used as proxy whenever the original longer sequence needs to be subsequently invoked. 
+The command-line is a conventional way to run and/or compose programs, especially if you come from a Linux or macOS background. Despite its usefulness, it can become tedious when large numbers of command-line arguments have to be entered and re-entered every time a program is executed. Zowe CLI profiles eliminate a lot of this tedium by collecting sequences of rarely-changing command-line arguments into just one argument - the name of a Zowe CLI profile - which is used as proxy whenever the original longer sequence needs to be subsequently invoked.
 
 {% include note.html content="Be aware that the broader Zowe and z/OS technology stack includes some other entities commonly referred to as <i>profiles</i> that are entirely different to the profiles discussed here, which are, specifically, Zowe CLI profiles. For example, there is a ```.profile``` file in most z/OS® Unix System Services (USS) user home directories - the remote z/OS shell profile - that contains session-initializing environmental configuration. A lack of precision, especially in conversation, can be confusing." %}
 
-Instead of having to type, say, six command-line arguments that describe a collection of z/OS connection details, you only need to type one, the name and type of the profile that stores the full set. 
+Instead of having to type, say, six command-line arguments that describe a collection of z/OS connection details, you only need to type one, the name and type of the profile that stores the full set.
 
 ### Examples of Zowe CLI profiles in action
 
-As an example, a Zowe CLI z/OSMF profile aggregates the configuration details required to establish CLI z/OSMF sessions with the mainframe - such sessions are necessary to submit the batch jobs that deploy and undeploy [CICS bundles](cdp-CICS-bundles.md). You can create a Zowe CLI z/OSMF profile with a command like:
+As an example, a Zowe CLI z/OSMF profile aggregates the configuration details required to establish CLI z/OSMF sessions with the mainframe - such sessions are necessary to submit the batch jobs that deploy and undeploy [CICS bundles](cdp-CICS-bundles). You can create a Zowe CLI z/OSMF profile with a command like:
 
 ```text
 zowe profiles create zosmf-profile myprofile --host zos124 --port 1443 --user ibmuser --password myp4ss --reject-unauthorized false
 ```
 
-This creates a Zowe CLI z/OSMF profile called *myprofile* that connects to port *1443* (or, in your situation, such port as your own z/OSMF server is known to run on) on host *zos124* using the credentials *ibmuser* and *myp4ss* and allowing self-signed certificates. That's six command-line arguments stored as a collection under the single profile called *myprofile*.
+This creates a Zowe CLI z/OSMF profile called _myprofile_ that connects to port _1443_ (or, in your situation, such port as your own z/OSMF server is known to run on) on host _zos124_ using the credentials _ibmuser_ and _myp4ss_ and allowing self-signed certificates. That's six command-line arguments stored as a collection under the single profile called _myprofile_.
 
 Now you can issue further Zowe commands that reference the profile you created earlier. For example, to check the health of your connectivity to z/OSMF you might enter:
 
@@ -45,7 +45,7 @@ As suggested above, to deploy a Node.js application from your workstation to one
 
 {% include tip.html content="For each profile type, the first profile you create becomes the default for that type. In many cases, you don't even have to type in the name of a specific profile if you know that the default profile will serve your needs." %}
 
-Ultimately, you are not *required* to use Zowe CLI profiles - you can specify all of the required command-line arguments explicitly - but they reduce the burden of typing when you are issuing commands that require many arguments.
+Ultimately, you are not _required_ to use Zowe CLI profiles - you can specify all of the required command-line arguments explicitly - but they reduce the burden of typing when you are issuing commands that require many arguments.
 
 ### Order of precedence
 
@@ -55,11 +55,11 @@ The Zowe CLI lets you define arguments and options for commands in multiple ways
 2. Environment variables
 3. Profiles
 
-Therefore by setting options in a profile they will become your default and you do not need to repeat them on the command-line unless you wish to override them. Further details are in [Understanding command option order of precedence](https://zowe.github.io/docs-site/latest/user-guide/cli-configuringcli.html#understanding-command-option-order-of-precedence).
+Therefore by setting options in a profile they will become your default and you do not need to repeat them on the command-line unless you wish to override them. Further details are in [Understanding command option order of precedence](https://docs.zowe.org/stable/user-guide/cli-configuringcli.html#understanding-command-option-order-of-precedence).
 
 ### Where are Zowe CLI profiles stored?
 
-When you create a Zowe CLI profile, a representation is written to a file on your local workstation in plain text. This file may contain sensitive information such as user IDs and passwords and therefore needs to be secured. Further details are in [Creating Zowe CLI profiles](https://zowe.github.io/docs-site/latest/user-guide/cli-configuringcli.html#creating-zowe-cli-profiles).
+When you create a Zowe CLI profile, a representation is written to a file on your local workstation in plain text. This file may contain sensitive information such as user IDs and passwords and therefore needs to be secured. Further details are in [Creating Zowe CLI profiles](https://docs.zowe.org/stable/user-guide/cli-configuringcli.html#creating-zowe-cli-profiles).
 
 <ul id="profileTabs" class="nav nav-tabs">
     <li class="active"><a href="#windows" data-toggle="tab">Windows</a></li>

@@ -1,8 +1,8 @@
 ---
-title: Provisioning a CICS region
+title: Provisioning a CICS region using z/OS PT
 tags: [tutorial]
 keywords:
-summary: "The following steps take you through provisioning a CICS® region from a z/OS® Provisioning Toolkit image. You can then deploy and test applications using the CICS region."
+summary: 'The following steps take you through provisioning a CICS® region from a z/OS® Provisioning Toolkit image. You can then deploy and test applications using the CICS region.'
 sidebar: cdp_sidebar
 permalink: cdp-Provisioning-a-CICS-region.html
 folder: cdp
@@ -23,74 +23,74 @@ Before you can provision a CICS region, a z/OS PT image needs to be created and 
 
 3. On z/OS, update your user `.profile` file to run z/OS PT.
 
-   Add the directory to the `zospt` command to your PATH.
+    Add the directory to the `zospt` command to your PATH.
 
-   ```properties
-   export PATH=$PATH:zospt_directory/bin
-   ```
+    ```properties
+    export PATH=$PATH:zospt_directory/bin
+    ```
 
-   Optional: To avoid the password prompt for each `zospt` command, set environment variable `zospt_pw`. Ensure others do not have access to read your .profile:
+    Optional: To avoid the password prompt for each `zospt` command, set environment variable `zospt_pw`. Ensure others do not have access to read your .profile:
 
-   ```properties
-   export zospt_pw=
-   ```
+    ```properties
+    export zospt_pw=
+    ```
 
-   Optional: If z/OSMF is configured with domain and tenant names that are not the default as described in [Configuring z/OS Provisioning Toolkit](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/zospt-configuring.html), add the following environment variables:
+    Optional: If z/OSMF is configured with domain and tenant names that are not the default as described in [Configuring z/OS Provisioning Toolkit](https://www.ibm.com/support/knowledgecenter/en/SSXH44E_1.0.0/zospt/zospt-configuring.html), add the following environment variables:
 
-   ```properties
-   export zospt_domain=
-   export zospt_tenant=
-   ```
+    ```properties
+    export zospt_domain=
+    export zospt_tenant=
+    ```
 
 4. On your workstation, test you can run z/OS PT.
 
-   ```console
-   zowe zos-uss issue ssh "zospt --help"
-   ```
+    ```console
+    zowe zos-uss issue ssh "zospt --help"
+    ```
 
 5. List the z/OS PT images available for you to use.
 
-   ```tex
-    zowe zos-uss issue ssh "zospt images"
-   ```
+    ```tex
+     zowe zos-uss issue ssh "zospt images"
+    ```
 
 6. Provision your CICS region.
 
-   Update `cics_55_nodejs` to the name of the image, and `--name` to specify a name for the container that is easy to remember for use in later commands. This command may take a few minutes to complete.
+    Update `cics_55_nodejs` to the name of the image, and `--name` to specify a name for the container that is easy to remember for use in later commands. This command may take a few minutes to complete.
 
-   ```console
-   zowe zos-uss issue ssh "zospt run cics_55_nodejs --name my_cics_region"
-   ```
+    ```console
+    zowe zos-uss issue ssh "zospt run cics_55_nodejs --name my_cics_region"
+    ```
 
 7. Display your CICS region information.
 
-   ```console
-   zowe zos-uss issue ssh "zospt inspect my_cics_region"
-   ```
+    ```console
+    zowe zos-uss issue ssh "zospt inspect my_cics_region"
+    ```
 
-   The output is in JSON format and includes values for the CICS region application ID, and the z/OS directory within which your CICS bundles can be uploaded. For example:
+    The output is in JSON format and includes values for the CICS region application ID, and the z/OS directory within which your CICS bundles can be uploaded. For example:
 
-   <pre class="messageText">
-    "DFH_REGION_APPLID": "CICPY000",
-    "DFH_REGION_ZFS_DIRECTORY": "/u/cicprov/mnt/CICPY000",</pre>
+    <pre class="messageText">
+     "DFH_REGION_APPLID": "CICPY000",
+     "DFH_REGION_ZFS_DIRECTORY": "/u/cicprov/mnt/CICPY000",</pre>
 
     Your application can use the directories and files under the DFH_REGION_ZFS_DIRECTORY path:
 
-   | DFH_REGION_ZFS_DIRECTORY<br>sub-directory | Usage |
-   | --- | -- |
-   | JVMProfiles/ | JVM server profiles |
-   | bundles/ | CICS bundles |
-   | dfhconfig/ | CICS configuration files |
-   | dfhconfig/nodejsprofiles/general.profile | General profile containing values for WORK_DIR and NODE_HOME. Node.js application should include this by adding `%INCLUDE=&USSCONFIG;/nodejsprofiles/general.profile` to their CICS Node.js application profile |
-   | workdir/ | Trace, log and configuration files create by applications, Node.js runtimes, Java runtimes, and CICS runtimes |
+    | DFH_REGION_ZFS_DIRECTORY<br>sub-directory | Usage                                                                                                                                                                                                           |
+    | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | JVMProfiles/                              | JVM server profiles                                                                                                                                                                                             |
+    | bundles/                                  | CICS bundles                                                                                                                                                                                                    |
+    | dfhconfig/                                | CICS configuration files                                                                                                                                                                                        |
+    | dfhconfig/nodejsprofiles/general.profile  | General profile containing values for WORK_DIR and NODE_HOME. Node.js application should include this by adding `%INCLUDE=&USSCONFIG;/nodejsprofiles/general.profile` to their CICS Node.js application profile |
+    | workdir/                                  | Trace, log and configuration files create by applications, Node.js runtimes, Java runtimes, and CICS runtimes                                                                                                   |
 
 8. Update your Zowe CLI cics-deploy profile to deploy to your CICS region by default.
 
-   Update `--scope` to specify the value from DFH_REGION_APPLID, and `--target-directory` to specify the `bundles` subdirectory of DFH_REGION_ZFS_DIRECTORY. For example:
+    Update `--scope` to specify the value from DFH_REGION_APPLID, and `--target-directory` to specify the `bundles` subdirectory of DFH_REGION_ZFS_DIRECTORY. For example:
 
-   ```console
-   zowe profiles update cics-deploy cics --scope CICPY000 --target-directory "/u/cicprov/mnt/CICPY000/bundles"
-   ```
+    ```console
+    zowe profiles update cics-deploy cics --scope CICPY000 --target-directory "/u/cicprov/mnt/CICPY000/bundles"
+    ```
 
 #### Results
 
