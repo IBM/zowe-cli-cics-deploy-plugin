@@ -40,8 +40,8 @@ export const DeployBundleDefinition: ICommandDefinition = {
     type: "command",
     handler: __dirname + "/DeployBundle.handler",
     options: [ NameOption, BundledirOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption,
-               CicshlqOption, CpsmhlqOption, DescriptionOption, JobcardOption, TimeoutOption, TargetStateOption, VerboseOption]
-             .concat(ZosmfOptions.CICS_DEPLOY_ZOSMF_CONNECTION_OPTIONS),
+        CicshlqOption, CpsmhlqOption, DescriptionOption, JobcardOption, TimeoutOption, TargetStateOption, VerboseOption]
+        .concat(ZosmfOptions.CICS_DEPLOY_ZOSMF_CONNECTION_OPTIONS),
     profile: { optional: ["cics-deploy", "zosmf"] },
     examples: [
         {

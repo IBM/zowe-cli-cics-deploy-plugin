@@ -66,8 +66,8 @@ describe("bundle Handler", () => {
         let err: Error;
         const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
         try {
-          const handler = new UndeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new UndeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -91,8 +91,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new UndeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new UndeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -104,37 +104,38 @@ describe("bundle Handler", () => {
         await testTargetStateUndeployError("", "--targetstate parameter is empty");
     });
     it("should complain with invalid targetstate parameter UNDEPLOY", async () => {
-        await testTargetStateUndeployError("Wibble", "--targetstate has invalid value. Found WIBBLE but expected one of UNAVAILABLE, DISABLED or DISCARDED.");
+        await testTargetStateUndeployError("Wibble",
+            "--targetstate has invalid value. Found WIBBLE but expected one of UNAVAILABLE, DISABLED or DISCARDED.");
     });
 });
 
 function setCommonParmsForTargetStateTests(parms: IHandlerParameters) {
-  parms.arguments.name = "WIBBLE";
-  parms.arguments["cics-deploy-profile"] = undefined;
-  parms.arguments.cicsplex = "Wibble";
-  parms.arguments.scope = "wibblE";
-  parms.arguments.resgroup = "wiBBle";
-  parms.arguments.csdgroup = undefined;
-  parms.arguments.timeout = undefined;
-  parms.arguments.cicshlq = "WIBB.LE";
-  parms.arguments.cpsmhlq = "WIBB.LE";
-  parms.arguments.targetstate = undefined;
-  parms.arguments.jobcard = undefined;
+    parms.arguments.name = "WIBBLE";
+    parms.arguments["cics-deploy-profile"] = undefined;
+    parms.arguments.cicsplex = "Wibble";
+    parms.arguments.scope = "wibblE";
+    parms.arguments.resgroup = "wiBBle";
+    parms.arguments.csdgroup = undefined;
+    parms.arguments.timeout = undefined;
+    parms.arguments.cicshlq = "WIBB.LE";
+    parms.arguments.cpsmhlq = "WIBB.LE";
+    parms.arguments.targetstate = undefined;
+    parms.arguments.jobcard = undefined;
 }
 
 async function testTargetStateUndeployError(targetstate: string, result: string) {
-  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  setCommonParmsForTargetStateTests(params);
-  params.arguments.targetstate = targetstate;
+    const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+    setCommonParmsForTargetStateTests(params);
+    params.arguments.targetstate = targetstate;
 
-  let err: Error;
-  try {
-    const handler = new UndeployBundleHandler.default();
-    await handler.process(params);
-  } catch (e) {
-    err = e;
-  }
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(result);
+    let err: Error;
+    try {
+        const handler = new UndeployBundleHandler.default();
+        await handler.process(params);
+    } catch (e) {
+        err = e;
+    }
+    expect(err).toBeDefined();
+    expect(err).toBeInstanceOf(ImperativeError);
+    expect(err.message).toContain(result);
 }

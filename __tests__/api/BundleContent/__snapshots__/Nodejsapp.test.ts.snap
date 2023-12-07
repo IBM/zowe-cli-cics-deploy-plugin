@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NodejsappBundlePart01 Create a NodejsappBundlePart 1`] = `"{\\"nodejsapp\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"name\\":\\"NodeName\\",\\"startscript\\":\\"Artefact1\\",\\"profile\\":\\"nodejsapps/NodeName.profile\\",\\"lerunopts\\":\\"DFHSJNRO\\"}}"`;
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart 1`] = `"{"nodejsapp":{"xmlns":"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP","name":"NodeName","startscript":"Artefact1","profile":"nodejsapps/NodeName.profile","lerunopts":"DFHSJNRO"}}"`;
 
 exports[`NodejsappBundlePart01 Create a NodejsappBundlePart 2`] = `
-"<nodejsapp xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" name=\\"NodeName\\" startscript=\\"Artefact1\\" profile=\\"nodejsapps/NodeName.profile\\" lerunopts=\\"DFHSJNRO\\"></nodejsapp>
+"<nodejsapp xmlns="http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP" name="NodeName" startscript="Artefact1" profile="nodejsapps/NodeName.profile" lerunopts="DFHSJNRO"></nodejsapp>
 "
 `;
 
@@ -16,9 +16,9 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart 3`] = `
 # and to set environment variables for use by the application.        #
 #                                                                     #
 # Lines starting with # are treated as comments and ignored.          #
-# Lines ending with \\\\ are continued on the next line.                 #
+# Lines ending with \\ are continued on the next line.                 #
 #                                                                     #
-# See topic \\"Node.js profile validation and properties\\"               #
+# See topic "Node.js profile validation and properties"               #
 # in the Knowledge Center:                                            #
 # http://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0             #
 #                                                                     #
@@ -146,9 +146,9 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart 4`] = `
 # and to set environment variables for use by the application.        #
 #                                                                     #
 # Lines starting with # are treated as comments and ignored.          #
-# Lines ending with \\\\ are continued on the next line.                 #
+# Lines ending with \\ are continued on the next line.                 #
 #                                                                     #
-# See topic \\"Node.js profile validation and properties\\"               #
+# See topic "Node.js profile validation and properties"               #
 # in the Knowledge Center:                                            #
 # http://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0             #
 #                                                                     #
@@ -267,10 +267,10 @@ PORT=1000
 "
 `;
 
-exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with bad chars 1`] = `"{\\"nodejsapp\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"name\\":\\"NodeNameXisXinvalidXXX\\",\\"startscript\\":\\"Artefact1\\",\\"profile\\":\\"nodejsapps/NodeNameXisXinvalidXXX.profile\\",\\"lerunopts\\":\\"DFHSJNRO\\"}}"`;
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with bad chars 1`] = `"{"nodejsapp":{"xmlns":"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP","name":"NodeNameXisXinvalidXXX","startscript":"Artefact1","profile":"nodejsapps/NodeNameXisXinvalidXXX.profile","lerunopts":"DFHSJNRO"}}"`;
 
 exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with bad chars 2`] = `
-"<nodejsapp xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" name=\\"NodeNameXisXinvalidXXX\\" startscript=\\"Artefact1\\" profile=\\"nodejsapps/NodeNameXisXinvalidXXX.profile\\" lerunopts=\\"DFHSJNRO\\"></nodejsapp>
+"<nodejsapp xmlns="http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP" name="NodeNameXisXinvalidXXX" startscript="Artefact1" profile="nodejsapps/NodeNameXisXinvalidXXX.profile" lerunopts="DFHSJNRO"></nodejsapp>
 "
 `;
 
@@ -283,9 +283,9 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with bad chars 3`] =
 # and to set environment variables for use by the application.        #
 #                                                                     #
 # Lines starting with # are treated as comments and ignored.          #
-# Lines ending with \\\\ are continued on the next line.                 #
+# Lines ending with \\ are continued on the next line.                 #
 #                                                                     #
-# See topic \\"Node.js profile validation and properties\\"               #
+# See topic "Node.js profile validation and properties"               #
 # in the Knowledge Center:                                            #
 # http://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0             #
 #                                                                     #
@@ -413,9 +413,9 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with bad chars 4`] =
 # and to set environment variables for use by the application.        #
 #                                                                     #
 # Lines starting with # are treated as comments and ignored.          #
-# Lines ending with \\\\ are continued on the next line.                 #
+# Lines ending with \\ are continued on the next line.                 #
 #                                                                     #
-# See topic \\"Node.js profile validation and properties\\"               #
+# See topic "Node.js profile validation and properties"               #
 # in the Knowledge Center:                                            #
 # http://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0             #
 #                                                                     #
@@ -534,10 +534,10 @@ PORT=1000
 "
 `;
 
-exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with long name 1`] = `"{\\"nodejsapp\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"name\\":\\"12345678901234567890123456789012\\",\\"startscript\\":\\"Artefact1\\",\\"profile\\":\\"nodejsapps/12345678901234567890123456789012.profile\\",\\"lerunopts\\":\\"DFHSJNRO\\"}}"`;
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with long name 1`] = `"{"nodejsapp":{"xmlns":"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP","name":"12345678901234567890123456789012","startscript":"Artefact1","profile":"nodejsapps/12345678901234567890123456789012.profile","lerunopts":"DFHSJNRO"}}"`;
 
 exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with long name 2`] = `
-"<nodejsapp xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" name=\\"12345678901234567890123456789012\\" startscript=\\"Artefact1\\" profile=\\"nodejsapps/12345678901234567890123456789012.profile\\" lerunopts=\\"DFHSJNRO\\"></nodejsapp>
+"<nodejsapp xmlns="http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP" name="12345678901234567890123456789012" startscript="Artefact1" profile="nodejsapps/12345678901234567890123456789012.profile" lerunopts="DFHSJNRO"></nodejsapp>
 "
 `;
 
@@ -550,9 +550,9 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with long name 3`] =
 # and to set environment variables for use by the application.        #
 #                                                                     #
 # Lines starting with # are treated as comments and ignored.          #
-# Lines ending with \\\\ are continued on the next line.                 #
+# Lines ending with \\ are continued on the next line.                 #
 #                                                                     #
-# See topic \\"Node.js profile validation and properties\\"               #
+# See topic "Node.js profile validation and properties"               #
 # in the Knowledge Center:                                            #
 # http://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0             #
 #                                                                     #
@@ -680,9 +680,9 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with long name 4`] =
 # and to set environment variables for use by the application.        #
 #                                                                     #
 # Lines starting with # are treated as comments and ignored.          #
-# Lines ending with \\\\ are continued on the next line.                 #
+# Lines ending with \\ are continued on the next line.                 #
 #                                                                     #
-# See topic \\"Node.js profile validation and properties\\"               #
+# See topic "Node.js profile validation and properties"               #
 # in the Knowledge Center:                                            #
 # http://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0             #
 #                                                                     #
@@ -801,10 +801,10 @@ PORT=1000
 "
 `;
 
-exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with missing port number 1`] = `"{\\"nodejsapp\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"name\\":\\"NodeName\\",\\"startscript\\":\\"Artefact1\\",\\"profile\\":\\"nodejsapps/NodeName.profile\\",\\"lerunopts\\":\\"DFHSJNRO\\"}}"`;
+exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with missing port number 1`] = `"{"nodejsapp":{"xmlns":"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP","name":"NodeName","startscript":"Artefact1","profile":"nodejsapps/NodeName.profile","lerunopts":"DFHSJNRO"}}"`;
 
 exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with missing port number 2`] = `
-"<nodejsapp xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" name=\\"NodeName\\" startscript=\\"Artefact1\\" profile=\\"nodejsapps/NodeName.profile\\" lerunopts=\\"DFHSJNRO\\"></nodejsapp>
+"<nodejsapp xmlns="http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP" name="NodeName" startscript="Artefact1" profile="nodejsapps/NodeName.profile" lerunopts="DFHSJNRO"></nodejsapp>
 "
 `;
 
@@ -817,9 +817,9 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with missing port nu
 # and to set environment variables for use by the application.        #
 #                                                                     #
 # Lines starting with # are treated as comments and ignored.          #
-# Lines ending with \\\\ are continued on the next line.                 #
+# Lines ending with \\ are continued on the next line.                 #
 #                                                                     #
-# See topic \\"Node.js profile validation and properties\\"               #
+# See topic "Node.js profile validation and properties"               #
 # in the Knowledge Center:                                            #
 # http://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0             #
 #                                                                     #
@@ -946,9 +946,9 @@ exports[`NodejsappBundlePart01 Create a NodejsappBundlePart with missing port nu
 # and to set environment variables for use by the application.        #
 #                                                                     #
 # Lines starting with # are treated as comments and ignored.          #
-# Lines ending with \\\\ are continued on the next line.                 #
+# Lines ending with \\ are continued on the next line.                 #
 #                                                                     #
-# See topic \\"Node.js profile validation and properties\\"               #
+# See topic "Node.js profile validation and properties"               #
 # in the Knowledge Center:                                            #
 # http://www.ibm.com/support/knowledgecenter/SSGMCP_5.5.0             #
 #                                                                     #

@@ -68,16 +68,23 @@ describe("bundle Handler", () => {
     it("should process the current directory", async () => {
         DEFAULT_PARAMTERS.arguments.nosave = "true";
 
+        // Move to the currentDirectory test folder
+        const startingDirectory = process.cwd();
+        process.chdir("__tests__/__resources__/CurrentDirectory");
+
         let error;
         try {
-          const handler = new GenerateBundleHandler.default();
-          // The handler should succeed
-          const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
-          await handler.process(params);
+            const handler = new GenerateBundleHandler.default();
+            // The handler should succeed
+            const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
+            await handler.process(params);
         } catch (e) {
             error = e;
             Imperative.console.error(`Error experienced: ${e.message}`);
         }
+        // Move back to the correct starting directory
+        process.chdir(startingDirectory);
+
         expect(consoleText).toContain("define : NODEJSAPP \"zowe-cli-cics-deploy-plugin\" with startscript \"lib/index.js\"");
         expect(consoleText).toContain("CICS Bundle generated with bundleid \"zowe-cli-cics-deploy-plugin\"");
         expect(error).toBeUndefined();
@@ -93,10 +100,10 @@ describe("bundle Handler", () => {
 
         let error;
         try {
-          const handler = new GenerateBundleHandler.default();
-          // The handler should succeed
-          const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
-          await handler.process(params);
+            const handler = new GenerateBundleHandler.default();
+            // The handler should succeed
+            const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
+            await handler.process(params);
         } catch (e) {
             error = e;
             Imperative.console.error(`Error experienced: ${e.message}`);
@@ -113,10 +120,10 @@ describe("bundle Handler", () => {
 
         let error;
         try {
-          const handler = new GenerateBundleHandler.default();
-          // The handler should succeed
-          const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
-          await handler.process(params);
+            const handler = new GenerateBundleHandler.default();
+            // The handler should succeed
+            const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
+            await handler.process(params);
         } catch (e) {
             error = e;
             Imperative.console.error(`Error experienced: ${e.message}`);
@@ -128,18 +135,18 @@ describe("bundle Handler", () => {
     });
     it("should produce the correct messages when overwrite on", async () => {
         DEFAULT_PARAMTERS.arguments.nosave = "false";
-        jest.spyOn(fs, "writeFileSync").mockReturnValue(true);
-        jest.spyOn(fs, "mkdirSync").mockReturnValue(true);
+        jest.spyOn(fs, "writeFileSync").mockReturnValue();
+        jest.spyOn(fs, "mkdirSync").mockReturnValue();
 
         const currentDir = process.cwd();
         process.chdir("__tests__/__resources__/ExampleBundle04");
 
         let error;
         try {
-          const handler = new GenerateBundleHandler.default();
-          // The handler should succeed
-          const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
-          await handler.process(params);
+            const handler = new GenerateBundleHandler.default();
+            // The handler should succeed
+            const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
+            await handler.process(params);
         } catch (e) {
             error = e;
             Imperative.console.error(`Error experienced: ${e.message}`);
@@ -157,18 +164,18 @@ describe("bundle Handler", () => {
     it("should produce the correct messages when merge on", async () => {
         DEFAULT_PARAMTERS.arguments.nosave = "false";
         DEFAULT_PARAMTERS.arguments.merge = "true";
-        jest.spyOn(fs, "writeFileSync").mockReturnValue(true);
-        jest.spyOn(fs, "mkdirSync").mockReturnValue(true);
+        jest.spyOn(fs, "writeFileSync").mockReturnValue();
+        jest.spyOn(fs, "mkdirSync").mockReturnValue();
 
         const currentDir = process.cwd();
         process.chdir("__tests__/__resources__/ExampleBundle05");
 
         let error;
         try {
-          const handler = new GenerateBundleHandler.default();
-          // The handler should succeed
-          const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
-          await handler.process(params);
+            const handler = new GenerateBundleHandler.default();
+            // The handler should succeed
+            const params = Object.assign({}, ...[DEFAULT_PARAMTERS]);
+            await handler.process(params);
         } catch (e) {
             error = e;
             Imperative.console.error(`Error experienced: ${e.message}`);

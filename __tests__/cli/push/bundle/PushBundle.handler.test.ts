@@ -25,10 +25,10 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
     profiles: {
         get: (type: string) => {
             if (type === "cics-deploy") {
-              return undefined;
+                return undefined;
             }
             if (type === "zosmf") {
-              return undefined;
+                return undefined;
             }
             return {};
         }
@@ -72,42 +72,42 @@ describe("bundle Handler", () => {
 });
 
 function getCommonParms(): IHandlerParameters {
-  const parms = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  parms.arguments.name = undefined;
-  parms.arguments.targetdir = undefined;
-  parms.arguments["cics-deploy-profile"] = undefined;
-  parms.arguments.cicsplex = undefined;
-  parms.arguments.scope = undefined;
-  parms.arguments.resgroup = undefined;
-  parms.arguments.csdgroup = undefined;
-  parms.arguments.timeout = undefined;
-  parms.arguments.cicshlq = undefined;
-  parms.arguments.cpsmhlq = undefined;
-  parms.arguments.targetstate = undefined;
-  parms.arguments.jobcard = undefined;
-  parms.arguments.verbose = undefined;
+    const parms = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+    parms.arguments.name = undefined;
+    parms.arguments.targetdir = undefined;
+    parms.arguments["cics-deploy-profile"] = undefined;
+    parms.arguments.cicsplex = undefined;
+    parms.arguments.scope = undefined;
+    parms.arguments.resgroup = undefined;
+    parms.arguments.csdgroup = undefined;
+    parms.arguments.timeout = undefined;
+    parms.arguments.cicshlq = undefined;
+    parms.arguments.cpsmhlq = undefined;
+    parms.arguments.targetstate = undefined;
+    parms.arguments.jobcard = undefined;
+    parms.arguments.verbose = undefined;
 
-  return parms;
+    return parms;
 }
 
 async function testError(parms: IHandlerParameters, result: string) {
 
-  const currentDir = process.cwd();
-  process.chdir("__tests__/__resources__/ExampleBundle01");
+    const currentDir = process.cwd();
+    process.chdir("__tests__/__resources__/ExampleBundle01");
 
-  let err: Error;
-  try {
-    const handler = new PushBundleHandler.default();
-    await handler.process(parms);
-  } catch (e) {
-    err = e;
-  }
-  process.chdir(currentDir);
-  expectImperativeErrorWithMessage(err, result);
+    let err: Error;
+    try {
+        const handler = new PushBundleHandler.default();
+        await handler.process(parms);
+    } catch (e) {
+        err = e;
+    }
+    process.chdir(currentDir);
+    expectImperativeErrorWithMessage(err, result);
 }
 
 function expectImperativeErrorWithMessage(err: any, message: string) {
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(message);
+    expect(err).toBeDefined();
+    expect(err).toBeInstanceOf(ImperativeError);
+    expect(err.message).toContain(message);
 }

@@ -32,19 +32,19 @@ export default class GenerateBundleHandler extends BundleParentHandler implement
      * @memberof DeployBundleHandler
      */
     public async performAction(params: IHandlerParameters): Promise<string> {
-      const autobundler = new AutoBundler(process.cwd(), params);
-      if (params.arguments.nosave !== "true") {
-        autobundler.save();
-      }
+        const autobundler = new AutoBundler(process.cwd(), params);
+        if (params.arguments.nosave !== "true") {
+            autobundler.save();
+        }
 
-      // Create a response message
-      let msg;
-      if (autobundler.getBundle().getId() === undefined) {
-        msg = "Anonymous CICS Bundle generated";
-      }
-      else {
-        msg = 'CICS Bundle generated with bundleid "' + autobundler.getBundle().getId() + '"';
-      }
-      return msg;
+        // Create a response message
+        let msg;
+        if (autobundler.getBundle().getId() === undefined) {
+            msg = "Anonymous CICS Bundle generated";
+        }
+        else {
+            msg = 'CICS Bundle generated with bundleid "' + autobundler.getBundle().getId() + '"';
+        }
+        return msg;
     }
 }

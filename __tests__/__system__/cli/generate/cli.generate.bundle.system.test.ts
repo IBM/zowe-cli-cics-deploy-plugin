@@ -86,7 +86,8 @@ describe("cics-deploy generate bundle", () => {
         });
 
         it("should generate a bundle using values supplied when there's no package.json", async () => {
-            await testBundleGenerateWorks(["--bundleid", "mybundle", "--nodejsapp", "myapp", "--startscript", "server.js"], "myapp", NO_PACKAGE_JSON_APP);
+            await testBundleGenerateWorks(["--bundleid", "mybundle", "--nodejsapp", "myapp", "--startscript", "server.js"],
+                "myapp", NO_PACKAGE_JSON_APP);
         });
 
         it("should return an error if invalid bundle version is supplied", async () => {

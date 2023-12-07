@@ -24,7 +24,7 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     profiles: {
         get: (type: string) => {
             if (profileError === true) {
-              throw new Error("Profile Error");
+                throw new Error("Profile Error");
             }
             return { host: "testname", user: "testuser", password: "testpwd" };
         }
@@ -58,16 +58,19 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
 };
 
 
-let createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementation(() => ({}));
-let listSpy = jest.spyOn(List, "allMembers").mockImplementation(() => ({}));
-let submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() => ({}));
-let profileError = false;
+let createSpy : jest.SpyInstance;
+let listSpy : jest.SpyInstance;
+let submitSpy : jest.SpyInstance;
+let profileError : boolean;
 
 describe("BundleDeployer01", () => {
 
     beforeEach(() => {
+        // @ts-ignore
         createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementation(() => ({}));
+        // @ts-ignore
         listSpy = jest.spyOn(List, "allMembers").mockImplementation(() => ( { val: "DFHDPLOY EYU9ABSI" }));
+        // @ts-ignore
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() => ({}));
         profileError = false;
     });
@@ -110,16 +113,20 @@ describe("BundleDeployer01", () => {
         expect(listSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if cpsmhlq not found", async () => {
+        //        listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val1: "DFHDPLOY"}))
+        // @ts-ignore
         listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val1: "DFHDPLOY"}))
-                                                .mockImplementationOnce(() => { throw new Error( "Injected CPSMHLQ error" ); });
+            .mockImplementationOnce(() => { throw new Error( "Injected CPSMHLQ error" ); });
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
         expect(listSpy).toHaveBeenCalledTimes(2);
     });
     it("should complain if cpsmhlq not found2", async () => {
+        // @ts-ignore
         listSpy = jest.spyOn(List, "allMembers").mockImplementationOnce(() => ( { val: "DFHDPLOY" }))
-                                                .mockImplementationOnce(() => ( { val: "wibble" }));
+        // @ts-ignore
+            .mockImplementationOnce(() => ( { val: "wibble" }));
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
@@ -135,21 +142,23 @@ describe("BundleDeployer01", () => {
     });
     it("should update the progress bar", async () => {
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce((session: any, jcl: string, parms: any) => {
-                parms.task.statusMessage = "Waiting for JOB12345 to enter OUTPUT";
-                parms.task.stageName = TaskStage.IN_PROGRESS;
-                const expectedMsg = "Running DFHDPLOY (DEPLOY), jobid JOB12345";
-                // wait 1.5 seconds
-                return new Promise((resolve, reject) => {
-                  setTimeout(() => {
+            parms.task.statusMessage = "Waiting for JOB12345 to enter OUTPUT";
+            parms.task.stageName = TaskStage.IN_PROGRESS;
+            const expectedMsg = "Running DFHDPLOY (DEPLOY), jobid JOB12345";
+            // wait 1.5 seconds
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
                     // Now check that the status message has been updated by the progress bar processing
                     if (parms.task.statusMessage !== expectedMsg) {
-                      throw new Error("Failed to find the expected message. Got: '" + parms.task.statusMessage + "' expected '" +
+                        throw new Error("Failed to find the expected message. Got: '" + parms.task.statusMessage + "' expected '" +
                       expectedMsg + "'");
                     }
+                    // @ts-ignore
                     resolve();
-                  }, 1500);
-                });
-              });
+                // eslint-disable-next-line no-magic-numbers
+                }, 1500);
+            });
+        });
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
@@ -158,15 +167,16 @@ describe("BundleDeployer01", () => {
     });
     it("should include the JOBID in an error", async () => {
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementationOnce((session: any, jcl: string, parms: any) => {
-                parms.task.statusMessage = "Waiting for JOB12345 to enter OUTPUT";
-                parms.task.stageName = TaskStage.IN_PROGRESS;
-                // wait 1.5 seconds
-                return new Promise((resolve, reject) => {
-                  setTimeout(() => {
+            parms.task.statusMessage = "Waiting for JOB12345 to enter OUTPUT";
+            parms.task.stageName = TaskStage.IN_PROGRESS;
+            // wait 1.5 seconds
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
                     reject(new Error("Injected submit error"));
-                  }, 1500);
-                });
-              });
+                // eslint-disable-next-line no-magic-numbers
+                }, 1500);
+            });
+        });
         await runDeployTestWithError();
 
         expect(createSpy).toHaveBeenCalledTimes(1);
@@ -243,6 +253,7 @@ describe("BundleDeployer01", () => {
     it("should generate deploy JCL with neither csdgroup nor resgroup", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         await testDeployJCL(parms);
@@ -250,6 +261,7 @@ describe("BundleDeployer01", () => {
     it("should generate deploy JCL for csdgroup", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.csdgroup = "12345678";
@@ -258,6 +270,7 @@ describe("BundleDeployer01", () => {
     it("should generate deploy JCL for csdgroup with timeout", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.csdgroup = "12345678";
@@ -267,6 +280,7 @@ describe("BundleDeployer01", () => {
     it("should generate deploy JCL for resgroup", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -275,6 +289,7 @@ describe("BundleDeployer01", () => {
     it("should generate deploy JCL for resgroup with timeout", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -284,6 +299,7 @@ describe("BundleDeployer01", () => {
     it("should support multi-line jobcard", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -294,6 +310,7 @@ describe("BundleDeployer01", () => {
     it("should support multi-line jobcard with embedded new lines", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -303,6 +320,7 @@ describe("BundleDeployer01", () => {
     it("should support long line jobcard", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -312,6 +330,7 @@ describe("BundleDeployer01", () => {
     it("should support really long line jobcard", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -323,6 +342,7 @@ describe("BundleDeployer01", () => {
     it("should fail with overlong jobcard", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -331,9 +351,9 @@ describe("BundleDeployer01", () => {
                                   "73CHARS=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1";
         let err: Error;
         try {
-          await testDeployJCL(parms);
+            await testDeployJCL(parms);
         } catch (e) {
-          err = e;
+            err = e;
         }
         expect(err).toBeDefined();
         expect(err.message).toMatchSnapshot();
@@ -341,6 +361,7 @@ describe("BundleDeployer01", () => {
     it("tolerate embedded quote", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -350,6 +371,7 @@ describe("BundleDeployer01", () => {
     it("tolerate embedded single quote", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -359,6 +381,7 @@ describe("BundleDeployer01", () => {
     it("tolerate quotes around jobcard", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -368,6 +391,7 @@ describe("BundleDeployer01", () => {
     it("tolerate single quotes around jobcard", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -377,6 +401,7 @@ describe("BundleDeployer01", () => {
     it("tolerate quotes around jobcard with embedded quote", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -386,6 +411,7 @@ describe("BundleDeployer01", () => {
     it("tolerate single quotes around jobcard with embedded single quote", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -395,6 +421,7 @@ describe("BundleDeployer01", () => {
     it("should tolerate a single leading slash for jobcard", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.jobcard = "/DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT";
@@ -402,6 +429,7 @@ describe("BundleDeployer01", () => {
     });
     it("should support long bundledir", async () => {
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -414,6 +442,7 @@ describe("BundleDeployer01", () => {
     });
     it("should tolerate bundledir with extra slasshes", async () => {
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.bundledir = "//bundledir/with/extra//slashes";
@@ -422,6 +451,7 @@ describe("BundleDeployer01", () => {
     it("should generate deploy JCL for AVAILABLE", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.targetstate = "AVAILABLE";
@@ -431,6 +461,7 @@ describe("BundleDeployer01", () => {
     it("should generate deploy JCL for ENABLED", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.targetstate = "ENABLED";
@@ -440,6 +471,7 @@ describe("BundleDeployer01", () => {
     it("should generate deploy JCL for DISABLED", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.targetstate = "DISABLED";
@@ -449,6 +481,7 @@ describe("BundleDeployer01", () => {
     it("should generate deploy JCL for mixed case", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.targetstate = "disabled";
@@ -458,6 +491,7 @@ describe("BundleDeployer01", () => {
     it("should support verbose=true output for deploy", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.targetstate = "disabled";
@@ -468,6 +502,7 @@ describe("BundleDeployer01", () => {
     it("should support verbose=false output for deploy", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.targetstate = "disabled";
@@ -477,6 +512,7 @@ describe("BundleDeployer01", () => {
     });
     it("should support long description", async () => {
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.description = "1234567890123456789012345678901234567890123456789012345678";
@@ -487,6 +523,7 @@ describe("BundleDeployer01", () => {
     it("should generate undeploy JCL with neither csdgroup nor resgroup", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForUndeployTests(parms);
         await testUndeployJCL(parms);
@@ -494,6 +531,7 @@ describe("BundleDeployer01", () => {
     it("should generate undeploy JCL for csdgroup", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForUndeployTests(parms);
         parms.arguments.csdgroup = "12345678";
@@ -502,6 +540,7 @@ describe("BundleDeployer01", () => {
     it("should generate undeploy JCL for csdgroup with timeout", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForUndeployTests(parms);
         parms.arguments.csdgroup = "12345678";
@@ -511,6 +550,7 @@ describe("BundleDeployer01", () => {
     it("should generate undeploy JCL for resgroup", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForUndeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -519,6 +559,7 @@ describe("BundleDeployer01", () => {
     it("should generate undeploy JCL for resgroup with timeout", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForUndeployTests(parms);
         parms.arguments.resgroup = "12345678";
@@ -528,6 +569,7 @@ describe("BundleDeployer01", () => {
     it("should generate undeploy JCL for UNAVAILABLE", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForUndeployTests(parms);
         parms.arguments.targetstate = "UNAVAILABLE";
@@ -537,6 +579,7 @@ describe("BundleDeployer01", () => {
     it("should generate undeploy JCL for DISABLED", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForUndeployTests(parms);
         parms.arguments.targetstate = "DISABLED";
@@ -546,6 +589,7 @@ describe("BundleDeployer01", () => {
     it("should generate undeploy JCL for DISCARDED", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForUndeployTests(parms);
         parms.arguments.targetstate = "DISCARDED";
@@ -555,6 +599,7 @@ describe("BundleDeployer01", () => {
     it("should generate undeploy JCL for mixed case", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForUndeployTests(parms);
         parms.arguments.targetstate = "discarded";
@@ -564,6 +609,7 @@ describe("BundleDeployer01", () => {
     it("should support verbose=true output for undeploy", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForUndeployTests(parms);
         parms.arguments.targetstate = "disabled";
@@ -574,6 +620,7 @@ describe("BundleDeployer01", () => {
     it("should support verbose=false output for undeploy", async () => {
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForUndeployTests(parms);
         parms.arguments.targetstate = "disabled";
@@ -586,6 +633,7 @@ describe("BundleDeployer01", () => {
         submitSpy.mockImplementationOnce(() => [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
 
         let parms: IHandlerParameters;
+        // eslint-disable-next-line prefer-const
         parms = DEFAULT_PARAMTERS;
         setCommonParmsForDeployTests(parms);
         parms.arguments.csdgroup = "12345678";
@@ -602,105 +650,109 @@ describe("BundleDeployer01", () => {
 });
 
 async function runDeployTestWithError() {
-  let parms: IHandlerParameters;
-  parms = DEFAULT_PARAMTERS;
-  setCommonParmsForDeployTests(parms);
-  parms.arguments.csdgroup = "12345678";
+    let parms: IHandlerParameters;
+    // eslint-disable-next-line prefer-const
+    parms = DEFAULT_PARAMTERS;
+    setCommonParmsForDeployTests(parms);
+    parms.arguments.csdgroup = "12345678";
 
-  const bd = new BundleDeployer(parms);
+    const bd = new BundleDeployer(parms);
 
-  let err: Error;
-  try {
-    const response = await bd.deployBundle();
-  } catch (e) {
-    err = e;
-  }
-  expect(err).toBeDefined();
-  expect(err.message).toMatchSnapshot();
+    let err: Error;
+    try {
+        const response = await bd.deployBundle();
+    } catch (e) {
+        err = e;
+    }
+    expect(err).toBeDefined();
+    expect(err.message).toMatchSnapshot();
 }
 
 async function runUndeployTestWithError() {
-  let parms: IHandlerParameters;
-  parms = DEFAULT_PARAMTERS;
-  setCommonParmsForUndeployTests(parms);
-  parms.arguments.csdgroup = "12345678";
+    let parms: IHandlerParameters;
+    // eslint-disable-next-line prefer-const
+    parms = DEFAULT_PARAMTERS;
+    setCommonParmsForUndeployTests(parms);
+    parms.arguments.csdgroup = "12345678";
 
-  const bd = new BundleDeployer(parms);
+    const bd = new BundleDeployer(parms);
 
-  let err: Error;
-  try {
-    const response = await bd.undeployBundle();
-  } catch (e) {
-    err = e;
-  }
-  expect(err).toBeDefined();
-  expect(err.message).toMatchSnapshot();
+    let err: Error;
+    try {
+        const response = await bd.undeployBundle();
+    } catch (e) {
+        err = e;
+    }
+    expect(err).toBeDefined();
+    expect(err.message).toMatchSnapshot();
 }
 
 async function runDeployTest() {
-  let parms: IHandlerParameters;
-  parms = DEFAULT_PARAMTERS;
-  setCommonParmsForDeployTests(parms);
-  parms.arguments.csdgroup = "12345678";
+    let parms: IHandlerParameters;
+    // eslint-disable-next-line prefer-const
+    parms = DEFAULT_PARAMTERS;
+    setCommonParmsForDeployTests(parms);
+    parms.arguments.csdgroup = "12345678";
 
-  const bd = new BundleDeployer(parms);
-  const response = await bd.deployBundle();
-  expect(response).toMatchSnapshot();
+    const bd = new BundleDeployer(parms);
+    const response = await bd.deployBundle();
+    expect(response).toMatchSnapshot();
 }
 
 async function runUndeployTest() {
-  let parms: IHandlerParameters;
-  parms = DEFAULT_PARAMTERS;
-  setCommonParmsForUndeployTests(parms);
-  parms.arguments.csdgroup = "12345678";
+    let parms: IHandlerParameters;
+    // eslint-disable-next-line prefer-const
+    parms = DEFAULT_PARAMTERS;
+    setCommonParmsForUndeployTests(parms);
+    parms.arguments.csdgroup = "12345678";
 
-  const bd = new BundleDeployer(parms);
-  const response = await bd.undeployBundle();
-  expect(response).toMatchSnapshot();
+    const bd = new BundleDeployer(parms);
+    const response = await bd.undeployBundle();
+    expect(response).toMatchSnapshot();
 }
 
 function setCommonParmsForDeployTests(parms: IHandlerParameters) {
-  setCommonParmsForUndeployTests(parms);
-  parms.arguments.bundledir = "1234567890";
-  parms.arguments.targetstate = "ENABLED";
+    setCommonParmsForUndeployTests(parms);
+    parms.arguments.bundledir = "1234567890";
+    parms.arguments.targetstate = "ENABLED";
 }
 
 function setCommonParmsForUndeployTests(parms: IHandlerParameters) {
-  parms.arguments.cicshlq = "12345678901234567890123456789012345";
-  parms.arguments.cpsmhlq = "abcde12345abcde12345abcde12345abcde";
-  parms.arguments.cicsplex = "12345678";
-  parms.arguments.scope = "12345678";
-  parms.arguments.csdgroup = undefined;
-  parms.arguments.resgroup = undefined;
-  parms.arguments.timeout = undefined;
-  parms.arguments.name = "12345678";
-  parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT";
-  parms.arguments.targetstate = "DISCARDED";
-  parms.arguments.description = undefined;
-  parms.arguments.zh = undefined;
-  parms.arguments.zp = undefined;
-  parms.arguments.zu = undefined;
-  parms.arguments.zpw = undefined;
-  parms.arguments.zru = undefined;
-  parms.arguments.zbp = undefined;
+    parms.arguments.cicshlq = "12345678901234567890123456789012345";
+    parms.arguments.cpsmhlq = "abcde12345abcde12345abcde12345abcde";
+    parms.arguments.cicsplex = "12345678";
+    parms.arguments.scope = "12345678";
+    parms.arguments.csdgroup = undefined;
+    parms.arguments.resgroup = undefined;
+    parms.arguments.timeout = undefined;
+    parms.arguments.name = "12345678";
+    parms.arguments.jobcard = "//DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT";
+    parms.arguments.targetstate = "DISCARDED";
+    parms.arguments.description = undefined;
+    parms.arguments.zh = undefined;
+    parms.arguments.zp = undefined;
+    parms.arguments.zu = undefined;
+    parms.arguments.zpw = undefined;
+    parms.arguments.zru = undefined;
+    parms.arguments.zbp = undefined;
 }
 
 async function testDeployJCL(parms: IHandlerParameters) {
-  submitSpy.mockImplementationOnce(() => [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
+    submitSpy.mockImplementationOnce(() => [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I"}] );
 
-  const bd = new BundleDeployer(parms);
-  const response = await bd.deployBundle();
+    const bd = new BundleDeployer(parms);
+    const response = await bd.deployBundle();
 
-  // Check the generated JCL
-  expect(submitSpy.mock.calls[submitSpy.mock.calls.length - 1][1]).toMatchSnapshot();
+    // Check the generated JCL
+    expect(submitSpy.mock.calls[submitSpy.mock.calls.length - 1][1]).toMatchSnapshot();
 }
 
 async function testUndeployJCL(parms: IHandlerParameters) {
-  submitSpy.mockImplementationOnce(() => [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2037I"}] );
+    submitSpy.mockImplementationOnce(() => [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2037I"}] );
 
-  const bd = new BundleDeployer(parms);
-  const response = await bd.undeployBundle();
+    const bd = new BundleDeployer(parms);
+    const response = await bd.undeployBundle();
 
-  // Check the generated JCL
-  expect(submitSpy.mock.calls[submitSpy.mock.calls.length - 1][1]).toMatchSnapshot();
+    // Check the generated JCL
+    expect(submitSpy.mock.calls[submitSpy.mock.calls.length - 1][1]).toMatchSnapshot();
 }

@@ -102,10 +102,10 @@ export class TestEnvironment {
     private static readonly DEFAULT_PROPERTIES_LOCATION = nodePath.resolve(__dirname + "/../../__resources__/properties/") + "/";
 
     /**
-     *  Load the properties file specified with system test configuration information.
-     *  @param filePath - Specify the filePath of the properties file. Leave empty to use the properties
-     *   file specified in the process.env (see gulp tasks for more information).
-     *  @returns  The parsed test properties.
+     * Load the properties file specified with system test configuration information.
+     * @param filePath - Specify the filePath of the properties file. Leave empty to use the properties
+     * file specified in the process.env (see gulp tasks for more information).
+     * @returns  The parsed test properties.
      */
     private static loadSystemTestProperties(filePath: string = null,
                                             workingDir: string = process.cwd()): ITestPropertiesSchema {

@@ -33,8 +33,8 @@ export default class DeployBundleHandler extends BundleParentHandler implements 
      */
     public async performAction(params: IHandlerParameters): Promise<string> {
 
-       const bdep = new BundleDeployer(params);
-       const msg = await bdep.deployBundle();
-       return msg;
+        const bdep = new BundleDeployer(params);
+        const msg = await bdep.deployBundle();
+        return msg;
     }
 }

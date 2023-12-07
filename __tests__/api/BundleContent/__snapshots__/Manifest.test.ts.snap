@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Manifest01 set a long  bundleId 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"1234567890123456789012345678901234567890123456789012345678901234\\",\\"bundleMajorVer\\":\\"10\\",\\"bundleMinorVer\\":\\"11\\",\\"bundleMicroVer\\":\\"12\\",\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"path1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"path2\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"}]}}"`;
+exports[`Manifest01 set a long  bundleId 1`] = `"{"manifest":{"xmlns":"http://www.ibm.com/xmlns/prod/cics/bundle","bundleVersion":"1","bundleRelease":"2","id":"1234567890123456789012345678901234567890123456789012345678901234","bundleMajorVer":"10","bundleMinorVer":"11","bundleMicroVer":"12","define":[{"name":"name1","type":"type1","path":"path1"},{"name":"name2","type":"type2","path":"path2"},{"name":"name3","type":"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP","path":"nodejsapps/Test.nodejsapp"}]}}"`;
 
 exports[`Manifest01 set a long  bundleId 2`] = `"1234567890123456789012345678901234567890123456789012345678901234"`;
 
@@ -8,7 +8,7 @@ exports[`Manifest01 set a null bundleId 1`] = `"BundleId not set."`;
 
 exports[`Manifest01 set a null version number 1`] = `"Invalid Bundle major version specified: undefined."`;
 
-exports[`Manifest01 set a valid version number 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"ThisIsAnId\\",\\"bundleMajorVer\\":1,\\"bundleMinorVer\\":2,\\"bundleMicroVer\\":3,\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"path1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"path2\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"}]}}"`;
+exports[`Manifest01 set a valid version number 1`] = `"{"manifest":{"xmlns":"http://www.ibm.com/xmlns/prod/cics/bundle","bundleVersion":"1","bundleRelease":"2","id":"ThisIsAnId","bundleMajorVer":1,"bundleMinorVer":2,"bundleMicroVer":3,"define":[{"name":"name1","type":"type1","path":"path1"},{"name":"name2","type":"type2","path":"path2"},{"name":"name3","type":"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP","path":"nodejsapps/Test.nodejsapp"}]}}"`;
 
 exports[`Manifest01 set an invalid major version number 1`] = `"Invalid Bundle major version specified: -1."`;
 
@@ -16,17 +16,17 @@ exports[`Manifest01 set an invalid micro version number 1`] = `"Invalid Bundle m
 
 exports[`Manifest01 set an invalid minor version number 1`] = `"Invalid Bundle minor version specified: 3.4."`;
 
-exports[`Manifest01 set the bundleId 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"testingXaXBundleId\\",\\"bundleMajorVer\\":\\"10\\",\\"bundleMinorVer\\":\\"11\\",\\"bundleMicroVer\\":\\"12\\",\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"path1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"path2\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"}]}}"`;
+exports[`Manifest01 set the bundleId 1`] = `"{"manifest":{"xmlns":"http://www.ibm.com/xmlns/prod/cics/bundle","bundleVersion":"1","bundleRelease":"2","id":"testingXaXBundleId","bundleMajorVer":"10","bundleMinorVer":"11","bundleMicroVer":"12","define":[{"name":"name1","type":"type1","path":"path1"},{"name":"name2","type":"type2","path":"path2"},{"name":"name3","type":"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP","path":"nodejsapps/Test.nodejsapp"}]}}"`;
 
 exports[`Manifest01 set the bundleId 2`] = `"testingXaXBundleId"`;
 
-exports[`Manifest01 should create an empty manifest from empty META-INF dir 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":1,\\"bundleRelease\\":0}}"`;
+exports[`Manifest01 should create an empty manifest from empty META-INF dir 1`] = `"{"manifest":{"xmlns":"http://www.ibm.com/xmlns/prod/cics/bundle","bundleVersion":1,"bundleRelease":0}}"`;
 
-exports[`Manifest01 should create an empty manifest from empty dir 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":1,\\"bundleRelease\\":0}}"`;
+exports[`Manifest01 should create an empty manifest from empty dir 1`] = `"{"manifest":{"xmlns":"http://www.ibm.com/xmlns/prod/cics/bundle","bundleVersion":1,"bundleRelease":0}}"`;
 
-exports[`Manifest01 should read an existing manifest 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"ThisIsAnId\\",\\"bundleMajorVer\\":\\"10\\",\\"bundleMinorVer\\":\\"11\\",\\"bundleMicroVer\\":\\"12\\",\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"path1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"path2\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"}]}}"`;
+exports[`Manifest01 should read an existing manifest 1`] = `"{"manifest":{"xmlns":"http://www.ibm.com/xmlns/prod/cics/bundle","bundleVersion":"1","bundleRelease":"2","id":"ThisIsAnId","bundleMajorVer":"10","bundleMinorVer":"11","bundleMicroVer":"12","define":[{"name":"name1","type":"type1","path":"path1"},{"name":"name2","type":"type2","path":"path2"},{"name":"name3","type":"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP","path":"nodejsapps/Test.nodejsapp"}]}}"`;
 
 exports[`Manifest01 should read an existing manifest 2`] = `
-"<manifest xmlns=\\"http://www.ibm.com/xmlns/prod/cics/bundle\\" bundleVersion=\\"1\\" bundleRelease=\\"2\\" id=\\"ThisIsAnId\\" bundleMajorVer=\\"10\\" bundleMinorVer=\\"11\\" bundleMicroVer=\\"12\\"><define name=\\"name1\\" type=\\"type1\\" path=\\"path1\\"></define><define name=\\"name2\\" type=\\"type2\\" path=\\"path2\\"></define><define name=\\"name3\\" type=\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\" path=\\"nodejsapps/Test.nodejsapp\\"></define></manifest>
+"<manifest xmlns="http://www.ibm.com/xmlns/prod/cics/bundle" bundleVersion="1" bundleRelease="2" id="ThisIsAnId" bundleMajorVer="10" bundleMinorVer="11" bundleMicroVer="12"><define name="name1" type="type1" path="path1"></define><define name="name2" type="type2" path="path2"></define><define name="name3" type="http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP" path="nodejsapps/Test.nodejsapp"></define></manifest>
 "
 `;

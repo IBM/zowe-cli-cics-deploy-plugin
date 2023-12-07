@@ -25,10 +25,10 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
     profiles: {
         get: (type: string) => {
             if (type === "cics-deploy") {
-              return undefined;
+                return undefined;
             }
             if (type === "zosmf") {
-              return undefined;
+                return undefined;
             }
             return {};
         }
@@ -76,8 +76,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -100,8 +100,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -132,8 +132,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -150,8 +150,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -171,8 +171,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -192,8 +192,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -214,8 +214,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -229,8 +229,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -250,8 +250,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -271,17 +271,19 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
         expectImperativeErrorWithMessage(err, "--timeout parameter is not an integer");
     });
     it("should complain with non-integer timeout", async () => {
+        // eslint-disable-next-line no-magic-numbers
         await testTimeoutError(1.1, "--timeout parameter is not an integer");
     });
     it("should complain with too large timeout", async () => {
+        // eslint-disable-next-line no-magic-numbers
         await testTimeoutError(1801, "--timeout parameter is too large");
     });
     it("should complain with too small timeout", async () => {
@@ -298,8 +300,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -322,8 +324,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -346,8 +348,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -382,8 +384,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -393,7 +395,8 @@ describe("bundle Handler", () => {
         await testTargetStateDeployError("", "--targetstate parameter is empty");
     });
     it("should complain with invalid targetstate parameter", async () => {
-        await testTargetStateDeployError("Wibble", "--targetstate has invalid value. Found WIBBLE but expected one of DISABLED, ENABLED or AVAILABLE.");
+        await testTargetStateDeployError("Wibble",
+            "--targetstate has invalid value. Found WIBBLE but expected one of DISABLED, ENABLED or AVAILABLE.");
     });
     it("should complain with invalid type for verbose parameter", async () => {
 
@@ -404,8 +407,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -420,8 +423,8 @@ describe("bundle Handler", () => {
 
         let err: Error;
         try {
-          const handler = new DeployBundleHandler.default();
-          await handler.process(params);
+            const handler = new DeployBundleHandler.default();
+            await handler.process(params);
         } catch (e) {
             err = e;
         }
@@ -430,278 +433,278 @@ describe("bundle Handler", () => {
 });
 
 function setCommonParmsForNameTests(parms: IHandlerParameters) {
-  parms.arguments.name = undefined;
-  parms.arguments.bundledir = undefined;
-  parms.arguments["cics-deploy-profile"] = undefined;
-  parms.arguments.cicsplex = undefined;
-  parms.arguments.scope = undefined;
-  parms.arguments.resgroup = undefined;
-  parms.arguments.csdgroup = undefined;
-  parms.arguments.timeout = undefined;
-  parms.arguments.cicshlq = undefined;
-  parms.arguments.cpsmhlq = undefined;
-  parms.arguments.targetstate = undefined;
-  parms.arguments.jobcard = undefined;
-  parms.arguments.verbose = undefined;
-  parms.arguments.description = undefined;
+    parms.arguments.name = undefined;
+    parms.arguments.bundledir = undefined;
+    parms.arguments["cics-deploy-profile"] = undefined;
+    parms.arguments.cicsplex = undefined;
+    parms.arguments.scope = undefined;
+    parms.arguments.resgroup = undefined;
+    parms.arguments.csdgroup = undefined;
+    parms.arguments.timeout = undefined;
+    parms.arguments.cicshlq = undefined;
+    parms.arguments.cpsmhlq = undefined;
+    parms.arguments.targetstate = undefined;
+    parms.arguments.jobcard = undefined;
+    parms.arguments.verbose = undefined;
+    parms.arguments.description = undefined;
 }
 
 async function testNameError(name: string, result: string) {
-  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  setCommonParmsForNameTests(params);
-  params.arguments.name = name;
+    const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+    setCommonParmsForNameTests(params);
+    params.arguments.name = name;
 
-  let err: Error;
-  try {
-    const handler = new DeployBundleHandler.default();
-    await handler.process(params);
-  } catch (e) {
-    err = e;
-  }
-  expectImperativeErrorWithMessage(err, result);
+    let err: Error;
+    try {
+        const handler = new DeployBundleHandler.default();
+        await handler.process(params);
+    } catch (e) {
+        err = e;
+    }
+    expectImperativeErrorWithMessage(err, result);
 }
 
 function setCommonParmsForBundledirTests(parms: IHandlerParameters) {
-  setCommonParmsForNameTests(parms);
-  parms.arguments.name = "WIBBLE";
+    setCommonParmsForNameTests(parms);
+    parms.arguments.name = "WIBBLE";
 }
 
 async function testBundledirError(bundledir: string, result: string) {
-  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  setCommonParmsForBundledirTests(params);
-  params.arguments.bundledir = bundledir;
+    const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+    setCommonParmsForBundledirTests(params);
+    params.arguments.bundledir = bundledir;
 
-  let err: Error;
-  try {
-    const handler = new DeployBundleHandler.default();
-    await handler.process(params);
-  } catch (e) {
-    err = e;
-  }
-  expectImperativeErrorWithMessage(err, result);
+    let err: Error;
+    try {
+        const handler = new DeployBundleHandler.default();
+        await handler.process(params);
+    } catch (e) {
+        err = e;
+    }
+    expectImperativeErrorWithMessage(err, result);
 }
 
 function setCommonParmsForProfileTests(parms: IHandlerParameters) {
-  setCommonParmsForBundledirTests(parms);
-  parms.arguments.bundledir = "wibble";
+    setCommonParmsForBundledirTests(parms);
+    parms.arguments.bundledir = "wibble";
 }
 
 async function testProfileError(profile: string, result: string) {
-  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  setCommonParmsForProfileTests(params);
-  params.arguments["cics-deploy-profile"] = profile;
+    const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+    setCommonParmsForProfileTests(params);
+    params.arguments["cics-deploy-profile"] = profile;
 
-  let err: Error;
-  try {
-    const handler = new DeployBundleHandler.default();
-    await handler.process(params);
-  } catch (e) {
-    err = e;
-  }
-  expectImperativeErrorWithMessage(err, result);
+    let err: Error;
+    try {
+        const handler = new DeployBundleHandler.default();
+        await handler.process(params);
+    } catch (e) {
+        err = e;
+    }
+    expectImperativeErrorWithMessage(err, result);
 }
 
 function setCommonParmsForCicsplexTests(parms: IHandlerParameters) {
-  setCommonParmsForProfileTests(parms);
-  parms.arguments.scope = "wibblE";
+    setCommonParmsForProfileTests(parms);
+    parms.arguments.scope = "wibblE";
 }
 
 async function testCicsplexError(cicsplex: string, result: string) {
-  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  setCommonParmsForCicsplexTests(params);
-  params.arguments.cicsplex = cicsplex;
+    const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+    setCommonParmsForCicsplexTests(params);
+    params.arguments.cicsplex = cicsplex;
 
-  let err: Error;
-  try {
-    const handler = new DeployBundleHandler.default();
-    await handler.process(params);
-  } catch (e) {
-    err = e;
-  }
-  expectImperativeErrorWithMessage(err, result);
+    let err: Error;
+    try {
+        const handler = new DeployBundleHandler.default();
+        await handler.process(params);
+    } catch (e) {
+        err = e;
+    }
+    expectImperativeErrorWithMessage(err, result);
 }
 
 function setCommonParmsForScopeTests(parms: IHandlerParameters) {
-  setCommonParmsForProfileTests(parms);
-  parms.arguments["cics-deploy-profile"] = undefined;
-  parms.arguments.cicsplex = "Wibble";
+    setCommonParmsForProfileTests(parms);
+    parms.arguments["cics-deploy-profile"] = undefined;
+    parms.arguments.cicsplex = "Wibble";
 }
 
 async function testScopeError(scope: string, result: string) {
-  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  setCommonParmsForScopeTests(params);
-  params.arguments.scope = scope;
+    const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+    setCommonParmsForScopeTests(params);
+    params.arguments.scope = scope;
 
-  let err: Error;
-  try {
-    const handler = new DeployBundleHandler.default();
-    await handler.process(params);
-  } catch (e) {
-    err = e;
-  }
-  expectImperativeErrorWithMessage(err, result);
+    let err: Error;
+    try {
+        const handler = new DeployBundleHandler.default();
+        await handler.process(params);
+    } catch (e) {
+        err = e;
+    }
+    expectImperativeErrorWithMessage(err, result);
 }
 
 function setCommonParmsForCsdgroupTests(parms: IHandlerParameters) {
-  setCommonParmsForScopeTests(parms);
-  parms.arguments.scope = "wibblE";
+    setCommonParmsForScopeTests(parms);
+    parms.arguments.scope = "wibblE";
 }
 
 async function testCsdgroupError(csdgroup: string, result: string) {
-  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  setCommonParmsForResgroupTests(params);
-  params.arguments.csdgroup = csdgroup;
+    const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+    setCommonParmsForResgroupTests(params);
+    params.arguments.csdgroup = csdgroup;
 
-  let err: Error;
-  try {
-    const handler = new DeployBundleHandler.default();
-    await handler.process(params);
-  } catch (e) {
-    err = e;
-  }
-  expectImperativeErrorWithMessage(err, result);
+    let err: Error;
+    try {
+        const handler = new DeployBundleHandler.default();
+        await handler.process(params);
+    } catch (e) {
+        err = e;
+    }
+    expectImperativeErrorWithMessage(err, result);
 }
 
 function setCommonParmsForResgroupTests(parms: IHandlerParameters) {
-  setCommonParmsForCsdgroupTests(parms);
+    setCommonParmsForCsdgroupTests(parms);
 }
 
 async function testResgroupError(resgroup: string, result: string) {
-  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  setCommonParmsForResgroupTests(params);
-  params.arguments.resgroup = resgroup;
+    const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+    setCommonParmsForResgroupTests(params);
+    params.arguments.resgroup = resgroup;
 
-  let err: Error;
-  try {
-    const handler = new DeployBundleHandler.default();
-    await handler.process(params);
-  } catch (e) {
-    err = e;
-  }
-  expectImperativeErrorWithMessage(err, result);
+    let err: Error;
+    try {
+        const handler = new DeployBundleHandler.default();
+        await handler.process(params);
+    } catch (e) {
+        err = e;
+    }
+    expectImperativeErrorWithMessage(err, result);
 }
 
 function setCommonParmsForDescriptionTests(parms: IHandlerParameters) {
-  setCommonParmsForResgroupTests(parms);
+    setCommonParmsForResgroupTests(parms);
 }
 
 async function testDescriptionError(description: string, result: string) {
-  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  setCommonParmsForDescriptionTests(params);
-  params.arguments.description = description;
+    const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+    setCommonParmsForDescriptionTests(params);
+    params.arguments.description = description;
 
-  let err: Error;
-  try {
-    const handler = new DeployBundleHandler.default();
-    await handler.process(params);
-  } catch (e) {
-    err = e;
-  }
-  expectImperativeErrorWithMessage(err, result);
+    let err: Error;
+    try {
+        const handler = new DeployBundleHandler.default();
+        await handler.process(params);
+    } catch (e) {
+        err = e;
+    }
+    expectImperativeErrorWithMessage(err, result);
 }
 
 function setCommonParmsForTimeoutTests(parms: IHandlerParameters) {
-  setCommonParmsForResgroupTests(parms);
-  parms.arguments.resgroup = "wiBBle";
+    setCommonParmsForResgroupTests(parms);
+    parms.arguments.resgroup = "wiBBle";
 }
 
 async function testTimeoutError(timeout: number, result: string) {
-  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  setCommonParmsForTimeoutTests(params);
-  params.arguments.timeout = timeout;
+    const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+    setCommonParmsForTimeoutTests(params);
+    params.arguments.timeout = timeout;
 
-  let err: Error;
-  try {
-    const handler = new DeployBundleHandler.default();
-    await handler.process(params);
-  } catch (e) {
-    err = e;
-  }
-  expectImperativeErrorWithMessage(err, (result));
+    let err: Error;
+    try {
+        const handler = new DeployBundleHandler.default();
+        await handler.process(params);
+    } catch (e) {
+        err = e;
+    }
+    expectImperativeErrorWithMessage(err, (result));
 }
 
 function setCommonParmsForCicsHLQTests(parms: IHandlerParameters) {
-  setCommonParmsForTimeoutTests(parms);
+    setCommonParmsForTimeoutTests(parms);
 }
 
 async function testCicsHLQError(cicshlq: string, result: string) {
-  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  setCommonParmsForCicsHLQTests(params);
-  params.arguments.cicshlq = cicshlq;
+    const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+    setCommonParmsForCicsHLQTests(params);
+    params.arguments.cicshlq = cicshlq;
 
-  let err: Error;
-  try {
-    const handler = new DeployBundleHandler.default();
-    await handler.process(params);
-  } catch (e) {
-    err = e;
-  }
-  expectImperativeErrorWithMessage(err, result);
+    let err: Error;
+    try {
+        const handler = new DeployBundleHandler.default();
+        await handler.process(params);
+    } catch (e) {
+        err = e;
+    }
+    expectImperativeErrorWithMessage(err, result);
 }
 
 function setCommonParmsForCpsmHLQTests(parms: IHandlerParameters) {
-  setCommonParmsForCicsHLQTests(parms);
-  parms.arguments.cicshlq = "WIBB.LE";
+    setCommonParmsForCicsHLQTests(parms);
+    parms.arguments.cicshlq = "WIBB.LE";
 }
 
 async function testCpsmHLQError(cpsmhlq: string, result: string) {
-  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  setCommonParmsForCpsmHLQTests(params);
-  params.arguments.cpsmhlq = cpsmhlq;
+    const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+    setCommonParmsForCpsmHLQTests(params);
+    params.arguments.cpsmhlq = cpsmhlq;
 
-  let err: Error;
-  try {
-    const handler = new DeployBundleHandler.default();
-    await handler.process(params);
-  } catch (e) {
-    err = e;
-  }
-  expectImperativeErrorWithMessage(err, result);
+    let err: Error;
+    try {
+        const handler = new DeployBundleHandler.default();
+        await handler.process(params);
+    } catch (e) {
+        err = e;
+    }
+    expectImperativeErrorWithMessage(err, result);
 }
 
 function setCommonParmsForJobcardTests(parms: IHandlerParameters) {
-  setCommonParmsForCpsmHLQTests(parms);
-  parms.arguments.cpsmhlq = "WI.BBLE";
-  parms.arguments.targetstate = "ENABLED";
+    setCommonParmsForCpsmHLQTests(parms);
+    parms.arguments.cpsmhlq = "WI.BBLE";
+    parms.arguments.targetstate = "ENABLED";
 }
 
 async function testJobcardError(jobcard: string, result: string) {
-  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  setCommonParmsForJobcardTests(params);
-  params.arguments.jobcard = jobcard;
+    const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+    setCommonParmsForJobcardTests(params);
+    params.arguments.jobcard = jobcard;
 
-  let err: Error;
-  try {
-    const handler = new DeployBundleHandler.default();
-    await handler.process(params);
-  } catch (e) {
-    err = e;
-  }
-  expectImperativeErrorWithMessage(err, result);
+    let err: Error;
+    try {
+        const handler = new DeployBundleHandler.default();
+        await handler.process(params);
+    } catch (e) {
+        err = e;
+    }
+    expectImperativeErrorWithMessage(err, result);
 }
 
 function setCommonParmsForTargetStateTests(parms: IHandlerParameters) {
-  setCommonParmsForJobcardTests(parms);
-  parms.arguments.targetstate = undefined;
+    setCommonParmsForJobcardTests(parms);
+    parms.arguments.targetstate = undefined;
 }
 
 async function testTargetStateDeployError(targetstate: string, result: string) {
-  const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
-  setCommonParmsForTargetStateTests(params);
-  params.arguments.targetstate = targetstate;
+    const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
+    setCommonParmsForTargetStateTests(params);
+    params.arguments.targetstate = targetstate;
 
-  let err: Error;
-  try {
-    const handler = new DeployBundleHandler.default();
-    await handler.process(params);
-  } catch (e) {
-    err = e;
-  }
-  expectImperativeErrorWithMessage(err, result);
+    let err: Error;
+    try {
+        const handler = new DeployBundleHandler.default();
+        await handler.process(params);
+    } catch (e) {
+        err = e;
+    }
+    expectImperativeErrorWithMessage(err, result);
 }
 
 function expectImperativeErrorWithMessage(err: any, message: string) {
-  expect(err).toBeDefined();
-  expect(err).toBeInstanceOf(ImperativeError);
-  expect(err.message).toContain(message);
+    expect(err).toBeDefined();
+    expect(err).toBeInstanceOf(ImperativeError);
+    expect(err.message).toContain(message);
 }

@@ -80,7 +80,7 @@ the target group of CICS regions\.
 	* Specifies the job card to use with any generated DFHDPLOY JCL\. Use this
       parameter if you need to tailor the job card and you have not set the
       \-\-cics\-deploy\-profile option\. You can separate multiple lines of the
-      jobcard with \n\.
+      jobcard with \\n\.
 
       Default value: //DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 
@@ -154,7 +154,7 @@ processing takes too long:
       * `$  zowe cics-deploy deploy bundle --name EXAMPLE --bundle-directory /u/example/bundleDir --timeout 60`
 
 *  Deploy a CICS bundle to a specific target environment by
-using specific zosmf & cics-deploy profiles:
+using specific zosmf & cics\-deploy profiles:
 
       * `$  zowe cics-deploy deploy bundle --name EXAMPLE --bundle-directory /u/example/bundleDir --cicsplex TESTPLEX --scope SCOPE --res-group BUNDGRP --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --zosmf-profile testplex --cics-deploy-profile devcics`
 
@@ -188,7 +188,7 @@ required\.
 
 *   `--nodejsapp`  | `-n` | `--nj` | `--nja` *(string)*
 
-	* The ID of the generated CICS NODEJSAPP resource, up to 32 characters\. If no
+	* The ID of the generated CICS NODEJSAPP resource, up to 32 characters\.  If no
       value is specified, a default value is created from the 'name' property in
       package\.json, or the bundleid option if specified\. If the value is too long it
       is truncated\. If it contains characters that are not supported by CICS, each
@@ -225,17 +225,17 @@ required\.
 #### Examples
 
 *  Generate a CICS bundle in the working directory, taking
-information from package.json:
+information from package\.json:
 
       * `$  zowe cics-deploy generate bundle`
 
 *  Generate a CICS bundle in the working directory, based on
-package.json but using a bundle ID of "mybundle":
+package\.json but using a bundle ID of "mybundle":
 
       * `$  zowe cics-deploy generate bundle --bundle-id mybundle`
 
 *  Generate a CICS bundle in the working directory in which a
-package.json does not exist:
+package\.json does not exist:
 
       * `$  zowe cics-deploy generate bundle --bundle-id mybundle --nodejsapp myapp --start-script server.js`
 
@@ -309,7 +309,7 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 	* Specifies the job card to use with any generated DFHDPLOY JCL\. Use this
       parameter if you need to tailor the job card and you have not set the
       \-\-cics\-deploy\-profile option\. You can separate multiple lines of the
-      jobcard with \n\.
+      jobcard with \\n\.
 
       Default value: //DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 
@@ -447,12 +447,12 @@ Push a CICS bundle from the working directory to a target CICSplex\.
 #### Examples
 
 *  Push a CICS bundle from the working directory by using
-default cics-deploy, cics, ssh and zosmf profiles:
+default cics\-deploy, cics, ssh and zosmf profiles:
 
       * `$  zowe cics-deploy push bundle --name EXAMPLE --target-directory /u/example/bundles`
 
 *  Push a CICS bundle from the working directory by using
-specific zosmf, ssh & cics-deploy profiles:
+specific zosmf, ssh & cics\-deploy profiles:
 
       * `$  zowe cics-deploy push bundle --name EXAMPLE --target-directory /u/example/bundles --zosmf-profile testplex --cics-deploy-profile devcics --ssh-profile ssh`
 
@@ -522,7 +522,7 @@ target group of CICS regions\.
 	* Specifies the job card to use with any generated DFHDPLOY JCL\. Use this
       parameter if you need to tailor the job card and you have not set the
       \-\-cics\-deploy\-profile option\. You can separate multiple lines of the
-      jobcard with \n\.
+      jobcard with \\n\.
 
       Default value: //DFHDPLOY JOB DFHDPLOY,CLASS=A,MSGCLASS=X,TIME=NOLIMIT
 
@@ -585,7 +585,7 @@ target group of CICS regions\.
 
 #### Examples
 
-*  Undeploy a CICS bundle by using the default cics-deploy and
+*  Undeploy a CICS bundle by using the default cics\-deploy and
 zosmf profiles:
 
       * `$  zowe cics-deploy undeploy bundle --name EXAMPLE`
@@ -596,12 +596,12 @@ processing takes too long:
       * `$  zowe cics-deploy undeploy bundle --name EXAMPLE --timeout 60`
 
 *  Undeploy a CICS bundle from a specific target environment by
-using specific zosmf and cics-deploy profiles:
+using specific zosmf and cics\-deploy profiles:
 
       * `$  zowe cics-deploy undeploy bundle --name EXAMPLE --cics-plex TESTPLEX --scope SCOPE --res-group BUNDGRP --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --zosmf-profile testplex --cics-deploy-profile devcics`
 
 # profiles<a name="module-profiles"></a>
-Create and manage configuration profiles
+Create and manage configuration profiles.
 ## create | cre<a name="module-create"></a>
 Create new configuration profiles.
 ### cics-deploy-profile<a name="command-cics-deploy-profile"></a>
@@ -679,21 +679,21 @@ actions\.
 
 #### Examples
 
-*  Create a cics-deploy profile called 'example1' to connect to
-a CPSM managed group of CICS regions within the TESTGRP1 scope of a cicsplex
+*  Create a cics\-deploy profile called 'example1' to connect
+to a CPSM managed group of CICS regions within the TESTGRP1 scope of a cicsplex
 named PLEX1:
 
       * `$  zowe profiles create cics-deploy-profile example1 --cicsplex PLEX1 --scope TESTGRP1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550`
 
-*  Create a cics-deploy profile called 'example2' to connect to
-the same CPSM managed group of regions, and identify a BAS resource group
+*  Create a cics\-deploy profile called 'example2' to connect
+to the same CPSM managed group of regions, and identify a BAS resource group
 BUNDGRP1 in which to store resource definitions:
 
       * `$  zowe profiles create cics-deploy-profile example2 --cicsplex PLEX1 --scope TESTGRP1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --res-group BUNDGRP1`
 
-*  Create a cics-deploy profile called 'example3' to connect to
-the same CPSM managed group of regions, and identify the default USS directory
-to which bundles should be uploaded:
+*  Create a cics\-deploy profile called 'example3' to connect
+to the same CPSM managed group of regions, and identify the default USS
+directory to which bundles should be uploaded:
 
       * `$  zowe profiles create cics-deploy-profile example3 --cicsplex PLEX1 --scope TESTGRP1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --target-directory /var/cicsts/bundles`
 
@@ -775,8 +775,8 @@ command\. By default, you will be prompted to confirm the profile removal\.
 
 *   `profileName`		 *(string)*
 
-	* Specifies the name of the cics\-deploy profile to be deleted\. You can also load
-      this profile by using the name on commands that support the
+	* Specifies the name of the cics\-deploy  profile to be deleted\. You can also
+      load this profile by using the name on commands that support the
       "\-\-cics\-deploy\-profile" option\.
 
 #### Options
@@ -784,16 +784,16 @@ command\. By default, you will be prompted to confirm the profile removal\.
 *   `--force`  *(boolean)*
 
 	* Force deletion of profile, and dependent profiles if specified\. No prompt will
-      be displayed before deletion occurs\.
+      be displayed before  deletion occurs\.
 
 #### Examples
 
-*  Delete a cics-deploy profile named profilename:
+*  Delete a cics\-deploy profile named profilename:
 
       * `$  zowe profiles delete cics-deploy-profile profilename`
 
 ## list | ls<a name="module-list"></a>
-List profiles of the type 
+List profiles of the type .
 ### cics-deploy-profiles<a name="command-cics-deploy-profiles"></a>
 Specifies the target environment for the cics\-deploy deploy and undeploy
 actions\.
@@ -806,16 +806,16 @@ actions\.
 
 *   `--show-contents`  | `--sc` *(boolean)*
 
-	* List cics\-deploy profiles and their contents\. All profile details will be
+	* List cics\-deploy  profiles  and their contents\. All profile details will be
       printed as part of command output\.
 
 #### Examples
 
-*  List profiles of type cics-deploy:
+*  List profiles of type cics\-deploy:
 
       * `$  zowe profiles list cics-deploy-profiles`
 
-*  List profiles of type cics-deploy and display their
+*  List profiles of type cics\-deploy and display their
 contents:
 
       * `$  zowe profiles list cics-deploy-profiles --sc`
@@ -844,7 +844,7 @@ requirements\.
 
 #### Examples
 
-*  Set the default profile for type cics-deploy to the profile
+*  Set the default profile for type cics\-deploy to the profile
 named 'profilename':
 
       * `$  zowe profiles set-default cics-deploy-profile profilename`
