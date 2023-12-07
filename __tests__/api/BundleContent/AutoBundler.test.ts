@@ -123,9 +123,9 @@ describe("AutoBundler01", () => {
 
         let err: Error;
         try {
-          const ab = new AutoBundler("__tests__/__resources__/ExampleBundle01", parms);
+            const ab = new AutoBundler("__tests__/__resources__/ExampleBundle01", parms);
         } catch (e) {
-          err = e;
+            err = e;
         }
 
         expect(err).toBeDefined();
@@ -181,31 +181,31 @@ describe("AutoBundler01", () => {
 });
 
 function setCommonParmsForAutoBundleTests(parms: IHandlerParameters) {
-  parms.arguments.merge = true;
-  parms.arguments.overwrite = true;
-  parms.arguments.port = undefined;
-  parms.arguments.nodejsapp = undefined;
-  parms.arguments.startscript = undefined;
-  parms.arguments.bundleid = undefined;
-  parms.arguments.bundleversion = undefined;
+    parms.arguments.merge = true;
+    parms.arguments.overwrite = true;
+    parms.arguments.port = undefined;
+    parms.arguments.nodejsapp = undefined;
+    parms.arguments.startscript = undefined;
+    parms.arguments.bundleid = undefined;
+    parms.arguments.bundleversion = undefined;
 }
 
 async function runAutoBundleWithError(parms: IHandlerParameters, dir: string) {
 
-  let err: Error;
-  try {
-    const ab = new AutoBundler(dir, parms);
-  } catch (e) {
-    err = e;
-  }
+    let err: Error;
+    try {
+        const ab = new AutoBundler(dir, parms);
+    } catch (e) {
+        err = e;
+    }
 
-  expect(err).toBeDefined();
-  expect(err.message).toMatchSnapshot();
+    expect(err).toBeDefined();
+    expect(err.message).toMatchSnapshot();
 }
 
 async function runAutoBundle(parms: IHandlerParameters, dir: string) {
 
-  const ab = new AutoBundler(dir, parms);
+    const ab = new AutoBundler(dir, parms);
 
-  expect(JSON.stringify(ab.getBundle().getManifest())).toMatchSnapshot();
+    expect(JSON.stringify(ab.getBundle().getManifest())).toMatchSnapshot();
 }

@@ -69,10 +69,10 @@ describe("Manifest01", () => {
         // Add a definition
         let err: Error;
         try {
-          man.setBundleId(undefined);
+            man.setBundleId(undefined);
         }
         catch (error) {
-          err = error;
+            err = error;
         }
 
         // Check the output as JSON
@@ -84,6 +84,7 @@ describe("Manifest01", () => {
         const man = new Manifest("__tests__/__resources__/ExampleBundle01", true, true);
 
         // Set a bundleId
+        // eslint-disable-next-line no-magic-numbers
         man.setBundleVersion(1, 2, 3);
 
         // Check the output as JSON
@@ -96,11 +97,11 @@ describe("Manifest01", () => {
 
         let err: Error;
         try {
-          // Set a bundleId
-          man.setBundleVersion(-1, 0, 0);
+            // Set a bundleId
+            man.setBundleVersion(-1, 0, 0);
         }
         catch (error) {
-          err = error;
+            err = error;
         }
 
         // Check the output as JSON
@@ -113,11 +114,12 @@ describe("Manifest01", () => {
 
         let err: Error;
         try {
-          // Set a bundleId
-          man.setBundleVersion(1, 3.4, 0);
+            // Set a bundleId
+            // eslint-disable-next-line no-magic-numbers
+            man.setBundleVersion(1, 3.4, 0);
         }
         catch (error) {
-          err = error;
+            err = error;
         }
 
         // Check the output as JSON
@@ -130,11 +132,12 @@ describe("Manifest01", () => {
 
         let err: Error;
         try {
-          // Set a bundleId
-          man.setBundleVersion(1, 3, 4.3);
+            // Set a bundleId
+            // eslint-disable-next-line no-magic-numbers
+            man.setBundleVersion(1, 3, 4.3);
         }
         catch (error) {
-          err = error;
+            err = error;
         }
 
         // Check the output as JSON
@@ -147,11 +150,11 @@ describe("Manifest01", () => {
 
         let err: Error;
         try {
-          // Set a bundleId
-          man.setBundleVersion(undefined, undefined, undefined);
+            // Set a bundleId
+            man.setBundleVersion(undefined, undefined, undefined);
         }
         catch (error) {
-          err = error;
+            err = error;
         }
 
         // Check the output as JSON
@@ -162,10 +165,10 @@ describe("Manifest01", () => {
         // Read a bad manifest
         let err: Error;
         try {
-          const man = new Manifest("__tests__/__resources__/BadManifestBundle01", true, true);
+            const man = new Manifest("__tests__/__resources__/BadManifestBundle01", true, true);
         }
         catch (error) {
-          err = error;
+            err = error;
         }
 
         // Check the output as JSON
@@ -176,10 +179,10 @@ describe("Manifest01", () => {
         // Read a bad manifest
         let err: Error;
         try {
-          const man = new Manifest("__tests__/__resources__/BadManifestBundle02", true, true);
+            const man = new Manifest("__tests__/__resources__/BadManifestBundle02", true, true);
         }
         catch (error) {
-          err = error;
+            err = error;
         }
 
         // Check the output as JSON

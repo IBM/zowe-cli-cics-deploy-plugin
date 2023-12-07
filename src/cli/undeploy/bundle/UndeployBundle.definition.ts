@@ -37,9 +37,9 @@ export const UndeployBundleDefinition: ICommandDefinition = {
     type: "command",
     handler: __dirname + "/UndeployBundle.handler",
     options: [ NameOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption,
-               CicshlqOption, CpsmhlqOption, JobcardOption, TimeoutOption, TargetStateOption,
-               VerboseOption]
-             .concat(ZosmfOptions.CICS_DEPLOY_ZOSMF_CONNECTION_OPTIONS),
+        CicshlqOption, CpsmhlqOption, JobcardOption, TimeoutOption, TargetStateOption,
+        VerboseOption]
+        .concat(ZosmfOptions.CICS_DEPLOY_ZOSMF_CONNECTION_OPTIONS),
     profile: { optional: ["cics-deploy", "zosmf"] },
     examples: [
         {

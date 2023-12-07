@@ -12,7 +12,7 @@
 "use strict";
 
 export class TemplateNodejsappProfile {
-  public static profile: string = "" +
+    public static profile: string = "" +
     "#######################################################################\n" +
     "# Node.js application profile: basic_nodejsapp.profile                #\n" +
     "#                                                                     #\n" +

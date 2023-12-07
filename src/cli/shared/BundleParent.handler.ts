@@ -32,55 +32,55 @@ export abstract class BundleParentHandler implements ICommandHandler {
 
         // Initialise Imperative if it is not already initialised
         try {
-          // But not if silent mode is requested (i.e. unit tests)
-          if (params.arguments.silent === undefined) {
-            await Imperative.init();
-          }
+            // But not if silent mode is requested (i.e. unit tests)
+            if (params.arguments.silent === undefined) {
+                await Imperative.init();
+            }
         }
         catch (err) {
-          // Imperative may refuse to initialise in unit tests... never mind
+            // Imperative may refuse to initialise in unit tests... never mind
         }
 
         // log the arguments on entry to the Handler
         const logger = Logger.getAppLogger();
         if (params.arguments.silent === undefined) {
 
-          // Strip passwords from the data before logging it
-          let inputParms = JSON.stringify(params.arguments);
-          inputParms = this.replacePassword(inputParms, params.arguments.zpw);
-          inputParms = this.replacePassword(inputParms, params.arguments.spw);
-          inputParms = this.replacePassword(inputParms, params.arguments.cpw);
+            // Strip passwords from the data before logging it
+            let inputParms = JSON.stringify(params.arguments);
+            inputParms = this.replacePassword(inputParms, params.arguments.zpw);
+            inputParms = this.replacePassword(inputParms, params.arguments.spw);
+            inputParms = this.replacePassword(inputParms, params.arguments.cpw);
 
-          logger.debug("Arguments received by cics-deploy: " + inputParms);
+            logger.debug("Arguments received by cics-deploy: " + inputParms);
         }
 
         try {
-          let msg;
+            let msg;
 
-          // Perform an action. Each sub-class will implement its own action and
-          // either throw an Exception or return a success message.
-          msg = await this.performAction(params);
+            // Perform an action. Each sub-class will implement its own action and
+            // either throw an Exception or return a success message.
+            msg = await this.performAction(params);
 
-          // Add a newline char if its needed
-          if (msg.slice(-1) !== "\n") {
-            msg += "\n";
-          }
+            // Add a newline char if its needed
+            if (msg.slice(-1) !== "\n") {
+                msg += "\n";
+            }
 
-          // Issue the success message
-          params.response.console.log(Buffer.from(msg));
-          if (params.arguments.silent === undefined) {
-            logger.debug(msg);
-          }
+            // Issue the success message
+            params.response.console.log(Buffer.from(msg));
+            if (params.arguments.silent === undefined) {
+                logger.debug(msg);
+            }
         } catch (except) {
-          // Construct an error message for the exception
-          const msg = "A failure occurred during CICS bundle " + this.actionName + ".\n Reason = " + except.message;
+            // Construct an error message for the exception
+            const msg = "A failure occurred during CICS bundle " + this.actionName + ".\n Reason = " + except.message;
 
-          // Log the error message to the Imperative log
-          if (params.arguments.silent === undefined) {
-            logger.error(msg);
-          }
+            // Log the error message to the Imperative log
+            if (params.arguments.silent === undefined) {
+                logger.error(msg);
+            }
 
-          throw new ImperativeError({msg, causeErrors: except});
+            throw new ImperativeError({msg, causeErrors: except});
         }
     }
 
@@ -93,12 +93,12 @@ export abstract class BundleParentHandler implements ICommandHandler {
      * @throws ImperativeError
      * @memberof BundleParentHandler
      */
-    public abstract async performAction(params: IHandlerParameters): Promise<string>;
+    public abstract performAction(params: IHandlerParameters): Promise<string>;
 
     private replacePassword(source: string, pwd: string): string {
-      if (pwd !== undefined) {
-        return source.split(pwd).join("*REDACTED*");
-      }
-      return source;
+        if (pwd !== undefined) {
+            return source.split(pwd).join("*REDACTED*");
+        }
+        return source;
     }
 }

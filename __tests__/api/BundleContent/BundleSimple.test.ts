@@ -14,7 +14,7 @@ import * as fs from "fs";
 
 describe("Bundle01", () => {
     afterEach(() => {
-      jest.restoreAllMocks();
+        jest.restoreAllMocks();
     });
     it("should read an existing bundle", () => {
 
@@ -34,6 +34,7 @@ describe("Bundle01", () => {
         expect(bund.getId()).toMatch("TestExample");
 
         // Set the Version
+        // eslint-disable-next-line no-magic-numbers
         bund.setVersion(33, 44, 55);
 
         // Check the output as JSON
@@ -60,10 +61,10 @@ describe("Bundle01", () => {
         // Add a definition that's out of scope
         let err: Error;
         try {
-          bund.addDefinition({name: "name1", type: "type1", path: "__tests__/__resources__/ExampleBundle01/META-INF/cics.xml"});
+            bund.addDefinition({name: "name1", type: "type1", path: "__tests__/__resources__/ExampleBundle01/META-INF/cics.xml"});
         }
         catch (error) {
-          err = error;
+            err = error;
         }
 
         // Check the output as JSON
@@ -79,10 +80,10 @@ describe("Bundle01", () => {
         // Add a definition
         let err: Error;
         try {
-          bund.addDefinition({name: "name1", type: "type1", path: "__tests__/__resources__/ExampleBundle02/Artefact3"});
+            bund.addDefinition({name: "name1", type: "type1", path: "__tests__/__resources__/ExampleBundle02/Artefact3"});
         }
         catch (error) {
-          err = error;
+            err = error;
         }
 
         // Check the output as JSON
@@ -98,10 +99,10 @@ describe("Bundle01", () => {
         // Add a definition
         let err: Error;
         try {
-          bund.addDefinition({name: undefined, type: "type1", path: "__tests__/__resources__/ExampleBundle02/Artefact1"});
+            bund.addDefinition({name: undefined, type: "type1", path: "__tests__/__resources__/ExampleBundle02/Artefact1"});
         }
         catch (error) {
-          err = error;
+            err = error;
         }
 
         // Check the output as JSON
@@ -115,10 +116,10 @@ describe("Bundle01", () => {
         // Add a definition
         let err: Error;
         try {
-          bund.addDefinition({name: "name1", type: undefined, path: "__tests__/__resources__/ExampleBundle02/Artefact1"});
+            bund.addDefinition({name: "name1", type: undefined, path: "__tests__/__resources__/ExampleBundle02/Artefact1"});
         }
         catch (error) {
-          err = error;
+            err = error;
         }
 
         // Check the output as JSON
@@ -132,10 +133,10 @@ describe("Bundle01", () => {
         // Add a definition
         let err: Error;
         try {
-          bund.addDefinition({name: "name1", type: "type1", path: undefined});
+            bund.addDefinition({name: "name1", type: "type1", path: undefined});
         }
         catch (error) {
-          err = error;
+            err = error;
         }
 
         // Check the output as JSON
@@ -169,6 +170,7 @@ describe("Bundle01", () => {
         const bund = new Bundle("__tests__/__resources__/ExampleBundle03", true, true);
 
         // Add a definition
+        // eslint-disable-next-line no-magic-numbers
         bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
 
         // Check the manifest as JSON
@@ -183,10 +185,10 @@ describe("Bundle01", () => {
 
         let err: Error;
         try {
-          bund.prepareForSave();
+            bund.prepareForSave();
         }
         catch (error) {
-          err = error;
+            err = error;
         }
 
         // Check the output as JSON

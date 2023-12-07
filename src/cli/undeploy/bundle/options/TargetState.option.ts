@@ -22,8 +22,8 @@ export const TargetStateOption: ICommandOptionDefinition = {
     required: false,
     defaultValue: "DISCARDED",
     allowableValues: {
-      values: ["UNAVAILABLE", "DISABLED", "DISCARDED"],
-      caseSensitive: false
+        values: ["UNAVAILABLE", "DISABLED", "DISCARDED"],
+        caseSensitive: false
     },
     group: "cics-deploy Options",
     description: "Specifies the target state for the undeployed bundle."

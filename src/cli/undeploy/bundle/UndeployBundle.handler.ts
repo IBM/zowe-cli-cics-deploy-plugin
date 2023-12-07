@@ -32,8 +32,8 @@ export default class UndeployBundleHandler extends BundleParentHandler implement
      * @memberof UndeployBundleHandler
      */
     public async performAction(params: IHandlerParameters): Promise<string> {
-       const bdep = new BundleDeployer(params);
-       const msg = await bdep.undeployBundle();
-       return msg;
+        const bdep = new BundleDeployer(params);
+        const msg = await bdep.undeployBundle();
+        return msg;
     }
 }

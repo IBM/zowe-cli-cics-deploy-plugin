@@ -33,7 +33,7 @@ export const GenerateBundleDefinition: ICommandDefinition = {
     type: "command",
     handler: __dirname + "/GenerateBundle.handler",
     options: [ BundleidOption, BundleversionOption, NodejsappOption, StartscriptOption, PortOption,
-               OverwriteOption, MergeOption ],
+        OverwriteOption, MergeOption ],
     examples: [
         {
             description: "Generate a CICS bundle in the working directory, taking information from package.json",

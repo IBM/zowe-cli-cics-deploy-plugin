@@ -40,11 +40,11 @@ export const PushBundleDefinition: ICommandDefinition = {
     type: "command",
     handler: __dirname + "/PushBundle.handler",
     options: [ NameOption, TargetdirOption, CicsplexOption, ScopeOption, CsdgroupOption , ResgroupOption,
-               CicshlqOption, CpsmhlqOption, DescriptionOption, JobcardOption, TimeoutOption, TargetStateOption,
-               VerboseOption, OverwriteOption ]
-               .concat(ZosmfOptions.CICS_DEPLOY_ZOSMF_CONNECTION_OPTIONS)
-               .concat(SshOptions.CICS_DEPLOY_SSH_CONNECTION_OPTIONS)
-               .concat(CmciOptions.CICS_DEPLOY_CMCI_CONNECTION_OPTIONS),
+        CicshlqOption, CpsmhlqOption, DescriptionOption, JobcardOption, TimeoutOption, TargetStateOption,
+        VerboseOption, OverwriteOption ]
+        .concat(ZosmfOptions.CICS_DEPLOY_ZOSMF_CONNECTION_OPTIONS)
+        .concat(SshOptions.CICS_DEPLOY_SSH_CONNECTION_OPTIONS)
+        .concat(CmciOptions.CICS_DEPLOY_CMCI_CONNECTION_OPTIONS),
     profile: { optional: ["cics-deploy", "zosmf", "ssh", "cics"] },
     examples: [
         {

@@ -21,9 +21,9 @@ import {ITestEnvironment} from "./environment/doc/response/ITestEnvironment";
  * @param  testEnvironment - the test environment with env
  * @param [args=[]] - set of script args (optional)
  * @returns  node.js details about the results of
- *           executing the script, including exit code and output
+ * executing the script, including exit code and output
  */
-export function runCliScript(scriptPath: string, testEnvironment: ITestEnvironment, args: any[] = []): SpawnSyncReturns<Buffer> {
+export function runCliScript(scriptPath: string, testEnvironment: ITestEnvironment, args: any[] = []): SpawnSyncReturns<string | Buffer> {
     if (fs.existsSync(scriptPath)) {
 
         // We force the color off to prevent any oddities in the snapshots or expected values
@@ -37,7 +37,8 @@ export function runCliScript(scriptPath: string, testEnvironment: ITestEnvironme
 
         fs.chmodSync(scriptPath, "755");
         // Execute the command synchronously
-        return spawnSync(scriptPath, [].concat(args), {cwd: testEnvironment.workingDir, env: childEnv, shell: true, stdio: ["pipe", "pipe", "pipe"], windowsHide: true});
+        return spawnSync(scriptPath, [].concat(args), {cwd: testEnvironment.workingDir, env: childEnv, shell: true,
+                                                       stdio: ["pipe", "pipe", "pipe"], windowsHide: true});
     } else {
         throw new Error(`The script file  ${scriptPath} doesn't exist`);
 

@@ -24,13 +24,13 @@ import { IHandlerParameters } from "@zowe/imperative";
  */
 export class Bundle {
 
-  /**
+    /**
    * Get a template version of the .zosattributes file
    * @returns {string}
    * @memberof Bundle
    */
-  public static getTemplateZosAttributesFile(): string {
-    return `#z/OS File Attributes Document
+    public static getTemplateZosAttributesFile(): string {
+        return `#z/OS File Attributes Document
 #-----------------------------
 # This document specfies the encodings for the files within
 # the project in a form that is compatible with the
@@ -53,22 +53,22 @@ node_modules -
 
 # Convert CICS Node.js profiles to EBCDIC
 *.profile ISO8859-1 IBM-1047`;
-  }
+    }
 
-  private path = require("path");
-  private fs = require("fs");
-  private manifest: Manifest;
-  private definedParts: BundlePart[] = [];
-  private bundleDirectory: string;
-  private merge: boolean;
-  private overwrite: boolean;
-  private preparedToSave: boolean = false;
-  private zosAttribsNeeded: boolean = false;
-  private zosAttribsAlreadyExists: boolean = false;
-  private zosAttribsFile: string;
-  private params: IHandlerParameters;
+    private path = require("path");
+    private fs = require("fs");
+    private manifest: Manifest;
+    private definedParts: BundlePart[] = [];
+    private bundleDirectory: string;
+    private merge: boolean;
+    private overwrite: boolean;
+    private preparedToSave: boolean = false;
+    private zosAttribsNeeded: boolean = false;
+    private zosAttribsAlreadyExists: boolean = false;
+    private zosAttribsFile: string;
+    private params: IHandlerParameters;
 
-  /**
+    /**
    * Constructor for creating a Bundle.
    * @static
    * @param {string} directory - The bundle directory.
@@ -78,97 +78,97 @@ node_modules -
    * @throws ImperativeError
    * @memberof Bundle
    */
-  constructor(directory: string, merge: boolean, overwrite: boolean, params?: IHandlerParameters) {
-    this.merge = merge;
-    this.overwrite = overwrite;
-    this.params = params;
-    this.bundleDirectory = this.path.normalize(directory);
-    this.manifest = new Manifest(this.bundleDirectory, this.merge, this.overwrite, params);
-    this.preparedToSave = false;
-    this.zosAttribsFile = this.path.join(this.bundleDirectory, ".zosattributes");
-    this.zosAttribsNeeded = true;
-  }
+    constructor(directory: string, merge: boolean, overwrite: boolean, params?: IHandlerParameters) {
+        this.merge = merge;
+        this.overwrite = overwrite;
+        this.params = params;
+        this.bundleDirectory = this.path.normalize(directory);
+        this.manifest = new Manifest(this.bundleDirectory, this.merge, this.overwrite, params);
+        this.preparedToSave = false;
+        this.zosAttribsFile = this.path.join(this.bundleDirectory, ".zosattributes");
+        this.zosAttribsNeeded = true;
+    }
 
-  /**
+    /**
    * Validates that a Bundle appears to be valid on the file-system
    * @returns {string}
    * @throws ImperativeError
    * @memberof Bundle
    */
-  public validate() {
+    public validate() {
 
-    // check that the manifest file exists. We could perform a more rigorous
-    // validation of the contents of the Bundle, but this simple check is
-    // sufficient to ensure the bundle is broadly valid on the file-system.
-    // Errors will be thrown to report problems.
-    this.manifest.validate();
-  }
+        // check that the manifest file exists. We could perform a more rigorous
+        // validation of the contents of the Bundle, but this simple check is
+        // sufficient to ensure the bundle is broadly valid on the file-system.
+        // Errors will be thrown to report problems.
+        this.manifest.validate();
+    }
 
-  /**
+    /**
    * Determines whether the Bundle contains the named resource
    * @param {string} resource - The resource to query
    * @returns {boolean}
    * @throws ImperativeError
    * @memberof Bundle
    */
-  public contains(resource: string): boolean {
-    const fullyQualifiedResourceName = this.path.join(this.bundleDirectory, resource);
-    const relative = BundlePart.getRelativeFileReference(fullyQualifiedResourceName, this.bundleDirectory);
-    if (relative === undefined) {
-      // The file isn't within the Bundle directory
-      return false;
+    public contains(resource: string): boolean {
+        const fullyQualifiedResourceName = this.path.join(this.bundleDirectory, resource);
+        const relative = BundlePart.getRelativeFileReference(fullyQualifiedResourceName, this.bundleDirectory);
+        if (relative === undefined) {
+            // The file isn't within the Bundle directory
+            return false;
+        }
+
+        const fullLocation = this.path.join(this.bundleDirectory, relative);
+        if (!this.fs.existsSync(fullLocation)) {
+            return false;
+        }
+
+        return true;
     }
 
-    const fullLocation = this.path.join(this.bundleDirectory, relative);
-    if (!this.fs.existsSync(fullLocation)) {
-      return false;
-    }
-
-    return true;
-  }
-
-  /**
+    /**
    * Determines whether the Bundle contains any resources of the specified type
    * @param {string} resource - The resource to query
    * @returns {boolean}
    * @throws ImperativeError
    * @memberof Bundle
    */
-  public containsDefinitionsOfType(resourceType: string): boolean {
-    return this.manifest.containsDefinitionsOfType(resourceType);
-  }
+    public containsDefinitionsOfType(resourceType: string): boolean {
+        return this.manifest.containsDefinitionsOfType(resourceType);
+    }
 
-  /**
+    /**
    * Returns the Bundle's identity (id) value.
    * @returns {string}
    * @throws ImperativeError
    * @memberof Bundle
    */
-  public getId(): string {
-    return this.manifest.getBundleId();
-  }
+    public getId(): string {
+        return this.manifest.getBundleId();
+    }
 
-  /**
+    /**
    * Set the Bundle's identity (id) value.
    * @param {string} id - The identity value for the Bundle.
    * @throws ImperativeError
    * @memberof Bundle
    */
-  public setId(id: string) {
-    this.manifest.setBundleId(id);
-  }
+    public setId(id: string) {
+        this.manifest.setBundleId(id);
+    }
 
-  /**
+    /**
    * Returns the Bundle's version value.
    * @returns {string}
    * @throws ImperativeError
    * @memberof Bundle
    */
-  public getVersion(): string {
-    return this.manifest.getBundleVersion();
-  }
+    public getVersion(): string {
+        return this.manifest.getBundleVersion();
+    }
 
-  /**
+    /**
    * Set the Bundle's version number.
    * @param {number} majorVersion - The major version number.
    * @param {number} minorVersion - The minor version number.
@@ -176,33 +176,33 @@ node_modules -
    * @throws ImperativeError
    * @memberof Bundle
    */
-  public setVersion(majorVersion: number, minorVersion: number, microVersion: number) {
-    this.manifest.setBundleVersion(majorVersion, minorVersion, microVersion);
-  }
+    public setVersion(majorVersion: number, minorVersion: number, microVersion: number) {
+        this.manifest.setBundleVersion(majorVersion, minorVersion, microVersion);
+    }
 
-  /**
+    /**
    * Returns the Manifest contents as a JSON Object.
    *
    * @returns {object}
    * @throws ImperativeError
    * @memberof Bundle
    */
-  public getManifest(): object {
-    return this.manifest.getJson();
-  }
+    public getManifest(): object {
+        return this.manifest.getJson();
+    }
 
-  /**
+    /**
    * Returns the Manifest contents as an XML string.
    *
    * @returns {string}
    * @throws ImperativeError
    * @memberof Bundle
    */
-  public getManifestXML(): string {
-    return this.manifest.getXML();
-  }
+    public getManifestXML(): string {
+        return this.manifest.getXML();
+    }
 
-  /**
+    /**
    * Add a resource definition to the Bundle. If a part of the same name and type
    * already exists then it is replaced with the new part data.
    *
@@ -210,15 +210,15 @@ node_modules -
    * @throws ImperativeError
    * @memberof Bundle
    */
-  public addDefinition(partData: IBundlePartDataType) {
+    public addDefinition(partData: IBundlePartDataType) {
     // Create a BundlePart
-    this.preparedToSave = false;
-    const bp = new BundlePart(this.bundleDirectory, partData, true, undefined, this.overwrite, this.params);
-    this.definedParts.push(bp);
-    this.manifest.addDefinition(bp);
-  }
+        this.preparedToSave = false;
+        const bp = new BundlePart(this.bundleDirectory, partData, true, undefined, this.overwrite, this.params);
+        this.definedParts.push(bp);
+        this.manifest.addDefinition(bp);
+    }
 
-  /**
+    /**
    * Add a NODEJSAPP resource definition to the Bundle. If a NODEJSAPP of the same name
    * already exists then it is replaced with the new part data.
    *
@@ -228,15 +228,15 @@ node_modules -
    * @throws ImperativeError
    * @memberof Bundle
    */
-  public addNodejsappDefinition(name: string, startscript: string, port: number) {
-    this.preparedToSave = false;
-    const nj = new NodejsappBundlePart(this.bundleDirectory, name, startscript, port, this.overwrite, this.params);
-    this.manifest.addDefinition(nj);
-    this.definedParts.push(nj);
-    this.zosAttribsNeeded = true;
-  }
+    public addNodejsappDefinition(name: string, startscript: string, port: number) {
+        this.preparedToSave = false;
+        const nj = new NodejsappBundlePart(this.bundleDirectory, name, startscript, port, this.overwrite, this.params);
+        this.manifest.addDefinition(nj);
+        this.definedParts.push(nj);
+        this.zosAttribsNeeded = true;
+    }
 
-  /**
+    /**
    * Each bundle part is prompted to ensure that it is in a fit state to be saved.
    * This might involve ensuring that file system permissions are suitable and that
    * existing files wont be overwritten. The goal is that errors can be detected
@@ -247,76 +247,76 @@ node_modules -
    * @throws ImperativeError
    * @memberof Bundle
    */
-  public prepareForSave() {
+    public prepareForSave() {
     // prepare the manifest, this will check write access to the target directory
     // (amongst other things).
-    this.manifest.prepareForSave();
+        this.manifest.prepareForSave();
 
-    // prepare each bundle part in turn
-    this.definedParts.forEach( (value) => {
-      value.prepareForSave();
-      });
+        // prepare each bundle part in turn
+        this.definedParts.forEach( (value) => {
+            value.prepareForSave();
+        });
 
-    // prepare the .zosattributes file (which can be useful for transferring a
-    // bundle to zFS).
-    this.prepareZosAttribs();
+        // prepare the .zosattributes file (which can be useful for transferring a
+        // bundle to zFS).
+        this.prepareZosAttribs();
 
-    this.preparedToSave = true;
-  }
+        this.preparedToSave = true;
+    }
 
-  /**
+    /**
    * Save the current Bundle. Any changes that have been made will be persisted.
    *
    * @throws ImperativeError
    * @memberof Bundle
    */
-  public save() {
+    public save() {
     // Prepare the resources to be saved, without actually saving them. This should
     // cause most common errors to be detected before we start persisting anything.
     // If an error does occur mid-save then we have a better chance of avoiding a
     // broken Bundle.
-    if (this.preparedToSave === false) {
-      this.prepareForSave();
-    }
-
-    // save the parts
-    this.definedParts.forEach( (value) => {
-      value.save();
-      });
-
-    // save the zosattributes
-    this.writeZosAttribs();
-
-    // save the manifest
-    this.manifest.save();
-  }
-
-  private prepareZosAttribs() {
-    if (this.zosAttribsNeeded) {
-      this.zosAttribsAlreadyExists = BundlePart.alreadyExists(this.zosAttribsFile, this.overwrite);
-    }
-  }
-
-  private writeZosAttribs() {
-    if (!this.zosAttribsNeeded) {
-      return;
-    }
-
-    const contents = Bundle.getTemplateZosAttributesFile();
-
-    // Write the zosattributes file
-    try {
-      if (this.params !== undefined) {
-        let action = "    create";
-        if (this.zosAttribsAlreadyExists) {
-          action = " overwrite";
+        if (this.preparedToSave === false) {
+            this.prepareForSave();
         }
-        this.params.response.console.log(action + " : " + this.path.relative(this.bundleDirectory, this.zosAttribsFile));
-      }
-      this.fs.writeFileSync(this.zosAttribsFile, contents, "utf8");
+
+        // save the parts
+        this.definedParts.forEach( (value) => {
+            value.save();
+        });
+
+        // save the zosattributes
+        this.writeZosAttribs();
+
+        // save the manifest
+        this.manifest.save();
     }
-    catch (err) {
-      throw new Error("An error occurred attempting to write .zosattributes file '" + this.zosAttribsFile + "': " + err.message);
+
+    private prepareZosAttribs() {
+        if (this.zosAttribsNeeded) {
+            this.zosAttribsAlreadyExists = BundlePart.alreadyExists(this.zosAttribsFile, this.overwrite);
+        }
     }
-  }
+
+    private writeZosAttribs() {
+        if (!this.zosAttribsNeeded) {
+            return;
+        }
+
+        const contents = Bundle.getTemplateZosAttributesFile();
+
+        // Write the zosattributes file
+        try {
+            if (this.params !== undefined) {
+                let action = "    create";
+                if (this.zosAttribsAlreadyExists) {
+                    action = " overwrite";
+                }
+                this.params.response.console.log(action + " : " + this.path.relative(this.bundleDirectory, this.zosAttribsFile));
+            }
+            this.fs.writeFileSync(this.zosAttribsFile, contents, "utf8");
+        }
+        catch (err) {
+            throw new Error("An error occurred attempting to write .zosattributes file '" + this.zosAttribsFile + "': " + err.message);
+        }
+    }
 }
