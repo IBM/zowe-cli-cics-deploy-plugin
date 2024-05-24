@@ -14,9 +14,9 @@
 import { BundlePart, IBundlePartDataType } from "./BundlePart";
 import { IHandlerParameters } from "@zowe/imperative";
 
-import * as parser from "fast-xml-parser";
+const { XMLParser, XMLBuilder } = require("fast-xml-parser");
 
-const serialiser = new parser.j2xParser({ignoreAttributes: false, attributeNamePrefix: ""});
+const serialiser = new XMLBuilder({ignoreAttributes: false, attributeNamePrefix: ""});
 
 /**
  * Interface to represent the manifest data for a CICS Bundle.
@@ -388,7 +388,7 @@ export class Manifest {
 
     try {
       // Reading the file worked, so convert the contents into a JSON Object
-      this.manifestAsJson = parser.parse(xmltext, {ignoreAttributes: false, attributeNamePrefix: "", trimValues: true});
+      this.manifestAsJson = XMLParser.parse(xmltext, {ignoreAttributes: false, attributeNamePrefix: "", trimValues: true});
     }
     catch (exception)
     {

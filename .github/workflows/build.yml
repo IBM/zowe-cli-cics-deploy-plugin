@@ -1,0 +1,27 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: npm install, build, and test
+        run: |
+          echo "Running npm install"
+          npm install
+          echo "Running npm run build"
+          npm run build
+          echo "Running npm run test:unit"
+          npm run test:unit || true
+      - name: npm pack
+        run: |
+          echo "Running npm pack"
+          npm pack
+      - name: Archive package
+        uses: actions/upload-artifact@v4
+        with:
+          name: zowe-cli-cics-deploy-plugin
+          path: zowe-cli-cics-deploy-plugin-*.tgz

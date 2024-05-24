@@ -14,9 +14,9 @@
 import { BundlePart } from "./BundlePart";
 import { TemplateNodejsappProfile } from "./TemplateNodejsappProfile";
 import { IHandlerParameters } from "@zowe/imperative";
-import * as parser from "fast-xml-parser";
+const { XMLBuilder } = require("fast-xml-parser");
 
-const serialiser = new parser.j2xParser({ignoreAttributes: false, attributeNamePrefix: ""});
+const serialiser = new XMLBuilder({ignoreAttributes: false, attributeNamePrefix: ""});
 
 /**
  * Interface to represent the manifest data for a NODEJSAPP BundlePart.

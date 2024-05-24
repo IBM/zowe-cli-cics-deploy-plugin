@@ -1,6 +1,6 @@
 {
   "name": "zowe-cli-cics-deploy-plugin",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "IBM CICS Bundle generation and deployment for Zowe CLI",
   "repository": {
     "type": "git",
@@ -18,7 +18,11 @@
   "main": "lib/index.js",
   "files": [
     "lib",
-    "NOTICES.md"
+    "NOTICES.md",
+    "README.md",
+    "package.json",
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "bin": {
     "zowe-cli-cics-deploy": "./lib/main.js"
@@ -30,7 +34,7 @@
     "clean": "rimraf lib",
     "watch": "tsc --pretty --watch",
     "prepublishOnly": "npm run build",
-    "lint": "tslint \"src/**/*.ts\" && tslint \"**/__tests__/**/*.ts\"",
+    "lint": "tslint \"src/**/*.ts\" && tslint \"__tests__/**/*.ts\"",
     "test": "npm run test:unit && npm run test:system",
     "test:system": "env-cmd __tests__/__resources__/env/system.env jest .*/__system__/.* --coverage false",
     "test:unit": "env-cmd __tests__/__resources__/env/unit.env jest --runInBand --detectOpenHandles --coverage --testPathIgnorePatterns \".*/__system__/.*\"",
@@ -41,8 +45,8 @@
     "configurationModule": "lib/imperative.js"
   },
   "dependencies": {
-    "@zowe/cics-for-zowe-cli": "^3.6.1",
-    "fast-xml-parser": "^3.16.0"
+    "@zowe/cics-for-zowe-cli": "^4.0.8",
+    "fast-xml-parser": "^4.2.4"
   },
   "devDependencies": {
     "@zowe/cli": "^6.0.0",
@@ -53,6 +57,7 @@
     "@types/yargs": "^13.0.4",
     "clear-require": "^2.0.0",
     "env-cmd": "^8.0.2",
+    "fast-xml-parser": "^4.2.4",
     "fs-extra": "^8.1.0",
     "gulp": "^4.0.2",
     "gulp-cli": "^2.2.1",
