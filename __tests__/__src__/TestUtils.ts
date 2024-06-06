@@ -23,7 +23,7 @@ import {ITestEnvironment} from "./environment/doc/response/ITestEnvironment";
  * @returns  node.js details about the results of
  *           executing the script, including exit code and output
  */
-export function runCliScript(scriptPath: string, testEnvironment: ITestEnvironment, args: any[] = []): SpawnSyncReturns<Buffer> {
+export function runCliScript(scriptPath: string, testEnvironment: ITestEnvironment, args: any[] = []): SpawnSyncReturns<string | Buffer> {
     if (fs.existsSync(scriptPath)) {
 
         // We force the color off to prevent any oddities in the snapshots or expected values

@@ -11,7 +11,7 @@
 
 import { Bundle } from "../../../src/api/BundleContent/Bundle";
 import * as fs from "fs";
-import * as parser from "fast-xml-parser";
+const { XMLParser } = require("fast-xml-parser");
 
 // Note, the following tests mock the file-system. Snapshot based tests are unlikely to
 // work as the jest implementation will itself need to interact with the filesystem.
@@ -569,7 +569,7 @@ describe("MockedFilesystemTests", () => {
 
     it("should complain if exceptions are thrown during manifest parsing", () => {
 
-      jest.spyOn(parser, "parse").mockImplementationOnce(() => { throw new Error("Wibble"); });
+      jest.spyOn(XMLParser, "parse").mockImplementationOnce(() => { throw new Error("Wibble"); });
 
       let err: Error;
       try {
