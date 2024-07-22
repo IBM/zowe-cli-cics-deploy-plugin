@@ -198,7 +198,7 @@ export class Manifest {
    *
    * @returns {object}
    * @throws ImperativeError
-   * @memberof Manifest
+  * @memberof Manifest
    */
   public validate() {
     if (!this.manifestExists) {
@@ -388,7 +388,8 @@ export class Manifest {
 
     try {
       // Reading the file worked, so convert the contents into a JSON Object
-      this.manifestAsJson = XMLParser.parse(xmltext, {ignoreAttributes: false, attributeNamePrefix: "", trimValues: true});
+      const parser = new XMLParser();
+      this.manifestAsJson = parser.parse(xmltext, {ignoreAttributes: false, attributeNamePrefix: "", trimValues: true});
     }
     catch (exception)
     {
