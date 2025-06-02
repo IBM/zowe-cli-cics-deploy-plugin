@@ -15,6 +15,7 @@ import {IHandlerParameters, Imperative, ImperativeError} from "@zowe/imperative"
 import * as GenerateBundleDefinition from "../../../../src/cli/generate/bundle/GenerateBundle.definition";
 import * as GenerateBundleHandler from "../../../../src/cli/generate/bundle/GenerateBundle.handler";
 import * as fs from "fs";
+import { Readable } from "stream";
 
 process.env.FORCE_COLOR = "0";
 
@@ -24,11 +25,6 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
         _: ["zowe-cli-cics-deploy-plugin", "generate", "bundle"],
         silent: true
     },
-    profiles: {
-        get: (type: string) => {
-            return {};
-        }
-    } as any,
     response: {
         data: {
             setMessage: jest.fn((setMsgArgs) => {
@@ -45,16 +41,17 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
             error: jest.fn((errors) => {
                 expect("" + errors).toMatch("NO ERROR MESSAGE IS EXPECTED");
             }),
-            errorHeader: jest.fn(() => undefined)
+            errorHeader: jest.fn(() => { ; })
         },
         progress: {
-            startBar: jest.fn((parms) => undefined),
-            endBar: jest.fn(() => undefined)
+            startBar: jest.fn((parms) => { ; }),
+            endBar: jest.fn(() => { ; })
         }
     } as any,
     definition: GenerateBundleDefinition.GenerateBundleDefinition,
     fullDefinition: GenerateBundleDefinition.GenerateBundleDefinition,
     positionals: [],
+    stdin: new Readable()
 };
 let consoleText = "";
 
@@ -128,8 +125,9 @@ describe("bundle Handler", () => {
     });
     it("should produce the correct messages when overwrite on", async () => {
         DEFAULT_PARAMTERS.arguments.nosave = "false";
-        jest.spyOn(fs, "writeFileSync").mockReturnValue(true);
-        jest.spyOn(fs, "mkdirSync").mockReturnValue(true);
+        // TODO why spy on a void method?
+        // jest.spyOn(fs, "writeFileSync").mockReturnValue(true);
+        // jest.spyOn(fs, "mkdirSync").mockReturnValue(true);
 
         const currentDir = process.cwd();
         process.chdir("__tests__/__resources__/ExampleBundle04");
@@ -157,8 +155,9 @@ describe("bundle Handler", () => {
     it("should produce the correct messages when merge on", async () => {
         DEFAULT_PARAMTERS.arguments.nosave = "false";
         DEFAULT_PARAMTERS.arguments.merge = "true";
-        jest.spyOn(fs, "writeFileSync").mockReturnValue(true);
-        jest.spyOn(fs, "mkdirSync").mockReturnValue(true);
+        // TODO why spy on a void method?
+        // jest.spyOn(fs, "writeFileSync").mockReturnValue(true);
+        // jest.spyOn(fs, "mkdirSync").mockReturnValue(true);
 
         const currentDir = process.cwd();
         process.chdir("__tests__/__resources__/ExampleBundle05");

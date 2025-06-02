@@ -13,7 +13,6 @@ import { BundlePusher } from "../../../src/api/BundlePush/BundlePusher";
 import { IHandlerParameters, ImperativeError, IImperativeError, IProfile, Session } from "@zowe/imperative";
 import * as cmci from "@zowe/cics-for-zowe-cli";
 import * as PushBundleDefinition from "../../../src/cli/push/bundle/PushBundle.definition";
-import * as fse from "fs-extra";
 import * as fs from "fs";
 import { ZosmfSession, SshSession, SubmitJobs, Shell, List, Upload, Create } from "@zowe/cli";
 
@@ -23,25 +22,6 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
         _: ["zowe-cli-cics-deploy-plugin", "push", "bundle"],
         silent: true
     },
-    profiles: {
-        get: (type: string) => {
-
-            if (profileError === true) {
-              throw new Error("Profile Error");
-            }
-
-            if (type === "zosmf") {
-              return zosmfProfile;
-            }
-            if (type === "ssh") {
-              return sshProfile;
-            }
-            if (type === "cics") {
-              return cicsProfile;
-            }
-            return {};
-        }
-    } as any,
     response: {
         data: {
             setMessage: jest.fn((setMsgArgs) => {

@@ -44,7 +44,8 @@ const doc: ITaskFunction = async () => {
     myConfig.loadedConfig.commandModuleGlobs = ["src/cli/*/*.definition!(.d).*s"];
 
     // Need to set this for the internal caller location so that the commandModuleGlobs finds the commands
-    process.mainModule.filename = __dirname + "/../package.json";
+    if(require.main === undefined) throw new Error("main is undefined");
+    require.main.filename = __dirname + "/../package.json";
 
     await Imperative.init(myConfig.loadedConfig);
     const loadedDefinitions = Imperative.fullCommandTree;
@@ -91,7 +92,7 @@ const doc: ITaskFunction = async () => {
     function getFilteredChildren(root: ICommandDefinition) {
         const allDefSoFar: string[] = [];
         const cmdNamesToRemove = ["config", "plugins"];
-        const filteredChildren = root.children.sort((a, b) => a.name.localeCompare(b.name)).filter((cmdDef) => {
+        const filteredChildren = root.children?.sort((a, b) => a.name.localeCompare(b.name)).filter((cmdDef) => {
             if (cmdNamesToRemove.indexOf(cmdDef.name) !== -1) {
                 return false;
             }
@@ -100,7 +101,7 @@ const doc: ITaskFunction = async () => {
                 return true;
             }
             return false;
-        });
+        }) || [];
         return filteredChildren;
     }
 

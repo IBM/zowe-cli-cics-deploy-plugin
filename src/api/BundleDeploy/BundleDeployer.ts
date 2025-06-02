@@ -12,8 +12,8 @@
 "use strict";
 
 import { IHandlerParameters, Logger, ImperativeError, AbstractSession, ITaskWithStatus,
-         TaskStage , TaskProgress} from "@zowe/imperative";
-import { ZosmfSession, SubmitJobs, List } from "@zowe/cli";
+         TaskStage , TaskProgress, ProfileInfo} from "@zowe/imperative";
+import { SubmitJobs, List } from "@zowe/cli";
 import { ParmValidator } from "./ParmValidator";
 import * as path from "path";
 import { ZosmfConfig } from "../BundlePush/ZosmfConfig";
@@ -223,23 +223,30 @@ export class BundleDeployer {
     return jcl;
   }
 
-  private async createZosMFSession(): Promise<any> {
-    // Create a zosMF session
-    let zosmfProfile;
-    try {
-      zosmfProfile = this.params.profiles.get("zosmf");
-    }
-    catch (error) {
-      // No-op, we can cope with there being no profile.
-    }
+  private async createZosMFSession(): Promise<AbstractSession> {
+    const profInfo = new ProfileInfo("zowe");
+    await profInfo.readProfilesFromDisk();
+    const zosmfProfAttrs = profInfo.getDefaultProfile("zosmf");
+    const zosmfMergedArgs = profInfo.mergeArgsForProfile(zosmfProfAttrs, { getSecureVals: true });
+    return ProfileInfo.createSession(zosmfMergedArgs.knownArgs);
 
-    if (zosmfProfile === undefined) {
-      zosmfProfile = {};
-    }
+    // TODO - we've lost the concept of merging params with our default profile ... was that important?
+    // // Create a zosMF session
+    // let zosmfProfile;
+    // try {
+    //   zosmfProfile = this.params.profiles.get("zosmf");
+    // }
+    // catch (error) {
+    //   // No-op, we can cope with there being no profile.
+    // }
 
-    ZosmfConfig.mergeProfile(zosmfProfile, this.params);
+    // if (zosmfProfile === undefined) {
+    //   zosmfProfile = {};
+    // }
 
-    return ZosmfSession.createBasicZosmfSession(zosmfProfile);
+    // ZosmfConfig.mergeProfile(zosmfProfile, this.params);
+
+    // return ZosmfSession.createSessCfgFromArgs(zosmfProfile);
   }
 
   private async checkHLQDatasets(session: any) {

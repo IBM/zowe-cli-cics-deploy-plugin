@@ -13,52 +13,43 @@
 import {IHandlerParameters, ImperativeError} from "@zowe/imperative";
 import * as DeployBundleDefinition from "../../../../src/cli/deploy/bundle/DeployBundle.definition";
 import * as DeployBundleHandler from "../../../../src/cli/deploy/bundle/DeployBundle.handler";
+import { Readable } from "stream";
 
 process.env.FORCE_COLOR = "0";
 
 const DEFAULT_PARAMETERS: IHandlerParameters = {
-    arguments: {
-        $0: "bright",
-        _: ["zowe-cli-cics-deploy-plugin", "deploy", "bundle"],
-        silent: true
+  arguments: {
+    $0: "bright",
+    _: ["zowe-cli-cics-deploy-plugin", "deploy", "bundle"],
+    silent: true
+  },
+  response: {
+    data: {
+      setMessage: jest.fn((setMsgArgs) => {
+        expect("" + setMsgArgs).toMatchSnapshot();
+      }),
+      setObj: jest.fn((setObjArgs) => {
+        expect(setObjArgs).toMatchSnapshot();
+      })
     },
-    profiles: {
-        get: (type: string) => {
-            if (type === "cics-deploy") {
-              return undefined;
-            }
-            if (type === "zosmf") {
-              return undefined;
-            }
-            return {};
-        }
-    } as any,
-    response: {
-        data: {
-            setMessage: jest.fn((setMsgArgs) => {
-                expect("" + setMsgArgs).toMatchSnapshot();
-            }),
-            setObj: jest.fn((setObjArgs) => {
-                expect(setObjArgs).toMatchSnapshot();
-            })
-        },
-        console: {
-            log: jest.fn((logs) => {
-                expect("" + logs).toMatchSnapshot();
-            }),
-            error: jest.fn((errors) => {
-                expect("" + errors).toMatchSnapshot();
-            }),
-            errorHeader: jest.fn(() => undefined)
-        },
-        progress: {
-            startBar: jest.fn((parms) => undefined),
-            endBar: jest.fn(() => undefined)
-        }
-    } as any,
-    definition: DeployBundleDefinition.DeployBundleDefinition,
-    fullDefinition: DeployBundleDefinition.DeployBundleDefinition,
-    positionals: [],
+    console: {
+      log: jest.fn((logs) => {
+        expect("" + logs).toMatchSnapshot();
+      }),
+      error: jest.fn((errors) => {
+        expect("" + errors).toMatchSnapshot();
+      }),
+      errorHeader: jest.fn(() => { ; })
+    },
+    progress: {
+      startBar: jest.fn((parms) => { ; }),
+      endBar: jest.fn(() => { ; })
+    }
+  } as any,
+  definition: DeployBundleDefinition.DeployBundleDefinition,
+  fullDefinition: DeployBundleDefinition.DeployBundleDefinition,
+  positionals: [],
+  stdin: new Readable()
 };
 
 describe("bundle Handler", () => {
@@ -78,6 +69,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -102,6 +94,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -134,6 +127,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -152,6 +146,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -173,6 +168,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -194,6 +190,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -216,6 +213,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -231,6 +229,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -252,6 +251,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -273,6 +273,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -300,6 +301,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -324,6 +326,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -348,6 +351,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -384,6 +388,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -406,6 +411,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -422,6 +428,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new DeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -446,7 +453,7 @@ function setCommonParmsForNameTests(parms: IHandlerParameters) {
   parms.arguments.description = undefined;
 }
 
-async function testNameError(name: string, result: string) {
+async function testNameError(name: string | undefined, result: string) {
   const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
   setCommonParmsForNameTests(params);
   params.arguments.name = name;
@@ -455,6 +462,7 @@ async function testNameError(name: string, result: string) {
   try {
     const handler = new DeployBundleHandler.default();
     await handler.process(params);
+    fail("Expected error");
   } catch (e) {
     err = e;
   }
@@ -466,7 +474,7 @@ function setCommonParmsForBundledirTests(parms: IHandlerParameters) {
   parms.arguments.name = "WIBBLE";
 }
 
-async function testBundledirError(bundledir: string, result: string) {
+async function testBundledirError(bundledir: string | undefined, result: string) {
   const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
   setCommonParmsForBundledirTests(params);
   params.arguments.bundledir = bundledir;
@@ -475,6 +483,7 @@ async function testBundledirError(bundledir: string, result: string) {
   try {
     const handler = new DeployBundleHandler.default();
     await handler.process(params);
+    fail("Expected error");
   } catch (e) {
     err = e;
   }
@@ -495,6 +504,7 @@ async function testProfileError(profile: string, result: string) {
   try {
     const handler = new DeployBundleHandler.default();
     await handler.process(params);
+    fail("Expected error");
   } catch (e) {
     err = e;
   }
@@ -515,6 +525,7 @@ async function testCicsplexError(cicsplex: string, result: string) {
   try {
     const handler = new DeployBundleHandler.default();
     await handler.process(params);
+    fail("Expected error");
   } catch (e) {
     err = e;
   }
@@ -536,6 +547,7 @@ async function testScopeError(scope: string, result: string) {
   try {
     const handler = new DeployBundleHandler.default();
     await handler.process(params);
+    fail("Expected error");
   } catch (e) {
     err = e;
   }
@@ -556,6 +568,7 @@ async function testCsdgroupError(csdgroup: string, result: string) {
   try {
     const handler = new DeployBundleHandler.default();
     await handler.process(params);
+    fail("Expected error");
   } catch (e) {
     err = e;
   }
@@ -575,6 +588,7 @@ async function testResgroupError(resgroup: string, result: string) {
   try {
     const handler = new DeployBundleHandler.default();
     await handler.process(params);
+    fail("Expected error");
   } catch (e) {
     err = e;
   }
@@ -594,6 +608,7 @@ async function testDescriptionError(description: string, result: string) {
   try {
     const handler = new DeployBundleHandler.default();
     await handler.process(params);
+    fail("Expected error");
   } catch (e) {
     err = e;
   }
@@ -614,6 +629,7 @@ async function testTimeoutError(timeout: number, result: string) {
   try {
     const handler = new DeployBundleHandler.default();
     await handler.process(params);
+    fail("Expected error");
   } catch (e) {
     err = e;
   }
@@ -624,7 +640,7 @@ function setCommonParmsForCicsHLQTests(parms: IHandlerParameters) {
   setCommonParmsForTimeoutTests(parms);
 }
 
-async function testCicsHLQError(cicshlq: string, result: string) {
+async function testCicsHLQError(cicshlq: string | undefined, result: string) {
   const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
   setCommonParmsForCicsHLQTests(params);
   params.arguments.cicshlq = cicshlq;
@@ -633,6 +649,7 @@ async function testCicsHLQError(cicshlq: string, result: string) {
   try {
     const handler = new DeployBundleHandler.default();
     await handler.process(params);
+    fail("Expected error");
   } catch (e) {
     err = e;
   }
@@ -644,7 +661,7 @@ function setCommonParmsForCpsmHLQTests(parms: IHandlerParameters) {
   parms.arguments.cicshlq = "WIBB.LE";
 }
 
-async function testCpsmHLQError(cpsmhlq: string, result: string) {
+async function testCpsmHLQError(cpsmhlq: string | undefined, result: string) {
   const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
   setCommonParmsForCpsmHLQTests(params);
   params.arguments.cpsmhlq = cpsmhlq;
@@ -653,6 +670,7 @@ async function testCpsmHLQError(cpsmhlq: string, result: string) {
   try {
     const handler = new DeployBundleHandler.default();
     await handler.process(params);
+    fail("Expected error");
   } catch (e) {
     err = e;
   }
@@ -665,7 +683,7 @@ function setCommonParmsForJobcardTests(parms: IHandlerParameters) {
   parms.arguments.targetstate = "ENABLED";
 }
 
-async function testJobcardError(jobcard: string, result: string) {
+async function testJobcardError(jobcard: string | undefined, result: string) {
   const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
   setCommonParmsForJobcardTests(params);
   params.arguments.jobcard = jobcard;
@@ -674,6 +692,7 @@ async function testJobcardError(jobcard: string, result: string) {
   try {
     const handler = new DeployBundleHandler.default();
     await handler.process(params);
+    fail("Expected error");
   } catch (e) {
     err = e;
   }
@@ -685,7 +704,7 @@ function setCommonParmsForTargetStateTests(parms: IHandlerParameters) {
   parms.arguments.targetstate = undefined;
 }
 
-async function testTargetStateDeployError(targetstate: string, result: string) {
+async function testTargetStateDeployError(targetstate: string | undefined, result: string) {
   const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
   setCommonParmsForTargetStateTests(params);
   params.arguments.targetstate = targetstate;
@@ -694,6 +713,7 @@ async function testTargetStateDeployError(targetstate: string, result: string) {
   try {
     const handler = new DeployBundleHandler.default();
     await handler.process(params);
+    fail("Expected error");
   } catch (e) {
     err = e;
   }

@@ -11,8 +11,8 @@
 
 "use strict";
 
-import { IHandlerParameters, AbstractSession, ITaskWithStatus, TaskStage, TaskProgress, Logger, IProfile, Session } from "@zowe/imperative";
-import { List, ZosmfSession, SshSession, Shell, Upload, IUploadOptions, ZosFilesAttributes, Create } from "@zowe/cli";
+import { IHandlerParameters, AbstractSession, ITaskWithStatus, TaskStage, TaskProgress, Logger, IProfile, ISession, Session, ProfileInfo } from "@zowe/imperative";
+import { List, ZosmfSession, SshSession, Shell, Upload, IUploadOptions, ZosFilesAttributes, Create, ISshSession } from "@zowe/cli";
 import { getResource, IResourceParms } from "@zowe/cics-for-zowe-cli";
 import { BundleDeployer } from "../BundleDeploy/BundleDeployer";
 import { Bundle } from "../BundleContent/Bundle";
@@ -209,18 +209,12 @@ export class BundlePusher {
     }
   }
 
-  private getProfile(type: string): IProfile {
-    let profile;
-    try {
-      profile = this.params.profiles.get(type);
-    }
-    catch (error) {
-      // Tolerate errors
-    }
-
-    if (profile === undefined) {
-      profile = {};
-    }
+  private getProfile(type: string): Session {
+    const profInfo = new ProfileInfo("zowe");
+    profInfo.readProfilesFromDisk();
+    const zosmfProfAttrs = profInfo.getDefaultProfile(type);
+    const zosmfMergedArgs = profInfo.mergeArgsForProfile(zosmfProfAttrs, { getSecureVals: true });
+    const profile = ProfileInfo.createSession(zosmfMergedArgs.knownArgs);
 
     return profile;
   }
@@ -283,22 +277,30 @@ export class BundlePusher {
     }
   }
 
-  private async createZosMFSession(zosmfProfile: IProfile): Promise<any> {
-    try {
-      return ZosmfSession.createBasicZosmfSession(zosmfProfile);
-    }
-    catch (error) {
-      throw new Error("Failure occurred creating a zosmf session: " + error.message);
-    }
+  private async createZosMFSession(zosmfProfile: IProfile): Promise<Session> {
+    const session: ISession = {
+            rejectUnauthorized: zosmfProfile.rejectUnauthorized,
+            basePath: zosmfProfile.basePath,
+            protocol: zosmfProfile.protocol ? zosmfProfile.protocol.toLowerCase() : 'https',
+            requestCompletionTimeout: isNaN(zosmfProfile.completionTimeout) ? undefined : zosmfProfile.completionTimeout,
+            socketConnectTimeout: isNaN(zosmfProfile.establishConnectionTimeout) ? undefined : zosmfProfile.establishConnectionTimeout,
+            user: zosmfProfile.user,
+            password: zosmfProfile.password,
+    };
+    return new Session(session);
   }
 
   private async createSshSession(sshProfile: IProfile): Promise<SshSession> {
-    try {
-      return SshSession.createBasicSshSession(sshProfile);
-    }
-    catch (error) {
-      throw new Error("Failure occurred creating an ssh session: " + error.message);
-    }
+    const session: ISshSession = {
+            hostname: sshProfile.hostname,
+            port: sshProfile.port,
+            privateKey: sshProfile.privateKey,
+            keyPassphrase: sshProfile.keyPassphrase,
+            handshakeTimeout: isNaN(sshProfile.handshakeTimeout) ? undefined : sshProfile.handshakeTimeout,
+            user: sshProfile.user,
+            password: sshProfile.password,
+    };
+    return new SshSession(session);
   }
 
   private async createCicsSession(cicsProfile: IProfile): Promise<AbstractSession> {

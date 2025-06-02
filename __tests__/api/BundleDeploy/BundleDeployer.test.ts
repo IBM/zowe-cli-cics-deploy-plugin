@@ -10,9 +10,10 @@
 */
 
 import { BundleDeployer } from "../../../src/api/BundleDeploy/BundleDeployer";
-import { IHandlerParameters, TaskStage } from "@zowe/imperative";
+import { IHandlerParameters, ProfileInfo, TaskStage } from "@zowe/imperative";
 import * as DeployBundleDefinition from "../../../src/cli/deploy/bundle/DeployBundle.definition";
 import { ZosmfSession, SubmitJobs, List } from "@zowe/cli";
+import { Readable } from "stream";
 
 
 const DEFAULT_PARAMTERS: IHandlerParameters = {
@@ -21,14 +22,6 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
         _: ["zowe-cli-cics-deploy-plugin", "deploy", "bundle"],
         silent: true
     },
-    profiles: {
-        get: (type: string) => {
-            if (profileError === true) {
-              throw new Error("Profile Error");
-            }
-            return { host: "testname", user: "testuser", password: "testpwd" };
-        }
-    } as any,
     response: {
         data: {
             setMessage: jest.fn((setMsgArgs) => {
@@ -55,10 +48,11 @@ const DEFAULT_PARAMTERS: IHandlerParameters = {
     definition: DeployBundleDefinition.DeployBundleDefinition,
     fullDefinition: DeployBundleDefinition.DeployBundleDefinition,
     positionals: [],
+    stdin: new Readable()
 };
 
 
-let createSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementation(() => ({}));
+let createSpy = jest.spyOn(ProfileInfo, "createSession").mockImplementation(() => ({}));
 let listSpy = jest.spyOn(List, "allMembers").mockImplementation(() => ({}));
 let submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() => ({}));
 let profileError = false;

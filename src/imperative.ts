@@ -18,7 +18,6 @@ const MAX_TARGETDIR_LENGTH = 255;
 
 const config: IImperativeConfig = {
     commandModuleGlobs: ["**/cli/*/*.definition!(.d).*s"],
-    pluginHealthCheck: __dirname + "/healthCheck.handler",
     pluginSummary: "Generate and deploy IBM CICS bundle resources",
     pluginAliases: ["cdep"],
     rootCommandDescription: "CICS bundle deployment plugin.",
@@ -127,28 +126,10 @@ const config: IImperativeConfig = {
                 required: true
               },
               type: "string"
-            }
+            },
           },
-          required: ["cicsplex", "scope", "cics-hlq", "cpsm-hlq", "job-card"]
-        },
-        createProfileExamples: [
-          {
-            options: "example1 --cicsplex PLEX1 --scope TESTGRP1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550",
-            description: "Create a cics-deploy profile called 'example1' to connect to a CPSM managed group of CICS regions " +
-                         "within the TESTGRP1 scope of a cicsplex named PLEX1"
-          },
-          {
-            options: "example2 --cicsplex PLEX1 --scope TESTGRP1 --cics-hlq CICSTS55.CICS720 --cpsm-hlq CICSTS55.CPSM550 --res-group BUNDGRP1",
-            description: "Create a cics-deploy profile called 'example2' to connect to the same CPSM managed group of regions, " +
-                         "and identify a BAS resource group BUNDGRP1 in which to store resource definitions"
-          },
-          {
-            options: "example3 --cicsplex PLEX1 --scope TESTGRP1 --cics-hlq CICSTS55.CICS720 " +
-                     "--cpsm-hlq CICSTS55.CPSM550 --target-directory /var/cicsts/bundles",
-            description: "Create a cics-deploy profile called 'example3' to connect to the same CPSM managed group of regions, " +
-                         "and identify the default USS directory to which bundles should be uploaded"
-          }
-        ]
+          required: ["cicsplex", "scope", "cics-hlq", "cpsm-hlq", "job-card"],
+        }
       }
     ]
 };
