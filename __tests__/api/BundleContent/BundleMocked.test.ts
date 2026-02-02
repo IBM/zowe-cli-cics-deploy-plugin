@@ -569,7 +569,7 @@ describe("MockedFilesystemTests", () => {
 
     it("should complain if exceptions are thrown during manifest parsing", () => {
 
-      jest.spyOn(XMLParser, "parse").mockImplementationOnce(() => { throw new Error("Wibble"); });
+      jest.spyOn(XMLParser.prototype, "parse").mockImplementationOnce(() => { throw new Error("Wibble"); });
 
       let err: Error;
       try {

@@ -135,7 +135,7 @@ export class NodejsappBundlePart extends BundlePart {
    * @memberof NodejsappBundlePart
    */
   public getPartXML(): string {
-    return serialiser.parse(this.partXML) + "\n";
+    return serialiser.build(this.partXML) + "\n";
   }
 
   /**
