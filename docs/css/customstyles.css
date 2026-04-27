@@ -1225,3 +1225,22 @@ h4.panel-title {
     }
 }
 
+
+
+/* Deprecation Banner */
+.deprecation-banner {
+    background-color: #ffd700;
+    color: #000;
+    padding: 15px 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    border-bottom: 3px solid #ccac00;
+    position: relative;
+    z-index: 1000;
+}
+
+.deprecation-banner p {
+    margin: 0;
+    padding: 0;
+}

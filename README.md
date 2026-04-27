@@ -1,3 +1,5 @@
+> :warning: This repository has been archived and is no longer maintained.
+
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT)
 
 # IBM CICS Bundle Deployment Plugin for Zowe CLI
