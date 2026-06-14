@@ -16,6 +16,7 @@ import { IHandlerParameters } from "@zowe/imperative";
 
 const { XMLParser, XMLBuilder } = require("fast-xml-parser");
 
+const parser = new XMLParser({ignoreAttributes: false, attributeNamePrefix: "", trimValues: true});
 const serialiser = new XMLBuilder({ignoreAttributes: false, attributeNamePrefix: ""});
 
 /**
@@ -225,7 +226,7 @@ export class Manifest {
    * @memberof Manifest
    */
   public getXML(): string {
-    return serialiser.parse(this.manifestAsJson) + "\n";
+    return serialiser.build(this.manifestAsJson) + "\n";
   }
 
   /**
@@ -388,7 +389,7 @@ export class Manifest {
 
     try {
       // Reading the file worked, so convert the contents into a JSON Object
-      this.manifestAsJson = XMLParser.parse(xmltext, {ignoreAttributes: false, attributeNamePrefix: "", trimValues: true});
+      this.manifestAsJson = parser.parse(xmltext);
     }
     catch (exception)
     {

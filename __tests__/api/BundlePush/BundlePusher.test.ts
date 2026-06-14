@@ -9,6 +9,15 @@
 *
 */
 
+// Mock the cmci module before importing anything else
+jest.mock("@zowe/cics-for-zowe-cli", () => ({
+    getResource: jest.fn(),
+    putResource: jest.fn(),
+    deleteResource: jest.fn(),
+    discardResource: jest.fn(),
+    installResource: jest.fn()
+}));
+
 import { BundlePusher } from "../../../src/api/BundlePush/BundlePusher";
 import { IHandlerParameters, ImperativeError, IImperativeError, IProfile, Session } from "@zowe/imperative";
 import * as cmci from "@zowe/cics-for-zowe-cli";
@@ -81,19 +90,18 @@ let sshProfile = {};
 let cicsProfile = {};
 let profileError = false;
 
-let zosMFSpy = jest.spyOn(ZosmfSession, "createBasicZosmfSession").mockImplementation(() => ({}));
-let sshSpy = jest.spyOn(SshSession, "createBasicSshSession").mockImplementation(() => ({}));
-let createSpy = jest.spyOn(Create, "uss").mockImplementation(() => ({}));
-let listSpy = jest.spyOn(List, "fileList").mockImplementation(() => ({}));
-let membersSpy = jest.spyOn(List, "allMembers").mockImplementation(() => ({}));
-let submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() => ({}));
-let shellSpy = jest.spyOn(Shell, "executeSshCwd").mockImplementation(() => (0));
-let existsSpy = jest.spyOn(fs, "existsSync").mockImplementation(() => ({}));
-let readSpy = jest.spyOn(fs, "readFileSync").mockImplementation(() => ({}));
-let uploadSpy = jest.spyOn(Upload, "dirToUSSDirRecursive").mockImplementation(() => ({}));
-let readdirSpy = jest.spyOn(fs, "readdirSync").mockImplementation(() => ({}));
-let lstatSpy = jest.spyOn(fs, "lstatSync").mockImplementation(() => ({}));
-let cmciSpy = jest.spyOn(cmci, "getResource").mockImplementation(() => ({}));
+let zosMFSpy: any;
+let sshSpy: any;
+let createSpy: any;
+let listSpy: any;
+let membersSpy: any;
+let submitSpy: any;
+let shellSpy: any;
+let existsSpy: any;
+let readSpy: any;
+let uploadSpy: any;
+let readdirSpy: any;
+let lstatSpy: any;
 
 describe("BundlePusher01", () => {
 
@@ -116,15 +124,34 @@ describe("BundlePusher01", () => {
         uploadSpy = jest.spyOn(Upload, "dirToUSSDirRecursive").mockImplementation(() => ({}));
         readdirSpy = jest.spyOn(fs, "readdirSync").mockImplementation(() => ([]));
         lstatSpy = jest.spyOn(fs, "lstatSync").mockImplementation(() => ( IS_NOT_DIRECTORY ));
-        cmciSpy = jest.spyOn(cmci, "getResource").mockImplementation(() => ({ response: { records: {} } }));
+        // Use the mocked function directly instead of spying
+        (cmci.getResource as jest.Mock).mockImplementation(() => ({ response: { records: {} } }));
         consoleText = "";
         zosmfProfile = { host: "wibble", user: "user", password: "thisIsntReal", port: 443, rejectUnauthorized: true };
         sshProfile = { host: "wibble", user: "user", password: "thisIsntReal", port: 22 };
         cicsProfile = undefined;
         profileError = false;
     });
-    afterEach(() => {
+    afterEach(async () => {
+        // Explicitly restore each spy
+        if (zosMFSpy) zosMFSpy.mockRestore();
+        if (sshSpy) sshSpy.mockRestore();
+        if (createSpy) createSpy.mockRestore();
+        if (listSpy) listSpy.mockRestore();
+        if (membersSpy) membersSpy.mockRestore();
+        if (submitSpy) submitSpy.mockRestore();
+        if (shellSpy) shellSpy.mockRestore();
+        if (existsSpy) existsSpy.mockRestore();
+        if (readSpy) readSpy.mockRestore();
+        if (uploadSpy) uploadSpy.mockRestore();
+        if (readdirSpy) readdirSpy.mockRestore();
+        if (lstatSpy) lstatSpy.mockRestore();
+
         jest.restoreAllMocks();
+        jest.clearAllMocks();
+
+        // Allow any pending promises to resolve
+        await new Promise(resolve => setImmediate(resolve));
     });
     it("should complain with missing name", async () => {
         const parms = getCommonParmsForPushTests();
@@ -327,7 +354,7 @@ describe("BundlePusher01", () => {
         parms.arguments.cpw = "overridePassword";
         parms.arguments.cru = "false";
         parms.arguments.cpr = "https";
-        cmciSpy.mockImplementationOnce((session: Session) => {
+        (cmci.getResource as jest.Mock).mockImplementationOnce((session: Session) => {
           // CMCI errors aren't propagated, so log the output details
           const info = session.ISession;
           parms.response.console.log("HOST: " + info.hostname);
@@ -341,7 +368,7 @@ describe("BundlePusher01", () => {
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed", parms);
 
-        expect(cmciSpy).toHaveBeenCalledTimes(1);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(1);
         expect(consoleText).toContain("HOST: overrideHost");
         expect(consoleText).toContain("PORT: 9999");
         expect(consoleText).toContain("USER: overrideUser");
@@ -371,7 +398,7 @@ describe("BundlePusher01", () => {
         cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal" };
         const parms = getCommonParmsForPushTests();
 
-        cmciSpy.mockImplementationOnce((session: Session) => {
+        (cmci.getResource as jest.Mock).mockImplementationOnce((session: Session) => {
           // CMCI errors aren't propagated, so log the output details
           const info = session.ISession;
           parms.response.console.log("PORT: " + info.port + "\n");
@@ -382,7 +409,7 @@ describe("BundlePusher01", () => {
         await runPushTest("__tests__/__resources__/ExampleBundle01", true,
               "PUSH operation completed", parms);
 
-        expect(cmciSpy).toHaveBeenCalledTimes(1);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(1);
         expect(consoleText).toContain("PROTOCOL: http\n");
         expect(consoleText).toContain("REJECT: true");
         expect(consoleText).toContain("PORT: 1490");
@@ -576,7 +603,7 @@ describe("BundlePusher01", () => {
         expect(listSpy).toHaveBeenCalledTimes(1);
     });
     it("should complain if remote bundledir list returns empty response", async () => {
-        listSpy.mockImplementationOnce(() => ( { success: true, apiResponse: undefined } ));
+        listSpy.mockImplementationOnce(() => ( { success: true, apiResponse: undefined as any } ));
         await runPushTestWithError("__tests__/__resources__/ExampleBundle01", false,
               "A problem occurred accessing remote bundle directory '/u/ThisDoesNotExist/12345678'. Problem is: Command response is empty.");
 
@@ -1173,7 +1200,7 @@ describe("BundlePusher01", () => {
         expect(uploadSpy).toHaveBeenCalledTimes(1);
         expect(readdirSpy).toHaveBeenCalledTimes(1);
         expect(lstatSpy).toHaveBeenCalledTimes(1);
-        expect(cmciSpy).toHaveBeenCalledTimes(0);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(0);
     });
     it("should run to completion with --verbose and --overwrite", async () => {
         const parms = getCommonParmsForPushTests();
@@ -1213,7 +1240,7 @@ describe("BundlePusher01", () => {
         expect(uploadSpy).toHaveBeenCalledTimes(1);
         expect(readdirSpy).toHaveBeenCalledTimes(1);
         expect(lstatSpy).toHaveBeenCalledTimes(1);
-        expect(cmciSpy).toHaveBeenCalledTimes(0);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(0);
     });
     it("should cope with a NODEJSAPP in the bundle but no CICS profile specified", async () => {
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
@@ -1231,7 +1258,7 @@ describe("BundlePusher01", () => {
         expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
-        expect(cmciSpy).toHaveBeenCalledTimes(0);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(0);
     });
     it("should cope with a NODEJSAPP in the bundle with a CICS profile specified", async () => {
         cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
@@ -1250,7 +1277,7 @@ describe("BundlePusher01", () => {
         expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
-        expect(cmciSpy).toHaveBeenCalledTimes(1);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(1);
     });
     it("should query scope even with no NODEJSAPPs", async () => {
         cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
@@ -1261,7 +1288,7 @@ describe("BundlePusher01", () => {
                    "</manifest>";
           }
         });
-        cmciSpy.mockImplementation((cicsSession: any, regionData: cmci.IResourceParms) => {
+        (cmci.getResource as jest.Mock).mockImplementation((cicsSession: any, regionData: cmci.IResourceParms) => {
           if (regionData.name === "CICSRegion") {
             return { response: {
                 records: {
@@ -1292,7 +1319,7 @@ describe("BundlePusher01", () => {
         expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
-        expect(cmciSpy).toHaveBeenCalledTimes(1);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(1);
     });
     it("should cope with a NODEJSAPP in the bundle with a CICS profile specified and --verbose", async () => {
         cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
@@ -1321,7 +1348,7 @@ describe("BundlePusher01", () => {
         expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
-        expect(cmciSpy).toHaveBeenCalledTimes(1);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(1);
     });
     it("should generate diagnostics even if deploy fails", async () => {
         cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
@@ -1334,7 +1361,7 @@ describe("BundlePusher01", () => {
                    "</manifest>";
           }
         });
-        cmciSpy.mockImplementation((cicsSession: any, regionData: cmci.IResourceParms) => {
+        (cmci.getResource as jest.Mock).mockImplementation((cicsSession: any, regionData: cmci.IResourceParms) => {
           if (regionData.name === "CICSRegion") {
             return { response: {
                 records: {
@@ -1378,13 +1405,13 @@ describe("BundlePusher01", () => {
         expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
-        expect(cmciSpy).toHaveBeenCalledTimes(2);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(2);
     });
     it("should tolerate a Node.js diagnostics generation failure - region", async () => {
         cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2012I  http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP"}] );
-        cmciSpy.mockImplementationOnce(() => { throw new Error("Injected CMCI GET error"); });
+        (cmci.getResource as jest.Mock).mockImplementationOnce(() => { throw new Error("Injected CMCI GET error"); });
 
         await runPushTest("__tests__/__resources__/ExampleBundle01", false, "PUSH operation completed");
 
@@ -1399,7 +1426,7 @@ describe("BundlePusher01", () => {
         expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
-        expect(cmciSpy).toHaveBeenCalledTimes(1);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(1);
     });
     it("should tolerate a Node.js diagnostics generation failure - nodejsapp", async () => {
         cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
@@ -1412,7 +1439,7 @@ describe("BundlePusher01", () => {
                    "</manifest>";
           }
         });
-        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
+        (cmci.getResource as jest.Mock).mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
           if (nodejsData.name === "CICSNodejsapp") {
             throw new Error("Injected CMCI GET error");
           }
@@ -1444,7 +1471,7 @@ describe("BundlePusher01", () => {
         expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
-        expect(cmciSpy).toHaveBeenCalledTimes(2);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(2);
     });
     it("should tolerate a Node.js diagnostics generation failure - nodejsapp empty", async () => {
         cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
@@ -1457,7 +1484,7 @@ describe("BundlePusher01", () => {
                    "</manifest>";
           }
         });
-        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
+        (cmci.getResource as jest.Mock).mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
           if (nodejsData.name === "CICSNodejsapp") {
             return {};
           }
@@ -1489,7 +1516,7 @@ describe("BundlePusher01", () => {
         expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
-        expect(cmciSpy).toHaveBeenCalledTimes(2);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(2);
     });
     it("should generate Node.js diagnostics for 1 enabled NODEJSAPP", async () => {
         cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
@@ -1502,7 +1529,7 @@ describe("BundlePusher01", () => {
                    "</manifest>";
           }
         });
-        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
+        (cmci.getResource as jest.Mock).mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
           if (nodejsData.name === "CICSNodejsapp") {
             return { response: {
                 records: {
@@ -1546,7 +1573,7 @@ describe("BundlePusher01", () => {
         expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
-        expect(cmciSpy).toHaveBeenCalledTimes(2);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(2);
     });
     it("should generate Node.js diagnostics for 1 disabled NODEJSAPP", async () => {
         cicsProfile = { host: "wibble", port: 1490, user: "user", password: "thisIsntReal" };
@@ -1559,7 +1586,7 @@ describe("BundlePusher01", () => {
                    "</manifest>";
           }
         });
-        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
+        (cmci.getResource as jest.Mock).mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
           if (nodejsData.name === "CICSNodejsapp") {
             return { response: {
                 records: {
@@ -1603,7 +1630,7 @@ describe("BundlePusher01", () => {
         expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
-        expect(cmciSpy).toHaveBeenCalledTimes(2);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(2);
     });
     it("should generate Node.js diagnostics for 2 NODEJSAPPs", async () => {
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
@@ -1617,7 +1644,7 @@ describe("BundlePusher01", () => {
                    "</manifest>";
           }
         });
-        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
+        (cmci.getResource as jest.Mock).mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
           if (nodejsData.name === "CICSNodejsapp") {
             return { response: {
                 records: {
@@ -1675,7 +1702,7 @@ describe("BundlePusher01", () => {
         expect(existsSpy).toHaveBeenCalledTimes(1);
         expect(readSpy).toHaveBeenCalledTimes(1);
         expect(uploadSpy).toHaveBeenCalledTimes(1);
-        expect(cmciSpy).toHaveBeenCalledTimes(2);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(2);
     });
 
     it("should not attempt to generate diagnostics for NODEJSAPPs if bundle does not install", async () => {
@@ -1689,7 +1716,7 @@ describe("BundlePusher01", () => {
         submitSpy = jest.spyOn(SubmitJobs, "submitJclString").mockImplementation(() =>
                   [{ddName: "SYSTSPRT", stepName: "DFHDPLOY", data: "DFHRL2055I"}] );
         cicsProfile = { host: "wibble", user: "user", password: "thisIsntReal", cicsPlex: "12345678", regionName: "12345678" };
-        cmciSpy.mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
+        (cmci.getResource as jest.Mock).mockImplementation((cicsSession: any, nodejsData: cmci.IResourceParms) => {
             if (nodejsData.name === "CICSRegion") {
                 return { response: {
                     records: {
@@ -1724,7 +1751,7 @@ describe("BundlePusher01", () => {
         expect(consoleText).not.toContain("zowe cics get resource CICSNodejsapp");
         expect(consoleText).not.toContain("An attempt to query the remote CICSplex using the cics plug-in has failed");
         expect(consoleText).toContain("DFHDPLOY output implied the bundle failed to install.");
-        expect(cmciSpy).toHaveBeenCalledTimes(1);
+        expect((cmci.getResource as jest.Mock)).toHaveBeenCalledTimes(1);
     });
 });
 

@@ -6,11 +6,15 @@ exports[`AutoBundler01 should cope with an empty directory and generate a NODEJS
 
 exports[`AutoBundler01 should detect --merge without --overwrite 1`] = `"--merge requires the use of --overwrite"`;
 
-exports[`AutoBundler01 should detect a bad package.json 1`] = `"Parsing error occurred reading package.json: Unexpected token g in JSON at position 0"`;
+exports[`AutoBundler01 should detect a bad package.json 1`] = `
+"Parsing error occurred reading package.json: Unexpected token 'g', \\"garbage
+
+\\" is not valid JSON"
+`;
 
 exports[`AutoBundler01 should not merge an existing bundle 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":1,\\"bundleRelease\\":0}}"`;
 
-exports[`AutoBundler01 should read an existing bundle 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"ThisIsAnId\\",\\"bundleMajorVer\\":\\"10\\",\\"bundleMinorVer\\":\\"11\\",\\"bundleMicroVer\\":\\"12\\",\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"path1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"path2\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"}]}}"`;
+exports[`AutoBundler01 should read an existing bundle 1`] = `"{\\"manifest\\":{\\"define\\":[{\\"name\\":\\"name1\\",\\"type\\":\\"type1\\",\\"path\\":\\"path1\\"},{\\"name\\":\\"name2\\",\\"type\\":\\"type2\\",\\"path\\":\\"path2\\"},{\\"name\\":\\"name3\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/Test.nodejsapp\\"}],\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"bundleVersion\\":\\"1\\",\\"bundleRelease\\":\\"2\\",\\"id\\":\\"ThisIsAnId\\",\\"bundleMajorVer\\":\\"10\\",\\"bundleMinorVer\\":\\"11\\",\\"bundleMicroVer\\":\\"12\\"}}"`;
 
 exports[`AutoBundler01 should receive default values from package.json 1`] = `"{\\"manifest\\":{\\"xmlns\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle\\",\\"id\\":\\"testBundleName\\",\\"bundleMajorVer\\":1,\\"bundleMinorVer\\":0,\\"bundleMicroVer\\":0,\\"define\\":[{\\"name\\":\\"testBundleName\\",\\"type\\":\\"http://www.ibm.com/xmlns/prod/cics/bundle/NODEJSAPP\\",\\"path\\":\\"nodejsapps/testBundleName.nodejsapp\\"}]}}"`;
 
