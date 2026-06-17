@@ -22,11 +22,11 @@ describe("MockedFilesystemTests", () => {
 
     it("should tolerate META-INF directory not existing", () => {
         // Mocks for the manifest - META-INF exists
-        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
-          if (path.endsWith("META-INF")) {
+        jest.spyOn(fs, "existsSync").mockImplementation((path: fs.PathLike) => {
+          if (path.toString().endsWith("META-INF")) {
               return false;
           }
-          if (path.endsWith(".zosattributes")) {
+          if (path.toString().endsWith(".zosattributes")) {
               return false;
           }
           return true;
@@ -35,17 +35,14 @@ describe("MockedFilesystemTests", () => {
         // Mocks for the manifest - Bundle dir writable
         jest.spyOn(fs, "accessSync").mockImplementationOnce(() => ( true ));
 
-        let err: Error;
         try {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle01", false, false);
           bund.prepareForSave();
         }
         catch (error) {
-          err = error;
+          fail(error);
         }
-
-        expect(err).toBeUndefined();
-    });
+    } );
     it("should complain if no write permission to bundle directory", () => {
         // Mocks for the manifest - META-INF doesn't exist
         jest.spyOn(fs, "existsSync").mockImplementationOnce(() => ( false ));
@@ -56,6 +53,7 @@ describe("MockedFilesystemTests", () => {
         try {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle01", false, false);
           bund.prepareForSave();
+          fail("Expected error");
         }
         catch (error) {
           err = error;
@@ -75,6 +73,7 @@ describe("MockedFilesystemTests", () => {
         try {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle01", false, false);
           bund.prepareForSave();
+          fail("Expected error");
         }
         catch (error) {
           err = error;
@@ -94,6 +93,7 @@ describe("MockedFilesystemTests", () => {
         try {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle01", false, false);
           bund.prepareForSave();
+          fail("Expected error");
         }
         catch (error) {
           err = error;
@@ -107,8 +107,8 @@ describe("MockedFilesystemTests", () => {
         // Mocks for the manifest - META-INF & manifest exist
         jest.spyOn(fs, "existsSync").mockReturnValue(true);
         // Mocks for the manifest - META-INF is writable, but manifest is not.
-        jest.spyOn(fs, "accessSync").mockImplementation((path: string) => {
-          if (path.endsWith("cics.xml")) {
+        jest.spyOn(fs, "accessSync").mockImplementation((path: fs.PathLike) => {
+          if (path.toString().endsWith("cics.xml")) {
             throw new Error("Wibble");
           }
           return true;
@@ -118,6 +118,7 @@ describe("MockedFilesystemTests", () => {
         try {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle01", false, true);
           bund.prepareForSave();
+          fail("Expected error");
         }
         catch (error) {
           err = error;
@@ -129,58 +130,55 @@ describe("MockedFilesystemTests", () => {
     });
     it("should tolerate absence of .nodejsapp directory", () => {
 
-        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
-          if (path.endsWith("nodejsapps")) {
+        jest.spyOn(fs, "existsSync").mockImplementation((path: fs.PathLike) => {
+          if (path.toString().endsWith("nodejsapps")) {
             return false;
           }
-          if (path.endsWith(".nodejsapp")) {
+          if (path.toString().endsWith(".nodejsapp")) {
             return false;
           }
-          if (path.endsWith("cics.xml")) {
+          if (path.toString().endsWith("cics.xml")) {
             return false;
           }
-          if (path.endsWith(".profile")) {
+          if (path.toString().endsWith(".profile")) {
             return false;
           }
-          if (path.endsWith(".zosattributes")) {
+          if (path.toString().endsWith(".zosattributes")) {
             return false;
           }
           return true;
         });
 
         // Mocks for the Nodejsapp - META-INF writable & nodejsapp dir creatable
-        jest.spyOn(fs, "accessSync").mockReturnValue(true);
+// TODO this returns void so what's the point in spying
+//        jest.spyOn(fs, "accessSync").mockReturnValue(true);
 
-        let err: Error;
         try {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle03", false, false);
           bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
           bund.prepareForSave();
         }
         catch (error) {
-          err = error;
+          fail(error);
         }
-
-        // Check the output as JSON
-        expect(err).toBeUndefined();
-    });
+    } );
     it("should detect inability to create .nodejsapp directory", () => {
-        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
-            if (path.endsWith("nodejsapps")) {
+        jest.spyOn(fs, "existsSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith("nodejsapps")) {
               return false;
             }
-            if (path.endsWith("cics.xml")) {
+            if (path.toString().endsWith("cics.xml")) {
               return false;
             }
-            if (path.endsWith(".zosattributes")) {
+            if (path.toString().endsWith(".zosattributes")) {
                 return false;
               }
             return true;
           });
 
         // Bundle dir is unwriteable, so nodejsapps can't be created
-        jest.spyOn(fs, "accessSync").mockImplementation((path: string) => {
-            if (path.endsWith("ExampleBundle03")) {
+        jest.spyOn(fs, "accessSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith("ExampleBundle03")) {
                 throw new Error("Wibble");
             }
             return true;
@@ -192,6 +190,7 @@ describe("MockedFilesystemTests", () => {
         let err: Error;
         try {
           bund.prepareForSave();
+          fail("Error expected");
         }
         catch (error) {
           err = error;
@@ -201,18 +200,18 @@ describe("MockedFilesystemTests", () => {
         expect(err.message).toContain("cics-deploy requires write permission to: ");
     });
     it("should detect unwritable nodejsapps directory", () => {
-        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
-            if (path.endsWith("cics.xml")) {
+        jest.spyOn(fs, "existsSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith("cics.xml")) {
               return false;
             }
-            if (path.endsWith(".zosattributes")) {
+            if (path.toString().endsWith(".zosattributes")) {
                 return false;
               }
             return true;
           });
 
-        jest.spyOn(fs, "accessSync").mockImplementation((path: string) => {
-            if (path.endsWith("nodejsapps")) {
+        jest.spyOn(fs, "accessSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith("nodejsapps")) {
                 throw new Error("Wibble");
             }
             return true;
@@ -225,6 +224,7 @@ describe("MockedFilesystemTests", () => {
         let err: Error;
         try {
           bund.prepareForSave();
+          fail("Expected error");
         }
         catch (error) {
           err = error;
@@ -236,21 +236,23 @@ describe("MockedFilesystemTests", () => {
     });
     it("should complain if existing .nodejsapp file isn't overwritable", () => {
         // manifest don't exist, everying else does (inlucde .nodejsapp)
-        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
-            if (path.endsWith("cics.xml")) {
+        jest.spyOn(fs, "existsSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith("cics.xml")) {
               return false;
             }
             return true;
           });
 
         // Mocks for the Nodejsapp - META-INF writable & nodejsapp dir creatable
-        jest.spyOn(fs, "accessSync").mockReturnValue(true);
+// TODO why mock a void method?
+//        jest.spyOn(fs, "accessSync").mockReturnValue(true);
 
         let err: Error;
         try {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle03", false, false);
           bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
           bund.prepareForSave();
+          fail("Expected error");
         }
         catch (error) {
           err = error;
@@ -261,15 +263,15 @@ describe("MockedFilesystemTests", () => {
     });
     it("should complain if no write permission to existing .nodejsapp", () => {
         // manifest don't exist, everying else does (inlucde .nodejsapp)
-        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
-            if (path.endsWith("cics.xml")) {
+        jest.spyOn(fs, "existsSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith("cics.xml")) {
               return false;
             }
             return true;
           });
 
-        jest.spyOn(fs, "accessSync").mockImplementation((path: string) => {
-            if (path.endsWith(".nodejsapp")) {
+        jest.spyOn(fs, "accessSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith(".nodejsapp")) {
                 throw new Error("Wibble");
             }
             return true;
@@ -281,6 +283,7 @@ describe("MockedFilesystemTests", () => {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle03", false, true);
           bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
           bund.prepareForSave();
+          fail("Expected error");
         }
         catch (error) {
           err = error;
@@ -292,15 +295,15 @@ describe("MockedFilesystemTests", () => {
     });
     it("should complain if no write permission to existing .profile", () => {
         // manifest don't exist, everying else does
-        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
-            if (path.endsWith("cics.xml")) {
+        jest.spyOn(fs, "existsSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith("cics.xml")) {
               return false;
             }
             return true;
           });
 
-        jest.spyOn(fs, "accessSync").mockImplementation((path: string) => {
-            if (path.endsWith(".profile")) {
+        jest.spyOn(fs, "accessSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith(".profile")) {
                 throw new Error("Wibble");
             }
             return true;
@@ -311,6 +314,7 @@ describe("MockedFilesystemTests", () => {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle03", false, true);
           bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
           bund.prepareForSave();
+          fail("Expected error");
         }
         catch (error) {
           err = error;
@@ -322,21 +326,21 @@ describe("MockedFilesystemTests", () => {
     });
     it("should complain if no overwrite permission for existing .zosattributes", () => {
 
-        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
-            if (path.endsWith("cics.xml")) {
+        jest.spyOn(fs, "existsSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith("cics.xml")) {
               return false;
             }
-            if (path.endsWith(".nodejsapp")) {
+            if (path.toString().endsWith(".nodejsapp")) {
                 return false;
             }
-            if (path.endsWith(".profile")) {
+            if (path.toString().endsWith(".profile")) {
                 return false;
             }
             return true;
           });
 
-        jest.spyOn(fs, "accessSync").mockImplementation((path: string) => {
-            if (path.endsWith(".zosattributes")) {
+        jest.spyOn(fs, "accessSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith(".zosattributes")) {
                 throw new Error("Wibble");
             }
             return true;
@@ -347,6 +351,7 @@ describe("MockedFilesystemTests", () => {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle03", false, false);
           bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
           bund.prepareForSave();
+          fail("Expected error");
         }
         catch (error) {
           err = error;
@@ -356,15 +361,16 @@ describe("MockedFilesystemTests", () => {
         expect(err.message).toContain(".zosattributes already exists. Specify --overwrite to replace it.");
     });
     it("should complain if can't make a new META-INF directory", () => {
-        jest.spyOn(fs, "accessSync").mockReturnValue(true);
+// TODO why mock a void?
+//        jest.spyOn(fs, "accessSync").mockReturnValue(true);
          // manifest don't exist, everying else does
-        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
-            if (path.endsWith("META-INF")) {
+        jest.spyOn(fs, "existsSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith("META-INF")) {
               return false;
             }
             return true;
           });
-        jest.spyOn(fs, "writeFileSync").mockImplementation((path: string) => {
+        jest.spyOn(fs, "writeFileSync").mockImplementation((file: fs.PathOrFileDescriptor) => {
           return true;
         });
 
@@ -374,6 +380,7 @@ describe("MockedFilesystemTests", () => {
         try {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle01", false, true);
           bund.save();
+          fail("Expected error");
         }
         catch (error) {
           err = error;
@@ -385,18 +392,19 @@ describe("MockedFilesystemTests", () => {
         expect(err.message).toContain("InjectedError");
     });
     it("should complain if writing the manifest fails", () => {
-        jest.spyOn(fs, "accessSync").mockReturnValue(true);
+// TODO why mock void?
+//        jest.spyOn(fs, "accessSync").mockReturnValue(true);
          // manifest don't exist, everying else does
-        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
-            if (path.endsWith("cics.xml")) {
+        jest.spyOn(fs, "existsSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith("cics.xml")) {
               return false;
             }
             return true;
           });
 
         // Mocks for the manifest - manifest write
-        jest.spyOn(fs, "writeFileSync").mockImplementation((path: string) => {
-          if (path.endsWith("cics.xml")) {
+        jest.spyOn(fs, "writeFileSync").mockImplementation((path: fs.PathOrFileDescriptor) => {
+          if (path.toString().endsWith("cics.xml")) {
             throw new Error("InjectedError");
           }
         });
@@ -406,6 +414,7 @@ describe("MockedFilesystemTests", () => {
         try {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle01", false, true);
           bund.save();
+          fail("Expected error");
         }
         catch (error) {
           err = error;
@@ -417,14 +426,14 @@ describe("MockedFilesystemTests", () => {
         expect(err.message).toContain("InjectedError");
     });
     it("should complain if creating nodejsapps dir fails", () => {
-        jest.spyOn(fs, "accessSync").mockReturnValue(true);
-        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
-            if (path.endsWith("nodejsapps")) {
+//        jest.spyOn(fs, "accessSync").mockReturnValue(true);
+        jest.spyOn(fs, "existsSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith("nodejsapps")) {
               return false;
             }
             return true;
           });
-        jest.spyOn(fs, "writeFileSync").mockImplementation((path: string) => {
+        jest.spyOn(fs, "writeFileSync").mockImplementation((path: fs.PathOrFileDescriptor) => {
           return true;
         });
 
@@ -435,6 +444,7 @@ describe("MockedFilesystemTests", () => {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle03", false, true);
           bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
           bund.save();
+          fail("Error expected");
         }
         catch (error) {
           err = error;
@@ -446,15 +456,15 @@ describe("MockedFilesystemTests", () => {
         expect(err.message).toContain("InjectedError");
     });
     it("should complain if writing .nodejsapp file fails", () => {
-        jest.spyOn(fs, "accessSync").mockReturnValue(true);
-        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
-            if (path.endsWith(".nodejsapp")) {
+        // jest.spyOn(fs, "accessSync").mockReturnValue(true);
+        jest.spyOn(fs, "existsSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith(".nodejsapp")) {
               return false;
             }
             return true;
           });
-        jest.spyOn(fs, "writeFileSync").mockImplementation((path: string) => {
-          if (path.endsWith(".nodejsapp")) {
+        jest.spyOn(fs, "writeFileSync").mockImplementation((path: fs.PathOrFileDescriptor) => {
+          if (path.toString().endsWith(".nodejsapp")) {
             throw new Error("InjectedError");
           }
         });
@@ -464,6 +474,7 @@ describe("MockedFilesystemTests", () => {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle03", false, true);
           bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
           bund.save();
+          fail("Expected error");
         }
         catch (error) {
           err = error;
@@ -475,16 +486,16 @@ describe("MockedFilesystemTests", () => {
         expect(err.message).toContain("InjectedError");
     });
     it("should complain if writing .profile fails", () => {
-        jest.spyOn(fs, "accessSync").mockReturnValue(true);
-        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
-            if (path.endsWith(".profile")) {
+        // jest.spyOn(fs, "accessSync").mockReturnValue(true);
+        jest.spyOn(fs, "existsSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith(".profile")) {
                 return false;
               }
             return true;
           });
 
-        jest.spyOn(fs, "writeFileSync").mockImplementation((path: string) => {
-            if (path.endsWith(".profile")) {
+        jest.spyOn(fs, "writeFileSync").mockImplementation((path: fs.PathOrFileDescriptor) => {
+            if (path.toString().endsWith(".profile")) {
                 throw new Error("InjectedError");
             }
         });
@@ -494,6 +505,7 @@ describe("MockedFilesystemTests", () => {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle03", false, true);
           bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
           bund.save();
+          fail("Error expected");
         }
         catch (error) {
           err = error;
@@ -505,17 +517,17 @@ describe("MockedFilesystemTests", () => {
         expect(err.message).toContain("InjectedError");
     });
     it("should complain if writing .zosattributes fails", () => {
-        jest.spyOn(fs, "accessSync").mockReturnValue(true);
-        jest.spyOn(fs, "existsSync").mockImplementation((path: string) => {
-            if (path.endsWith(".zosattributes")) {
+        // jest.spyOn(fs, "accessSync").mockReturnValue(true);
+        jest.spyOn(fs, "existsSync").mockImplementation((path: fs.PathLike) => {
+            if (path.toString().endsWith(".zosattributes")) {
                 return false;
               }
             return true;
           });
 
         // Mocks for the nodejsapp - write .zosattributes
-        jest.spyOn(fs, "writeFileSync").mockImplementation((path: string) => {
-            if (path.endsWith(".zosattributes")) {
+        jest.spyOn(fs, "writeFileSync").mockImplementation((path: fs.PathOrFileDescriptor) => {
+            if (path.toString().endsWith(".zosattributes")) {
                 throw new Error("InjectedError");
             }
         });
@@ -525,6 +537,7 @@ describe("MockedFilesystemTests", () => {
           const bund = new Bundle("__tests__/__resources__/ExampleBundle03", false, true);
           bund.addNodejsappDefinition("NodeName", "__tests__/__resources__/ExampleBundle03/Artefact1", 1000);
           bund.save();
+          fail("Error expected");
         }
         catch (error) {
           err = error;
@@ -536,16 +549,17 @@ describe("MockedFilesystemTests", () => {
         expect(err.message).toContain("InjectedError");
     });
     it("should know if the bundle is valid", () => {
-        jest.spyOn(fs, "accessSync").mockReturnValue(true);
+        // jest.spyOn(fs, "accessSync").mockReturnValue(true);
         jest.spyOn(fs, "existsSync").mockReturnValue(false);
-        jest.spyOn(fs, "writeFileSync").mockReturnValue(true);
-        jest.spyOn(fs, "mkdirSync").mockReturnValue(true);
+        // jest.spyOn(fs, "writeFileSync").mockReturnValue(true);
+        // jest.spyOn(fs, "mkdirSync").mockReturnValue(true);
 
         let err: Error;
         let bund;
         try {
           bund = new Bundle("__tests__/__resources__/ExampleBundle01", false, false);
           bund.validate();
+          fail("Error expected");
         }
         catch (error) {
           err = error;
@@ -555,16 +569,15 @@ describe("MockedFilesystemTests", () => {
         expect(err.message).toContain("No bundle manifest file found");
         expect(err.message).toContain("cics.xml");
 
-        err = undefined;
         try {
           bund.save();
           bund.validate();
+          fail("Error expected");
         }
         catch (error) {
           err = error;
         }
 
-        expect(err).toBeUndefined();
     });
 
     it("should complain if exceptions are thrown during manifest parsing", () => {
@@ -574,6 +587,7 @@ describe("MockedFilesystemTests", () => {
       let err: Error;
       try {
         const bund = new Bundle("__tests__/__resources__/ExampleBundle01", true, true);
+        fail("Error expected");
       }
       catch (error) {
         err = error;

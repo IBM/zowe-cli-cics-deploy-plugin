@@ -14,7 +14,7 @@ import {CheckStatus, ZosmfSession} from "@zowe/cli";
 import {IHandlerParameters, Imperative, ImperativeError} from "@zowe/imperative";
 import * as UndeployBundleDefinition from "../../../../src/cli/undeploy/bundle/UndeployBundle.definition";
 import * as UndeployBundleHandler from "../../../../src/cli/undeploy/bundle/UndeployBundle.handler";
-import * as fs from "fs";
+import { Readable } from "stream";
 
 process.env.FORCE_COLOR = "0";
 
@@ -24,11 +24,6 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
         _: ["zowe-cli-cics-deploy-plugin", "undeploy", "bundle"],
         silent: true
     },
-    profiles: {
-        get: (type: string) => {
-            return {};
-        }
-    } as any,
     response: {
         data: {
             setMessage: jest.fn((setMsgArgs) => {
@@ -55,6 +50,7 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
     definition: UndeployBundleDefinition.UndeployBundleDefinition,
     fullDefinition: UndeployBundleDefinition.UndeployBundleDefinition,
     positionals: [],
+    stdin: new Readable()
 };
 
 describe("bundle Handler", () => {
@@ -68,6 +64,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new UndeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -93,6 +90,7 @@ describe("bundle Handler", () => {
         try {
           const handler = new UndeployBundleHandler.default();
           await handler.process(params);
+          fail("Expected error");
         } catch (e) {
             err = e;
         }
@@ -122,7 +120,7 @@ function setCommonParmsForTargetStateTests(parms: IHandlerParameters) {
   parms.arguments.jobcard = undefined;
 }
 
-async function testTargetStateUndeployError(targetstate: string, result: string) {
+async function testTargetStateUndeployError(targetstate: string | undefined, result: string) {
   const params = Object.assign({}, ...[DEFAULT_PARAMETERS]);
   setCommonParmsForTargetStateTests(params);
   params.arguments.targetstate = targetstate;
@@ -131,6 +129,7 @@ async function testTargetStateUndeployError(targetstate: string, result: string)
   try {
     const handler = new UndeployBundleHandler.default();
     await handler.process(params);
+    fail("Expected error");
   } catch (e) {
     err = e;
   }

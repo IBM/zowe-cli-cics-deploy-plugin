@@ -17,7 +17,6 @@ describe("imperative config", () => {
     it("config should match expected values", () => {
         const config = require("../src/imperative");
         expect(config.name).toBe("cics-deploy");
-        expect(config.pluginHealthCheck).toContain("healthCheck.handler");
         expect(config.pluginSummary).toBe("Generate and deploy IBM CICS bundle resources");
         expect(config.productDisplayName).toBe("Zowe cics-deploy plug-in");
         expect(config.rootCommandDescription).toContain("CICS bundle deployment plugin.");

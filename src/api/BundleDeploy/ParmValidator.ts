@@ -11,7 +11,7 @@
 
 "use strict";
 
-import { IHandlerParameters, Logger } from "@zowe/imperative";
+import { IHandlerParameters, ProfileInfo } from "@zowe/imperative";
 
 export class ParmValidator {
 
@@ -91,7 +91,7 @@ export class ParmValidator {
     }
   }
 
-  private static validateCicsDeployProfile(params: IHandlerParameters) {
+  private static async validateCicsDeployProfile(params: IHandlerParameters) {
 
     // if missing, then CICSPlex and Scope must be set
     if (params.arguments["cics-deploy-profile"] === undefined) {
@@ -111,12 +111,14 @@ export class ParmValidator {
     }
 
     // Now check that the profile can be found
-    const prof = params.profiles.get("cics-deploy");
+    const profInfo = new ProfileInfo("zowe");
+    await profInfo.readProfilesFromDisk();
+    const prof = profInfo.getDefaultProfile("cics-deploy");
 
     // const logger = Logger.getAppLogger();
     // logger.debug("Profile: " + JSON.stringify(prof));
 
-    if (prof === undefined) {
+    if (!prof) {
       throw new Error('cics-deploy-profile "' + params.arguments["cics-deploy-profile"] + '" not found.');
     }
   }

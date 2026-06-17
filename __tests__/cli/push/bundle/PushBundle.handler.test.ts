@@ -13,6 +13,7 @@
 import {IHandlerParameters, ImperativeError} from "@zowe/imperative";
 import * as PushBundleDefinition from "../../../../src/cli/push/bundle/PushBundle.definition";
 import * as PushBundleHandler from "../../../../src/cli/push/bundle/PushBundle.handler";
+import { Readable } from "stream";
 
 process.env.FORCE_COLOR = "0";
 
@@ -22,17 +23,6 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
         _: ["zowe-cli-cics-deploy-plugin", "push", "bundle"],
         silent: true
     },
-    profiles: {
-        get: (type: string) => {
-            if (type === "cics-deploy") {
-              return undefined;
-            }
-            if (type === "zosmf") {
-              return undefined;
-            }
-            return {};
-        }
-    } as any,
     response: {
         data: {
             setMessage: jest.fn((setMsgArgs) => {
@@ -49,16 +39,17 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
             error: jest.fn((errors) => {
                 expect("" + errors).toMatchSnapshot();
             }),
-            errorHeader: jest.fn(() => undefined)
+            errorHeader: jest.fn(() => { ; })
         },
         progress: {
-            startBar: jest.fn((parms) => undefined),
-            endBar: jest.fn(() => undefined)
+            startBar: jest.fn((parms) => { ; }),
+            endBar: jest.fn(() => { ; })
         }
     } as any,
     definition: PushBundleDefinition.PushBundleDefinition,
     fullDefinition: PushBundleDefinition.PushBundleDefinition,
     positionals: [],
+    stdin: new Readable()
 };
 
 describe("bundle Handler", () => {
@@ -99,6 +90,7 @@ async function testError(parms: IHandlerParameters, result: string) {
   try {
     const handler = new PushBundleHandler.default();
     await handler.process(parms);
+    fail("Expected error");
   } catch (e) {
     err = e;
   }

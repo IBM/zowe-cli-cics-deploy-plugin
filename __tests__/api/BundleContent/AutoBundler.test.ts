@@ -13,6 +13,7 @@ import { AutoBundler } from "../../../src/api/BundleContent/AutoBundler";
 import { IHandlerParameters } from "@zowe/imperative";
 import * as GenerateBundleDefinition from "../../../src/cli/generate/bundle/GenerateBundle.definition";
 import * as fse from "fs-extra";
+import { Readable } from "stream";
 
 
 const DEFAULT_PARAMETERS: IHandlerParameters = {
@@ -21,11 +22,6 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
         _: ["zowe-cli-cics-deploy-plugin", "generate", "bundle"],
         silent: true
     },
-    profiles: {
-        get: (type: string) => {
-            return {};
-        }
-    } as any,
     response: {
         data: {
             setMessage: jest.fn((setMsgArgs) => {
@@ -42,16 +38,17 @@ const DEFAULT_PARAMETERS: IHandlerParameters = {
             error: jest.fn((errors) => {
                 expect("" + errors).toMatch("NO ERRORS ARE EXPECTED");
             }),
-            errorHeader: jest.fn(() => undefined)
+            errorHeader: jest.fn(() => { fail("No errors are expected") })
         },
         progress: {
-            startBar: jest.fn((parms) => undefined),
-            endBar: jest.fn(() => undefined)
+            startBar: jest.fn((parms) => fail("Unexpected") ),
+            endBar: jest.fn(() => fail("Unexpected") )
         }
     } as any,
     definition: GenerateBundleDefinition.GenerateBundleDefinition,
     fullDefinition: GenerateBundleDefinition.GenerateBundleDefinition,
     positionals: [],
+    stdin: new Readable()
 };
 
 describe("AutoBundler01", () => {
@@ -124,6 +121,7 @@ describe("AutoBundler01", () => {
         let err: Error;
         try {
           const ab = new AutoBundler("__tests__/__resources__/ExampleBundle01", parms);
+          fail("Should have thrown error condition");
         } catch (e) {
           err = e;
         }
@@ -195,6 +193,7 @@ async function runAutoBundleWithError(parms: IHandlerParameters, dir: string) {
   let err: Error;
   try {
     const ab = new AutoBundler(dir, parms);
+    fail("Should have thrown error condition");
   } catch (e) {
     err = e;
   }

@@ -93,7 +93,7 @@ export abstract class BundleParentHandler implements ICommandHandler {
      * @throws ImperativeError
      * @memberof BundleParentHandler
      */
-    public abstract async performAction(params: IHandlerParameters): Promise<string>;
+    public abstract performAction(params: IHandlerParameters): Promise<string>;
 
     private replacePassword(source: string, pwd: string): string {
       if (pwd !== undefined) {
